@@ -1,6 +1,8 @@
 import path from "path";
 import { app, BrowserWindow, nativeImage, Menu, Tray, Event } from "electron";
 
+import { setupIPC } from "./backend/api/fs-api";
+
 let isAppQuitting = false;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -86,6 +88,8 @@ const createTray = (mainWindow: BrowserWindow) => {
 app.on("ready", () => {
   const mainWindow = createWindow();
   createTray(mainWindow);
+
+  setupIPC();
 
   app.on("activate", () => {
     // On OS X it's common to re-create a window in the app when the

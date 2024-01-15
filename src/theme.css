@@ -1,0 +1,11 @@
+:root {
+  --accent-color: #0023ff;
+  --accent-hover-color: #0011c9;
+  --secondary-color: #222;
+  --secondary-hover-color: #555;
+  --deco-color: #d8d8d8;
+}
+
+.bg-accent {
+  background-color: var(--accent-color);
+}

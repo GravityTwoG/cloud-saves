@@ -1,0 +1,51 @@
+.BaseButton {
+  display: inline-block;
+  background-color: var(--accent-color);
+  padding: 15px 44px 13px;
+  border-radius: 1.5em;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+
+  & > a {
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: var(--accent-hover-color);
+  }
+
+  &.Active {
+    background-color: var(--accent-hover-color);
+  }
+}
+
+.CommonLink {
+  font-weight: bold;
+  color: var(--accent-color);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--accent-hover-color);
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: var(--text-color);
+  }
+
+  &.Active {
+    text-decoration: underline;
+  }
+}

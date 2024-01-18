@@ -1,0 +1,34 @@
+.Form {
+  display: flex;
+  flex-direction: column;
+  width: 24rem;
+  max-width: 100%;
+  gap: 0.5rem;
+}
+
+.Field {
+  width: 100%;
+}
+
+.Label {
+  display: block;
+  padding: 4px 0;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: var(--text-color);
+
+  & > p {
+    margin: 0;
+  }
+}
+
+.FormActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.SubmitButton {
+  width: 100%;
+}

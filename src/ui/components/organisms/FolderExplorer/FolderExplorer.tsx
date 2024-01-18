@@ -1,8 +1,7 @@
 import { useState } from "react";
+import { Button } from "../../atoms/Button/Button";
 
-import { Button } from "../components/atoms/Button/Button";
-
-export const Home = () => {
+export const FolderExplorer = () => {
   const [selectedFolder, setSelectedFolder] = useState<string>("");
   const [files, setFiles] = useState<
     { name: string; size: number; mtime: Date }[]

@@ -1,0 +1,16 @@
+.Input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: #000;
+  background-color: #fff;
+  border: 2px solid var(--deco-color);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.1s ease;
+  caret-color: var(--accent-color);
+
+  &:focus {
+    border-color: var(--accent-color);
+  }
+}

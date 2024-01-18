@@ -1,8 +1,10 @@
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import "./theme.css";
 
-import { Home } from "./pages/Home";
+import "./styles/index.css";
+import "./styles/theme.css";
+import "./styles/utility.css";
+
+import { Router } from "./Router";
 
 function bootstrap() {
   const rootElement = document.getElementById("app");
@@ -14,7 +16,7 @@ function bootstrap() {
 
   const root = createRoot(rootElement);
 
-  root.render(<Home />);
+  root.render(<Router />);
 }
 
 bootstrap();

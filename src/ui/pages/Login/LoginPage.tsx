@@ -1,6 +1,8 @@
 import classes from "./login-page.module.scss";
 
+import { navigate } from "wouter/use-location";
 import { paths } from "../../config/routes";
+import { useAuthContext } from "../../contexts/AuthContext";
 
 import { Container } from "../../components/atoms/Container/Container";
 import { H1, Paragraph } from "../../components/atoms/Typography";
@@ -16,21 +18,34 @@ const formConfig = {
     type: "string",
     placeholder: "Enter email",
     label: "Email",
+    required: "Email is required",
   },
   password: {
     type: "password",
     placeholder: "Enter password",
     label: "Password",
+    required: "Password is required",
   },
 } satisfies FormConfig;
 
 export const LoginPage = () => {
+  const { login } = useAuthContext();
+
   const onSubmit = async (data: FormData<typeof formConfig>) => {
-    console.log(data);
+    try {
+      await login({
+        email: data.email,
+        password: data.password,
+      });
+      navigate(paths.profile({}));
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    return true;
+      return null;
+    } catch (error) {
+      if (error instanceof Error) {
+        return error.message;
+      }
+      return "Error";
+    }
   };
 
   return (

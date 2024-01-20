@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 
 import classes from "./form.module.scss";
+
+import {
+  DefaultValues,
+  Message,
+  Path,
+  UseFormRegister,
+  useForm,
+} from "react-hook-form";
 import { Button } from "../../atoms/Button/Button";
 import { Input } from "../../atoms/Input/Input";
+import { ErrorText } from "../../atoms/ErrorText/ErrorText";
 
 export type ComboboxOption = unknown;
 
@@ -11,6 +20,7 @@ export type SimpleField = {
   placeholder?: string;
   defaultValue?: string;
   label?: string;
+  required?: boolean | string;
 };
 
 export type ComboBoxField = {
@@ -19,6 +29,7 @@ export type ComboBoxField = {
   defaultValue?: ComboboxOption;
   label?: string;
   loadOptions: (inputValue: string) => Promise<ComboboxOption[]>;
+  required?: boolean | string;
 };
 
 export type FormConfig = {
@@ -32,11 +43,94 @@ export type FormData<C = FormConfig> = {
 export type FormProps<C = FormConfig> = {
   title?: string;
   config: C;
-  onSubmit: (formData: FormData<C>) => Promise<boolean>;
+  defaultValues?: FormData<C>;
+  onSubmit: (formData: FormData<C>) => Promise<Message | null>;
   submitText?: string;
   actions?: React.ReactNode;
-  defaultValues?: FormData<C>;
 };
+
+export function Form<C extends FormConfig>(props: FormProps<C>) {
+  const [formData, setFormData] = useState<FormData<C>>(() =>
+    props.defaultValues
+      ? props.defaultValues
+      : extractDefaultValues(props.config)
+  );
+
+  const [isLoading, setIsLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    getFieldState,
+    setError,
+  } = useForm<FormData<C>>({
+    defaultValues: formData as DefaultValues<FormData<C>>,
+  });
+
+  const onSubmit = handleSubmit(async (fields) => {
+    try {
+      setIsLoading(true);
+      const error = await props.onSubmit(fields);
+
+      if (error != null) {
+        setError("root", { message: error });
+        return;
+      }
+
+      setFormData(extractDefaultValues(props.config));
+      reset();
+    } catch (error) {
+      console.error(error);
+      alert(error);
+    } finally {
+      setIsLoading(false);
+    }
+  });
+
+  const handleChange = (value: string | ComboboxOption, field: keyof C) => {
+    setFormData({
+      ...formData,
+      [field]: value,
+    });
+  };
+
+  const root = getFieldState("root" as Path<FormData<C>>);
+
+  return (
+    <form onSubmit={onSubmit} className={classes.Form}>
+      {props.title && <h3>{props.title}</h3>}
+      {Object.keys(props.config).map((field) => (
+        <Field
+          key={field}
+          config={props.config}
+          fieldName={field}
+          formData={formData}
+          handleChange={handleChange}
+          register={register}
+          error={
+            (errors[field] !== undefined
+              ? errors[field]!.message
+              : undefined) as Message
+          }
+        />
+      ))}
+
+      {root.error && <ErrorText>{root.error.message}</ErrorText>}
+
+      <div className={classes.FormActions}>
+        <Button
+          type="submit"
+          className={classes.SubmitButton}
+          isLoading={isLoading}
+        >
+          {props.submitText || "Подтвердить"}
+        </Button>
+        {props.actions}
+      </div>
+    </form>
+  );
+}
 
 function extractDefaultValues<C extends FormConfig>(config: C) {
   const fieldNames = Object.keys(config);
@@ -56,76 +150,17 @@ function extractDefaultValues<C extends FormConfig>(config: C) {
   }, {}) as FormData<C>;
 }
 
-export function Form<C extends FormConfig>(props: FormProps<C>) {
-  const [formData, setFormData] = useState<FormData<C>>(() =>
-    props.defaultValues
-      ? props.defaultValues
-      : extractDefaultValues(props.config)
-  );
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleChange = (value: string | ComboboxOption, field: keyof C) => {
-    setFormData({
-      ...formData,
-      [field]: value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    try {
-      e.preventDefault();
-      setIsLoading(true);
-      const isOk = await props.onSubmit(formData);
-
-      if (!isOk) {
-        return;
-      }
-
-      setFormData(extractDefaultValues(props.config));
-    } catch (error) {
-      console.error(error);
-      alert(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className={classes.Form}>
-      {props.title && <h3>{props.title}</h3>}
-      {Object.keys(props.config).map((field) => (
-        <Field
-          key={field}
-          config={props.config}
-          fieldName={field}
-          formData={formData}
-          handleChange={handleChange}
-        />
-      ))}
-
-      <div className={classes.FormActions}>
-        <Button
-          type="submit"
-          className={classes.SubmitButton}
-          isLoading={isLoading}
-        >
-          {props.submitText || "Подтвердить"}
-        </Button>
-        {props.actions}
-      </div>
-    </form>
-  );
-}
-
 type FieldProps<C extends FormConfig> = {
   config: C;
   fieldName: string;
   formData: FormData<C>;
   handleChange: (value: string | ComboboxOption, fieldName: keyof C) => void;
+  register: UseFormRegister<FormData<C>>;
+  error: Message;
 };
 
 function Field<C extends FormConfig>(props: FieldProps<C>) {
-  const { config, fieldName, formData, handleChange } = props;
+  const { config, fieldName, formData } = props;
 
   const field = config[fieldName];
   const fieldValue = formData[fieldName];
@@ -144,6 +179,7 @@ function Field<C extends FormConfig>(props: FieldProps<C>) {
           onChange={(e) => handleChange(e, fieldName)}
           id={fieldName}
         /> */}
+        {props.error && <ErrorText>{props.error}</ErrorText>}
       </div>
     );
   }
@@ -158,10 +194,13 @@ function Field<C extends FormConfig>(props: FieldProps<C>) {
         <Input
           type={field.type}
           id={fieldName}
-          value={fieldValue || ""}
-          onChange={(e) => handleChange(e.target.value, fieldName)}
+          // onChange={(e) => handleChange(e.target.value, fieldName)}
           placeholder={field.placeholder}
+          {...props.register(fieldName as Path<FormData<C>>, {
+            required: field.required,
+          })}
         />
+        {props.error && <ErrorText>{props.error}</ErrorText>}
       </div>
     );
   }
@@ -173,11 +212,13 @@ function Field<C extends FormConfig>(props: FieldProps<C>) {
         <Input
           type={field.type}
           id={fieldName}
-          value={fieldValue || ""}
-          onChange={(e) => handleChange(e.target.value, fieldName)}
           placeholder={field.placeholder}
+          {...props.register(fieldName as Path<FormData<C>>, {
+            required: field.required,
+          })}
         />
       </label>
+      {props.error && <ErrorText>{props.error}</ErrorText>}
     </div>
   );
 }

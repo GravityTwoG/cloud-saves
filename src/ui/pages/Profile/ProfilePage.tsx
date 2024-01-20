@@ -1,15 +1,21 @@
+import { useAuthContext } from "../../contexts/AuthContext";
+
 import { Container } from "../../components/atoms/Container/Container";
-import { H1 } from "../../components/atoms/Typography";
+import { H1, H2 } from "../../components/atoms/Typography";
 
 export const ProfilePage = () => {
+  const { user } = useAuthContext();
+
   return (
     <Container>
       <H1>Profile</H1>
 
       <div>
-        <p>Username</p>
-        <p>Email</p>
-        <p>Change password</p>
+        <H2>User information</H2>
+        <p>Username: {user.username}</p>
+        <p>Email: {user.email}</p>
+
+        <H2>Change password</H2>
       </div>
     </Container>
   );

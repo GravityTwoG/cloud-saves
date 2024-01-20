@@ -4,7 +4,7 @@ import "./styles/index.css";
 import "./styles/theme.css";
 import "./styles/utility.css";
 
-import { Router } from "./Router";
+import { Wrapper } from "./Wrapper";
 
 function bootstrap() {
   const rootElement = document.getElementById("app");
@@ -16,7 +16,7 @@ function bootstrap() {
 
   const root = createRoot(rootElement);
 
-  root.render(<Router />);
+  root.render(<Wrapper />);
 }
 
 bootstrap();

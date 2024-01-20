@@ -24,12 +24,12 @@ export const routes = [
   {
     path: paths.profile,
     component: ProfilePage,
-    access: "authorized",
+    access: "authenticated",
   },
   {
     path: paths.mySaves,
     component: MySavesPage,
-    access: "authorized",
+    access: "authenticated",
   },
   {
     path: paths.login,

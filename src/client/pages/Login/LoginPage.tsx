@@ -4,14 +4,10 @@ import { navigate } from "wouter/use-location";
 import { paths } from "../../config/routes";
 import { useAuthContext } from "../../contexts/AuthContext";
 
-import { Container } from "../../components/atoms/Container/Container";
-import { H1, Paragraph } from "../../components/atoms/Typography";
-import { CommonLink } from "../../components/atoms/NavLink/CommonLink";
-import {
-  Form,
-  FormConfig,
-  FormData,
-} from "../../components/molecules/Form/Form";
+import { Container } from "../../ui/atoms/Container/Container";
+import { H1, Paragraph } from "../../ui/atoms/Typography";
+import { CommonLink } from "../../ui/atoms/NavLink/CommonLink";
+import { Form, FormConfig, FormData } from "../../ui/molecules/Form/Form";
 
 const formConfig = {
   email: {

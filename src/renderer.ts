@@ -26,4 +26,4 @@
  * ```
  */
 
-import "./ui/app";
+import "./client/app";

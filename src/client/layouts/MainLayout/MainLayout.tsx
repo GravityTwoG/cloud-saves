@@ -2,7 +2,7 @@ import classes from "./main-layout.module.scss";
 
 import { navLinks } from "../../config/navLinks";
 
-import { Sidebar } from "../../components/organisms/Sidebar/Sidebar";
+import { Sidebar } from "../../ui/organisms/Sidebar/Sidebar";
 
 export type MainLayoutProps = {
   children: React.ReactNode;

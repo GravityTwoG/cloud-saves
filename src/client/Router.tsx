@@ -4,7 +4,7 @@ import { Route, Router as Wouter } from "wouter";
 import { MainLayout } from "./layouts/MainLayout/MainLayout";
 import { useAuthContext } from "./contexts/AuthContext";
 import { ReactNode } from "react";
-import { Paragraph } from "./components/atoms/Typography";
+import { Paragraph } from "./ui/atoms/Typography";
 
 export const Router = () => {
   return (

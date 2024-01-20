@@ -1,7 +1,8 @@
 export function getSavePaths(): string[] {
   return [
-    "C:/Users/%USERNAME%/Desktop/My Saves",
-    "C:/Users/%USERNAME%/Documents/My Saves",
+    "C:/Users/%USERNAME%/Documents",
+    "C:/Users/%USERNAME%/Documents/My Games",
+    "C:/Users/%USERNAME%/Documents/Saved Games",
   ];
 }
 

@@ -2,6 +2,12 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer } from "electron";
 
-contextBridge.exposeInMainWorld("electronAPI", {
+const electronApi: Window["electronAPI"] = {
   showFolderDialog: () => ipcRenderer.invoke("showFolderDialog"),
-});
+  getSavePaths: () => ipcRenderer.invoke("getSavePaths"),
+  getFolderInfo: (folderPath: string) =>
+    ipcRenderer.invoke("getFolderInfo", folderPath),
+  uploadSave: (path: string) => ipcRenderer.invoke("uploadSave", path),
+};
+
+contextBridge.exposeInMainWorld("electronAPI", electronApi);

@@ -12,7 +12,7 @@ export async function getGlobalSaves(): Promise<GameSave[]> {
   return [];
 }
 
-export async function uploadSave(): void {}
+export async function uploadSave(atchive: Buffer): void {}
 
 export async function downloadSave() {}
 

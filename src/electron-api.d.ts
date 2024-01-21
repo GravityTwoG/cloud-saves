@@ -20,12 +20,19 @@ interface Window {
   electronAPI: {
     showFolderDialog: () => Promise<ElectronApiResponse<FolderInfo>>;
 
-    getSavePaths: () => Promise<ElectronApiResponse<string[]>>;
+    getSavePaths: (paths: string[]) => Promise<ElectronApiResponse<string[]>>;
 
     getFolderInfo: (
       folderPath: string
     ) => Promise<ElectronApiResponse<FolderInfo>>;
 
-    uploadSave: (path: string) => Promise<ElectronApiResponse<void>>;
+    uploadSave: (folder: {
+      path: string;
+      name: string;
+    }) => Promise<ElectronApiResponse<void>>;
+
+    downloadAndExtractSave: (
+      path: string
+    ) => Promise<ElectronApiResponse<void>>;
   };
 }

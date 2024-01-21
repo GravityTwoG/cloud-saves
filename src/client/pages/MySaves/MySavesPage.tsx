@@ -1,7 +1,7 @@
 import { Container } from "../../ui/atoms/Container/Container";
-import { H1, Paragraph } from "../../ui/atoms/Typography";
-import { Input } from "../../ui/atoms/Input/Input";
+import { H1 } from "../../ui/atoms/Typography";
 import { FolderExplorer } from "../../ui/organisms/FolderExplorer/FolderExplorer";
+import { SavesWidget } from "../../ui/organisms/SavesWidget/SavesWidget";
 
 export const MySavesPage = () => {
   return (
@@ -9,12 +9,7 @@ export const MySavesPage = () => {
       <H1>My Saves</H1>
       <FolderExplorer />
 
-      <div>
-        <Paragraph>Recently uploaded</Paragraph>
-
-        <Paragraph>All</Paragraph>
-        <Input placeholder="Search" />
-      </div>
+      <SavesWidget />
     </Container>
   );
 };

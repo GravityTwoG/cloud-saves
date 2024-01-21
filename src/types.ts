@@ -9,6 +9,8 @@ export type Game = {
 
 export type GameSave = {
   gameId: string;
+  path: string;
+  syncEnabled: boolean;
   size: number;
   createdAt: Date;
 };

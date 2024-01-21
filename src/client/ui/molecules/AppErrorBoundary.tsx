@@ -1,7 +1,7 @@
 import { Component, ErrorInfo } from "react";
 
 import { H1 } from "../atoms/Typography";
-import { Button } from "../atoms/Button/Button";
+import { Button } from "../atoms/Button/CTAButton";
 import { Container } from "../atoms/Container/Container";
 
 export type AppErrorBoundaryProps = {

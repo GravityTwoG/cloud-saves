@@ -9,7 +9,7 @@ import {
   UseFormRegister,
   useForm,
 } from "react-hook-form";
-import { Button } from "../../atoms/Button/Button";
+import { CTAButton } from "../../atoms/Button/CTAButton";
 import { Input } from "../../atoms/Input/Input";
 import { ErrorText } from "../../atoms/ErrorText/ErrorText";
 
@@ -119,13 +119,13 @@ export function Form<C extends FormConfig>(props: FormProps<C>) {
       {root.error && <ErrorText>{root.error.message}</ErrorText>}
 
       <div className={classes.FormActions}>
-        <Button
+        <CTAButton
           type="submit"
           className={classes.SubmitButton}
           isLoading={isLoading}
         >
           {props.submitText || "Подтвердить"}
-        </Button>
+        </CTAButton>
         {props.actions}
       </div>
     </form>

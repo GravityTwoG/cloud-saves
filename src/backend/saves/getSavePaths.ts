@@ -1,9 +1,7 @@
 import fs from "fs";
 import os from "os";
-import { getSavePaths as apiGetSavePaths } from "../../external-api/gamepath";
 
-export async function getSavePaths(): Promise<string[]> {
-  const paths = apiGetSavePaths();
+export async function getSavePaths(paths: string[]): Promise<string[]> {
   const validPaths = [];
   const username = os.userInfo().username;
 

@@ -1,7 +1,7 @@
 import path from "path";
 import { app, BrowserWindow, nativeImage, Menu, Tray, Event } from "electron";
 
-import { setupIPC } from "./backend/api/fs-api";
+import { setupIPC } from "./backend/api/saves-api";
 
 let isAppQuitting = false;
 

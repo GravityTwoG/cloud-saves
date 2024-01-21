@@ -4,10 +4,17 @@ import { contextBridge, ipcRenderer } from "electron";
 
 const electronApi: Window["electronAPI"] = {
   showFolderDialog: () => ipcRenderer.invoke("showFolderDialog"),
+
   getSavePaths: () => ipcRenderer.invoke("getSavePaths"),
+
   getFolderInfo: (folderPath: string) =>
     ipcRenderer.invoke("getFolderInfo", folderPath),
-  uploadSave: (path: string) => ipcRenderer.invoke("uploadSave", path),
+
+  uploadSave: (folder: { path: string; name: string }) =>
+    ipcRenderer.invoke("uploadSave", folder),
+
+  downloadAndExtractSave: (path: string) =>
+    ipcRenderer.invoke("downloadAndExtractSave", path),
 };
 
 contextBridge.exposeInMainWorld("electronAPI", electronApi);

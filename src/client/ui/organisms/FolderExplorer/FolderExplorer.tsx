@@ -1,10 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
+import clsx from "clsx";
 
 import classes from "./folder-explorer.module.scss";
 
+import * as gamesavesApi from "../../../../external-api/gamesave";
+
 import { Button } from "../../atoms/Button/Button";
-import clsx from "clsx";
 import { Bytes } from "../../atoms/Bytes/Bytes";
+import { Paragraph } from "../../atoms/Typography";
+import { List } from "../../molecules/List/List";
 
 function last(arr: string[]) {
   return arr[arr.length - 1];
@@ -16,10 +20,7 @@ export const FolderExplorer = () => {
   const [files, setFiles] = useState<FileInfo[]>([]);
 
   const getSavePaths = useCallback(async () => {
-    const data = await window.electronAPI.getSavePaths();
-    const paths = data.data;
-
-    if (!paths) return;
+    const paths = await gamesavesApi.getSavePaths();
 
     setSelectedFolder("");
     setFiles(
@@ -38,7 +39,7 @@ export const FolderExplorer = () => {
   }, [getSavePaths]);
 
   const onFolderOpen = async (filePath: string) => {
-    const folderData = await window.electronAPI.getFolderInfo(filePath);
+    const folderData = await gamesavesApi.getFolderInfo(filePath);
 
     if (!folderData.data) return;
 
@@ -49,7 +50,7 @@ export const FolderExplorer = () => {
   };
 
   const onOpenDialog = async () => {
-    const folderData = await window.electronAPI.showFolderDialog();
+    const folderData = await gamesavesApi.showFolderDialog();
 
     if (!folderData.data) return;
 
@@ -59,13 +60,19 @@ export const FolderExplorer = () => {
     setParentFolder(folder.split("/").slice(0, -1).join("/"));
   };
 
-  const goBack = () => {
-    onFolderOpen(parentFolder);
-  };
-
   return (
     <div className={classes.FolderExplorer}>
+      <Paragraph>Folder: {selectedFolder}</Paragraph>
+
       <div className={classes.FolderActions}>
+        {parentFolder && (
+          <Button
+            onClick={() => onFolderOpen(parentFolder)}
+            className={classes.MiniButton}
+          >
+            Back
+          </Button>
+        )}
         <Button onClick={getSavePaths} className={classes.MiniButton}>
           Home
         </Button>
@@ -73,24 +80,12 @@ export const FolderExplorer = () => {
           Choose folder to list files
         </Button>
       </div>
-      <div>Folder: {selectedFolder}</div>
 
-      <div>Files: </div>
-      <ul className={classes.FilesList}>
-        {parentFolder && (
-          <li className={classes.File}>
-            <div
-              onClick={goBack}
-              className={classes.FileInfo}
-              data-type="folder"
-            >
-              <p>..</p>
-            </div>
-          </li>
-        )}
-
-        {files.map((file) => (
-          <li key={file.name} className={classes.File}>
+      <List
+        elements={files}
+        getKey={(file) => file.path}
+        renderElement={(file) => (
+          <>
             <div
               onClick={() => {
                 if (file.type === "folder") {
@@ -115,16 +110,20 @@ export const FolderExplorer = () => {
             </div>
 
             <Button
-              onClick={() => {
-                window.electronAPI.uploadSave(file.path);
+              onClick={async () => {
+                const response = await gamesavesApi.uploadSave({
+                  path: file.path,
+                  name: file.name,
+                });
+                console.log(response);
               }}
               className={clsx(classes.MiniButton, classes.FileButton)}
             >
               Upload
             </Button>
-          </li>
-        ))}
-      </ul>
+          </>
+        )}
+      />
     </div>
   );
 };

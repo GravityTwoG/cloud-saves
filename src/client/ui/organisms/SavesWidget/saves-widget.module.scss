@@ -1,0 +1,25 @@
+.SavesWidget {
+}
+
+.SearchForm {
+  display: flex;
+
+  & > .SearchInput {
+    flex: 1;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  & > .SearchButton {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.SavesList {
+  margin: 0.5rem 0;
+
+  .Button {
+    margin-left: auto;
+  }
+}

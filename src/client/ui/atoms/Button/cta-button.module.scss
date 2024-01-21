@@ -19,9 +19,6 @@
   -moz-osx-font-smoothing: grayscale;
   position: relative;
 
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-
   &:hover:not(:disabled) {
     background-color: var(--accent-hover-color);
   }

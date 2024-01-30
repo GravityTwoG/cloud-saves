@@ -9,8 +9,9 @@ import * as gamesavesApi from "../../../../external-api/gamesave";
 import { H2 } from "../../atoms/Typography";
 import { Input } from "../../atoms/Input/Input";
 import { Bytes } from "../../atoms/Bytes/Bytes";
-import { List } from "../../molecules/List/List";
 import { Button } from "../../atoms/Button/Button";
+import SearchIcon from "../../icons/Search.svg";
+import { List } from "../../molecules/List/List";
 
 export type SavesWidgetProps = {
   className?: string;
@@ -41,8 +42,13 @@ export const SavesWidget = (props: SavesWidgetProps) => {
       <H2>Uploaded Saves</H2>
       <form className={classes.SearchForm} onSubmit={onSearch}>
         <Input placeholder="Search" className={classes.SearchInput} />
-        <Button type="submit" className={classes.SearchButton}>
-          Search
+        <Button
+          type="submit"
+          className={classes.SearchButton}
+          title="Search"
+          aria-label="Search"
+        >
+          <SearchIcon />
         </Button>
       </form>
 

@@ -8,11 +8,18 @@
     flex: 1;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    border-right: none;
   }
 
   & > .SearchButton {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+
+    & svg {
+      width: 24px;
+      height: 24px;
+      fill: #fff;
+    }
   }
 }
 

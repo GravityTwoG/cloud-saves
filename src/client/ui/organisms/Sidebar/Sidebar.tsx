@@ -6,6 +6,7 @@ import { useAuthContext } from "../../../contexts/AuthContext";
 import { Link } from "wouter";
 import { AuthGuard } from "../../atoms/AuthGuard";
 import { AnonymousGuard } from "../../atoms/AnonumousGuard";
+import LogoutIcon from "../../icons/Logout.svg";
 
 export type SidebarProps = {
   links: NavLinkType[];
@@ -33,7 +34,12 @@ export const Sidebar = (props: SidebarProps) => {
               return (
                 <AnonymousGuard key={link.path}>
                   <li className={classes.NavLink}>
-                    <Link href={link.path}>{link.label}</Link>
+                    <Link href={link.path}>
+                      {link.icon && (
+                        <div className={classes.NavIcon}>{link.icon}</div>
+                      )}
+                      <span>{link.label}</span>
+                    </Link>
                   </li>
                 </AnonymousGuard>
               );
@@ -43,7 +49,12 @@ export const Sidebar = (props: SidebarProps) => {
               return (
                 <AuthGuard key={link.path}>
                   <li className={classes.NavLink}>
-                    <Link href={link.path}>{link.label}</Link>
+                    <Link href={link.path}>
+                      {link.icon && (
+                        <div className={classes.NavIcon}>{link.icon}</div>
+                      )}
+                      <span>{link.label}</span>
+                    </Link>
                   </li>
                 </AuthGuard>
               );
@@ -51,7 +62,12 @@ export const Sidebar = (props: SidebarProps) => {
 
             return (
               <li key={link.path} className={classes.NavLink}>
-                <Link href={link.path}>{link.label}</Link>
+                <Link href={link.path}>
+                  {link.icon && (
+                    <div className={classes.NavIcon}>{link.icon}</div>
+                  )}
+                  <span>{link.label}</span>
+                </Link>
               </li>
             );
           })}
@@ -59,8 +75,13 @@ export const Sidebar = (props: SidebarProps) => {
       </nav>
 
       <AuthGuard>
-        <button className={classes.LogoutButton} onClick={onLogout}>
-          Logout
+        <button
+          className={classes.LogoutButton}
+          onClick={onLogout}
+          title="Logout"
+          aria-label="Logout"
+        >
+          <LogoutIcon />
         </button>
       </AuthGuard>
     </aside>

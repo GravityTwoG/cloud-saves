@@ -5,7 +5,7 @@ import { contextBridge, ipcRenderer } from "electron";
 const electronApi: Window["electronAPI"] = {
   showFolderDialog: () => ipcRenderer.invoke("showFolderDialog"),
 
-  getSavePaths: () => ipcRenderer.invoke("getSavePaths"),
+  getSavePaths: (paths: string[]) => ipcRenderer.invoke("getSavePaths", paths),
 
   getFolderInfo: (folderPath: string) =>
     ipcRenderer.invoke("getFolderInfo", folderPath),

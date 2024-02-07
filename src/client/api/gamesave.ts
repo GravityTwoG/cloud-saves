@@ -1,4 +1,4 @@
-import { GameSave } from "../types";
+import { GameSave } from "../../types";
 
 export async function getSavePaths(): Promise<string[]> {
   const paths = [
@@ -41,19 +41,24 @@ export async function getUserSaves(): Promise<GameSave[]> {
     const savesArray: GameSave[] = [];
 
     for (const key in saves) {
-      savesArray.push({
-        gameId: key,
-        path: saves[key].path,
-        syncEnabled: saves[key].syncEnabled,
-        size: 42,
-        createdAt: new Date(),
-      });
+      savesArray.push(saves[key]);
     }
 
     return savesArray;
   }
 
   return [];
+}
+
+export async function getUserSave(gameSaveId: string): Promise<GameSave> {
+  const savesJSON = localStorage.getItem("saves");
+
+  if (savesJSON) {
+    const saves = JSON.parse(savesJSON);
+    return saves[gameSaveId];
+  }
+
+  throw new Error("User save not found");
 }
 
 export async function getSharedSaves(): Promise<GameSave[]> {
@@ -70,36 +75,70 @@ export async function uploadSave(save: {
 }): Promise<void> {
   const response = await window.electronAPI.uploadSave(save);
   console.log(response);
+  const gameSaveId = save.path.split("/").join("-").split(" ").join("_");
 
   console.log("uploading", save.path, save.name);
   const savesJSON = localStorage.getItem("saves");
 
   if (savesJSON) {
     const saves = JSON.parse(savesJSON);
-    saves[save.path] = {
-      path: save.path,
-      name: save.name,
-      syncEnabled: false,
-    };
+
+    if (saves[gameSaveId]) {
+      saves[gameSaveId].archives.push({
+        url: save.path,
+        id: Math.random().toString(),
+        size: 42,
+        createdAt: new Date().toLocaleString(),
+      });
+    } else {
+      saves[gameSaveId] = {
+        id: gameSaveId,
+        gameId: save.path,
+        path: save.path,
+        name: save.name,
+        syncEnabled: false,
+        archives: [
+          {
+            url: save.path,
+            id: Math.random().toString(),
+            size: 42,
+            createdAt: new Date().toLocaleString(),
+          },
+        ],
+      };
+    }
+
     localStorage.setItem("saves", JSON.stringify(saves));
   } else {
     localStorage.setItem(
       "saves",
       JSON.stringify({
-        [save.path]: { path: save.path, name: save.name, syncEnabled: false },
+        [gameSaveId]: {
+          id: gameSaveId,
+          gameId: save.path,
+          path: save.path,
+          name: save.name,
+          syncEnabled: false,
+          archives: [
+            {
+              url: save.path,
+              id: Math.random().toString(),
+              size: 42,
+              createdAt: new Date().toLocaleString(),
+            },
+          ],
+        },
       })
     );
   }
 }
 
-export async function toggleSync(path: string, enabled: boolean) {
-  console.log("toggleSync", path, enabled);
-
+export async function toggleSync(gameSaveId: string, enabled: boolean) {
   const savesJSON = localStorage.getItem("saves");
 
   if (savesJSON) {
     const saves = JSON.parse(savesJSON);
-    saves[path].syncEnabled = enabled;
+    saves[gameSaveId].syncEnabled = enabled;
     localStorage.setItem("saves", JSON.stringify(saves));
   }
 }
@@ -110,12 +149,32 @@ export async function downloadSave(path: string) {
   return response;
 }
 
-export async function deleteSave(path: string): Promise<void> {
+export async function deleteSave(gameSaveId: string): Promise<void> {
   const savesJSON = localStorage.getItem("saves");
 
   if (savesJSON) {
     const saves = JSON.parse(savesJSON);
-    delete saves[path];
+    delete saves[gameSaveId];
+    localStorage.setItem("saves", JSON.stringify(saves));
+  }
+}
+
+export async function deleteGameSaveArchive(
+  gameSaveArchiveId: string
+): Promise<void> {
+  const savesJSON = localStorage.getItem("saves");
+
+  if (savesJSON) {
+    const saves = JSON.parse(savesJSON);
+
+    for (const gameSaveId in saves) {
+      if (saves[gameSaveId].archives) {
+        saves[gameSaveId].archives = saves[gameSaveId].archives.filter(
+          (item: GameSave["archives"][0]) => item.id !== gameSaveArchiveId
+        );
+      }
+    }
+
     localStorage.setItem("saves", JSON.stringify(saves));
   }
 }

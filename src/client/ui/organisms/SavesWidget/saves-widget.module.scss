@@ -25,8 +25,16 @@
 
 .SavesList {
   margin: 0.5rem 0;
+}
 
-  .Button {
-    margin-left: auto;
-  }
+.Buttons {
+  margin-left: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.GameSaveLink {
+  text-decoration: none;
+  color: var(--text-color);
 }

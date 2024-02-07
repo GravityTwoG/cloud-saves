@@ -25,6 +25,18 @@ export const navLinks = [
     icon: <SaveIcon />,
   },
   {
+    label: "Shared Saves",
+    path: paths.sharedSaves({}),
+    access: "authenticated",
+    icon: <SaveIcon />,
+  },
+  {
+    label: "Public Saves",
+    path: paths.publicSaves({}),
+    access: "authenticated",
+    icon: <SaveIcon />,
+  },
+  {
     label: "Login",
     path: paths.login({}),
     access: "anonymous",

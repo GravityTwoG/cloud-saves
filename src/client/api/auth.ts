@@ -1,4 +1,4 @@
-import { User } from "../types";
+import { User } from "../../types";
 import { fetcher } from "./fetcher";
 
 export type LoginCredentials = {

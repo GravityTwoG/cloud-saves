@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 
-import * as authApi from "../../external-api/auth";
+import * as authApi from "../api/auth";
 
 import { User } from "../../types";
 import { navigate } from "wouter/use-location";

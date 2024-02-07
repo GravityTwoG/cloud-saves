@@ -3,7 +3,7 @@ import clsx from "clsx";
 
 import classes from "./folder-explorer.module.scss";
 
-import * as gamesavesApi from "../../../../external-api/gamesave";
+import * as gamesavesApi from "../../../api/gamesave";
 
 import { Button } from "../../atoms/Button/Button";
 import { Bytes } from "../../atoms/Bytes/Bytes";

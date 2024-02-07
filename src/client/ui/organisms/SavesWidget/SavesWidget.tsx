@@ -4,14 +4,15 @@ import clsx from "clsx";
 import classes from "./saves-widget.module.scss";
 
 import { GameSave } from "../../../../types";
-import * as gamesavesApi from "../../../../external-api/gamesave";
+import * as gamesavesApi from "../../../api/gamesave";
+import { paths } from "../../../../client/config/routes";
 
-import { H2 } from "../../atoms/Typography";
+import { H2, Paragraph } from "../../atoms/Typography";
 import { Input } from "../../atoms/Input/Input";
-import { Bytes } from "../../atoms/Bytes/Bytes";
 import { Button } from "../../atoms/Button/Button";
 import SearchIcon from "../../icons/Search.svg";
 import { List } from "../../molecules/List/List";
+import { Link } from "wouter";
 
 export type SavesWidgetProps = {
   className?: string;
@@ -59,42 +60,27 @@ export const SavesWidget = (props: SavesWidgetProps) => {
         renderElement={(save) => (
           <>
             <div>
-              <p>{save.path}</p>
-              <p>
-                Size: <Bytes bytes={save.size} />
-              </p>
+              <Link
+                className={classes.GameSaveLink}
+                href={paths.mySave({ gameSaveId: save.id })}
+              >
+                {save.path}
+              </Link>
+              <Paragraph>
+                Sync enabled: {save.syncEnabled ? "yes" : "no"}
+              </Paragraph>
             </div>
 
-            <Button
-              className={classes.Button}
-              onClick={async () => {
-                const response = await gamesavesApi.downloadSave(save.path);
-                console.log(response);
-              }}
-            >
-              Download
-            </Button>
-
-            <Button
-              onClick={async () => {
-                await gamesavesApi.toggleSync(save.path, !save.syncEnabled);
-                const data = await gamesavesApi.getUserSaves();
-                setSaves(data);
-              }}
-              className={clsx(classes.MiniButton, classes.FileButton)}
-            >
-              {save.syncEnabled ? "Disable" : "Enable"} Sync
-            </Button>
-
-            <Button
-              onDoubleClick={() => {
-                onDelete(save.path);
-              }}
-              className={clsx(classes.MiniButton, classes.FileButton)}
-              color="danger"
-            >
-              Delete
-            </Button>
+            <div className={classes.Buttons}>
+              <Button
+                onDoubleClick={() => {
+                  onDelete(save.id);
+                }}
+                color="danger"
+              >
+                Delete
+              </Button>
+            </div>
           </>
         )}
       />

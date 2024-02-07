@@ -22,10 +22,10 @@ export function setupIPC() {
     }
   });
 
-  ipcMain.handle("getSavePaths", async () => {
+  ipcMain.handle("getSavePaths", async (_, paths: string[]) => {
     try {
-      const paths = await getSavePaths();
-      return { data: paths };
+      const filteredPaths = await getSavePaths(paths);
+      return { data: filteredPaths };
     } catch (error) {
       return { data: null, error: (error as Error).toString() };
     }

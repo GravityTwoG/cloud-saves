@@ -4,13 +4,20 @@ export type User = {
 };
 
 export type Game = {
+  id: string;
   name: string;
 };
 
 export type GameSave = {
+  id: string;
   gameId: string;
+  name: string;
   path: string;
   syncEnabled: boolean;
-  size: number;
-  createdAt: Date;
+  archives: {
+    url: string;
+    id: string;
+    size: number;
+    createdAt: string;
+  }[];
 };

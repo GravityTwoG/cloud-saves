@@ -1,10 +1,11 @@
-import { routes } from "./config/routes";
-
-import { Route, Router as Wouter } from "wouter";
-import { MainLayout } from "./layouts/MainLayout/MainLayout";
-import { useAuthContext } from "./contexts/AuthContext";
 import { ReactNode } from "react";
+import { Route, Router as Wouter } from "wouter";
+
+import { routes } from "./config/routes";
+import { useAuthContext } from "./contexts/AuthContext";
+
 import { Paragraph } from "./ui/atoms/Typography";
+import { MainLayout } from "./layouts/MainLayout/MainLayout";
 
 export const Router = () => {
   return (

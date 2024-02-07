@@ -1,11 +1,11 @@
-import classes from './preloader.module.scss';
+import { clsx } from "clsx";
+import classes from "./preloader.module.scss";
 
-import { ReactTagProps } from '../../types';
+import { ReactTagProps } from "@/client/ui/types";
 
-import { Spinner } from '../../atoms/Spinner';
-import clsx from 'clsx';
+import { Spinner } from "@/client/ui/atoms/Spinner";
 
-export type PreloaderProps = ReactTagProps<'div'> & { isLoading: boolean };
+export type PreloaderProps = ReactTagProps<"div"> & { isLoading: boolean };
 
 export const Preloader = ({
   children,

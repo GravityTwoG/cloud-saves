@@ -1,13 +1,14 @@
 import classes from "./register-page.module.scss";
 
 import { navigate } from "wouter/use-location";
-import { paths } from "../../config/routes";
-import { useAuthContext } from "../../contexts/AuthContext";
 
-import { H1, Paragraph } from "../../ui/atoms/Typography";
-import { Container } from "../../ui/atoms/Container/Container";
-import { CommonLink } from "../../ui/atoms/NavLink/CommonLink";
-import { Form, FormConfig, FormData } from "../../ui/molecules/Form/Form";
+import { paths } from "@/client/config/routes";
+import { useAuthContext } from "@/client/contexts/AuthContext";
+
+import { H1, Paragraph } from "@/client/ui/atoms/Typography";
+import { Container } from "@/client/ui/atoms/Container/Container";
+import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
+import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";
 
 const formConfig = {
   username: {

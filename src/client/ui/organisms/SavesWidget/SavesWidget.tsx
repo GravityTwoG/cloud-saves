@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import clsx from "clsx";
+import { clsx } from "clsx";
 
 import classes from "./saves-widget.module.scss";
 
-import { GameSave } from "../../../../types";
-import * as gamesavesApi from "../../../api/gamesave";
-import { paths } from "../../../../client/config/routes";
+import { GameSave } from "@/types";
+import * as gamesavesApi from "@/client/api/gamesave";
+import { paths } from "@/client/config/routes";
 
-import { H2, Paragraph } from "../../atoms/Typography";
-import { Input } from "../../atoms/Input/Input";
-import { Button } from "../../atoms/Button/Button";
-import SearchIcon from "../../icons/Search.svg";
-import { List } from "../../molecules/List/List";
 import { Link } from "wouter";
+import { H2, Paragraph } from "@/client/ui/atoms/Typography";
+import { Input } from "@/client/ui/atoms/Input/Input";
+import { Button } from "@/client/ui/atoms/Button/Button";
+import SearchIcon from "@/client/ui/icons/Search.svg";
+import { List } from "@/client/ui/molecules/List/List";
 
 export type SavesWidgetProps = {
   className?: string;

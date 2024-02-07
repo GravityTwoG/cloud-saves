@@ -1,5 +1,5 @@
-import clsx from 'clsx';
-import classes from './paginator.module.scss';
+import { clsx } from "clsx";
+import classes from "./paginator.module.scss";
 
 export type PaginatorProps = {
   pageSize: number;
@@ -31,7 +31,7 @@ export const Paginator = (props: PaginatorProps) => {
     <div className={clsx(classes.Paginator)}>
       {firstPage < props.currentPage - scope && (
         <PageButton
-          pageNumber={'<<'}
+          pageNumber={"<<"}
           isCurrentPage={false}
           onClick={() => props.onPageSelect(firstPage)}
         />
@@ -39,7 +39,7 @@ export const Paginator = (props: PaginatorProps) => {
 
       {props.currentPage !== firstPage && (
         <PageButton
-          pageNumber={'<'}
+          pageNumber={"<"}
           isCurrentPage={false}
           onClick={() => props.onPageSelect(props.currentPage - 1)}
         />
@@ -56,7 +56,7 @@ export const Paginator = (props: PaginatorProps) => {
 
       {props.currentPage !== lastPage && (
         <PageButton
-          pageNumber={'>'}
+          pageNumber={">"}
           isCurrentPage={false}
           onClick={() => props.onPageSelect(props.currentPage + 1)}
         />
@@ -64,7 +64,7 @@ export const Paginator = (props: PaginatorProps) => {
 
       {lastPage > props.currentPage + scope && (
         <PageButton
-          pageNumber={'>>'}
+          pageNumber={">>"}
           isCurrentPage={false}
           onClick={() => props.onPageSelect(lastPage)}
         />
@@ -84,7 +84,7 @@ const PageButton = (props: PageButtonProps) => {
     <button
       className={clsx(
         classes.PageButton,
-        props.isCurrentPage && classes.PageButtonCurrent,
+        props.isCurrentPage && classes.PageButtonCurrent
       )}
       onClick={props.onClick}
     >

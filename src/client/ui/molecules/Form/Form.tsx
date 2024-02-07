@@ -9,9 +9,9 @@ import {
   UseFormRegister,
   useForm,
 } from "react-hook-form";
-import { CTAButton } from "../../atoms/Button/CTAButton";
-import { Input } from "../../atoms/Input/Input";
-import { ErrorText } from "../../atoms/ErrorText/ErrorText";
+import { CTAButton } from "@/client/ui/atoms/Button/CTAButton";
+import { Input } from "@/client/ui/atoms/Input/Input";
+import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
 
 export type ComboboxOption = unknown;
 

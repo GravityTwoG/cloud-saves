@@ -1,7 +1,7 @@
-import { useAuthContext } from "../../contexts/AuthContext";
+import { useAuthContext } from "@/client/contexts/AuthContext";
 
-import { Container } from "../../ui/atoms/Container/Container";
-import { H1, H2 } from "../../ui/atoms/Typography";
+import { Container } from "@/client/ui/atoms/Container/Container";
+import { H1, H2 } from "@/client/ui/atoms/Typography";
 
 export const ProfilePage = () => {
   const { user } = useAuthContext();

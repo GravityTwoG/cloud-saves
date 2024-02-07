@@ -1,7 +1,7 @@
-import clsx from "clsx";
+import { clsx } from "clsx";
 
 import classes from "./typography.module.scss";
-import { ReactTagProps } from "../../types";
+import { ReactTagProps } from "@/client/ui/types";
 
 export type TypographyProps = ReactTagProps<"h1">;
 

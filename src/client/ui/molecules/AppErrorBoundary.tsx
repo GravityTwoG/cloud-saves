@@ -1,8 +1,8 @@
 import { Component, ErrorInfo } from "react";
 
-import { H1 } from "../atoms/Typography";
-import { Button } from "../atoms/Button/CTAButton";
-import { Container } from "../atoms/Container/Container";
+import { H1 } from "@/client/ui/atoms/Typography";
+import { CTAButton } from "@/client/ui/atoms/Button/CTAButton";
+import { Container } from "@/client/ui/atoms/Container/Container";
 
 export type AppErrorBoundaryProps = {
   children: React.ReactNode;
@@ -41,9 +41,13 @@ export class AppErrorBoundary extends Component<
           <div>
             <H1>Unknown error</H1>
 
-            <Button className="mt-4" color="secondary" onClick={this.onReload}>
+            <CTAButton
+              className="mt-4"
+              color="secondary"
+              onClick={this.onReload}
+            >
               Reload page
-            </Button>
+            </CTAButton>
 
             <p className="mt-4">Error: {this.state.error}</p>
             <p className="mt-4">{this.state.stack}</p>

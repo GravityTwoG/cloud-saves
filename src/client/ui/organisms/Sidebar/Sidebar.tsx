@@ -1,14 +1,14 @@
+import { clsx } from "clsx";
 import classes from "./sidebar.module.scss";
 
-import { NavLinkType } from "../../../config/navLinks";
-import { useAuthContext } from "../../../contexts/AuthContext";
+import { NavLinkType } from "@/client/config/navLinks";
+import { useAuthContext } from "@/client/contexts/AuthContext";
 
 import { Link, useRoute } from "wouter";
-import { AuthGuard } from "../../atoms/AuthGuard";
-import { AnonymousGuard } from "../../atoms/AnonumousGuard";
-import LogoutIcon from "../../icons/Logout.svg";
+import { AuthGuard } from "@/client/ui/atoms/AuthGuard";
+import { AnonymousGuard } from "@/client/ui/atoms/AnonumousGuard";
+import LogoutIcon from "@/client/ui/icons/Logout.svg";
 import { ReactNode } from "react";
-import clsx from "clsx";
 
 export type SidebarProps = {
   links: NavLinkType[];

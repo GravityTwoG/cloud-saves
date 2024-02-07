@@ -1,9 +1,9 @@
 import { forwardRef } from "react";
-import clsx from "clsx";
+import { clsx } from "clsx";
 
 import classes from "./input.module.scss";
 
-import { ReactTagProps } from "../../types";
+import { ReactTagProps } from "@/client/ui/types";
 
 export type InputProps = ReactTagProps<"input">;
 

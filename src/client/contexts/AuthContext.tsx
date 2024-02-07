@@ -6,12 +6,11 @@ import {
   useEffect,
   useState,
 } from "react";
-
-import * as authApi from "../api/auth";
-
-import { User } from "../../types";
 import { navigate } from "wouter/use-location";
-import { paths } from "../config/routes";
+
+import * as authApi from "@/client/api/auth";
+import { paths } from "@/client/config/routes";
+import { User } from "@/types";
 
 interface AuthContext {
   isAuthenticated: boolean;

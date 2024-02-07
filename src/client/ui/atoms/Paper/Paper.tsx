@@ -1,7 +1,7 @@
 import classes from "./paper.module.scss";
 
-import { ReactTagProps } from "../../types";
-import clsx from "clsx";
+import { ReactTagProps } from "@/client/ui/types";
+import { clsx } from "clsx";
 
 export type PaperProps = ReactTagProps<"div">;
 

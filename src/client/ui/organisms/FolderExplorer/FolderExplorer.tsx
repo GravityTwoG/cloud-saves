@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
-import clsx from "clsx";
+import { clsx } from "clsx";
 
 import classes from "./folder-explorer.module.scss";
 
-import * as gamesavesApi from "../../../api/gamesave";
+import * as gamesavesApi from "@/client/api/gamesave";
 
-import { Button } from "../../atoms/Button/Button";
-import { Bytes } from "../../atoms/Bytes/Bytes";
-import { Paragraph } from "../../atoms/Typography";
-import { List } from "../../molecules/List/List";
+import { Button } from "@/client/ui/atoms/Button/Button";
+import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
+import { Paragraph } from "@/client/ui/atoms/Typography";
+import { List } from "@/client/ui/molecules/List/List";
 
 function last(arr: string[]) {
   return arr[arr.length - 1];

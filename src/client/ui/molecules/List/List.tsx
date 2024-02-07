@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { clsx } from "clsx";
 
 import classes from "./list.module.scss";
 

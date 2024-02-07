@@ -1,8 +1,8 @@
-import clsx from "clsx";
+import { clsx } from "clsx";
 
 import classes from "./no-results.module.scss";
 
-import { ReactTagProps } from "../../types";
+import { ReactTagProps } from "@/client/ui/types";
 
 export type NoResultsProps = ReactTagProps<"div">;
 

@@ -1,5 +1,5 @@
 import { ReactElement, ForwardedRef, ReactNode, forwardRef } from "react";
-import clsx from "clsx";
+import { clsx } from "clsx";
 
 import classes from "./segmented-control.module.scss";
 

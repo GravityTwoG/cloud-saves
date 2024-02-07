@@ -3,14 +3,14 @@ import { useParams } from "wouter";
 
 import classes from "./my-save-page.module.scss";
 
-import * as gamesavesApi from "../../api/gamesave";
-import { GameSave } from "../../../types";
+import * as gamesavesApi from "@/client/api/gamesave";
+import { GameSave } from "@/types";
 
-import { H1, Paragraph } from "../../ui/atoms/Typography";
-import { Bytes } from "../../ui/atoms/Bytes/Bytes";
-import { Container } from "../../ui/atoms/Container/Container";
-import { List } from "../../ui/molecules/List/List";
-import { Button } from "../../ui/atoms/Button/Button";
+import { H1, Paragraph } from "@/client/ui/atoms/Typography";
+import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
+import { Container } from "@/client/ui/atoms/Container/Container";
+import { List } from "@/client/ui/molecules/List/List";
+import { Button } from "@/client/ui/atoms/Button/Button";
 
 export const MySavePage = () => {
   const [gameSave, setGameSave] = useState<GameSave | null>(null);

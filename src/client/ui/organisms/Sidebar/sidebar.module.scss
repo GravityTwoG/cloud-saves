@@ -47,7 +47,8 @@
     }
   }
 
-  &:hover {
+  &:hover,
+  &.NavLinkActive {
     & > a {
       color: var(--accent-color);
     }

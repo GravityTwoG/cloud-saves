@@ -3,10 +3,12 @@ import classes from "./sidebar.module.scss";
 import { NavLinkType } from "../../../config/navLinks";
 import { useAuthContext } from "../../../contexts/AuthContext";
 
-import { Link } from "wouter";
+import { Link, useRoute } from "wouter";
 import { AuthGuard } from "../../atoms/AuthGuard";
 import { AnonymousGuard } from "../../atoms/AnonumousGuard";
 import LogoutIcon from "../../icons/Logout.svg";
+import { ReactNode } from "react";
+import clsx from "clsx";
 
 export type SidebarProps = {
   links: NavLinkType[];
@@ -29,48 +31,9 @@ export const Sidebar = (props: SidebarProps) => {
 
       <nav className={classes.Nav}>
         <ul>
-          {props.links.map((link) => {
-            if (link.access === "anonymous") {
-              return (
-                <AnonymousGuard key={link.path}>
-                  <li className={classes.NavLink}>
-                    <Link href={link.path}>
-                      {link.icon && (
-                        <div className={classes.NavIcon}>{link.icon}</div>
-                      )}
-                      <span>{link.label}</span>
-                    </Link>
-                  </li>
-                </AnonymousGuard>
-              );
-            }
-
-            if (link.access === "authenticated") {
-              return (
-                <AuthGuard key={link.path}>
-                  <li className={classes.NavLink}>
-                    <Link href={link.path}>
-                      {link.icon && (
-                        <div className={classes.NavIcon}>{link.icon}</div>
-                      )}
-                      <span>{link.label}</span>
-                    </Link>
-                  </li>
-                </AuthGuard>
-              );
-            }
-
-            return (
-              <li key={link.path} className={classes.NavLink}>
-                <Link href={link.path}>
-                  {link.icon && (
-                    <div className={classes.NavIcon}>{link.icon}</div>
-                  )}
-                  <span>{link.label}</span>
-                </Link>
-              </li>
-            );
-          })}
+          {props.links.map((link) => (
+            <NavLink key={link.path} {...link} />
+          ))}
         </ul>
       </nav>
 
@@ -86,4 +49,36 @@ export const Sidebar = (props: SidebarProps) => {
       </AuthGuard>
     </aside>
   );
+};
+
+type NavLinkProps = {
+  path: string;
+  icon?: ReactNode;
+  label: string;
+  access?: "anonymous" | "authenticated";
+};
+
+const NavLink = (props: NavLinkProps) => {
+  const [isActive] = useRoute(props.path);
+
+  const renderLink = () => {
+    return (
+      <li className={clsx(classes.NavLink, isActive && classes.NavLinkActive)}>
+        <Link href={props.path}>
+          {props.icon && <div className={classes.NavIcon}>{props.icon}</div>}
+          <span>{props.label}</span>
+        </Link>
+      </li>
+    );
+  };
+
+  if (props.access === "anonymous") {
+    return <AnonymousGuard>{renderLink()}</AnonymousGuard>;
+  }
+
+  if (props.access === "authenticated") {
+    return <AuthGuard>{renderLink()}</AuthGuard>;
+  }
+
+  return renderLink();
 };

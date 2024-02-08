@@ -124,7 +124,7 @@ export function Form<C extends FormConfig>(props: FormProps<C>) {
           className={classes.SubmitButton}
           isLoading={isLoading}
         >
-          {props.submitText || "Подтвердить"}
+          {props.submitText || "Submit"}
         </CTAButton>
         {props.actions}
       </div>

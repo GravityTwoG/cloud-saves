@@ -20,6 +20,7 @@ export type SavesWidgetProps = {
 
 export const SavesWidget = (props: SavesWidgetProps) => {
   const [saves, setSaves] = useState<GameSave[]>([]);
+  const [synchronized, setSynchronized] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -53,6 +54,15 @@ export const SavesWidget = (props: SavesWidgetProps) => {
         </Button>
       </form>
 
+      <div className={classes.SearchFilters}>
+        <Button
+          onClick={() => setSynchronized(!synchronized)}
+          color={synchronized ? "secondary" : "primary"}
+        >
+          Synchronized
+        </Button>
+      </div>
+
       <List
         className={classes.SavesList}
         elements={saves}
@@ -64,11 +74,9 @@ export const SavesWidget = (props: SavesWidgetProps) => {
                 className={classes.GameSaveLink}
                 href={paths.mySave({ gameSaveId: save.id })}
               >
-                {save.path}
+                {save.name}
               </Link>
-              <Paragraph>
-                Sync enabled: {save.syncEnabled ? "yes" : "no"}
-              </Paragraph>
+              <Paragraph>Sync: {save.sync}</Paragraph>
             </div>
 
             <div className={classes.Buttons}>

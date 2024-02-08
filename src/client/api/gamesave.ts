@@ -1,4 +1,4 @@
-import { GameSave } from "../../types";
+import { GameSave, GameSaveSync } from "../../types";
 
 export async function getSavePaths(): Promise<string[]> {
   const paths = [
@@ -96,7 +96,7 @@ export async function uploadSave(save: {
         gameId: save.path,
         path: save.path,
         name: save.name,
-        syncEnabled: false,
+        sync: "every hour",
         archives: [
           {
             url: save.path,
@@ -118,7 +118,7 @@ export async function uploadSave(save: {
           gameId: save.path,
           path: save.path,
           name: save.name,
-          syncEnabled: false,
+          sync: "every hour",
           archives: [
             {
               url: save.path,
@@ -133,12 +133,15 @@ export async function uploadSave(save: {
   }
 }
 
-export async function toggleSync(gameSaveId: string, enabled: boolean) {
+export async function setupSync(settings: {
+  gameSaveId: string;
+  sync: GameSaveSync;
+}) {
   const savesJSON = localStorage.getItem("saves");
 
   if (savesJSON) {
     const saves = JSON.parse(savesJSON);
-    saves[gameSaveId].syncEnabled = enabled;
+    saves[settings.gameSaveId].sync = settings.sync;
     localStorage.setItem("saves", JSON.stringify(saves));
   }
 }

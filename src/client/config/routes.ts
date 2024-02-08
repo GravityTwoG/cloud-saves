@@ -2,10 +2,12 @@ import { path } from "../lib/path";
 
 import { ProfilePage } from "../pages/Profile/ProfilePage";
 import { MySavesPage } from "../pages/MySaves/MySavesPage";
+import { MySavePage } from "../pages/MySave/MySavePage";
+import { SharedSavesPage } from "../pages/SharedSaves/SharedSavesPage";
+import { PublicSavesPage } from "../pages/PublicSaves/PublicSavesPage";
 
 import { LoginPage } from "../pages/Login/LoginPage";
 import { RegisterPage } from "../pages/Register/RegisterPage";
-import { MySavePage } from "../pages/MySave/MySavePage";
 
 const profile = path("/");
 const mySaves = path("/my-saves");
@@ -40,12 +42,12 @@ export const routes = [
   },
   {
     path: paths.sharedSaves,
-    component: MySavesPage,
+    component: SharedSavesPage,
     access: "authenticated",
   },
   {
     path: paths.publicSaves,
-    component: MySavesPage,
+    component: PublicSavesPage,
     access: "authenticated",
   },
   {

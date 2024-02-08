@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { clsx } from "clsx";
 
-import classes from "./saves-widget.module.scss";
+import classes from "./my-saves-widget.module.scss";
 
 import { GameSave } from "@/types";
 import * as gamesavesApi from "@/client/api/gamesave";
@@ -18,7 +18,7 @@ export type SavesWidgetProps = {
   className?: string;
 };
 
-export const SavesWidget = (props: SavesWidgetProps) => {
+export const MySavesWidget = (props: SavesWidgetProps) => {
   const [saves, setSaves] = useState<GameSave[]>([]);
   const [synchronized, setSynchronized] = useState(false);
 

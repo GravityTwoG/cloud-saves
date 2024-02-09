@@ -4,8 +4,8 @@ import { clsx } from "clsx";
 import classes from "./my-saves-widget.module.scss";
 
 import { GameSave } from "@/types";
-import * as gamesavesApi from "@/client/api/gamesave";
 import { paths } from "@/client/config/routes";
+import { useAPIContext } from "@/client/contexts/APIContext";
 
 import { Link } from "wouter";
 import { H2, Paragraph } from "@/client/ui/atoms/Typography";
@@ -19,12 +19,13 @@ export type SavesWidgetProps = {
 };
 
 export const MySavesWidget = (props: SavesWidgetProps) => {
+  const { gameSaveAPI } = useAPIContext();
   const [saves, setSaves] = useState<GameSave[]>([]);
   const [synchronized, setSynchronized] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const data = await gamesavesApi.getUserSaves();
+      const data = await gameSaveAPI.getUserSaves();
       setSaves(data);
     })();
   }, []);
@@ -34,8 +35,8 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
   };
 
   const onDelete = async (path: string) => {
-    await gamesavesApi.deleteSave(path);
-    const data = await gamesavesApi.getUserSaves();
+    await gameSaveAPI.deleteSave(path);
+    const data = await gameSaveAPI.getUserSaves();
     setSaves(data);
   };
 

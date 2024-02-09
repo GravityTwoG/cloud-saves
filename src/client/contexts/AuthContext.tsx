@@ -8,15 +8,17 @@ import {
 } from "react";
 import { navigate } from "wouter/use-location";
 
-import * as authApi from "@/client/api/auth";
 import { paths } from "@/client/config/routes";
+
 import { User } from "@/types";
+import { LoginCredentials, RegisterCredentials } from "@/client/api/IAuthAPI";
+import { useAPIContext } from "./APIContext";
 
 interface AuthContext {
   isAuthenticated: boolean;
   user: User;
-  login: (credentials: authApi.LoginCredentials) => Promise<void>;
-  register: (credentials: authApi.RegisterCredentials) => Promise<void>;
+  login: (credentials: LoginCredentials) => Promise<void>;
+  register: (credentials: RegisterCredentials) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -32,6 +34,7 @@ export const AuthContext = createContext<AuthContext>({
 });
 
 export const AuthContextProvider = (props: { children: ReactNode }) => {
+  const { authAPI } = useAPIContext();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<AuthContext["user"]>({
     email: "$EMAIL$",
@@ -39,7 +42,7 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
   });
 
   useEffect(() => {
-    authApi
+    authAPI
       .getCurrentUser()
       .then((user) => {
         setUser(user);
@@ -48,25 +51,22 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
       .catch(() => setIsAuthenticated(false));
   }, []);
 
-  const login = useCallback(async (credentials: authApi.LoginCredentials) => {
-    const user = await authApi.login(credentials);
+  const login = useCallback(async (credentials: LoginCredentials) => {
+    const user = await authAPI.login(credentials);
 
     setUser(user);
     setIsAuthenticated(true);
   }, []);
 
-  const register = useCallback(
-    async (credentials: authApi.RegisterCredentials) => {
-      const user = await authApi.register(credentials);
+  const register = useCallback(async (credentials: RegisterCredentials) => {
+    const user = await authAPI.register(credentials);
 
-      setUser(user);
-      setIsAuthenticated(true);
-    },
-    []
-  );
+    setUser(user);
+    setIsAuthenticated(true);
+  }, []);
 
   const logout = useCallback(async () => {
-    await authApi.logout();
+    await authAPI.logout();
     setIsAuthenticated(false);
     setUser({
       email: "$EMAIL$",

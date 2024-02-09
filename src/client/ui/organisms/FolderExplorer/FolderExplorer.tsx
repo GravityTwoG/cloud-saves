@@ -2,8 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { clsx } from "clsx";
 
 import classes from "./folder-explorer.module.scss";
-
-import * as gamesavesApi from "@/client/api/gamesave";
+import { useAPIContext } from "@/client/contexts/APIContext";
 
 import { Button } from "@/client/ui/atoms/Button/Button";
 import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
@@ -15,12 +14,13 @@ function last(arr: string[]) {
 }
 
 export const FolderExplorer = () => {
+  const { gameSaveAPI } = useAPIContext();
   const [selectedFolder, setSelectedFolder] = useState<string>("");
   const [parentFolder, setParentFolder] = useState<string>("");
   const [files, setFiles] = useState<FileInfo[]>([]);
 
   const getSavePaths = useCallback(async () => {
-    const paths = await gamesavesApi.getSavePaths();
+    const paths = await gameSaveAPI.getSavePaths();
 
     setSelectedFolder("");
     setFiles(
@@ -39,25 +39,29 @@ export const FolderExplorer = () => {
   }, [getSavePaths]);
 
   const onFolderOpen = async (filePath: string) => {
-    const folderData = await gamesavesApi.getFolderInfo(filePath);
+    try {
+      const folderData = await gameSaveAPI.getFolderInfo(filePath);
 
-    if (!folderData.data) return;
-
-    const { folder, files } = folderData.data;
-    setSelectedFolder(folder);
-    setFiles(files.sort((a, b) => a.size - b.size));
-    setParentFolder(filePath.split("/").slice(0, -1).join("/"));
+      const { folder, files } = folderData;
+      setSelectedFolder(folder);
+      setFiles(files.sort((a, b) => a.size - b.size));
+      setParentFolder(filePath.split("/").slice(0, -1).join("/"));
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const onOpenDialog = async () => {
-    const folderData = await gamesavesApi.showFolderDialog();
+    try {
+      const folderData = await gameSaveAPI.showFolderDialog();
 
-    if (!folderData.data) return;
-
-    const { folder, files } = folderData.data;
-    setSelectedFolder(folder);
-    setFiles(files.sort((a, b) => a.size - b.size));
-    setParentFolder(folder.split("/").slice(0, -1).join("/"));
+      const { folder, files } = folderData;
+      setSelectedFolder(folder);
+      setFiles(files.sort((a, b) => a.size - b.size));
+      setParentFolder(folder.split("/").slice(0, -1).join("/"));
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -111,7 +115,7 @@ export const FolderExplorer = () => {
 
             <Button
               onClick={async () => {
-                const response = await gamesavesApi.uploadSave({
+                const response = await gameSaveAPI.uploadSave({
                   path: file.path,
                   name: file.name,
                 });

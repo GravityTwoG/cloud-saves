@@ -3,8 +3,8 @@ import { useParams } from "wouter";
 
 import classes from "./my-save-page.module.scss";
 
-import * as gamesavesApi from "@/client/api/gamesave";
 import { GameSave, GameSaveSync } from "@/types";
+import { useAPIContext } from "@/client/contexts/APIContext";
 
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
@@ -14,6 +14,7 @@ import { List } from "@/client/ui/molecules/List/List";
 import { Modal } from "@/client/ui/molecules/Modal/Modal";
 
 export const MySavePage = () => {
+  const { gameSaveAPI } = useAPIContext();
   const [gameSave, setGameSave] = useState<GameSave | null>(null);
 
   const { gameSaveId } = useParams();
@@ -22,7 +23,7 @@ export const MySavePage = () => {
     (async () => {
       if (!gameSaveId) return;
 
-      const data = await gamesavesApi.getUserSave(gameSaveId);
+      const data = await gameSaveAPI.getUserSave(gameSaveId);
       setGameSave(data);
     })();
   }, []);
@@ -30,7 +31,7 @@ export const MySavePage = () => {
   const onDelete = async (gameSaveArchiveId: string) => {
     if (!gameSave) return;
 
-    await gamesavesApi.deleteGameSaveArchive(gameSaveArchiveId);
+    await gameSaveAPI.deleteGameSaveArchive(gameSaveArchiveId);
     setGameSave({
       ...gameSave,
       archives: gameSave.archives.filter(
@@ -45,7 +46,7 @@ export const MySavePage = () => {
   const setupSync = async () => {
     if (!gameSave) return;
 
-    await gamesavesApi.setupSync({
+    await gameSaveAPI.setupSync({
       gameSaveId: gameSave.id,
       sync: sync,
     });
@@ -151,7 +152,7 @@ export const MySavePage = () => {
             <div className={classes.Buttons}>
               <Button
                 onClick={async () => {
-                  const response = await gamesavesApi.downloadSave(save.url);
+                  const response = await gameSaveAPI.downloadSave(save.url);
                   console.log(response);
                 }}
               >

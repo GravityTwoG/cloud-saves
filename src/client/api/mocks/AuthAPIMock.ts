@@ -31,8 +31,8 @@ export class AuthAPIMock implements IAuthAPI {
 
       localStorage.setItem("isAuthenticated", "true");
       return {
-        email: credentials.email,
-        username: "$USERNAME$",
+        email: user.email,
+        username: user.username,
       };
     } else {
       throw new Error("User not found");

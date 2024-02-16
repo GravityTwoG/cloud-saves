@@ -3,6 +3,12 @@
 import { contextBridge, ipcRenderer } from "electron";
 
 const electronApi: Window["electronAPI"] = {
+  onDeepLink: (callback: (link: { url: string }) => void) => {
+    ipcRenderer.on("deepLink", (_, link) => {
+      callback(link);
+    });
+  },
+
   showFolderDialog: () => ipcRenderer.invoke("showFolderDialog"),
 
   getSavePaths: (paths: string[]) => ipcRenderer.invoke("getSavePaths", paths),

@@ -18,6 +18,8 @@ type ElectronApiResponse<D> = {
 
 interface Window {
   electronAPI: {
+    onDeepLink: (callback: (link: { url: string }) => void) => void;
+
     showFolderDialog: () => Promise<ElectronApiResponse<FolderInfo>>;
 
     getSavePaths: (paths: string[]) => Promise<ElectronApiResponse<string[]>>;

@@ -23,7 +23,7 @@ export class AuthAPIMock implements IAuthAPI {
     if (userJSON) {
       const user = JSON.parse(userJSON);
       if (
-        user.email != credentials.email ||
+        user.username != credentials.username ||
         user.password != credentials.password
       ) {
         throw new Error("User not found");

@@ -1,7 +1,7 @@
 import { User } from "@/types";
 
 export type LoginCredentials = {
-  email: string;
+  username: string;
   password: string;
 };
 

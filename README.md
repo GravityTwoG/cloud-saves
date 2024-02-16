@@ -16,6 +16,12 @@ Install dependencies
 npm install
 ```
 
+Initialize husky
+
+```sh
+npm run prepare
+```
+
 Run in dev mode
 
 ```sh

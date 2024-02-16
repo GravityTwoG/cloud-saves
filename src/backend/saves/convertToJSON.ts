@@ -12,18 +12,25 @@ const UESAVE_TYPE_MAPS = [
   ".worldSaveData.CharacterContainerSaveData.Key=Struct",
 ];
 
-async function convert(uesave_path: string, save_path: string, file: string) {
-  const uncompressed_data = await decompressSAV(save_path, file);
+async function readFile(save_path: string, file: string) {
+  const data = await fs.readFile(save_path + "/" + file);
+  const uncompressed_data = await decompressSAV(data, file);
 
-  if (uncompressed_data == null) {
-    console.log(`File ${file} failed to decompress`);
-    return;
+  if (uncompressed_data != null) {
+    console.log(`File ${file} uncompressed successfully`);
+    return uncompressed_data;
   }
+  console.log(`File ${file} failed to decompress`);
+
+  console.log("Reading raw data");
+  return data;
+}
+
+async function convert(uesave_path: string, save_path: string, file: string) {
+  const uncompressed_data = await readFile(save_path, file);
 
   // Save the uncompressed file
   // await fs.writeFile(save_path + "/" + file + ".gvas", uncompressed_data);
-
-  console.log(`File ${file} uncompressed successfully`);
 
   try {
     const path = uesave_path.split("\\");
@@ -36,13 +43,21 @@ async function convert(uesave_path: string, save_path: string, file: string) {
 
     // Convert to json with uesave
     console.log("Converting to JSON", file);
-    await child_process.spawnSync(command, args, {
+    const status = await child_process.spawnSync(command, args, {
       input: uncompressed_data,
       cwd: uesave_cwd,
     });
+
+    if (status.status !== 0) {
+      throw status.stderr;
+    }
     console.log(`File ${file} converted to JSON successfully`);
   } catch (error) {
-    console.log(error);
+    if (error instanceof Buffer) {
+      console.log(error.toString());
+    } else {
+      console.log(error);
+    }
     console.log(`uesave.exe failed to convert ${file}`);
   }
 }
@@ -58,24 +73,15 @@ function uesave_params(out_path: string, uesave_type_maps: string[]) {
 }
 
 async function main() {
-  // Check if argument exists
   if (process.argv.length < 3) {
     process.exit(1);
   }
 
-  // Take the first argument as the path to uesave.exe
   const uesave_path = process.argv[2];
-  // Take the second argument as a path to the save directory
   const save_path = process.argv[3];
-  // Find all .sav files in the directory, ignore backup files
-  const files = (await fs.readdir(save_path)).filter(
-    (fn) => fn.endsWith(".sav") && fn !== "Level.sav"
-  );
 
-  files.push(
-    ...(await fs.readdir(save_path + "/Players"))
-      .filter((fn) => fn.endsWith(".sav"))
-      .map((fn) => "Players/" + fn)
+  const files = (await fs.readdir(save_path, { recursive: true })).filter(
+    (fn) => fn.endsWith(".sav") && fn !== "Level.sav"
   );
 
   await Promise.all(files.map((file) => convert(uesave_path, save_path, file)));

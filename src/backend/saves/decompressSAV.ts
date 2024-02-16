@@ -1,10 +1,6 @@
 import zlib from "zlib";
-import fs from "fs/promises";
 
-export async function decompressSAV(save_path: string, file: string) {
-  // Read the file
-  const data = await fs.readFile(save_path + "/" + file);
-
+export async function decompressSAV(data: Buffer, file: string) {
   const uncompressed_len = data.readInt32LE(0);
   const compressed_len = data.readInt32LE(4);
   const magic_bytes = Uint8Array.prototype.slice.call(data, 8, 11);

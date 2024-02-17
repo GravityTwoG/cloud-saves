@@ -10,7 +10,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint src --ext .ts,.tsx"
+    "lint": "tsc --noemit && eslint src --ext .ts,.tsx"
   },
   "keywords": [
     "electron",

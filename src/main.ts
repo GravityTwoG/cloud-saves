@@ -1,4 +1,4 @@
-import { Applicaton } from "./Applicaton";
+import { Application } from "./Application";
 
-const application = new Applicaton();
+const application = new Application();
 application.init();

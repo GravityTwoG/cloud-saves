@@ -3,13 +3,14 @@ import { Route, Router as Wouter } from "wouter";
 
 import { routes } from "./config/routes";
 import { useAuthContext } from "./contexts/AuthContext";
+import { useHashLocation } from "./useHashLocation";
 
 import { Paragraph } from "./ui/atoms/Typography";
 import { MainLayout } from "./layouts/MainLayout/MainLayout";
 
 export const Router = () => {
   return (
-    <Wouter>
+    <Wouter hook={useHashLocation}>
       <MainLayout>
         {routes.map((route) => {
           if (route.access === "authenticated") {

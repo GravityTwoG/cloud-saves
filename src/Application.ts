@@ -35,8 +35,10 @@ export class Application {
           return;
         }
 
+        const path = url.replace("cloud-saves://", "/").replace("/?", "?");
+
         this.mainWindow.webContents.send("deepLink", {
-          url,
+          url: path,
         });
       });
     }

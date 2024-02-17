@@ -9,18 +9,22 @@ import { PublicSavesPage } from "../pages/PublicSaves/PublicSavesPage";
 
 import { LoginPage } from "../pages/Login/LoginPage";
 import { RegisterPage } from "../pages/Register/RegisterPage";
+import { RequestPasswordResetPage } from "../pages/RequestResetPassword/RequestPasswordResetPage";
 
 import ProfileIcon from "../ui/icons/Profile.svg";
 import SaveIcon from "../ui/icons/Save.svg";
+import { ResetPasswordPage } from "../pages/ResetPassword/ResetPasswordPage";
 
 const profile = path("/");
 const mySaves = path("/my-saves");
-const mySave = mySaves.path("/my-saves/:gameSaveId");
+const mySave = mySaves.path("/:gameSaveId");
 const sharedSaves = path("/shared-saves");
 const publicSaves = path("/public-saves");
 
-const login = path("/login");
 const register = path("/register");
+const login = path("/login");
+const requestPasswordReset = path("/request-password-reset");
+const resetPassword = path("/reset-password");
 
 export const paths = {
   profile,
@@ -29,8 +33,10 @@ export const paths = {
   sharedSaves,
   publicSaves,
 
-  login,
   register,
+  login,
+  requestPasswordReset,
+  resetPassword,
 };
 
 export enum RouteAccess {
@@ -127,5 +133,15 @@ export const routes: RouteDescriptor[] = [
       label: "Register",
       path: paths.register({}),
     },
+  },
+  {
+    path: paths.requestPasswordReset.pattern,
+    component: RequestPasswordResetPage,
+    access: RouteAccess.ANONYMOUS,
+  },
+  {
+    path: paths.resetPassword.pattern,
+    component: ResetPasswordPage,
+    access: RouteAccess.ANONYMOUS,
   },
 ];

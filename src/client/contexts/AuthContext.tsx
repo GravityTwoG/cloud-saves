@@ -6,12 +6,17 @@ import {
   useEffect,
   useState,
 } from "react";
-import { navigate } from "wouter/use-location";
+import { navigate } from "@/client/useHashLocation";
 
 import { paths } from "@/client/config/routes";
 
 import { User, UserRole } from "@/types";
-import { LoginCredentials, RegisterCredentials } from "@/client/api/IAuthAPI";
+import {
+  ChangePasswordCredentials,
+  LoginCredentials,
+  RegisterCredentials,
+  ResetPasswordCredentials,
+} from "@/client/api/IAuthAPI";
 import { useAPIContext } from "./APIContext";
 
 const emptyUser: User = {
@@ -23,16 +28,28 @@ const emptyUser: User = {
 interface AuthContext {
   isAuthenticated: boolean;
   user: User;
-  login: (credentials: LoginCredentials) => Promise<void>;
+
   register: (credentials: RegisterCredentials) => Promise<void>;
+
+  login: (credentials: LoginCredentials) => Promise<void>;
+
+  changePassword: (credentials: ChangePasswordCredentials) => Promise<void>;
+
+  requestPasswordReset: (email: string) => Promise<void>;
+
+  resetPassword: (credentials: ResetPasswordCredentials) => Promise<void>;
+
   logout: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContext>({
   isAuthenticated: false,
   user: emptyUser,
-  login: async () => {},
   register: async () => {},
+  login: async () => {},
+  changePassword: async () => {},
+  requestPasswordReset: async () => {},
+  resetPassword: async () => {},
   logout: async () => {},
 });
 
@@ -51,6 +68,12 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
       .catch(() => setIsAuthenticated(false));
   }, []);
 
+  const register = useCallback(async (credentials: RegisterCredentials) => {
+    const user = await authAPI.register(credentials);
+
+    setUser(user);
+    setIsAuthenticated(true);
+  }, []);
   const login = useCallback(async (credentials: LoginCredentials) => {
     const user = await authAPI.login(credentials);
 
@@ -58,12 +81,23 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
     setIsAuthenticated(true);
   }, []);
 
-  const register = useCallback(async (credentials: RegisterCredentials) => {
-    const user = await authAPI.register(credentials);
+  const changePassword = useCallback(
+    async (credentials: ChangePasswordCredentials) => {
+      await authAPI.changePassword(credentials);
+    },
+    []
+  );
 
-    setUser(user);
-    setIsAuthenticated(true);
+  const requestPasswordReset = useCallback(async (email: string) => {
+    await authAPI.requestPasswordReset(email);
   }, []);
+
+  const resetPassword = useCallback(
+    async (credentials: ResetPasswordCredentials) => {
+      await authAPI.resetPassword(credentials);
+    },
+    []
+  );
 
   const logout = useCallback(async () => {
     await authAPI.logout();
@@ -74,7 +108,16 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, user, login, register, logout }}
+      value={{
+        isAuthenticated,
+        user,
+        register,
+        login,
+        changePassword,
+        requestPasswordReset,
+        resetPassword,
+        logout,
+      }}
       {...props}
     />
   );

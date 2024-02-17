@@ -1,6 +1,7 @@
+import { navigate } from "@/client/useHashLocation";
+
 import classes from "./login-page.module.scss";
 
-import { navigate } from "wouter/use-location";
 import { paths } from "../../config/routes";
 import { useAuthContext } from "../../contexts/AuthContext";
 
@@ -52,7 +53,10 @@ export const LoginPage = () => {
 
         <Paragraph>
           Don't have an account?{" "}
-          <CommonLink href={paths.register({})}>Register</CommonLink>
+          <CommonLink href={paths.register({})}>Register. </CommonLink>
+          <CommonLink href={paths.requestPasswordReset({})}>
+            Forgot password?
+          </CommonLink>
         </Paragraph>
       </section>
     </Container>

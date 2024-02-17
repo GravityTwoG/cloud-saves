@@ -1,17 +1,6 @@
 import { User } from "../../types";
-import { IAuthAPI } from "./IAuthAPI";
+import { IAuthAPI, LoginCredentials, RegisterCredentials } from "./IAuthAPI";
 import { fetcher } from "./fetcher";
-
-export type LoginCredentials = {
-  email: string;
-  password: string;
-};
-
-export type RegisterCredentials = {
-  email: string;
-  username: string;
-  password: string;
-};
 
 export class AuthAPI implements IAuthAPI {
   register = (credentials: RegisterCredentials): Promise<User> => {

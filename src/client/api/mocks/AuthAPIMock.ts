@@ -1,4 +1,4 @@
-import { User } from "@/types";
+import { User, UserRole } from "@/types";
 import { IAuthAPI, LoginCredentials, RegisterCredentials } from "../IAuthAPI";
 
 export class AuthAPIMock implements IAuthAPI {
@@ -12,10 +12,15 @@ export class AuthAPIMock implements IAuthAPI {
       }
     }
 
+    const user = { ...credentials, role: UserRole.USER };
     localStorage.setItem("isAuthenticated", "true");
-    localStorage.setItem("user", JSON.stringify(credentials));
+    localStorage.setItem("user", JSON.stringify(user));
 
-    return { email: credentials.email, username: credentials.username };
+    return {
+      email: user.email,
+      username: user.username,
+      role: user.role,
+    };
   };
   login = async (credentials: LoginCredentials): Promise<User> => {
     const userJSON = localStorage.getItem("user");
@@ -33,6 +38,7 @@ export class AuthAPIMock implements IAuthAPI {
       return {
         email: user.email,
         username: user.username,
+        role: user.role,
       };
     } else {
       throw new Error("User not found");

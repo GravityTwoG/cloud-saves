@@ -10,10 +10,13 @@
 
 .PageButton {
   min-width: 1.5rem;
-  padding: 2px;
+  padding: 3px 2px;
   position: relative;
   background-color: transparent;
   transition: background-color 0.3s ease;
+  cursor: pointer;
+  border-radius: 3px;
+  border: 1px solid var(--deco-color);
 
   &:hover {
     background-color: rgba(39, 39, 42, 0.08);
@@ -24,7 +27,7 @@
   font-weight: bold;
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;

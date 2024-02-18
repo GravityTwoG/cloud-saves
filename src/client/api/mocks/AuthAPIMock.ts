@@ -1,5 +1,11 @@
-import { User } from "@/types";
-import { IAuthAPI, LoginCredentials, RegisterCredentials } from "../IAuthAPI";
+import { User, UserRole } from "@/types";
+import {
+  ChangePasswordCredentials,
+  IAuthAPI,
+  LoginCredentials,
+  RegisterCredentials,
+  ResetPasswordCredentials,
+} from "../interfaces/IAuthAPI";
 
 export class AuthAPIMock implements IAuthAPI {
   register = async (credentials: RegisterCredentials): Promise<User> => {
@@ -12,18 +18,24 @@ export class AuthAPIMock implements IAuthAPI {
       }
     }
 
+    const user = { ...credentials, role: UserRole.USER };
     localStorage.setItem("isAuthenticated", "true");
-    localStorage.setItem("user", JSON.stringify(credentials));
+    localStorage.setItem("user", JSON.stringify(user));
 
-    return { email: credentials.email, username: credentials.username };
+    return {
+      email: user.email,
+      username: user.username,
+      role: user.role,
+    };
   };
+
   login = async (credentials: LoginCredentials): Promise<User> => {
     const userJSON = localStorage.getItem("user");
 
     if (userJSON) {
       const user = JSON.parse(userJSON);
       if (
-        user.email != credentials.email ||
+        user.username != credentials.username ||
         user.password != credentials.password
       ) {
         throw new Error("User not found");
@@ -33,11 +45,13 @@ export class AuthAPIMock implements IAuthAPI {
       return {
         email: user.email,
         username: user.username,
+        role: user.role,
       };
     } else {
       throw new Error("User not found");
     }
   };
+
   getCurrentUser = async (): Promise<User> => {
     const isAuthenticated = localStorage.getItem("isAuthenticated");
 
@@ -47,6 +61,39 @@ export class AuthAPIMock implements IAuthAPI {
 
     const user = JSON.parse(localStorage.getItem("user") || "");
     return user;
+  };
+
+  changePassword = async (
+    credentials: ChangePasswordCredentials
+  ): Promise<void> => {
+    const isAuthenticated = localStorage.getItem("isAuthenticated");
+
+    if (!isAuthenticated || isAuthenticated === "false") {
+      throw new Error("Not authenticated");
+    }
+
+    const user = JSON.parse(localStorage.getItem("user") || "");
+    if (user.password === credentials.oldPassword) {
+      user.password = credentials.newPassword;
+      localStorage.setItem("user", JSON.stringify(user));
+    }
+  };
+
+  requestPasswordReset = async (email: string): Promise<void> => {
+    const user = JSON.parse(localStorage.getItem("user") || "");
+    if (user.email !== email) {
+      throw new Error("User not found");
+    }
+  };
+
+  resetPassword = async (
+    credentials: ResetPasswordCredentials
+  ): Promise<void> => {
+    const user = JSON.parse(localStorage.getItem("user") || "");
+    if (user.blablabla === credentials.token) {
+      user.password = credentials.newPassword;
+      localStorage.setItem("user", JSON.stringify(user));
+    }
   };
 
   logout = async (): Promise<void> => {

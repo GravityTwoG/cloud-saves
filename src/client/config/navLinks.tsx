@@ -1,49 +1,42 @@
-import { ReactNode } from "react";
-import { paths } from "./routes";
+import { RouteAccess, routes } from "./routes";
+import { UserRole } from "@/types";
 
-import ProfileIcon from "../ui/icons/Profile.svg";
-import SaveIcon from "../ui/icons/Save.svg";
-
-export type NavLinkType = {
+export type PublicNavLink = {
   label: string;
   path: string;
-  access: "authenticated" | "anonymous";
-  icon?: ReactNode;
+  access?: RouteAccess.ANONYMOUS;
+  icon?: React.ReactNode;
 };
 
-export const navLinks = [
-  {
-    label: "Profile",
-    path: paths.profile({}),
-    access: "authenticated",
-    icon: <ProfileIcon />,
-  },
-  {
-    label: "My Saves",
-    path: paths.mySaves({}),
-    access: "authenticated",
-    icon: <SaveIcon />,
-  },
-  {
-    label: "Shared Saves",
-    path: paths.sharedSaves({}),
-    access: "authenticated",
-    icon: <SaveIcon />,
-  },
-  {
-    label: "Public Saves",
-    path: paths.publicSaves({}),
-    access: "authenticated",
-    icon: <SaveIcon />,
-  },
-  {
-    label: "Login",
-    path: paths.login({}),
-    access: "anonymous",
-  },
-  {
-    label: "Register",
-    path: paths.register({}),
-    access: "anonymous",
-  },
-] satisfies NavLinkType[];
+export type PrivateNavLink = {
+  label: string;
+  path: string;
+  access: RouteAccess.AUTHENTICATED;
+  forRoles: UserRole[];
+  icon?: React.ReactNode;
+};
+
+export type NavLinkType = PublicNavLink | PrivateNavLink;
+
+export const navLinks: NavLinkType[] = routes
+  .filter((route) => !!route.link)
+  .map((route) => {
+    const link = route.link!;
+
+    if (route.access === RouteAccess.ANONYMOUS) {
+      return {
+        ...link,
+        access: route.access,
+      };
+    }
+
+    if (route.access === RouteAccess.AUTHENTICATED) {
+      return {
+        ...link,
+        access: route.access,
+        forRoles: route.forRoles,
+      };
+    }
+
+    return link;
+  });

@@ -1,8 +1,10 @@
 import { UserRole } from "@/types";
 
+import { AuthContextProvider } from "./contexts/AuthContext";
+
 import { AuthGuard } from "./ui/molecules/Guard/AuthGuard";
 import { DownloadManager } from "./ui/organisms/DownloadManager/DownloadManager";
-import { AuthContextProvider } from "./contexts/AuthContext";
+import { ToastsManager } from "./ui/toast";
 import { Router } from "./Router";
 
 export const ReactApplication = () => {
@@ -12,6 +14,7 @@ export const ReactApplication = () => {
       <AuthGuard forRoles={[UserRole.USER]}>
         <DownloadManager />
       </AuthGuard>
+      <ToastsManager />
     </AuthContextProvider>
   );
 };

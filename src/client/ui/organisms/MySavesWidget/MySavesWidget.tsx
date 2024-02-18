@@ -8,6 +8,7 @@ import { paths } from "@/client/config/routes";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useDebouncedCallback } from "@/client/lib/hooks/useDebouncedCallback";
 import { GetSavesQuery } from "@/client/api/interfaces/IGameSaveAPI";
+import { notify } from "@/client/ui/toast";
 
 import { Link } from "wouter";
 import SearchIcon from "@/client/ui/icons/Search.svg";
@@ -49,7 +50,7 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
         });
         setQuery(query);
       } catch (error) {
-        console.error(error);
+        notify.error(error);
       }
     },
     [],
@@ -62,8 +63,12 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
   };
 
   const onDelete = async (path: string) => {
-    await gameSaveAPI.deleteSave(path);
-    loadSaves(query);
+    try {
+      await gameSaveAPI.deleteSave(path);
+      loadSaves(query);
+    } catch (error) {
+      notify.error(error);
+    }
   };
 
   return (

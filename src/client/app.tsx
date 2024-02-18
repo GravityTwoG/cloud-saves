@@ -4,7 +4,7 @@ import "./styles/index.css";
 import "./styles/theme.css";
 import "./styles/utility.css";
 
-import { Wrapper } from "./Wrapper";
+import { ReactApplication } from "./ReactApplication";
 
 function bootstrap() {
   const rootElement = document.getElementById("app");
@@ -16,7 +16,7 @@ function bootstrap() {
 
   const root = createRoot(rootElement);
 
-  root.render(<Wrapper />);
+  root.render(<ReactApplication />);
 }
 
 bootstrap();

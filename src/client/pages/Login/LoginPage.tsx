@@ -1,6 +1,7 @@
+import { navigate } from "@/client/useHashLocation";
+
 import classes from "./login-page.module.scss";
 
-import { navigate } from "wouter/use-location";
 import { paths } from "../../config/routes";
 import { useAuthContext } from "../../contexts/AuthContext";
 
@@ -10,11 +11,11 @@ import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
 import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";
 
 const formConfig = {
-  email: {
+  username: {
     type: "string",
-    placeholder: "Enter email",
-    label: "Email",
-    required: "Email is required",
+    placeholder: "Enter username",
+    label: "Username",
+    required: "Username is required",
   },
   password: {
     type: "password",
@@ -30,7 +31,7 @@ export const LoginPage = () => {
   const onSubmit = async (data: FormData<typeof formConfig>) => {
     try {
       await login({
-        email: data.email,
+        username: data.username,
         password: data.password,
       });
       navigate(paths.profile({}));
@@ -52,7 +53,10 @@ export const LoginPage = () => {
 
         <Paragraph>
           Don't have an account?{" "}
-          <CommonLink href={paths.register({})}>Register</CommonLink>
+          <CommonLink href={paths.register({})}>Register. </CommonLink>
+          <CommonLink href={paths.requestPasswordReset({})}>
+            Forgot password?
+          </CommonLink>
         </Paragraph>
       </section>
     </Container>

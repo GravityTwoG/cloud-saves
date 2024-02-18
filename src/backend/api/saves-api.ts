@@ -43,7 +43,7 @@ export function setupIPC() {
 
   ipcMain.handle(
     "uploadSave",
-    async (_, folder: { path: string; name: string }) => {
+    async (_, folder: { gameId: string; path: string; name: string }) => {
       try {
         await uploadSave(folder);
         return { data: null };
@@ -53,23 +53,26 @@ export function setupIPC() {
     }
   );
 
-  ipcMain.handle("downloadSave", async (_, url: string) => {
+  ipcMain.handle("downloadSave", async (_, archiveURL: string) => {
     try {
-      await downloadSave(url);
+      await downloadSave(archiveURL);
       return { data: null };
     } catch (error) {
       return { data: null, error: (error as Error).toString() };
     }
   });
 
-  ipcMain.handle("downloadAndExtractSave", async (_, path: string) => {
-    try {
-      await downloadAndExtractSave(path);
-      return { data: null };
-    } catch (error) {
-      return { data: null, error: (error as Error).toString() };
+  ipcMain.handle(
+    "downloadAndExtractSave",
+    async (_, archiveURL: string, path: string) => {
+      try {
+        await downloadAndExtractSave(archiveURL, path);
+        return { data: null };
+      } catch (error) {
+        return { data: null, error: (error as Error).toString() };
+      }
     }
-  });
+  );
 
   // ipcMain.handle(
   //   "toggleSync",

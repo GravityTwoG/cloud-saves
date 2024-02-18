@@ -14,7 +14,7 @@ function last(arr: string[]) {
 }
 
 export const FolderExplorer = () => {
-  const { gameSaveAPI } = useAPIContext();
+  const { gameSaveAPI, osAPI } = useAPIContext();
   const [selectedFolder, setSelectedFolder] = useState<string>("");
   const [parentFolder, setParentFolder] = useState<string>("");
   const [files, setFiles] = useState<FileInfo[]>([]);
@@ -40,7 +40,7 @@ export const FolderExplorer = () => {
 
   const onFolderOpen = async (filePath: string) => {
     try {
-      const folderData = await gameSaveAPI.getFolderInfo(filePath);
+      const folderData = await osAPI.getFolderInfo(filePath);
 
       const { folder, files } = folderData;
       setSelectedFolder(folder);
@@ -53,7 +53,7 @@ export const FolderExplorer = () => {
 
   const onOpenDialog = async () => {
     try {
-      const folderData = await gameSaveAPI.showFolderDialog();
+      const folderData = await osAPI.showFolderDialog();
 
       const { folder, files } = folderData;
       setSelectedFolder(folder);

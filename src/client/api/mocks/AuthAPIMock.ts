@@ -5,7 +5,7 @@ import {
   LoginCredentials,
   RegisterCredentials,
   ResetPasswordCredentials,
-} from "../IAuthAPI";
+} from "../interfaces/IAuthAPI";
 
 export class AuthAPIMock implements IAuthAPI {
   register = async (credentials: RegisterCredentials): Promise<User> => {

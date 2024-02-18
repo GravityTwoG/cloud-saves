@@ -6,7 +6,7 @@ import {
   LoginCredentials,
   RegisterCredentials,
   ResetPasswordCredentials,
-} from "./IAuthAPI";
+} from "./interfaces/IAuthAPI";
 
 export class AuthAPI implements IAuthAPI {
   register = (credentials: RegisterCredentials): Promise<User> => {

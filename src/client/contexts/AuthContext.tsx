@@ -16,7 +16,7 @@ import {
   LoginCredentials,
   RegisterCredentials,
   ResetPasswordCredentials,
-} from "@/client/api/IAuthAPI";
+} from "@/client/api/interfaces/IAuthAPI";
 import { useAPIContext } from "./APIContext";
 
 const emptyUser: User = {

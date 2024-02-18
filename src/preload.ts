@@ -19,8 +19,11 @@ const electronApi: Window["electronAPI"] = {
   uploadSave: (folder: { path: string; name: string }) =>
     ipcRenderer.invoke("uploadSave", folder),
 
-  downloadAndExtractSave: (path: string) =>
-    ipcRenderer.invoke("downloadAndExtractSave", path),
+  downloadSave: (archiveURL: string) =>
+    ipcRenderer.invoke("downloadSave", archiveURL),
+
+  downloadAndExtractSave: (archiveURL: string, path: string) =>
+    ipcRenderer.invoke("downloadAndExtractSave", archiveURL, path),
 };
 
 contextBridge.exposeInMainWorld("electronAPI", electronApi);

@@ -21,16 +21,17 @@
     [
       "@semantic-release/github",
       {
+        "githubUrl": "https://github.com/GravityTwoG/cloud-saves.git",
         "labels": true,
         "releasedLabels": true,
         "assets": [
           {
-            "path": "out/Cloud-Saves-win32-x64",
+            "path": "out/Cloud Saves-win32-x64",
             "name": "Cloud-Saves-${nextRelease.version}-x64",
             "label": "Windows 64-bit package"
           },
           {
-            "path": "out/make/*.exe",
+            "path": "out/make/squirrel.windows/x64/*.exe",
             "name": "Cloud-Saves-${nextRelease.version}-x64-setup.exe",
             "label": "Windows 64-bit installer"
           }

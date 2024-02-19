@@ -15,7 +15,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "npm run package -- --platform win32 && npm run make -- --platform win32"
+        "prepareCmd": "npm run package -- --platform win32 && npm run make -- --platform win32 && Compress-Archive -Path \"out/Cloud Saves-win32-x64\" -Destination out/package.zip"
       }
     ],
     [
@@ -25,7 +25,7 @@
         "releasedLabels": true,
         "assets": [
           {
-            "path": "out/Cloud Saves-win32-x64",
+            "path": "out/package.zip",
             "name": "Cloud-Saves-${nextRelease.version}-x64",
             "label": "Windows 64-bit package"
           },

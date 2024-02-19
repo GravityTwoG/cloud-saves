@@ -21,7 +21,6 @@
     [
       "@semantic-release/github",
       {
-        "githubUrl": "https://github.com/GravityTwoG/cloud-saves.git",
         "labels": true,
         "releasedLabels": true,
         "assets": [

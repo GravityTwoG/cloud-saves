@@ -3,6 +3,8 @@ import { BrowserWindow, Menu, Tray, app, nativeImage, Event } from "electron";
 
 import { setupIPC } from "./backend/api/saves-api";
 
+const clientProtocol = "cloud-saves://";
+
 export class Application {
   private mainWindow: BrowserWindow | null = null;
   private isAppQuitting = false;
@@ -31,11 +33,11 @@ export class Application {
         this.mainWindow.show();
 
         const url = commandLine.pop();
-        if (!url?.startsWith("cloud-saves://")) {
+        if (!url?.startsWith(clientProtocol)) {
           return;
         }
 
-        const path = url.replace("cloud-saves://", "/").replace("/?", "?");
+        const path = url.replace(clientProtocol, "/").replace("/?", "?");
 
         this.mainWindow.webContents.send("deepLink", {
           url: path,

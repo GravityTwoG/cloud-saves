@@ -15,7 +15,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "npm run package && npm run make"
+        "prepareCmd": "npm run package -- --platform win32 && npm run make -- --platform win32"
       }
     ],
     [

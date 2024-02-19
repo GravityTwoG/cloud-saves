@@ -15,7 +15,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "npm run package -- --platform win32 && npm run make -- --platform win32 && Compress-Archive -Path \"out/Cloud Saves-win32-x64\" -Destination out/package.zip"
+        "prepareCmd": "npm run package -- --platform win32 && npm run make -- --platform win32 && powershell -ExecutionPolicy unrestricted -Command \"Compress-Archive -Path 'out/Cloud Saves-win32-x64' -Destination out/package.zip\""
       }
     ],
     [

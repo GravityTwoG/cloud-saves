@@ -1,5 +1,7 @@
 # Cloud Saves Desktop application
 
+[![semantic-release: electron](https://img.shields.io/badge/semantic--release-electron-31a0f9?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
+
 Desktop application for management of game saves.
 
 Features:

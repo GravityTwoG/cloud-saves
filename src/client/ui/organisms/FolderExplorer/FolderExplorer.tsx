@@ -14,7 +14,11 @@ function last(arr: string[]) {
   return arr[arr.length - 1];
 }
 
-export const FolderExplorer = () => {
+export type FolderExplorerProps = {
+  saveUploaded: () => void;
+};
+
+export const FolderExplorer = (props: FolderExplorerProps) => {
   const { gameSaveAPI, osAPI } = useAPIContext();
   const [selectedFolder, setSelectedFolder] = useState<string>("");
   const [parentFolder, setParentFolder] = useState<string>("");
@@ -72,6 +76,7 @@ export const FolderExplorer = () => {
   const uploadSave = async (folder: { path: string; name: string }) => {
     try {
       await gameSaveAPI.uploadSave(folder);
+      props.saveUploaded();
     } catch (e) {
       notify.error(e);
     }

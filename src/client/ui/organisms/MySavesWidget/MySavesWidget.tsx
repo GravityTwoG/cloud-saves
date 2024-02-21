@@ -25,6 +25,7 @@ const defaultQuery: GetSavesQuery = {
 };
 
 export type SavesWidgetProps = {
+  setOnSaveUpload: (saveUploaded: () => void) => void;
   className?: string;
 };
 
@@ -35,6 +36,10 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
     { saves: [], totalCount: 0 }
   );
   const [query, setQuery] = useState<GetSavesQuery>(defaultQuery);
+
+  useEffect(() => {
+    props.setOnSaveUpload(() => loadSaves(query));
+  }, [query]);
 
   useEffect(() => {
     loadSaves(query);

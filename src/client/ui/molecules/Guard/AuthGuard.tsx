@@ -1,4 +1,4 @@
-import { useAuthContext } from "@/client/contexts/AuthContext";
+import { AuthStatus, useAuthContext } from "@/client/contexts/AuthContext";
 import { UserRole } from "@/types";
 
 export type AuthGuardProps = {
@@ -7,9 +7,11 @@ export type AuthGuardProps = {
 };
 
 export const AuthGuard = ({ children, forRoles }: AuthGuardProps) => {
-  const { isAuthenticated, user } = useAuthContext();
+  const { authStatus, user } = useAuthContext();
 
-  if (isAuthenticated && forRoles.length === 0) {
+  const isAuthenticated = authStatus === AuthStatus.AUTHENTICATED;
+  const rolesNotSpecified = forRoles.length === 0;
+  if (isAuthenticated && rolesNotSpecified) {
     return children;
   }
 

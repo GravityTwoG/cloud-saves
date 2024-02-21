@@ -8,7 +8,12 @@ import {
 } from "../interfaces/IAuthAPI";
 
 export class AuthAPIMock implements IAuthAPI {
+  private sleep = (ms: number) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
+
   register = async (credentials: RegisterCredentials): Promise<User> => {
+    await this.sleep(500);
     const userJSON = localStorage.getItem("user");
     if (userJSON) {
       const user = JSON.parse(userJSON);
@@ -30,6 +35,7 @@ export class AuthAPIMock implements IAuthAPI {
   };
 
   login = async (credentials: LoginCredentials): Promise<User> => {
+    await this.sleep(500);
     const userJSON = localStorage.getItem("user");
 
     if (userJSON) {
@@ -53,6 +59,7 @@ export class AuthAPIMock implements IAuthAPI {
   };
 
   getCurrentUser = async (): Promise<User> => {
+    await this.sleep(500);
     const isAuthenticated = localStorage.getItem("isAuthenticated");
 
     if (!isAuthenticated || isAuthenticated === "false") {
@@ -66,6 +73,7 @@ export class AuthAPIMock implements IAuthAPI {
   changePassword = async (
     credentials: ChangePasswordCredentials
   ): Promise<void> => {
+    await this.sleep(500);
     const isAuthenticated = localStorage.getItem("isAuthenticated");
 
     if (!isAuthenticated || isAuthenticated === "false") {
@@ -80,6 +88,7 @@ export class AuthAPIMock implements IAuthAPI {
   };
 
   requestPasswordReset = async (email: string): Promise<void> => {
+    await this.sleep(500);
     const user = JSON.parse(localStorage.getItem("user") || "");
     if (user.email !== email) {
       throw new Error("User not found");
@@ -89,6 +98,7 @@ export class AuthAPIMock implements IAuthAPI {
   resetPassword = async (
     credentials: ResetPasswordCredentials
   ): Promise<void> => {
+    await this.sleep(500);
     const user = JSON.parse(localStorage.getItem("user") || "");
     if (user.blablabla === credentials.token) {
       user.password = credentials.newPassword;

@@ -25,8 +25,15 @@ const emptyUser: User = {
   role: UserRole.USER,
 };
 
+export enum AuthStatus {
+  INITIAL = "INITIAL",
+  PENDING = "PENDING",
+  ANONYMOUS = "ANONYMOUS",
+  AUTHENTICATED = "AUTHENTICATED",
+}
+
 interface AuthContext {
-  isAuthenticated: boolean;
+  authStatus: AuthStatus;
   user: User;
 
   register: (credentials: RegisterCredentials) => Promise<void>;
@@ -43,7 +50,7 @@ interface AuthContext {
 }
 
 export const AuthContext = createContext<AuthContext>({
-  isAuthenticated: false,
+  authStatus: AuthStatus.INITIAL,
   user: emptyUser,
   register: async () => {},
   login: async () => {},
@@ -55,30 +62,32 @@ export const AuthContext = createContext<AuthContext>({
 
 export const AuthContextProvider = (props: { children: ReactNode }) => {
   const { authAPI } = useAPIContext();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authStatus, setAuthStatus] = useState<AuthStatus>(AuthStatus.INITIAL);
   const [user, setUser] = useState<AuthContext["user"]>(emptyUser);
 
   useEffect(() => {
+    setAuthStatus(AuthStatus.PENDING);
     authAPI
       .getCurrentUser()
       .then((user) => {
         setUser(user);
-        setIsAuthenticated(true);
+        setAuthStatus(AuthStatus.AUTHENTICATED);
       })
-      .catch(() => setIsAuthenticated(false));
+      .catch(() => setAuthStatus(AuthStatus.ANONYMOUS));
   }, []);
 
   const register = useCallback(async (credentials: RegisterCredentials) => {
     const user = await authAPI.register(credentials);
 
     setUser(user);
-    setIsAuthenticated(true);
+    setAuthStatus(AuthStatus.AUTHENTICATED);
   }, []);
+
   const login = useCallback(async (credentials: LoginCredentials) => {
     const user = await authAPI.login(credentials);
 
     setUser(user);
-    setIsAuthenticated(true);
+    setAuthStatus(AuthStatus.AUTHENTICATED);
   }, []);
 
   const changePassword = useCallback(
@@ -101,7 +110,7 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
 
   const logout = useCallback(async () => {
     await authAPI.logout();
-    setIsAuthenticated(false);
+    setAuthStatus(AuthStatus.ANONYMOUS);
     setUser(emptyUser);
     navigate(paths.login({}));
   }, []);
@@ -109,7 +118,7 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
   return (
     <AuthContext.Provider
       value={{
-        isAuthenticated,
+        authStatus,
         user,
         register,
         login,

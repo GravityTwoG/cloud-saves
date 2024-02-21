@@ -75,7 +75,12 @@ class Fetcher {
   }
 }
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3001";
+
+console.log("API_BASE_URL", API_BASE_URL);
+
 export const fetcher = new Fetcher({
-  baseURL: "http://localhost:3001",
+  baseURL: API_BASE_URL,
   credentials: "include",
 });

@@ -5,6 +5,7 @@ import classes from "./my-save-page.module.scss";
 
 import { GameSave, GameSaveSync } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
+import { notify } from "@/client/ui/toast";
 
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
@@ -16,44 +17,76 @@ import { Modal } from "@/client/ui/molecules/Modal/Modal";
 export const MySavePage = () => {
   const { gameSaveAPI } = useAPIContext();
   const [gameSave, setGameSave] = useState<GameSave | null>(null);
-
   const { gameSaveId } = useParams();
 
   useEffect(() => {
     (async () => {
       if (!gameSaveId) return;
-
-      const data = await gameSaveAPI.getUserSave(gameSaveId);
-      setGameSave(data);
+      try {
+        const data = await gameSaveAPI.getUserSave(gameSaveId);
+        setGameSave(data);
+      } catch (error) {
+        notify.error(error);
+        setGameSave(null);
+      }
     })();
   }, []);
-
-  const onDelete = async (gameSaveArchiveId: string) => {
-    if (!gameSave) return;
-
-    await gameSaveAPI.deleteGameSaveArchive(gameSaveArchiveId);
-    setGameSave({
-      ...gameSave,
-      archives: gameSave.archives.filter(
-        (save) => save.id !== gameSaveArchiveId
-      ),
-    });
-  };
 
   const [syncSettingsAreOpen, setSyncSettingsAreOpen] = useState(false);
   const [sync, setSync] = useState<GameSaveSync>(GameSaveSync.NO);
 
+  if (!gameSave) {
+    return (
+      <Container>
+        <H1>Game Save not found</H1>
+      </Container>
+    );
+  }
+
   const setupSync = async () => {
+    try {
+      await gameSaveAPI.setupSync({
+        gameSaveId: gameSave.id,
+        sync: sync,
+      });
+      setGameSave({
+        ...gameSave,
+        sync: sync,
+      });
+      setSyncSettingsAreOpen(false);
+    } catch (error) {
+      notify.error(error);
+    }
+  };
+
+  const downloadSave = async (save: {
+    url: string;
+    id: string;
+    size: number;
+    createdAt: string;
+  }) => {
+    try {
+      const response = await gameSaveAPI.downloadSave(save.url);
+      console.log(response);
+    } catch (error) {
+      notify.error(error);
+    }
+  };
+
+  const deleteSave = async (gameSaveArchiveId: string) => {
     if (!gameSave) return;
 
-    await gameSaveAPI.setupSync({
-      gameSaveId: gameSave.id,
-      sync: sync,
-    });
-    setGameSave({
-      ...gameSave,
-      sync: sync,
-    });
+    try {
+      await gameSaveAPI.deleteGameSaveArchive(gameSaveArchiveId);
+      setGameSave({
+        ...gameSave,
+        archives: gameSave.archives.filter(
+          (save) => save.id !== gameSaveArchiveId
+        ),
+      });
+    } catch (error) {
+      notify.error(error);
+    }
   };
 
   return (
@@ -65,9 +98,7 @@ export const MySavePage = () => {
         <Paragraph>
           Sync: {gameSave?.sync}{" "}
           <Button
-            onClick={async () => {
-              if (!gameSave) return;
-
+            onClick={() => {
               setSyncSettingsAreOpen(true);
               setSync(gameSave.sync);
             }}
@@ -124,12 +155,7 @@ export const MySavePage = () => {
         </div>
 
         <Button
-          onClick={async () => {
-            if (!gameSave) return;
-
-            setSyncSettingsAreOpen(false);
-            setupSync();
-          }}
+          onClick={setupSync}
           className={classes.SyncSettingsConfirmButton}
         >
           Confirm
@@ -152,8 +178,7 @@ export const MySavePage = () => {
             <div className={classes.Buttons}>
               <Button
                 onClick={async () => {
-                  const response = await gameSaveAPI.downloadSave(save.url);
-                  console.log(response);
+                  downloadSave(save);
                 }}
               >
                 Download
@@ -161,7 +186,7 @@ export const MySavePage = () => {
 
               <Button
                 onDoubleClick={() => {
-                  onDelete(save.id);
+                  deleteSave(save.id);
                 }}
                 color="danger"
               >

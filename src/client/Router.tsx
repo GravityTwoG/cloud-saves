@@ -1,64 +1,54 @@
-import { ReactNode } from "react";
-import { Route, Router as Wouter } from "wouter";
+import { Route, Switch, Router as Wouter } from "wouter";
+import { useHashLocation } from "./useHashLocation";
 
-import { routes } from "./config/routes";
-import { useAuthContext } from "./contexts/AuthContext";
+import { RouteAccess, routes } from "./config/routes";
 
-import { Paragraph } from "./ui/atoms/Typography";
+import { PrivatePage } from "./ui/molecules/Guard/PrivatePage";
+import { AnonymousPage } from "./ui/molecules/Guard/AnonymousPage";
 import { MainLayout } from "./layouts/MainLayout/MainLayout";
+import { DeepLinkHandler } from "./DeepLinkHandler";
+import { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 
 export const Router = () => {
   return (
-    <Wouter>
+    <Wouter hook={useHashLocation}>
+      <DeepLinkHandler />
+
       <MainLayout>
-        {routes.map((route) => {
-          if (route.access === "authenticated") {
+        <Switch>
+          {routes.map((route) => {
+            if (route.access === RouteAccess.ANONYMOUS) {
+              return (
+                <Route key={route.path} path={route.path}>
+                  <AnonymousPage>
+                    <route.component />
+                  </AnonymousPage>
+                </Route>
+              );
+            }
+
+            if (route.access === RouteAccess.AUTHENTICATED) {
+              return (
+                <Route key={route.path} path={route.path}>
+                  <PrivatePage forRoles={route.forRoles}>
+                    <route.component />
+                  </PrivatePage>
+                </Route>
+              );
+            }
+
             return (
-              <Route key={route.path.pattern} path={route.path.pattern}>
-                <PrivatePage>
-                  <route.component />
-                </PrivatePage>
+              <Route key={route.path} path={route.path}>
+                <route.component />
               </Route>
             );
-          }
+          })}
 
-          if (route.access === "anonymous") {
-            return (
-              <Route key={route.path.pattern} path={route.path.pattern}>
-                <AnonymousPage>
-                  <route.component />
-                </AnonymousPage>
-              </Route>
-            );
-          }
-
-          return (
-            <Route key={route.path.pattern} path={route.path.pattern}>
-              <route.component />
-            </Route>
-          );
-        })}
+          <Route>
+            <NotFoundPage />
+          </Route>
+        </Switch>
       </MainLayout>
     </Wouter>
   );
-};
-
-const PrivatePage = ({ children }: { children: ReactNode }) => {
-  const { isAuthenticated } = useAuthContext();
-
-  if (isAuthenticated) {
-    return children;
-  }
-
-  return <Paragraph>You must be logged in to access this page</Paragraph>;
-};
-
-const AnonymousPage = ({ children }: { children: ReactNode }) => {
-  const { isAuthenticated } = useAuthContext();
-
-  if (!isAuthenticated) {
-    return children;
-  }
-
-  return <Paragraph>You are already logged in</Paragraph>;
 };

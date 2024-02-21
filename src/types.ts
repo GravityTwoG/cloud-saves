@@ -1,6 +1,12 @@
+export enum UserRole {
+  "USER" = "USER",
+  "ADMIN" = "ADMIN",
+}
+
 export type User = {
   email: string;
   username: string;
+  role: UserRole;
 };
 
 export type Game = {

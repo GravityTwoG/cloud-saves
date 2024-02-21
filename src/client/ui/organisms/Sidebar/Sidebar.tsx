@@ -5,10 +5,10 @@ import { NavLinkType } from "@/client/config/navLinks";
 import { useAuthContext } from "@/client/contexts/AuthContext";
 
 import { Link, useRoute } from "wouter";
-import { AuthGuard } from "@/client/ui/atoms/AuthGuard";
-import { AnonymousGuard } from "@/client/ui/atoms/AnonumousGuard";
+import { AuthGuard } from "@/client/ui/molecules/Guard/AuthGuard";
+import { AnonymousGuard } from "@/client/ui/molecules/Guard/AnonumousGuard";
 import LogoutIcon from "@/client/ui/icons/Logout.svg";
-import { ReactNode } from "react";
+import { RouteAccess } from "@/client/config/routes";
 
 export type SidebarProps = {
   links: NavLinkType[];
@@ -32,12 +32,12 @@ export const Sidebar = (props: SidebarProps) => {
       <nav className={classes.Nav}>
         <ul>
           {props.links.map((link) => (
-            <NavLink key={link.path} {...link} />
+            <NavLink key={link.path} link={link} />
           ))}
         </ul>
       </nav>
 
-      <AuthGuard>
+      <AuthGuard forRoles={[]}>
         <button
           className={classes.LogoutButton}
           onClick={onLogout}
@@ -52,32 +52,29 @@ export const Sidebar = (props: SidebarProps) => {
 };
 
 type NavLinkProps = {
-  path: string;
-  icon?: ReactNode;
-  label: string;
-  access?: "anonymous" | "authenticated";
+  link: NavLinkType;
 };
 
-const NavLink = (props: NavLinkProps) => {
-  const [isActive] = useRoute(props.path);
+const NavLink = ({ link }: NavLinkProps) => {
+  const [isActive] = useRoute(link.path);
 
   const renderLink = () => {
     return (
       <li className={clsx(classes.NavLink, isActive && classes.NavLinkActive)}>
-        <Link href={props.path}>
-          {props.icon && <div className={classes.NavIcon}>{props.icon}</div>}
-          <span>{props.label}</span>
+        <Link href={link.path}>
+          {link.icon && <div className={classes.NavIcon}>{link.icon}</div>}
+          <span>{link.label}</span>
         </Link>
       </li>
     );
   };
 
-  if (props.access === "anonymous") {
+  if (link.access === RouteAccess.ANONYMOUS) {
     return <AnonymousGuard>{renderLink()}</AnonymousGuard>;
   }
 
-  if (props.access === "authenticated") {
-    return <AuthGuard>{renderLink()}</AuthGuard>;
+  if (link.access === RouteAccess.AUTHENTICATED) {
+    return <AuthGuard forRoles={link.forRoles}>{renderLink()}</AuthGuard>;
   }
 
   return renderLink();

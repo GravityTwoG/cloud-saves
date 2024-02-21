@@ -1,50 +1,31 @@
 import { GameSave, GameSaveSync } from "@/types";
-import { IGameSaveAPI } from "../IGameSaveAPI";
+import {
+  GetSavesQuery,
+  GetSavesResponse,
+  IGameSaveAPI,
+} from "../interfaces/IGameSaveAPI";
+import { IOSAPI } from "../interfaces/IOSAPI";
 
 export class GameSaveAPIMock implements IGameSaveAPI {
+  private readonly osAPI: IOSAPI;
+
+  constructor(osAPI: IOSAPI) {
+    this.osAPI = osAPI;
+  }
+
   getSavePaths = async (): Promise<string[]> => {
     const paths = [
-      "C:/Users/%USERNAME%/Documents",
-      "C:/Users/%USERNAME%/Documents/My Games",
-      "C:/Users/%USERNAME%/Documents/Saved Games",
+      "%USERPROFILE%\\Documents",
+      "%USERPROFILE%\\Documents\\My Games",
+      "%USERPROFILE%\\Documents\\Saved Games",
     ];
 
-    const response = await window.electronAPI.getSavePaths(paths);
+    const response = await this.osAPI.getSavePaths(paths);
     return response.data || [];
   };
 
-  isSavePaths = async (
-    paths: string[]
-  ): Promise<{ path: string; isSavePath: boolean }[]> => {
-    return paths.map((path) => {
-      return {
-        path,
-        isSavePath: true,
-      };
-    });
-  };
-
-  getFolderInfo = async (folderPath: string) => {
-    const response = await window.electronAPI.getFolderInfo(folderPath);
-
-    if (!response.data) {
-      throw response.error;
-    }
-
-    return response.data;
-  };
-
-  showFolderDialog = async () => {
-    const response = await window.electronAPI.showFolderDialog();
-
-    if (!response.data) {
-      throw response.error;
-    }
-
-    return response.data;
-  };
-
-  getUserSaves = async (): Promise<GameSave[]> => {
+  getUserSaves = async (query: GetSavesQuery): Promise<GetSavesResponse> => {
+    console.log("getUserSaves", query);
     const savesJSON = localStorage.getItem("saves");
 
     if (savesJSON) {
@@ -56,10 +37,16 @@ export class GameSaveAPIMock implements IGameSaveAPI {
         savesArray.push(saves[key]);
       }
 
-      return savesArray;
+      return {
+        items: savesArray,
+        totalCount: savesArray.length,
+      };
     }
 
-    return [];
+    return {
+      items: [],
+      totalCount: 0,
+    };
   };
 
   getUserSave = async (gameSaveId: string): Promise<GameSave> => {
@@ -73,16 +60,28 @@ export class GameSaveAPIMock implements IGameSaveAPI {
     throw new Error("User save not found");
   };
 
-  getSharedSaves = async (): Promise<GameSave[]> => {
-    return [];
+  getSharedSaves = async (query: GetSavesQuery): Promise<GetSavesResponse> => {
+    console.log("getSharedSaves", query);
+    return {
+      items: [],
+      totalCount: 0,
+    };
   };
 
-  getGlobalSaves = async (): Promise<GameSave[]> => {
-    return [];
+  getPublicSaves = async (query: GetSavesQuery): Promise<GetSavesResponse> => {
+    console.log("getGlobalSaves", query);
+    return {
+      items: [],
+      totalCount: 0,
+    };
   };
 
-  uploadSave = async (save: { path: string; name: string }): Promise<void> => {
-    const response = await window.electronAPI.uploadSave(save);
+  uploadSave = async (save: {
+    gameId: string;
+    path: string;
+    name: string;
+  }): Promise<void> => {
+    const response = await this.osAPI.uploadSave(save);
     console.log(response);
     const gameSaveId = save.path.split("/").join("-").split(" ").join("_");
 
@@ -153,7 +152,14 @@ export class GameSaveAPIMock implements IGameSaveAPI {
   };
 
   downloadSave = async (path: string) => {
-    await window.electronAPI.downloadAndExtractSave(path);
+    await this.osAPI.downloadSave(path);
+  };
+
+  downloadAndExtractSave = async (
+    archiveURL: string,
+    path: string
+  ): Promise<void> => {
+    await this.osAPI.downloadAndExtractSave(archiveURL, path);
   };
 
   deleteSave = async (gameSaveId: string): Promise<void> => {

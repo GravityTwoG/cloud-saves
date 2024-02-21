@@ -1,6 +1,6 @@
-import classes from "./register-page.module.scss";
+import { navigate } from "@/client/useHashLocation";
 
-import { navigate } from "wouter/use-location";
+import classes from "./register-page.module.scss";
 
 import { paths } from "@/client/config/routes";
 import { useAuthContext } from "@/client/contexts/AuthContext";

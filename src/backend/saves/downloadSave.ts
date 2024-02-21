@@ -1,16 +1,18 @@
 import AdmZip from "adm-zip";
 
-export async function downloadSave(url: string) {
+export async function downloadSave(archiveURL: string) {
   // TODO
-  console.log("Downloading save", url);
+  console.log("Downloading save", archiveURL);
   return { path: "" };
 }
 
-export async function downloadAndExtractSave(url: string) {
+export async function downloadAndExtractSave(archiveURL: string, path: string) {
   // TODO
-  const save = await downloadSave(url);
+  const save = await downloadSave(archiveURL);
   // TODO
   extract(save.path);
+
+  console.log("Extracted to", path);
 
   return save;
 }

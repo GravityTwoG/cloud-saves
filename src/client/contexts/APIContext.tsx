@@ -1,29 +1,38 @@
 import { ReactNode, createContext, useContext } from "react";
 
-import { IAuthAPI } from "@/client/api/IAuthAPI";
-import { IGameSaveAPI } from "@/client/api/IGameSaveAPI";
+import { IOSAPI } from "@/client/api/interfaces/IOSAPI";
+import { IAuthAPI } from "@/client/api/interfaces/IAuthAPI";
+import { IGameSaveAPI } from "@/client/api/interfaces/IGameSaveAPI";
 
+import { OSAPI } from "@/client/api/OSAPI";
 import { AuthAPIMock } from "@/client/api/mocks/AuthAPIMock";
 import { GameSaveAPIMock } from "@/client/api/mocks/GameSaveAPIMock";
 
-const authApi = new AuthAPIMock();
-const gameSaveApi = new GameSaveAPIMock();
+import { fetcher } from "@/client/api/fetcher";
+
+console.log("API_BASE_URL", fetcher);
 
 interface APIContext {
+  osAPI: IOSAPI;
   authAPI: IAuthAPI;
   gameSaveAPI: IGameSaveAPI;
 }
 
-export const APIContext = createContext<APIContext>({
-  authAPI: authApi,
-  gameSaveAPI: gameSaveApi,
-});
+const osAPI = new OSAPI();
+const authAPI = new AuthAPIMock();
+const gameSaveAPI = new GameSaveAPIMock(osAPI);
+
+const api = {
+  osAPI,
+  authAPI,
+  gameSaveAPI,
+};
+
+export const APIContext = createContext<APIContext>(api);
 
 export const ApiContextProvider = (props: { children: ReactNode }) => {
   return (
-    <APIContext.Provider value={{ authAPI: authApi, gameSaveAPI: gameSaveApi }}>
-      {props.children}
-    </APIContext.Provider>
+    <APIContext.Provider value={api}>{props.children}</APIContext.Provider>
   );
 };
 

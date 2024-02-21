@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { clsx } from "clsx";
 
 import classes from "./link.module.scss";
@@ -10,19 +11,14 @@ export type NavLinkProps = LinkProps & {
   activeClassName?: string;
 };
 
-export const NavLink = ({
-  activeClassName = classes.Active,
-  ...props
-}: NavLinkProps) => {
-  const [isActive] = useRoute(props.href);
+export const NavLink = memo(
+  ({ activeClassName = classes.Active, ...props }: NavLinkProps) => {
+    const [isActive] = useRoute(props.href);
 
-  return (
-    <span className={clsx(classes.BaseButton, isActive && activeClassName)}>
-      {
-        <Link {...props} className={clsx(props.className)} href={props.href}>
-          {props.children}
-        </Link>
-      }
-    </span>
-  );
-};
+    return (
+      <span className={clsx(classes.BaseButton, isActive && activeClassName)}>
+        <Link {...props} />
+      </span>
+    );
+  }
+);

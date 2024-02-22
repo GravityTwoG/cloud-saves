@@ -1,3 +1,5 @@
+import { ApiError } from "./ApiError";
+
 export type MyRequestInit =
   | (Omit<RequestInit, "method" | "body"> & {
       body?: Record<string, unknown> | FormData;
@@ -19,8 +21,12 @@ class Fetcher {
   ) {
     const response = await fetch(`${this.baseURL}${url}`, {
       credentials: this.credentials,
+
       ...init,
     });
+
+    this.handleError(response);
+
     return response.json() as R;
   }
 
@@ -32,10 +38,14 @@ class Fetcher {
       headers: {
         "Content-Type": "application/json",
       },
+
       body: this.toFetchBody(body),
       credentials: this.credentials,
       ...restInit,
     });
+
+    this.handleError(response);
+
     return response.json() as R;
   }
 
@@ -49,8 +59,12 @@ class Fetcher {
       },
       body: this.toFetchBody(body),
       credentials: this.credentials,
+
       ...restInit,
     });
+
+    this.handleError(response);
+
     return response.json() as R;
   }
 
@@ -59,6 +73,9 @@ class Fetcher {
       method: "DELETE",
       credentials: this.credentials,
     });
+
+    this.handleError(response);
+
     return response.json() as R;
   }
 
@@ -73,12 +90,16 @@ class Fetcher {
 
     return JSON.stringify(body);
   }
+
+  private handleError(response: Response) {
+    if (!response.ok) {
+      throw new ApiError(`${response.status}:${response.statusText}`);
+    }
+  }
 }
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:3001";
-
-console.log("API_BASE_URL", API_BASE_URL);
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
 export const fetcher = new Fetcher({
   baseURL: API_BASE_URL,

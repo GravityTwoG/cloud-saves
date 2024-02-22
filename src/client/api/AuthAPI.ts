@@ -1,4 +1,4 @@
-import { User } from "@/types";
+import { User, UserRole } from "@/types";
 import { fetcher } from "./fetcher";
 import {
   ChangePasswordCredentials,
@@ -8,17 +8,41 @@ import {
   ResetPasswordCredentials,
 } from "./interfaces/IAuthAPI";
 
+const roleMap = {
+  ROLE_USER: UserRole.USER,
+  ROLE_ADMIN: UserRole.ADMIN,
+} as const;
+
+type ServerUser = {
+  email: string;
+  username: string;
+  role: {
+    id: number;
+    name: keyof typeof roleMap;
+  };
+};
+
 export class AuthAPI implements IAuthAPI {
-  register = (credentials: RegisterCredentials): Promise<User> => {
-    return fetcher.post<User>("/auth/register", { body: credentials });
+  register = async (credentials: RegisterCredentials): Promise<User> => {
+    await fetcher.post<ServerUser>("/auth/registration", {
+      body: credentials,
+    });
+
+    return this.login(credentials);
   };
 
-  login = (credentials: LoginCredentials): Promise<User> => {
-    return fetcher.post<User>("/auth/login", { body: credentials });
+  login = async (credentials: LoginCredentials): Promise<User> => {
+    const user = await fetcher.post<ServerUser>("/auth/login", {
+      body: credentials,
+    });
+
+    return { ...user, role: roleMap[user.role.name] };
   };
 
-  getCurrentUser = (): Promise<User> => {
-    return fetcher.get<User>("/auth/me");
+  getCurrentUser = async (): Promise<User> => {
+    const user = await fetcher.get<ServerUser>("/auth/me");
+
+    return { ...user, role: roleMap[user.role.name] };
   };
 
   changePassword = (credentials: ChangePasswordCredentials): Promise<void> => {
@@ -26,7 +50,7 @@ export class AuthAPI implements IAuthAPI {
   };
 
   requestPasswordReset = (email: string): Promise<void> => {
-    return fetcher.post("/auth/request-password-reset", { body: { email } });
+    return fetcher.post("/auth/recover-password", { body: { email } });
   };
 
   resetPassword = (credentials: ResetPasswordCredentials): Promise<void> => {
@@ -34,6 +58,7 @@ export class AuthAPI implements IAuthAPI {
   };
 
   logout = async (): Promise<void> => {
+    return;
     await fetcher.post("/auth/logout");
   };
 }

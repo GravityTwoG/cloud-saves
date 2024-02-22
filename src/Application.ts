@@ -104,6 +104,7 @@ export class Application {
       height: 720,
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
+        webSecurity: false,
       },
       show: false,
       minWidth: 600,

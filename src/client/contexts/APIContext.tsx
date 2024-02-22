@@ -8,10 +8,6 @@ import { OSAPI } from "@/client/api/OSAPI";
 import { AuthAPIMock } from "@/client/api/mocks/AuthAPIMock";
 import { GameSaveAPIMock } from "@/client/api/mocks/GameSaveAPIMock";
 
-import { fetcher } from "@/client/api/fetcher";
-
-console.log("API_BASE_URL", fetcher);
-
 interface APIContext {
   osAPI: IOSAPI;
   authAPI: IAuthAPI;

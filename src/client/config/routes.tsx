@@ -1,19 +1,24 @@
-import { path } from "../lib/path";
+import { path } from "@/client/lib/path";
 import { UserRole } from "@/types";
 
-import { ProfilePage } from "../pages/Profile/ProfilePage";
-import { MySavesPage } from "../pages/MySaves/MySavesPage";
-import { MySavePage } from "../pages/MySave/MySavePage";
-import { SharedSavesPage } from "../pages/SharedSaves/SharedSavesPage";
-import { PublicSavesPage } from "../pages/PublicSaves/PublicSavesPage";
+import { LoginPage } from "@/client/pages/Login/LoginPage";
+import { RegisterPage } from "@/client/pages/Register/RegisterPage";
+import { RequestPasswordResetPage } from "@/client/pages/RequestResetPassword/RequestPasswordResetPage";
+import { ResetPasswordPage } from "@/client/pages/ResetPassword/ResetPasswordPage";
 
-import { LoginPage } from "../pages/Login/LoginPage";
-import { RegisterPage } from "../pages/Register/RegisterPage";
-import { RequestPasswordResetPage } from "../pages/RequestResetPassword/RequestPasswordResetPage";
+import { ProfilePage } from "@/client/pages/Profile/ProfilePage";
+import { MySavesPage } from "@/client/pages/MySaves/MySavesPage";
+import { MySavePage } from "@/client/pages/MySave/MySavePage";
+import { SharedSavesPage } from "@/client/pages/SharedSaves/SharedSavesPage";
+import { PublicSavesPage } from "@/client/pages/PublicSaves/PublicSavesPage";
 
-import ProfileIcon from "../ui/icons/Profile.svg";
-import SaveIcon from "../ui/icons/Save.svg";
-import { ResetPasswordPage } from "../pages/ResetPassword/ResetPasswordPage";
+import { GamesPage } from "@/client/pages/Games/GamesPage";
+import { GamePage } from "@/client/pages/Games/Game/GamePage";
+import { GameAddPage } from "@/client/pages/Games/GameAdd/GameAddPage";
+
+import ProfileIcon from "@/client/ui/icons/Profile.svg";
+import SaveIcon from "@/client/ui/icons/Save.svg";
+import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
 
 const profile = path("/");
 const mySaves = path("/my-saves");
@@ -21,22 +26,30 @@ const mySave = mySaves.path("/:gameSaveId");
 const sharedSaves = path("/shared-saves");
 const publicSaves = path("/public-saves");
 
+const games = path("/games");
+const gameAdd = path("/games-add");
+const game = games.path("/:gameId");
+
 const register = path("/register");
 const login = path("/login");
 const requestPasswordReset = path("/request-password-reset");
 const resetPassword = path("/reset-password");
 
 export const paths = {
+  register,
+  login,
+  requestPasswordReset,
+  resetPassword,
+
   profile,
   mySaves,
   mySave,
   sharedSaves,
   publicSaves,
 
-  register,
-  login,
-  requestPasswordReset,
-  resetPassword,
+  games,
+  game,
+  gameAdd,
 };
 
 export enum RouteAccess {
@@ -68,6 +81,35 @@ export type PrivateRouteDescriptor = {
 export type RouteDescriptor = PublicRouteDescriptor | PrivateRouteDescriptor;
 
 export const routes: RouteDescriptor[] = [
+  {
+    path: paths.login.pattern,
+    component: LoginPage,
+    access: RouteAccess.ANONYMOUS,
+    link: {
+      label: "Login",
+      path: paths.login({}),
+    },
+  },
+  {
+    path: paths.register.pattern,
+    component: RegisterPage,
+    access: RouteAccess.ANONYMOUS,
+    link: {
+      label: "Register",
+      path: paths.register({}),
+    },
+  },
+  {
+    path: paths.requestPasswordReset.pattern,
+    component: RequestPasswordResetPage,
+    access: RouteAccess.ANONYMOUS,
+  },
+  {
+    path: paths.resetPassword.pattern,
+    component: ResetPasswordPage,
+    access: RouteAccess.ANONYMOUS,
+  },
+
   {
     path: paths.profile.pattern,
     component: ProfilePage,
@@ -116,32 +158,28 @@ export const routes: RouteDescriptor[] = [
     access: RouteAccess.AUTHENTICATED,
     forRoles: [UserRole.USER],
   },
+
   {
-    path: paths.login.pattern,
-    component: LoginPage,
-    access: RouteAccess.ANONYMOUS,
+    path: paths.games.pattern,
+    component: GamesPage,
+    access: RouteAccess.AUTHENTICATED,
+    forRoles: [UserRole.ADMIN],
     link: {
-      label: "Login",
-      path: paths.login({}),
+      label: "Games",
+      path: paths.games({}),
+      icon: <GamepadIcon />,
     },
   },
   {
-    path: paths.register.pattern,
-    component: RegisterPage,
-    access: RouteAccess.ANONYMOUS,
-    link: {
-      label: "Register",
-      path: paths.register({}),
-    },
+    path: paths.game.pattern,
+    component: GamePage,
+    access: RouteAccess.AUTHENTICATED,
+    forRoles: [UserRole.ADMIN],
   },
   {
-    path: paths.requestPasswordReset.pattern,
-    component: RequestPasswordResetPage,
-    access: RouteAccess.ANONYMOUS,
-  },
-  {
-    path: paths.resetPassword.pattern,
-    component: ResetPasswordPage,
-    access: RouteAccess.ANONYMOUS,
+    path: paths.gameAdd.pattern,
+    component: GameAddPage,
+    access: RouteAccess.AUTHENTICATED,
+    forRoles: [UserRole.ADMIN],
   },
 ];

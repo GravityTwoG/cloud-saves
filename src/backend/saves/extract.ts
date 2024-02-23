@@ -1,30 +1,4 @@
-export type JSONType = {
-  [key: string | number]:
-    | string
-    | number
-    | boolean
-    | null
-    | JSONType
-    | JSONType[];
-};
-
-export type MetadataSchema = {
-  fields: {
-    key: string;
-    type: string;
-    description: string;
-    label: string;
-  }[];
-};
-
-export type Metadata = {
-  fields: {
-    value: string | number | boolean;
-    type: string;
-    description: string;
-    label: string;
-  }[];
-};
+import { JSONType, Metadata, MetadataSchema } from "@/types";
 
 export const readByKey = (
   key: string,

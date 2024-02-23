@@ -1,0 +1,29 @@
+.Header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.GamesList {
+  margin: 1rem 0;
+}
+
+.GameItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+
+  .GameLink {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text-color);
+
+    .GameIcon {
+      width: 64px;
+      height: 64px;
+    }
+  }
+}

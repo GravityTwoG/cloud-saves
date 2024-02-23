@@ -5,6 +5,7 @@ import {
   IGameSaveAPI,
 } from "../interfaces/IGameSaveAPI";
 import { IOSAPI } from "../interfaces/IOSAPI";
+import { ApiError } from "../ApiError";
 
 export class GameSaveAPIMock implements IGameSaveAPI {
   private readonly osAPI: IOSAPI;
@@ -57,7 +58,7 @@ export class GameSaveAPIMock implements IGameSaveAPI {
       return saves[gameSaveId];
     }
 
-    throw new Error("User save not found");
+    throw new ApiError("User save not found");
   };
 
   getSharedSaves = async (query: GetSavesQuery): Promise<GetSavesResponse> => {

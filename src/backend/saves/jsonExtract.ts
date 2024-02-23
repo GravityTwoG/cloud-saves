@@ -1,11 +1,13 @@
 import fs from "fs";
-import { Metadata, MetadataSchema, extractMetadataFromJSON } from "./extract";
+import { extractMetadataFromJSON } from "./extract";
+import { Metadata, MetadataSchema } from "@/types";
 
 const jsonString = fs.readFileSync("metadata.9.json", "utf8");
 
 const json = JSON.parse(jsonString);
 
 const schema: MetadataSchema = {
+  filename: "metadata.9.json",
   fields: [
     {
       key: "Data.metadata.buildPatch",
@@ -15,19 +17,19 @@ const schema: MetadataSchema = {
     },
     {
       key: "Data.metadata.playTime",
-      type: "float_seconds",
+      type: "seconds",
       description: "Play time",
       label: "Play Time",
     },
     {
       key: "Data.metadata.playthroughTime",
-      type: "float_seconds",
+      type: "seconds",
       description: "Playthrough time",
       label: "Playthrough Time",
     },
     {
       key: "Data.metadata.level",
-      type: "float",
+      type: "number",
       description: "Player level",
       label: "Player Level",
     },
@@ -51,103 +53,103 @@ const schema: MetadataSchema = {
     },
     {
       key: "Data.metadata.streetCred",
-      type: "float",
+      type: "number",
       description: "Street cred",
       label: "Street Cred",
     },
     {
       key: "Data.metadata.gunslinger",
-      type: "float",
+      type: "number",
       description: "Gunslinger skill level",
       label: "Gunslinger",
     },
     {
       key: "Data.metadata.assault",
-      type: "float",
+      type: "number",
       description: "Assault skill level",
       label: "Assault",
     },
     {
       key: "Data.metadata.demolition",
-      type: "float",
+      type: "number",
       description: "Demolition skill level",
       label: "Demolition",
     },
     {
       key: "Data.metadata.athletics",
-      type: "float",
+      type: "number",
       description: "Athletics skill level",
       label: "Athletics",
     },
     {
       key: "Data.metadata.brawling",
-      type: "float",
+      type: "number",
       description: "Brawling skill level",
       label: "Brawling",
     },
     {
       key: "Data.metadata.coldBlood",
-      type: "float",
+      type: "number",
       description: "Cold blood skill level",
       label: "Cold Blood",
     },
     {
       key: "Data.metadata.stealth",
-      type: "float",
+      type: "number",
       description: "Stealth skill level",
       label: "Stealth",
     },
     {
       key: "Data.metadata.engineering",
-      type: "float",
+      type: "number",
       description: "Engineering skill level",
       label: "Engineering",
     },
     {
       key: "Data.metadata.crafting",
-      type: "float",
+      type: "number",
       description: "Crafting skill level",
       label: "Crafting",
     },
     {
       key: "Data.metadata.hacking",
-      type: "float",
+      type: "number",
       description: "Hacking skill level",
       label: "Hacking",
     },
     {
       key: "Data.metadata.combatHacking",
-      type: "float",
+      type: "number",
       description: "Combat hacking skill level",
       label: "Combat Hacking",
     },
     {
       key: "Data.metadata.strength",
-      type: "float",
+      type: "number",
       description: "Strength skill level",
       label: "Strength",
     },
     {
       key: "Data.metadata.intelligence",
-      type: "float",
+      type: "number",
       description: "Intelligence skill level",
       label: "Intelligence",
     },
     {
       key: "Data.metadata.reflexes",
-      type: "float",
+      type: "number",
       description: "Reflexes skill level",
       label: "Reflexes",
     },
     {
       key: "Data.metadata.technicalAbility",
-      type: "float",
+      type: "number",
       description: "Technical ability skill level",
       label: "Technical Ability",
     },
     {
       key: "Data.metadata.cool",
-      type: "float",
+      type: "number",
       description: "Cool skill level",
       label: "Cool",
     },
@@ -181,7 +183,7 @@ function renderMetadata(metadata: Metadata) {
 
   for (const field of metadata.fields) {
     strings.push(`${field.label}: ${field.description}`);
-    if (field.type === "float_seconds" && typeof field.value === "number") {
+    if (field.type === "seconds" && typeof field.value === "number") {
       strings.push(`${field.type}: ${formatTime(field.value, "seconds")}`);
     } else {
       strings.push(`${field.type}: ${field.value}`);

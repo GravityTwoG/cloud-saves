@@ -1,3 +1,12 @@
+.GameSaveSettings {
+  display: flex;
+  gap: 0.5rem;
+
+  .GameSaveSettingsLeft {
+    flex: 1;
+  }
+}
+
 .SyncSettingsPeriods {
   margin: 0.5rem 0;
   display: flex;
@@ -9,13 +18,20 @@
   font-size: 1rem;
 }
 
-.SavesList {
-  margin: 0.5rem 0;
-}
-
 .Buttons {
   margin-left: auto;
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
+}
+
+.GameSaveArchive {
+  margin-top: 2rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 1rem 1rem;
+
+  border: 1px solid var(--deco-color);
+  border-radius: 6px;
 }

@@ -6,12 +6,13 @@ import classes from "./my-save-page.module.scss";
 import { GameSave, GameSaveSync } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { notify } from "@/client/ui/toast";
+import { navigate } from "@/client/useHashLocation";
+import { paths } from "@/client/config/routes";
 
-import { H1, Paragraph } from "@/client/ui/atoms/Typography";
+import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
 import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
 import { Container } from "@/client/ui/atoms/Container/Container";
 import { Button } from "@/client/ui/atoms/Button/Button";
-import { List } from "@/client/ui/molecules/List/List";
 import { Modal } from "@/client/ui/molecules/Modal/Modal";
 
 export const MySavePage = () => {
@@ -77,13 +78,8 @@ export const MySavePage = () => {
     if (!gameSave) return;
 
     try {
-      await gameSaveAPI.deleteGameSaveArchive(gameSaveArchiveId);
-      setGameSave({
-        ...gameSave,
-        archives: gameSave.archives.filter(
-          (save) => save.id !== gameSaveArchiveId
-        ),
-      });
+      await gameSaveAPI.deleteSave(gameSaveArchiveId);
+      navigate(paths.mySaves({}));
     } catch (error) {
       notify.error(error);
     }
@@ -93,25 +89,38 @@ export const MySavePage = () => {
     <Container>
       <H1>{gameSave?.name || "Save"}</H1>
 
-      <div>
-        <Paragraph>Path: {gameSave?.path}</Paragraph>
-        <Paragraph>
-          Sync: {gameSave?.sync}{" "}
+      <div className={classes.GameSaveSettings}>
+        <div className={classes.GameSaveSettingsLeft}>
+          <Paragraph>Path: {gameSave?.path}</Paragraph>
+          <Paragraph>
+            Sync: {gameSave?.sync}{" "}
+            <Button
+              onClick={() => {
+                setSyncSettingsAreOpen(true);
+                setSync(gameSave.sync);
+              }}
+            >
+              Setup Sync
+            </Button>
+          </Paragraph>
+          <Paragraph>
+            Is public: no <Button>Make public</Button>
+          </Paragraph>
+          <Paragraph>
+            Shared with: nobody <Button>Share</Button>
+          </Paragraph>
+        </div>
+
+        <div>
           <Button
-            onClick={() => {
-              setSyncSettingsAreOpen(true);
-              setSync(gameSave.sync);
+            onDoubleClick={() => {
+              deleteSave(gameSave.id);
             }}
+            color="danger"
           >
-            Setup Sync
+            Delete
           </Button>
-        </Paragraph>
-        <Paragraph>
-          Is public: no <Button>Make public</Button>
-        </Paragraph>
-        <Paragraph>
-          Shared with: nobody <Button>Share</Button>
-        </Paragraph>
+        </div>
       </div>
 
       <Modal
@@ -162,40 +171,43 @@ export const MySavePage = () => {
         </Button>
       </Modal>
 
-      <List
-        className={classes.SavesList}
-        elements={gameSave?.archives || []}
-        getKey={(save) => save.id}
-        renderElement={(save) => (
-          <>
-            <div>
-              <Paragraph>
-                Size: <Bytes bytes={save.size} />
-              </Paragraph>
-              <Paragraph>Uploaded at: {save.createdAt}</Paragraph>
-            </div>
+      <H2>About</H2>
+      <Paragraph>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi
+        voluptas dicta qui. Aliquam fugit id, reiciendis deserunt quas
+        exercitationem repellendus soluta error odit dolorem est excepturi
+        obcaecati necessitatibus provident ab inventore officiis repudiandae!
+        Dolor ducimus vero nobis eos, suscipit velit quae autem est. Explicabo,
+        libero exercitationem nihil et soluta aliquam dignissimos repudiandae
+        consequatur ducimus molestias quibusdam quasi vitae aspernatur,
+        accusamus rem. Qui soluta praesentium, et eligendi rerum nesciunt? Sint
+        pariatur numquam quae animi incidunt enim iure perspiciatis voluptatum
+        delectus aut, nam eum sed molestiae debitis voluptate distinctio unde
+        inventore eveniet? Nostrum distinctio voluptate alias. Atque sed
+        voluptate mollitia ad labore.
+      </Paragraph>
 
-            <div className={classes.Buttons}>
-              <Button
-                onClick={async () => {
-                  downloadSave(save);
-                }}
-              >
-                Download
-              </Button>
+      <div className={classes.GameSaveArchive}>
+        <span>
+          Size: <Bytes bytes={gameSave.size} />
+        </span>
+        <span>Uploaded at: {gameSave.createdAt}</span>
 
-              <Button
-                onDoubleClick={() => {
-                  deleteSave(save.id);
-                }}
-                color="danger"
-              >
-                Delete
-              </Button>
-            </div>
-          </>
-        )}
-      />
+        <div className={classes.Buttons}>
+          <Button
+            onClick={async () => {
+              downloadSave({
+                id: gameSave.id,
+                url: gameSave.archiveURL,
+                size: gameSave.size,
+                createdAt: gameSave.createdAt,
+              });
+            }}
+          >
+            Download
+          </Button>
+        </div>
+      </div>
     </Container>
   );
 };

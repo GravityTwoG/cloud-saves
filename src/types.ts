@@ -28,10 +28,8 @@ export type GameSave = {
   name: string;
   path: string;
   sync: GameSaveSync;
-  archives: {
-    url: string;
-    id: string;
-    size: number;
-    createdAt: string;
-  }[];
+
+  archiveURL: string;
+  size: number;
+  createdAt: string;
 };

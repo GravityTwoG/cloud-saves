@@ -25,8 +25,6 @@ export interface IGameSaveAPI {
 
   downloadAndExtractSave(archiveURL: string, path: string): Promise<void>;
 
-  deleteGameSaveArchive(gameSaveArchiveId: string): Promise<void>;
-
   deleteSave(gameSaveId: string): Promise<void>;
 
   getUserSaves(query: GetSavesQuery): Promise<GetSavesResponse>;

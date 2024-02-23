@@ -84,58 +84,28 @@ export class GameSaveAPIMock implements IGameSaveAPI {
     const response = await this.osAPI.uploadSave(save);
     console.log(response);
     const gameSaveId = save.path.split("/").join("-").split(" ").join("_");
+    const gameSave: GameSave = {
+      id: gameSaveId,
+      gameId: save.path,
+      path: save.path,
+      name: save.name,
+      sync: GameSaveSync.NO,
+      archiveURL: save.path,
+      size: 42,
+      createdAt: new Date().toLocaleString(),
+    };
 
-    console.log("uploading", save.path, save.name);
     const savesJSON = localStorage.getItem("saves");
 
     if (savesJSON) {
       const saves = JSON.parse(savesJSON);
-
-      if (saves[gameSaveId]) {
-        saves[gameSaveId].archives.push({
-          url: save.path,
-          id: Math.random().toString(),
-          size: 42,
-          createdAt: new Date().toLocaleString(),
-        });
-      } else {
-        saves[gameSaveId] = {
-          id: gameSaveId,
-          gameId: save.path,
-          path: save.path,
-          name: save.name,
-          sync: "every hour",
-          archives: [
-            {
-              url: save.path,
-              id: Math.random().toString(),
-              size: 42,
-              createdAt: new Date().toLocaleString(),
-            },
-          ],
-        };
-      }
-
+      saves[gameSaveId] = gameSave;
       localStorage.setItem("saves", JSON.stringify(saves));
     } else {
       localStorage.setItem(
         "saves",
         JSON.stringify({
-          [gameSaveId]: {
-            id: gameSaveId,
-            gameId: save.path,
-            path: save.path,
-            name: save.name,
-            sync: "every hour",
-            archives: [
-              {
-                url: save.path,
-                id: Math.random().toString(),
-                size: 42,
-                createdAt: new Date().toLocaleString(),
-              },
-            ],
-          },
+          [gameSaveId]: gameSave,
         })
       );
     }
@@ -168,24 +138,6 @@ export class GameSaveAPIMock implements IGameSaveAPI {
     if (savesJSON) {
       const saves = JSON.parse(savesJSON);
       delete saves[gameSaveId];
-      localStorage.setItem("saves", JSON.stringify(saves));
-    }
-  };
-
-  deleteGameSaveArchive = async (gameSaveArchiveId: string): Promise<void> => {
-    const savesJSON = localStorage.getItem("saves");
-
-    if (savesJSON) {
-      const saves = JSON.parse(savesJSON);
-
-      for (const gameSaveId in saves) {
-        if (saves[gameSaveId].archives) {
-          saves[gameSaveId].archives = saves[gameSaveId].archives.filter(
-            (item: GameSave["archives"][0]) => item.id !== gameSaveArchiveId
-          );
-        }
-      }
-
       localStorage.setItem("saves", JSON.stringify(saves));
     }
   };

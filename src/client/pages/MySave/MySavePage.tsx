@@ -3,7 +3,7 @@ import { useParams } from "wouter";
 
 import classes from "./my-save-page.module.scss";
 
-import { GameSave, GameSaveSync } from "@/types";
+import { GameSave, GameSaveSync, Metadata, MetadataType } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { notify } from "@/client/ui/toast";
 import { navigate } from "@/client/useHashLocation";
@@ -172,20 +172,8 @@ export const MySavePage = () => {
       </Modal>
 
       <H2>About</H2>
-      <Paragraph>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi
-        voluptas dicta qui. Aliquam fugit id, reiciendis deserunt quas
-        exercitationem repellendus soluta error odit dolorem est excepturi
-        obcaecati necessitatibus provident ab inventore officiis repudiandae!
-        Dolor ducimus vero nobis eos, suscipit velit quae autem est. Explicabo,
-        libero exercitationem nihil et soluta aliquam dignissimos repudiandae
-        consequatur ducimus molestias quibusdam quasi vitae aspernatur,
-        accusamus rem. Qui soluta praesentium, et eligendi rerum nesciunt? Sint
-        pariatur numquam quae animi incidunt enim iure perspiciatis voluptatum
-        delectus aut, nam eum sed molestiae debitis voluptate distinctio unde
-        inventore eveniet? Nostrum distinctio voluptate alias. Atque sed
-        voluptate mollitia ad labore.
-      </Paragraph>
+
+      <MetadataView metadata={gameSave.metadata} />
 
       <div className={classes.GameSaveArchive}>
         <span>
@@ -209,5 +197,59 @@ export const MySavePage = () => {
         </div>
       </div>
     </Container>
+  );
+};
+
+type MetadataViewProps = {
+  metadata: Metadata;
+};
+
+const MetadataView = (props: MetadataViewProps) => {
+  return (
+    <div>
+      {props.metadata.fields.map((field, idx) => (
+        <MetadataViewItem key={idx} {...field} />
+      ))}
+    </div>
+  );
+};
+
+function formatTime(value: number, type: "seconds") {
+  if (type === "seconds") {
+    if (value < 60) {
+      return `${value} seconds`;
+    }
+    const minutes = Math.floor(value / 60);
+
+    if (minutes < 60) {
+      return `${minutes} minutes`;
+    }
+
+    const hours = Math.floor(minutes / 60);
+
+    return `${hours} hours`;
+  }
+
+  return `${value}`;
+}
+
+const MetadataViewItem = (props: {
+  label: string;
+  value: string | number | boolean;
+  type: MetadataType;
+  description: string;
+}) => {
+  if (props.type === "seconds" && typeof props.value === "number") {
+    return (
+      <div>
+        <b>{props.label}</b>: {formatTime(props.value, props.type)}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <b>{props.label}</b>: {props.value.toString()}
+    </div>
   );
 };

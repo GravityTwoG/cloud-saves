@@ -5,7 +5,7 @@ export function getFolderInfo(folderPath: string) {
   const files = fs
     .readdirSync(folderPath, { withFileTypes: true })
     .map((dirent) => {
-      const absolutefilepath = folderPath + "/" + dirent.name;
+      const absolutefilepath = path.join(folderPath, dirent.name);
       const stats: fs.Stats = fs.statSync(absolutefilepath);
       return {
         name: path.basename(absolutefilepath),

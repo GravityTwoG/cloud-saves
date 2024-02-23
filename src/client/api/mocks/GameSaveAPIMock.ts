@@ -1,4 +1,4 @@
-import { GameSave, GameSaveSync } from "@/types";
+import { GamePath, GameSave, GameSaveSync } from "@/types";
 import {
   GetSavesQuery,
   GetSavesResponse,
@@ -6,23 +6,39 @@ import {
 } from "../interfaces/IGameSaveAPI";
 import { IOSAPI } from "../interfaces/IOSAPI";
 import { ApiError } from "../ApiError";
+import { IGameAPI } from "../interfaces/IGameAPI";
 
 export class GameSaveAPIMock implements IGameSaveAPI {
   private readonly osAPI: IOSAPI;
+  private readonly gameAPI: IGameAPI;
 
-  constructor(osAPI: IOSAPI) {
+  constructor(osAPI: IOSAPI, gameAPI: IGameAPI) {
     this.osAPI = osAPI;
+    this.gameAPI = gameAPI;
   }
 
-  getSavePaths = async (): Promise<string[]> => {
-    const paths = [
-      "%USERPROFILE%\\Documents",
-      "%USERPROFILE%\\Documents\\My Games",
-      "%USERPROFILE%\\Documents\\Saved Games",
-    ];
+  getSavePaths = async (): Promise<GamePath[]> => {
+    const paths: GamePath[] = [];
+
+    const games = await this.gameAPI.getGames({
+      pageNumber: 1,
+      pageSize: 1000,
+      searchQuery: "",
+    });
+
+    for (const game of games.items) {
+      for (const path of game.paths) {
+        paths.push({ path, gameId: game.id });
+      }
+    }
 
     const response = await this.osAPI.getSavePaths(paths);
-    return response.data || [];
+
+    if (!response.data) {
+      throw new ApiError(response.error || "Failed to get save paths");
+    }
+
+    return response.data;
   };
 
   getUserSaves = async (query: GetSavesQuery): Promise<GetSavesResponse> => {
@@ -78,19 +94,24 @@ export class GameSaveAPIMock implements IGameSaveAPI {
   };
 
   uploadSave = async (save: {
-    gameId: string;
+    gameId?: string;
     path: string;
     name: string;
   }): Promise<void> => {
-    const response = await this.osAPI.uploadSave(save);
-    console.log(response);
+    const game = save.gameId
+      ? await this.gameAPI.getGame(save.gameId)
+      : undefined;
+
+    const response = await this.osAPI.uploadSave(save, game);
+
     const gameSaveId = save.path.split("/").join("-").split(" ").join("_");
     const gameSave: GameSave = {
       id: gameSaveId,
       gameId: save.path,
       path: save.path,
-      name: save.name,
+      name: game ? game.name : save.name,
       sync: GameSaveSync.NO,
+      metadata: response.metadata,
       archiveURL: save.path,
       size: 42,
       createdAt: new Date().toLocaleString(),

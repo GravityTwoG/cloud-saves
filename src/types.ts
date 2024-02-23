@@ -55,6 +55,11 @@ export type Game = {
   metadataSchema: MetadataSchema;
 };
 
+export type GamePath = {
+  path: string;
+  gameId?: string;
+};
+
 export enum GameSaveSync {
   NO = "no",
   EVERY_HOUR = "every hour",
@@ -69,6 +74,7 @@ export type GameSave = {
   name: string;
   path: string;
   sync: GameSaveSync;
+  metadata: Metadata;
 
   archiveURL: string;
   size: number;

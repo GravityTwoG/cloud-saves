@@ -1,4 +1,4 @@
-import { GameSave, GameSaveSync } from "@/types";
+import { GamePath, GameSave, GameSaveSync } from "@/types";
 
 export type GetSavesQuery = {
   searchQuery: string;
@@ -12,9 +12,13 @@ export type GetSavesResponse = {
 };
 
 export interface IGameSaveAPI {
-  getSavePaths(): Promise<string[]>;
+  getSavePaths(): Promise<GamePath[]>;
 
-  uploadSave(save: { path: string; name: string }): Promise<void>;
+  uploadSave(save: {
+    gameId?: string;
+    path: string;
+    name: string;
+  }): Promise<void>;
 
   setupSync(settings: {
     gameSaveId: string;

@@ -1,5 +1,6 @@
 import child_process from "child_process";
 import fs from "fs/promises";
+import path from "path";
 
 import { decompressSAV } from "./decompressSAV";
 
@@ -13,36 +14,40 @@ const UESAVE_TYPE_MAPS = [
 ];
 
 async function readFile(save_path: string, file: string) {
-  const data = await fs.readFile(save_path + "/" + file);
+  const filePath = path.join(save_path, file);
+  const data = await fs.readFile(filePath);
   const uncompressed_data = await decompressSAV(data, file);
 
   if (uncompressed_data != null) {
-    console.log(`File ${file} uncompressed successfully`);
+    console.log(`File ${filePath} uncompressed successfully`);
     return uncompressed_data;
   }
-  console.log(`File ${file} failed to decompress`);
 
   console.log("Reading raw data");
   return data;
 }
 
-async function convert(uesave_path: string, save_path: string, file: string) {
-  const uncompressed_data = await readFile(save_path, file);
+export async function convert(
+  save_path: string,
+  inputFilename: string,
+  outputFilename: string
+) {
+  const uncompressed_data = await readFile(save_path, inputFilename);
 
   // Save the uncompressed file
   // await fs.writeFile(save_path + "/" + file + ".gvas", uncompressed_data);
 
   try {
-    const path = uesave_path.split("\\");
-    const uesave_cwd = path.slice(0, path.length - 1).join("\\");
-    const command = path[path.length - 1];
+    const uepath = path.join(__dirname, `./assets/uesave.exe`).split("\\");
+    const uesave_cwd = uepath.slice(0, uepath.length - 1).join("\\");
+    const command = uepath[uepath.length - 1];
     const args = uesave_params(
-      save_path + "/" + file + ".json",
+      path.join(save_path, outputFilename),
       UESAVE_TYPE_MAPS
     );
 
     // Convert to json with uesave
-    console.log("Converting to JSON", file);
+    console.log("Converting to JSON", inputFilename);
     const status = await child_process.spawnSync(command, args, {
       input: uncompressed_data,
       cwd: uesave_cwd,
@@ -51,14 +56,13 @@ async function convert(uesave_path: string, save_path: string, file: string) {
     if (status.status !== 0) {
       throw status.stderr;
     }
-    console.log(`File ${file} converted to JSON successfully`);
+    console.log(`File ${inputFilename} converted to JSON successfully`);
   } catch (error) {
+    console.log(`uesave.exe failed to convert ${inputFilename}`);
     if (error instanceof Buffer) {
-      console.log(error.toString());
-    } else {
-      console.log(error);
+      throw new Error(error.toString());
     }
-    console.log(`uesave.exe failed to convert ${file}`);
+    throw error;
   }
 }
 
@@ -71,20 +75,3 @@ function uesave_params(out_path: string, uesave_type_maps: string[]) {
 
   return args;
 }
-
-async function main() {
-  if (process.argv.length < 3) {
-    process.exit(1);
-  }
-
-  const uesave_path = process.argv[2];
-  const save_path = process.argv[3];
-
-  const files = (await fs.readdir(save_path, { recursive: true })).filter(
-    (fn) => fn.endsWith(".sav") && fn !== "Level.sav"
-  );
-
-  await Promise.all(files.map((file) => convert(uesave_path, save_path, file)));
-}
-
-main();

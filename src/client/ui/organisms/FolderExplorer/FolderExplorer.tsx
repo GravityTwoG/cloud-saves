@@ -5,6 +5,7 @@ import classes from "./folder-explorer.module.scss";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { notify } from "@/client/ui/toast";
 
+import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
 import { Button } from "@/client/ui/atoms/Button/Button";
 import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
 import { Paragraph } from "@/client/ui/atoms/Typography";
@@ -31,11 +32,12 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
       setSelectedFolder("");
       setFiles(
         paths.map((path) => ({
-          name: last(path.split("/")),
-          path: path,
+          name: last(path.path.split("/")),
+          path: path.path,
           size: 0,
           mtime: null,
           type: "folder",
+          gameId: path.gameId,
         }))
       );
     } catch (e) {
@@ -47,14 +49,21 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
     getSavePaths();
   }, [getSavePaths]);
 
-  const onFolderOpen = async (filePath: string) => {
+  const onFolderOpen = async (file: FileInfo) => {
     try {
-      const folderData = await osAPI.getFolderInfo(filePath);
+      const folderData = await osAPI.getFolderInfo(file.path);
 
+      if (file.gameId) {
+        folderData.files = folderData.files.map((f) => ({
+          ...f,
+          gameId: file.gameId,
+        }));
+      }
       const { folder, files } = folderData;
+
       setSelectedFolder(folder);
       setFiles(files.sort((a, b) => a.size - b.size));
-      setParentFolder(filePath.split("/").slice(0, -1).join("/"));
+      setParentFolder(file.path.split("/").slice(0, -1).join("/"));
     } catch (e) {
       notify.error(e);
     }
@@ -73,7 +82,11 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
     }
   };
 
-  const uploadSave = async (folder: { path: string; name: string }) => {
+  const uploadSave = async (folder: {
+    gameId?: string;
+    path: string;
+    name: string;
+  }) => {
     try {
       await gameSaveAPI.uploadSave(folder);
       props.saveUploaded();
@@ -89,7 +102,16 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
       <div className={classes.FolderActions}>
         {parentFolder && (
           <Button
-            onClick={() => onFolderOpen(parentFolder)}
+            onClick={() =>
+              onFolderOpen({
+                name: "..",
+                path: parentFolder,
+                type: "folder",
+                gameId: undefined,
+                size: 0,
+                mtime: null,
+              })
+            }
             className={classes.MiniButton}
           >
             Back
@@ -111,7 +133,7 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
             <div
               onClick={() => {
                 if (file.type === "folder") {
-                  onFolderOpen(file.path);
+                  onFolderOpen(file);
                 }
               }}
               className={classes.FileInfo}
@@ -129,6 +151,7 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
               {!!file.mtime && (
                 <p>modified: {file.mtime.toLocaleDateString()}</p>
               )}
+              {!!file.gameId && <GamepadIcon className={classes.GamepadIcon} />}
             </div>
 
             <Button

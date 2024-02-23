@@ -6,11 +6,6 @@ export async function decompressSAV(data: Buffer, file: string) {
   const magic_bytes = Uint8Array.prototype.slice.call(data, 8, 11);
   const save_type = data[11];
 
-  // console.log(`File ${file} has uncompressed length ${uncompressed_len}`);
-  // console.log(`File ${file} has compressed length ${compressed_len}`);
-  // console.log(`File ${file} has magic bytes ${magic_bytes}`);
-  // console.log(`File ${file} has save type ${save_type}`);
-
   // Check for magic bytes b"PlZ"
   if (
     magic_bytes[0] != 0x50 ||
@@ -18,7 +13,7 @@ export async function decompressSAV(data: Buffer, file: string) {
     magic_bytes[2] != 0x5a
   ) {
     console.log(
-      `File ${file} is not a save file, found ${magic_bytes} instead of P1Z`
+      `File ${file} is not a save file, found ${magic_bytes} instead of PlZ`
     );
     return null;
   }

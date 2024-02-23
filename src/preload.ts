@@ -3,7 +3,7 @@
 import { contextBridge, ipcRenderer } from "electron";
 
 const electronApi: Window["electronAPI"] = {
-  onDeepLink: (callback: (link: { url: string }) => void) => {
+  onDeepLink: (callback) => {
     ipcRenderer.on("deepLink", (_, link) => {
       callback(link);
     });
@@ -11,18 +11,16 @@ const electronApi: Window["electronAPI"] = {
 
   showFolderDialog: () => ipcRenderer.invoke("showFolderDialog"),
 
-  getSavePaths: (paths: string[]) => ipcRenderer.invoke("getSavePaths", paths),
+  getSavePaths: (paths) => ipcRenderer.invoke("getSavePaths", paths),
 
-  getFolderInfo: (folderPath: string) =>
+  getFolderInfo: (folderPath) =>
     ipcRenderer.invoke("getFolderInfo", folderPath),
 
-  uploadSave: (folder: { path: string; name: string }) =>
-    ipcRenderer.invoke("uploadSave", folder),
+  uploadSave: (folder, game) => ipcRenderer.invoke("uploadSave", folder, game),
 
-  downloadSave: (archiveURL: string) =>
-    ipcRenderer.invoke("downloadSave", archiveURL),
+  downloadSave: (archiveURL) => ipcRenderer.invoke("downloadSave", archiveURL),
 
-  downloadAndExtractSave: (archiveURL: string, path: string) =>
+  downloadAndExtractSave: (archiveURL, path) =>
     ipcRenderer.invoke("downloadAndExtractSave", archiveURL, path),
 };
 

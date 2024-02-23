@@ -22,8 +22,8 @@ interface APIContext {
 
 const osAPI = new OSAPI();
 const authAPI = new AuthAPIMock();
-const gameSaveAPI = new GameSaveAPIMock(osAPI);
 const gameAPI = new GameAPIMock();
+const gameSaveAPI = new GameSaveAPIMock(osAPI, gameAPI);
 const usersAPI = new UsersAPIMock();
 
 const api = {

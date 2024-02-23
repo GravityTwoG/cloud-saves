@@ -1,5 +1,3 @@
-import { navigate } from "@/client/useHashLocation";
-
 import classes from "./login-page.module.scss";
 
 import { paths } from "../../config/routes";
@@ -34,7 +32,6 @@ export const LoginPage = () => {
         username: data.username,
         password: data.password,
       });
-      navigate(paths.profile({}));
 
       return null;
     } catch (error) {

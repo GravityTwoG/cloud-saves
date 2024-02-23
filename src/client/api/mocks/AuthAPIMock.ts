@@ -15,7 +15,12 @@ export class AuthAPIMock implements IAuthAPI {
 
   register = async (credentials: RegisterCredentials): Promise<User> => {
     await this.sleep(500);
-    const user = { ...credentials, role: UserRole.USER };
+    const user = {
+      ...credentials,
+      role: UserRole.USER,
+      isBlocked: false,
+      id: Math.random().toString(),
+    };
 
     const usersJSON = localStorage.getItem("users");
     if (usersJSON) {
@@ -39,6 +44,8 @@ export class AuthAPIMock implements IAuthAPI {
         username: "admin",
         password: "12121212",
         role: UserRole.ADMIN,
+        isBlocked: false,
+        id: Math.random().toString(),
       };
       localStorage.setItem("users", JSON.stringify([user, admin]));
     }

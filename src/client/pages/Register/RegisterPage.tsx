@@ -1,5 +1,3 @@
-import { navigate } from "@/client/useHashLocation";
-
 import classes from "./register-page.module.scss";
 
 import { paths } from "@/client/config/routes";
@@ -51,7 +49,6 @@ export const RegisterPage = () => {
         email: data.email,
         password: data.password,
       });
-      navigate(paths.profile({}));
 
       return null;
     } catch (error) {

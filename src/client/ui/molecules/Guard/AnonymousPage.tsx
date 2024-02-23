@@ -8,16 +8,20 @@ import { AuthStatus, useAuthContext } from "@/client/contexts/AuthContext";
 
 import { Spinner } from "@/client/ui/atoms/Spinner";
 import { Container } from "@/client/ui/atoms/Container/Container";
+import { UserRole } from "@/types";
 
 export const AnonymousPage = ({ children }: { children: ReactNode }) => {
-  const { authStatus } = useAuthContext();
+  const { authStatus, user } = useAuthContext();
 
   if (authStatus === AuthStatus.ANONYMOUS) {
     return children;
   }
 
-  if (authStatus === AuthStatus.AUTHENTICATED) {
-    return <Redirect to={paths.profile({})} />;
+  if (authStatus === AuthStatus.AUTHENTICATED && user.role === UserRole.USER) {
+    return <Redirect to={paths.mySaves({})} />;
+  }
+  if (authStatus === AuthStatus.AUTHENTICATED && user.role === UserRole.ADMIN) {
+    return <Redirect to={paths.games({})} />;
   }
 
   return (

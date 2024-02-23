@@ -1,0 +1,20 @@
+.UsersList {
+  margin: 1rem 0;
+}
+
+.UserItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .UserInfo {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    & > * {
+      flex: 1;
+    }
+  }
+}

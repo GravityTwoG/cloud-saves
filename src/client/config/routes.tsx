@@ -16,9 +16,17 @@ import { GamesPage } from "@/client/pages/Games/GamesPage";
 import { GamePage } from "@/client/pages/Games/Game/GamePage";
 import { GameAddPage } from "@/client/pages/Games/GameAdd/GameAddPage";
 
+import { UsersPage } from "../pages/Users/UsersPage";
+
 import ProfileIcon from "@/client/ui/icons/Profile.svg";
 import SaveIcon from "@/client/ui/icons/Save.svg";
 import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
+import UsersIcon from "@/client/ui/icons/Users.svg";
+
+const register = path("/register");
+const login = path("/login");
+const requestPasswordReset = path("/request-password-reset");
+const resetPassword = path("/reset-password");
 
 const profile = path("/");
 const mySaves = path("/my-saves");
@@ -30,10 +38,7 @@ const games = path("/games");
 const gameAdd = path("/games-add");
 const game = games.path("/:gameId");
 
-const register = path("/register");
-const login = path("/login");
-const requestPasswordReset = path("/request-password-reset");
-const resetPassword = path("/reset-password");
+const users = path("/users");
 
 export const paths = {
   register,
@@ -50,6 +55,8 @@ export const paths = {
   games,
   game,
   gameAdd,
+
+  users,
 };
 
 export enum RouteAccess {
@@ -181,5 +188,17 @@ export const routes: RouteDescriptor[] = [
     component: GameAddPage,
     access: RouteAccess.AUTHENTICATED,
     forRoles: [UserRole.ADMIN],
+  },
+
+  {
+    path: paths.users.pattern,
+    component: UsersPage,
+    access: RouteAccess.AUTHENTICATED,
+    forRoles: [UserRole.ADMIN],
+    link: {
+      label: "Users",
+      path: paths.users({}),
+      icon: <UsersIcon />,
+    },
   },
 ];

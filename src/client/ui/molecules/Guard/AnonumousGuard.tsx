@@ -1,12 +1,13 @@
 import { ReactNode } from "react";
-import { useAuthContext } from "@/client/contexts/AuthContext";
+import { AuthStatus } from "@/client/contexts/AuthContext/AuthContext";
+import { useAuthContext } from "@/client/contexts/AuthContext/useAuthContext";
 
 export const AnonymousGuard = ({ children }: { children: ReactNode }) => {
-  const { isAuthenticated } = useAuthContext();
+  const { authStatus } = useAuthContext();
 
-  if (isAuthenticated) {
-    return;
+  if (authStatus === AuthStatus.ANONYMOUS) {
+    return children;
   }
 
-  return children;
+  return null;
 };

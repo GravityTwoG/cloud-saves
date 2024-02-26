@@ -5,18 +5,17 @@ import classes from "./my-saves-widget.module.scss";
 
 import { GameSave } from "@/types";
 import { paths } from "@/client/config/routes";
-import { useAPIContext } from "@/client/contexts/APIContext";
+import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
 import { useDebouncedCallback } from "@/client/lib/hooks/useDebouncedCallback";
 import { GetSavesQuery } from "@/client/api/interfaces/IGameSaveAPI";
 import { notify } from "@/client/ui/toast";
 
 import { Link } from "wouter";
-import SearchIcon from "@/client/ui/icons/Search.svg";
 import { H2, Paragraph } from "@/client/ui/atoms/Typography";
-import { Input } from "@/client/ui/atoms/Input/Input";
-import { Button } from "@/client/ui/atoms/Button/Button";
 import { List } from "@/client/ui/molecules/List/List";
 import { Paginator } from "@/client/ui/molecules/Paginator";
+import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
+import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
 
 const defaultQuery: GetSavesQuery = {
   searchQuery: "",
@@ -25,6 +24,7 @@ const defaultQuery: GetSavesQuery = {
 };
 
 export type SavesWidgetProps = {
+  setOnSaveUpload: (saveUploaded: () => void) => void;
   className?: string;
 };
 
@@ -35,6 +35,10 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
     { saves: [], totalCount: 0 }
   );
   const [query, setQuery] = useState<GetSavesQuery>(defaultQuery);
+
+  useEffect(() => {
+    props.setOnSaveUpload(() => loadSaves(query));
+  }, [query]);
 
   useEffect(() => {
     loadSaves(query);
@@ -57,8 +61,7 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
     200
   );
 
-  const onSearch = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSearch = () => {
     loadSaves({ ...query, pageNumber: 1 });
   };
 
@@ -74,22 +77,11 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
   return (
     <div className={clsx(props.className)}>
       <H2>Uploaded Saves</H2>
-      <form className={classes.SearchForm} onSubmit={onSearch}>
-        <Input
-          placeholder="Search"
-          className={classes.SearchInput}
-          value={query.searchQuery}
-          onChange={(e) => setQuery({ ...query, searchQuery: e.target.value })}
-        />
-        <Button
-          type="submit"
-          className={classes.SearchButton}
-          title="Search"
-          aria-label="Search"
-        >
-          <SearchIcon />
-        </Button>
-      </form>
+      <SearchForm
+        searchQuery={query.searchQuery}
+        onSearch={onSearch}
+        onQueryChange={(searchQuery) => setQuery({ ...query, searchQuery })}
+      />
 
       <List
         className={classes.SavesList}
@@ -108,14 +100,14 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
             </div>
 
             <div className={classes.Buttons}>
-              <Button
-                onDoubleClick={() => {
+              <ConfirmButton
+                onClick={() => {
                   onDelete(save.id);
                 }}
                 color="danger"
               >
                 Delete
-              </Button>
+              </ConfirmButton>
             </div>
           </>
         )}

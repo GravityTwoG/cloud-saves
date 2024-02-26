@@ -3,16 +3,18 @@ import { useParams } from "wouter";
 
 import classes from "./my-save-page.module.scss";
 
-import { GameSave, GameSaveSync } from "@/types";
-import { useAPIContext } from "@/client/contexts/APIContext";
+import { GameSave, GameSaveSync, Metadata, MetadataType } from "@/types";
+import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
 import { notify } from "@/client/ui/toast";
+import { navigate } from "@/client/useHashLocation";
+import { paths } from "@/client/config/routes";
 
-import { H1, Paragraph } from "@/client/ui/atoms/Typography";
+import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
 import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
 import { Container } from "@/client/ui/atoms/Container/Container";
 import { Button } from "@/client/ui/atoms/Button/Button";
-import { List } from "@/client/ui/molecules/List/List";
 import { Modal } from "@/client/ui/molecules/Modal/Modal";
+import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
 
 export const MySavePage = () => {
   const { gameSaveAPI } = useAPIContext();
@@ -77,41 +79,49 @@ export const MySavePage = () => {
     if (!gameSave) return;
 
     try {
-      await gameSaveAPI.deleteGameSaveArchive(gameSaveArchiveId);
-      setGameSave({
-        ...gameSave,
-        archives: gameSave.archives.filter(
-          (save) => save.id !== gameSaveArchiveId
-        ),
-      });
+      await gameSaveAPI.deleteSave(gameSaveArchiveId);
+      navigate(paths.mySaves({}));
     } catch (error) {
       notify.error(error);
     }
   };
 
   return (
-    <Container>
+    <Container className={classes.MySavePage}>
       <H1>{gameSave?.name || "Save"}</H1>
 
-      <div>
-        <Paragraph>Path: {gameSave?.path}</Paragraph>
-        <Paragraph>
-          Sync: {gameSave?.sync}{" "}
-          <Button
+      <div className={classes.GameSaveSettings}>
+        <div className={classes.GameSaveSettingsLeft}>
+          <Paragraph>Path: {gameSave?.path}</Paragraph>
+          <Paragraph>
+            Sync: {gameSave?.sync}{" "}
+            <Button
+              onClick={() => {
+                setSyncSettingsAreOpen(true);
+                setSync(gameSave.sync);
+              }}
+            >
+              Setup Sync
+            </Button>
+          </Paragraph>
+          <Paragraph>
+            Is public: no <Button>Make public</Button>
+          </Paragraph>
+          <Paragraph>
+            Shared with: nobody <Button>Share</Button>
+          </Paragraph>
+        </div>
+
+        <div>
+          <ConfirmButton
             onClick={() => {
-              setSyncSettingsAreOpen(true);
-              setSync(gameSave.sync);
+              deleteSave(gameSave.id);
             }}
+            color="danger"
           >
-            Setup Sync
-          </Button>
-        </Paragraph>
-        <Paragraph>
-          Is public: no <Button>Make public</Button>
-        </Paragraph>
-        <Paragraph>
-          Shared with: nobody <Button>Share</Button>
-        </Paragraph>
+            Delete save
+          </ConfirmButton>
+        </div>
       </div>
 
       <Modal
@@ -162,40 +172,89 @@ export const MySavePage = () => {
         </Button>
       </Modal>
 
-      <List
-        className={classes.SavesList}
-        elements={gameSave?.archives || []}
-        getKey={(save) => save.id}
-        renderElement={(save) => (
-          <>
-            <div>
-              <Paragraph>
-                Size: <Bytes bytes={save.size} />
-              </Paragraph>
-              <Paragraph>Uploaded at: {save.createdAt}</Paragraph>
-            </div>
+      <H2>About</H2>
 
-            <div className={classes.Buttons}>
-              <Button
-                onClick={async () => {
-                  downloadSave(save);
-                }}
-              >
-                Download
-              </Button>
+      <MetadataView metadata={gameSave.metadata} />
 
-              <Button
-                onDoubleClick={() => {
-                  deleteSave(save.id);
-                }}
-                color="danger"
-              >
-                Delete
-              </Button>
-            </div>
-          </>
-        )}
-      />
+      <div className={classes.GameSaveArchive}>
+        <span>
+          Size: <Bytes bytes={gameSave.size} />
+        </span>
+        <span>Uploaded at: {gameSave.createdAt}</span>
+
+        <div className={classes.Buttons}>
+          <Button
+            onClick={async () => {
+              downloadSave({
+                id: gameSave.id,
+                url: gameSave.archiveURL,
+                size: gameSave.size,
+                createdAt: gameSave.createdAt,
+              });
+            }}
+          >
+            Download
+          </Button>
+        </div>
+      </div>
     </Container>
+  );
+};
+
+type MetadataViewProps = {
+  metadata: Metadata;
+};
+
+const MetadataView = (props: MetadataViewProps) => {
+  return (
+    <div>
+      {props.metadata.fields.map((field, idx) => (
+        <MetadataViewItem key={idx} {...field} />
+      ))}
+    </div>
+  );
+};
+
+function formatTime(value: number, type: "seconds") {
+  if (type === "seconds") {
+    if (value < 60) {
+      return `${value} seconds`;
+    }
+    const minutes = Math.floor(value / 60);
+
+    if (minutes < 60) {
+      return `${minutes} minutes`;
+    }
+
+    const hours = Math.floor(minutes / 60);
+
+    return `${hours} hours`;
+  }
+
+  return `${value}`;
+}
+
+const MetadataViewItem = (props: {
+  label: string;
+  value: string | number | boolean;
+  type: MetadataType;
+  description: string;
+}) => {
+  if (props.type === "seconds" && typeof props.value === "number") {
+    return (
+      <div>
+        <span className={classes.MetadataLabel}>{props.label}</span>:{" "}
+        <span className={classes.MetadataValue}>
+          {formatTime(props.value, props.type)}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <span className={classes.MetadataLabel}>{props.label}</span>:{" "}
+      <span className={classes.MetadataValue}>{props.value.toString()}</span>
+    </div>
   );
 };

@@ -9,9 +9,57 @@ export type User = {
   role: UserRole;
 };
 
+export type JSONType = {
+  [key: string | number]:
+    | string
+    | number
+    | boolean
+    | null
+    | JSONType
+    | JSONType[];
+};
+
+export type MetadataType = "string" | "number" | "boolean" | "seconds";
+
+export type MetadataSchema = {
+  filename: string;
+  fields: {
+    key: string;
+    type: MetadataType;
+    description: string;
+    label: string;
+  }[];
+};
+
+export type Metadata = {
+  fields: {
+    value: string | number | boolean;
+    type: MetadataType;
+    description: string;
+    label: string;
+  }[];
+};
+
+export type PipelineItemType = "sav-to-json";
+
 export type Game = {
   id: string;
   name: string;
+  iconURL: string;
+  paths: string[];
+  extractionPipeline: {
+    inputFilename: string;
+    type: PipelineItemType;
+    outputFilename: string;
+  }[];
+  metadataSchema: MetadataSchema;
+};
+
+export type GamePath = {
+  path: string;
+  gameId: string | undefined;
+  gameName: string | undefined;
+  gameIconURL: string | undefined;
 };
 
 export enum GameSaveSync {
@@ -28,10 +76,9 @@ export type GameSave = {
   name: string;
   path: string;
   sync: GameSaveSync;
-  archives: {
-    url: string;
-    id: string;
-    size: number;
-    createdAt: string;
-  }[];
+  metadata: Metadata;
+
+  archiveURL: string;
+  size: number;
+  createdAt: string;
 };

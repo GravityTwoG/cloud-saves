@@ -4,6 +4,7 @@ import { getFolderInfo } from "../saves/getFolderInfo";
 import { getSavePaths } from "../saves/getSavePaths";
 import { uploadSave } from "../saves/uploadSave";
 import { downloadAndExtractSave, downloadSave } from "../saves/downloadSave";
+import { Game, GamePath } from "@/types";
 
 export function setupIPC() {
   ipcMain.handle("showFolderDialog", async () => {
@@ -22,7 +23,7 @@ export function setupIPC() {
     }
   });
 
-  ipcMain.handle("getSavePaths", async (_, paths: string[]) => {
+  ipcMain.handle("getSavePaths", async (_, paths: GamePath[]) => {
     try {
       const filteredPaths = await getSavePaths(paths);
       return { data: filteredPaths };
@@ -43,12 +44,16 @@ export function setupIPC() {
 
   ipcMain.handle(
     "uploadSave",
-    async (_, folder: { gameId: string; path: string; name: string }) => {
+    async (
+      _,
+      folder: { gameId: string; path: string; name: string },
+      game: Game
+    ) => {
       try {
-        await uploadSave(folder);
-        return { data: null };
+        const data = await uploadSave(folder, game);
+        return { data };
       } catch (error) {
-        return { data: null, error: (error as Error).toString() };
+        return { data: null, error: (error as Error)?.toString() };
       }
     }
   );

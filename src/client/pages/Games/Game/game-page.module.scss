@@ -1,0 +1,15 @@
+.GamePage {
+  padding-bottom: 1rem;
+}
+
+.Header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+
+  .GameIcon {
+    width: 64px;
+    height: 64px;
+  }
+}

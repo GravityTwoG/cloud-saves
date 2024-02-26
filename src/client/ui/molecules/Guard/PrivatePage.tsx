@@ -1,14 +1,16 @@
 import { ReactNode } from "react";
 import { Redirect } from "wouter";
 
-import classes from "./private-page.module.scss";
+import classes from "./page-guard.module.scss";
 
 import { UserRole } from "@/types";
-import { useAuthContext } from "@/client/contexts/AuthContext";
+import { AuthStatus } from "@/client/contexts/AuthContext/AuthContext";
+import { useAuthContext } from "@/client/contexts/AuthContext/useAuthContext";
 import { paths } from "@/client/config/routes";
 
-import { H1 } from "../../atoms/Typography";
-import { Container } from "../../atoms/Container/Container";
+import { H1 } from "@/client/ui/atoms/Typography";
+import { Container } from "@/client/ui/atoms/Container/Container";
+import { Spinner } from "@/client/ui/atoms/Spinner";
 
 type PrivatePageProps = {
   forRoles: UserRole[];
@@ -16,9 +18,11 @@ type PrivatePageProps = {
 };
 
 export const PrivatePage = (props: PrivatePageProps) => {
-  const { isAuthenticated, user } = useAuthContext();
+  const { authStatus, user } = useAuthContext();
 
-  if (isAuthenticated && props.forRoles.length === 0) {
+  const isAuthenticated = authStatus === AuthStatus.AUTHENTICATED;
+  const rolesNotSpecified = props.forRoles.length === 0;
+  if (isAuthenticated && rolesNotSpecified) {
     return props.children;
   }
 
@@ -35,5 +39,13 @@ export const PrivatePage = (props: PrivatePageProps) => {
     );
   }
 
-  return <Redirect to={paths.login({})} />;
+  if (authStatus === AuthStatus.ANONYMOUS) {
+    return <Redirect to={paths.login({})} />;
+  }
+
+  return (
+    <Container className={classes.PageGuard}>
+      <Spinner className={classes.Spinner} />
+    </Container>
+  );
 };

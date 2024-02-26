@@ -1,15 +1,19 @@
+import { Game, GamePath, Metadata } from "@/types";
+
 export interface IOSAPI {
-  getSavePaths: (paths: string[]) => Promise<ElectronApiResponse<string[]>>;
+  getSavePaths: (paths: GamePath[]) => Promise<ElectronApiResponse<GamePath[]>>;
 
   getFolderInfo(folderPath: string): Promise<FolderInfo>;
 
   showFolderDialog(): Promise<FolderInfo>;
 
-  uploadSave(save: {
-    gameId: string;
-    path: string;
-    name: string;
-  }): Promise<void>;
+  uploadSave(
+    save: {
+      path: string;
+      name: string;
+    },
+    game?: Game
+  ): Promise<{ buffer: Buffer; metadata: Metadata }>;
 
   // Just download
   downloadSave(archiveURL: string): Promise<void>;

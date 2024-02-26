@@ -13,6 +13,9 @@ export type ModalProps = {
   title?: ReactNode;
   bodyStyle?: ReactTagProps<"div">["style"];
   children?: ReactNode;
+  showCloseButton?: boolean;
+  headerClassName?: string;
+  bodyClassName?: string;
 };
 
 export const Modal: React.FC<ModalProps> = ({
@@ -20,6 +23,7 @@ export const Modal: React.FC<ModalProps> = ({
   isOpen,
   title,
   bodyStyle,
+  showCloseButton = true,
   ...props
 }) => {
   const [delayedIsOpen, setDelayedIsOpen] = useState(isOpen);
@@ -64,13 +68,14 @@ export const Modal: React.FC<ModalProps> = ({
             onClick={(e) => e.stopPropagation()}
             className={clsx(
               classes.ModalBody,
+              props.bodyClassName,
               isOpen && delayedIsOpen && classes.ModalOpen
             )}
             style={bodyStyle}
           >
-            <div className={classes.ModalHeader}>
+            <div className={clsx(classes.ModalHeader, props.headerClassName)}>
               <div className={classes.ModalTitle}>{title}</div>
-              <Button onClick={closeModal}>X</Button>
+              {showCloseButton && <Button onClick={closeModal}>X</Button>}
             </div>
 
             {props.children}

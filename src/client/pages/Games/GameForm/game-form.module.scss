@@ -1,0 +1,34 @@
+.GameAddPage {
+  padding-bottom: 1rem;
+}
+
+.AddGameButtons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.PathItem {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 8px;
+}
+
+.PipelineItem {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 8px;
+}
+
+.SchemaField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+  margin-bottom: 8px;
+}
+
+.ImagePreview {
+  max-width: 256px;
+  max-height: 256px;
+  object-fit: contain;
+}

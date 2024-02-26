@@ -1,4 +1,4 @@
-import { useAuthContext } from "@/client/contexts/AuthContext";
+import { useAuthContext } from "@/client/contexts/AuthContext/useAuthContext";
 
 import { Container } from "@/client/ui/atoms/Container/Container";
 import { H1, H2 } from "@/client/ui/atoms/Typography";

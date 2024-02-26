@@ -4,6 +4,10 @@ type FileInfo = {
   size: number;
   mtime: Date | null;
   type: "file" | "folder";
+
+  gameId?: string;
+  gameName?: string;
+  gameIconURL?: string;
 };
 
 type FolderInfo = {
@@ -22,17 +26,35 @@ interface Window {
 
     showFolderDialog: () => Promise<ElectronApiResponse<FolderInfo>>;
 
-    getSavePaths: (paths: string[]) => Promise<ElectronApiResponse<string[]>>;
+    getSavePaths: (
+      paths: {
+        path: string;
+        gameId: string | undefined;
+        gameName: string | undefined;
+        gameIconURL: string | undefined;
+      }[]
+    ) => Promise<
+      ElectronApiResponse<
+        {
+          path: string;
+          gameId: string | undefined;
+          gameName: string | undefined;
+          gameIconURL: string | undefined;
+        }[]
+      >
+    >;
 
     getFolderInfo: (
       folderPath: string
     ) => Promise<ElectronApiResponse<FolderInfo>>;
 
-    uploadSave: (folder: {
-      gameId: string;
-      path: string;
-      name: string;
-    }) => Promise<ElectronApiResponse<void>>;
+    uploadSave: (
+      folder: {
+        path: string;
+        name: string;
+      },
+      game: unknown
+    ) => Promise<ElectronApiResponse<{ buffer: Buffer; metadata: unknown }>>;
 
     downloadSave: (archiveURL: string) => Promise<ElectronApiResponse<void>>;
 

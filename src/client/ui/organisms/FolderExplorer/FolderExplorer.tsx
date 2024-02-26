@@ -2,9 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import { clsx } from "clsx";
 
 import classes from "./folder-explorer.module.scss";
-import { useAPIContext } from "@/client/contexts/APIContext";
+import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
 import { notify } from "@/client/ui/toast";
 
+import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
 import { Button } from "@/client/ui/atoms/Button/Button";
 import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
 import { Paragraph } from "@/client/ui/atoms/Typography";
@@ -14,7 +15,11 @@ function last(arr: string[]) {
   return arr[arr.length - 1];
 }
 
-export const FolderExplorer = () => {
+export type FolderExplorerProps = {
+  saveUploaded: () => void;
+};
+
+export const FolderExplorer = (props: FolderExplorerProps) => {
   const { gameSaveAPI, osAPI } = useAPIContext();
   const [selectedFolder, setSelectedFolder] = useState<string>("");
   const [parentFolder, setParentFolder] = useState<string>("");
@@ -27,11 +32,14 @@ export const FolderExplorer = () => {
       setSelectedFolder("");
       setFiles(
         paths.map((path) => ({
-          name: last(path.split("/")),
-          path: path,
+          name: last(path.path.split("/")),
+          path: path.path,
           size: 0,
           mtime: null,
           type: "folder",
+          gameId: path.gameId,
+          gameName: path.gameName,
+          gameIconURL: path.gameIconURL,
         }))
       );
     } catch (e) {
@@ -43,14 +51,21 @@ export const FolderExplorer = () => {
     getSavePaths();
   }, [getSavePaths]);
 
-  const onFolderOpen = async (filePath: string) => {
+  const onFolderOpen = async (file: FileInfo) => {
     try {
-      const folderData = await osAPI.getFolderInfo(filePath);
+      const folderData = await osAPI.getFolderInfo(file.path);
 
+      if (file.gameId) {
+        folderData.files = folderData.files.map((f) => ({
+          ...f,
+          gameId: file.gameId,
+        }));
+      }
       const { folder, files } = folderData;
+
       setSelectedFolder(folder);
       setFiles(files.sort((a, b) => a.size - b.size));
-      setParentFolder(filePath.split("/").slice(0, -1).join("/"));
+      setParentFolder(file.path.split("/").slice(0, -1).join("/"));
     } catch (e) {
       notify.error(e);
     }
@@ -69,9 +84,14 @@ export const FolderExplorer = () => {
     }
   };
 
-  const uploadSave = async (folder: { path: string; name: string }) => {
+  const uploadSave = async (folder: {
+    gameId?: string;
+    path: string;
+    name: string;
+  }) => {
     try {
       await gameSaveAPI.uploadSave(folder);
+      props.saveUploaded();
     } catch (e) {
       notify.error(e);
     }
@@ -84,7 +104,16 @@ export const FolderExplorer = () => {
       <div className={classes.FolderActions}>
         {parentFolder && (
           <Button
-            onClick={() => onFolderOpen(parentFolder)}
+            onClick={() =>
+              onFolderOpen({
+                name: "..",
+                path: parentFolder,
+                type: "folder",
+                gameId: undefined,
+                size: 0,
+                mtime: null,
+              })
+            }
             className={classes.MiniButton}
           >
             Back
@@ -105,12 +134,12 @@ export const FolderExplorer = () => {
           <>
             <div
               onClick={() => {
-                if (file.type === "folder") {
-                  onFolderOpen(file.path);
+                if (file.type === "folder" && !file.gameId) {
+                  onFolderOpen(file);
                 }
               }}
               className={classes.FileInfo}
-              data-type={file.type}
+              data-type={file.gameId ? "file" : file.type}
             >
               <p>
                 {file.type === "folder" ? "folder: " : "file: "}
@@ -123,6 +152,20 @@ export const FolderExplorer = () => {
               )}
               {!!file.mtime && (
                 <p>modified: {file.mtime.toLocaleDateString()}</p>
+              )}
+              {!!file.gameId && (
+                <div className={classes.GameInfo}>
+                  {file.gameIconURL ? (
+                    <img
+                      src={file.gameIconURL}
+                      alt={file.gameName}
+                      className={classes.GameIcon}
+                    />
+                  ) : (
+                    <GamepadIcon className={classes.GameIcon} />
+                  )}
+                  <span>{file.gameName}</span>
+                </div>
               )}
             </div>
 

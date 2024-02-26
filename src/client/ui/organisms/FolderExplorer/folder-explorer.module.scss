@@ -17,3 +17,16 @@
   gap: 0.25rem;
   margin: 1rem 0;
 }
+
+.GameInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+
+  .GameIcon {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+  }
+}

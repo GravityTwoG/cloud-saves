@@ -1,27 +1,49 @@
-import { GameSave, GameSaveSync } from "@/types";
+import { GamePath, GameSave, GameSaveSync } from "@/types";
 import {
   GetSavesQuery,
   GetSavesResponse,
   IGameSaveAPI,
 } from "../interfaces/IGameSaveAPI";
 import { IOSAPI } from "../interfaces/IOSAPI";
+import { ApiError } from "../ApiError";
+import { IGameAPI } from "../interfaces/IGameAPI";
 
 export class GameSaveAPIMock implements IGameSaveAPI {
   private readonly osAPI: IOSAPI;
+  private readonly gameAPI: IGameAPI;
 
-  constructor(osAPI: IOSAPI) {
+  constructor(osAPI: IOSAPI, gameAPI: IGameAPI) {
     this.osAPI = osAPI;
+    this.gameAPI = gameAPI;
   }
 
-  getSavePaths = async (): Promise<string[]> => {
-    const paths = [
-      "%USERPROFILE%\\Documents",
-      "%USERPROFILE%\\Documents\\My Games",
-      "%USERPROFILE%\\Documents\\Saved Games",
-    ];
+  getSavePaths = async (): Promise<GamePath[]> => {
+    const paths: GamePath[] = [];
+
+    const games = await this.gameAPI.getGames({
+      pageNumber: 1,
+      pageSize: 1000,
+      searchQuery: "",
+    });
+
+    for (const game of games.items) {
+      for (const path of game.paths) {
+        paths.push({
+          path,
+          gameId: game.id,
+          gameName: game.name,
+          gameIconURL: game.iconURL,
+        });
+      }
+    }
 
     const response = await this.osAPI.getSavePaths(paths);
-    return response.data || [];
+
+    if (!response.data) {
+      throw new ApiError(response.error || "Failed to get save paths");
+    }
+
+    return response.data;
   };
 
   getUserSaves = async (query: GetSavesQuery): Promise<GetSavesResponse> => {
@@ -57,7 +79,7 @@ export class GameSaveAPIMock implements IGameSaveAPI {
       return saves[gameSaveId];
     }
 
-    throw new Error("User save not found");
+    throw new ApiError("User save not found");
   };
 
   getSharedSaves = async (query: GetSavesQuery): Promise<GetSavesResponse> => {
@@ -77,65 +99,40 @@ export class GameSaveAPIMock implements IGameSaveAPI {
   };
 
   uploadSave = async (save: {
-    gameId: string;
+    gameId?: string;
     path: string;
     name: string;
   }): Promise<void> => {
-    const response = await this.osAPI.uploadSave(save);
-    console.log(response);
-    const gameSaveId = save.path.split("/").join("-").split(" ").join("_");
+    const game = save.gameId
+      ? await this.gameAPI.getGame(save.gameId)
+      : undefined;
 
-    console.log("uploading", save.path, save.name);
+    const response = await this.osAPI.uploadSave(save, game);
+
+    const gameSaveId = save.path.split("/").join("-").split(" ").join("_");
+    const gameSave: GameSave = {
+      id: gameSaveId,
+      gameId: save.path,
+      path: save.path,
+      name: game ? game.name : save.name,
+      sync: GameSaveSync.NO,
+      metadata: response.metadata,
+      archiveURL: save.path,
+      size: 42,
+      createdAt: new Date().toLocaleString(),
+    };
+
     const savesJSON = localStorage.getItem("saves");
 
     if (savesJSON) {
       const saves = JSON.parse(savesJSON);
-
-      if (saves[gameSaveId]) {
-        saves[gameSaveId].archives.push({
-          url: save.path,
-          id: Math.random().toString(),
-          size: 42,
-          createdAt: new Date().toLocaleString(),
-        });
-      } else {
-        saves[gameSaveId] = {
-          id: gameSaveId,
-          gameId: save.path,
-          path: save.path,
-          name: save.name,
-          sync: "every hour",
-          archives: [
-            {
-              url: save.path,
-              id: Math.random().toString(),
-              size: 42,
-              createdAt: new Date().toLocaleString(),
-            },
-          ],
-        };
-      }
-
+      saves[gameSaveId] = gameSave;
       localStorage.setItem("saves", JSON.stringify(saves));
     } else {
       localStorage.setItem(
         "saves",
         JSON.stringify({
-          [gameSaveId]: {
-            id: gameSaveId,
-            gameId: save.path,
-            path: save.path,
-            name: save.name,
-            sync: "every hour",
-            archives: [
-              {
-                url: save.path,
-                id: Math.random().toString(),
-                size: 42,
-                createdAt: new Date().toLocaleString(),
-              },
-            ],
-          },
+          [gameSaveId]: gameSave,
         })
       );
     }
@@ -168,24 +165,6 @@ export class GameSaveAPIMock implements IGameSaveAPI {
     if (savesJSON) {
       const saves = JSON.parse(savesJSON);
       delete saves[gameSaveId];
-      localStorage.setItem("saves", JSON.stringify(saves));
-    }
-  };
-
-  deleteGameSaveArchive = async (gameSaveArchiveId: string): Promise<void> => {
-    const savesJSON = localStorage.getItem("saves");
-
-    if (savesJSON) {
-      const saves = JSON.parse(savesJSON);
-
-      for (const gameSaveId in saves) {
-        if (saves[gameSaveId].archives) {
-          saves[gameSaveId].archives = saves[gameSaveId].archives.filter(
-            (item: GameSave["archives"][0]) => item.id !== gameSaveArchiveId
-          );
-        }
-      }
-
       localStorage.setItem("saves", JSON.stringify(saves));
     }
   };

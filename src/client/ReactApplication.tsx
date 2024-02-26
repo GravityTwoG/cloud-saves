@@ -1,6 +1,6 @@
 import { UserRole } from "@/types";
 
-import { AuthContextProvider } from "./contexts/AuthContext";
+import { AuthContextProvider } from "./contexts/AuthContext/AuthContextProvider";
 
 import { AuthGuard } from "./ui/molecules/Guard/AuthGuard";
 import { DownloadManager } from "./ui/organisms/DownloadManager/DownloadManager";

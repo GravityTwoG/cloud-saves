@@ -4,7 +4,7 @@ import classes from "./games-page.module.scss";
 
 import { Game } from "@/types";
 import { paths } from "@/client/config/routes";
-import { useAPIContext } from "@/client/contexts/APIContext";
+import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
 import { useDebouncedCallback } from "@/client/lib/hooks/useDebouncedCallback";
 import { GetGamesQuery } from "@/client/api/interfaces/IGameAPI";
 import { notify } from "@/client/ui/toast";

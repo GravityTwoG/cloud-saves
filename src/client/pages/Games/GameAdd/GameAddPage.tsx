@@ -1,6 +1,6 @@
 import classes from "./game-add-page.module.scss";
 
-import { useAPIContext } from "@/client/contexts/APIContext";
+import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
 import { notify } from "@/client/ui/toast";
 import { navigate } from "@/client/useHashLocation";
 import { paths } from "@/client/config/routes";

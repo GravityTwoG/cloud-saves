@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import { AuthStatus, useAuthContext } from "@/client/contexts/AuthContext";
+import { AuthStatus } from "@/client/contexts/AuthContext/AuthContext";
+import { useAuthContext } from "@/client/contexts/AuthContext/useAuthContext";
 
 export const AnonymousGuard = ({ children }: { children: ReactNode }) => {
   const { authStatus } = useAuthContext();

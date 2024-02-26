@@ -1,7 +1,7 @@
 import classes from "./register-page.module.scss";
 
 import { paths } from "@/client/config/routes";
-import { useAuthContext } from "@/client/contexts/AuthContext";
+import { useAuthContext } from "@/client/contexts/AuthContext/useAuthContext";
 
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container/Container";

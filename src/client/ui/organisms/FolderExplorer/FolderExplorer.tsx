@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { clsx } from "clsx";
 
 import classes from "./folder-explorer.module.scss";
-import { useAPIContext } from "@/client/contexts/APIContext";
+import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
 import { notify } from "@/client/ui/toast";
 
 import GamepadIcon from "@/client/ui/icons/Gamepad.svg";

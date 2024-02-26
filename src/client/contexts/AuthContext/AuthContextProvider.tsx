@@ -1,69 +1,22 @@
-import {
-  ReactNode,
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { navigate } from "@/client/useHashLocation";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 
+import { navigate } from "@/client/useHashLocation";
+import { User } from "@/types";
 import { paths } from "@/client/config/routes";
 
-import { User, UserRole } from "@/types";
 import {
   ChangePasswordCredentials,
   LoginCredentials,
   RegisterCredentials,
   ResetPasswordCredentials,
 } from "@/client/api/interfaces/IAuthAPI";
-import { useAPIContext } from "./APIContext";
-
-const emptyUser: User = {
-  email: "$EMAIL$",
-  username: "$NAME$",
-  role: UserRole.USER,
-};
-
-export enum AuthStatus {
-  INITIAL = "INITIAL",
-  PENDING = "PENDING",
-  ANONYMOUS = "ANONYMOUS",
-  AUTHENTICATED = "AUTHENTICATED",
-}
-
-interface AuthContext {
-  authStatus: AuthStatus;
-  user: User;
-
-  register: (credentials: RegisterCredentials) => Promise<void>;
-
-  login: (credentials: LoginCredentials) => Promise<void>;
-
-  changePassword: (credentials: ChangePasswordCredentials) => Promise<void>;
-
-  requestPasswordReset: (email: string) => Promise<void>;
-
-  resetPassword: (credentials: ResetPasswordCredentials) => Promise<void>;
-
-  logout: () => Promise<void>;
-}
-
-export const AuthContext = createContext<AuthContext>({
-  authStatus: AuthStatus.INITIAL,
-  user: emptyUser,
-  register: async () => {},
-  login: async () => {},
-  changePassword: async () => {},
-  requestPasswordReset: async () => {},
-  resetPassword: async () => {},
-  logout: async () => {},
-});
+import { useAPIContext } from "../APIContext/useAPIContext";
+import { AuthStatus, emptyUser, AuthContext } from "./AuthContext";
 
 export const AuthContextProvider = (props: { children: ReactNode }) => {
   const { authAPI } = useAPIContext();
   const [authStatus, setAuthStatus] = useState<AuthStatus>(AuthStatus.INITIAL);
-  const [user, setUser] = useState<AuthContext["user"]>(emptyUser);
+  const [user, setUser] = useState<User>(emptyUser);
 
   useEffect(() => {
     setAuthStatus(AuthStatus.PENDING);
@@ -130,8 +83,4 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
       {...props}
     />
   );
-};
-
-export const useAuthContext = () => {
-  return useContext(AuthContext);
 };

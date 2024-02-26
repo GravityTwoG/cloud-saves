@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import classes from "./users-page.module.scss";
 
-import { useAPIContext } from "@/client/contexts/APIContext";
+import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
 import { useDebouncedCallback } from "@/client/lib/hooks/useDebouncedCallback";
 import { GetUsersQuery, UserForAdmin } from "@/client/api/interfaces/IUsersAPI";
 import { GetGamesQuery } from "@/client/api/interfaces/IGameAPI";

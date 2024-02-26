@@ -9,11 +9,11 @@ import { GetGamesQuery } from "@/client/api/interfaces/IGameAPI";
 import { notify } from "@/client/ui/toast";
 
 import { H1 } from "@/client/ui/atoms/Typography";
-import { Button } from "@/client/ui/atoms/Button/Button";
 import { Container } from "@/client/ui/atoms/Container/Container";
 import { List } from "@/client/ui/molecules/List/List";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
+import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
 
 const defaultQuery: GetUsersQuery = {
   searchQuery: "",
@@ -99,7 +99,7 @@ export const UsersPage = () => {
             </div>
 
             <div>
-              <Button
+              <ConfirmButton
                 onClick={() => {
                   if (user.isBlocked) {
                     onUnBlock(user.id);
@@ -108,9 +108,10 @@ export const UsersPage = () => {
                   }
                 }}
                 color={user.isBlocked ? "primary" : "danger"}
+                prompt={user.isBlocked ? "Unblock user?" : "Block user?"}
               >
                 {user.isBlocked ? "Unblock" : "Block"}
-              </Button>
+              </ConfirmButton>
             </div>
           </>
         )}

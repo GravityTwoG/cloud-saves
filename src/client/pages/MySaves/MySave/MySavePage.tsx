@@ -14,6 +14,7 @@ import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
 import { Container } from "@/client/ui/atoms/Container/Container";
 import { Button } from "@/client/ui/atoms/Button/Button";
 import { Modal } from "@/client/ui/molecules/Modal/Modal";
+import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
 
 export const MySavePage = () => {
   const { gameSaveAPI } = useAPIContext();
@@ -86,7 +87,7 @@ export const MySavePage = () => {
   };
 
   return (
-    <Container>
+    <Container className={classes.MySavePage}>
       <H1>{gameSave?.name || "Save"}</H1>
 
       <div className={classes.GameSaveSettings}>
@@ -112,14 +113,14 @@ export const MySavePage = () => {
         </div>
 
         <div>
-          <Button
-            onDoubleClick={() => {
+          <ConfirmButton
+            onClick={() => {
               deleteSave(gameSave.id);
             }}
             color="danger"
           >
-            Delete
-          </Button>
+            Delete save
+          </ConfirmButton>
         </div>
       </div>
 
@@ -242,14 +243,18 @@ const MetadataViewItem = (props: {
   if (props.type === "seconds" && typeof props.value === "number") {
     return (
       <div>
-        <b>{props.label}</b>: {formatTime(props.value, props.type)}
+        <span className={classes.MetadataLabel}>{props.label}</span>:{" "}
+        <span className={classes.MetadataValue}>
+          {formatTime(props.value, props.type)}
+        </span>
       </div>
     );
   }
 
   return (
     <div>
-      <b>{props.label}</b>: {props.value.toString()}
+      <span className={classes.MetadataLabel}>{props.label}</span>:{" "}
+      <span className={classes.MetadataValue}>{props.value.toString()}</span>
     </div>
   );
 };

@@ -1,11 +1,11 @@
-import { Game, Metadata } from "@/types";
+import { Game, GamePath, Metadata } from "@/types";
 import { IOSAPI } from "./interfaces/IOSAPI";
 import { ApiError } from "./ApiError";
 
 export class OSAPI implements IOSAPI {
   getSavePaths = async (
-    paths: { path: string; gameId?: string }[]
-  ): Promise<ElectronApiResponse<{ path: string; gameId?: string }[]>> => {
+    paths: GamePath[]
+  ): Promise<ElectronApiResponse<GamePath[]>> => {
     const response = await window.electronAPI.getSavePaths(paths);
 
     return response;

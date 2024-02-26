@@ -4,7 +4,10 @@ type FileInfo = {
   size: number;
   mtime: Date | null;
   type: "file" | "folder";
+
   gameId?: string;
+  gameName?: string;
+  gameIconURL?: string;
 };
 
 type FolderInfo = {
@@ -24,8 +27,22 @@ interface Window {
     showFolderDialog: () => Promise<ElectronApiResponse<FolderInfo>>;
 
     getSavePaths: (
-      paths: { path: string; gameId?: string }[]
-    ) => Promise<ElectronApiResponse<{ path: string; gameId?: string }[]>>;
+      paths: {
+        path: string;
+        gameId: string | undefined;
+        gameName: string | undefined;
+        gameIconURL: string | undefined;
+      }[]
+    ) => Promise<
+      ElectronApiResponse<
+        {
+          path: string;
+          gameId: string | undefined;
+          gameName: string | undefined;
+          gameIconURL: string | undefined;
+        }[]
+      >
+    >;
 
     getFolderInfo: (
       folderPath: string

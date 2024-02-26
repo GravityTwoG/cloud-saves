@@ -18,7 +18,7 @@ function replaceShorthands(path: string) {
 }
 
 export async function getSavePaths(paths: GamePath[]): Promise<GamePath[]> {
-  const validPaths = [];
+  const validPaths: GamePath[] = [];
 
   for (const gamePath of paths) {
     const realPath = replaceShorthands(gamePath.path);
@@ -27,16 +27,16 @@ export async function getSavePaths(paths: GamePath[]): Promise<GamePath[]> {
 
     if (fs.existsSync(realPath)) {
       validPaths.push({
+        ...gamePath,
         path: realPath,
-        gameId: gamePath.gameId,
       });
     } else if (isGlob) {
       const files = getFiles(realPath);
 
       for (const file of files) {
         validPaths.push({
+          ...gamePath,
           path: file.path,
-          gameId: gamePath.gameId,
         });
       }
     }

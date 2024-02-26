@@ -11,12 +11,12 @@ import { notify } from "@/client/ui/toast";
 
 import { Link } from "wouter";
 import { H1 } from "@/client/ui/atoms/Typography";
-import { Button } from "@/client/ui/atoms/Button/Button";
 import { Container } from "@/client/ui/atoms/Container/Container";
 import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
 import { List } from "@/client/ui/molecules/List/List";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
+import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
 
 const defaultQuery: GetGamesQuery = {
   searchQuery: "",
@@ -100,14 +100,14 @@ export const GamesPage = () => {
             </Link>
 
             <div>
-              <Button
-                onDoubleClick={() => {
+              <ConfirmButton
+                onClick={() => {
                   onDelete(game.id);
                 }}
                 color="danger"
               >
                 Delete
-              </Button>
+              </ConfirmButton>
             </div>
           </>
         )}

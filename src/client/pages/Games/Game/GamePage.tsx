@@ -11,9 +11,9 @@ import { paths } from "@/client/config/routes";
 import { GameFormData } from "../utils";
 
 import { H1 } from "@/client/ui/atoms/Typography";
-import { Button } from "@/client/ui/atoms/Button/Button";
 import { Container } from "@/client/ui/atoms/Container/Container";
 import { GameForm } from "../GameForm/GameForm";
+import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
 
 export const GamePage = () => {
   const { gameAPI } = useAPIContext();
@@ -72,14 +72,14 @@ export const GamePage = () => {
       </div>
 
       <div>
-        <Button
-          onDoubleClick={() => {
+        <ConfirmButton
+          onClick={() => {
             onDelete(game.id);
           }}
           color="danger"
         >
           Delete Game
-        </Button>
+        </ConfirmButton>
       </div>
 
       <GameForm game={game} onSubmit={onSubmit} />

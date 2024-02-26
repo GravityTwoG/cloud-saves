@@ -28,7 +28,12 @@ export class GameSaveAPIMock implements IGameSaveAPI {
 
     for (const game of games.items) {
       for (const path of game.paths) {
-        paths.push({ path, gameId: game.id });
+        paths.push({
+          path,
+          gameId: game.id,
+          gameName: game.name,
+          gameIconURL: game.iconURL,
+        });
       }
     }
 

@@ -57,7 +57,9 @@ export type Game = {
 
 export type GamePath = {
   path: string;
-  gameId?: string;
+  gameId: string | undefined;
+  gameName: string | undefined;
+  gameIconURL: string | undefined;
 };
 
 export enum GameSaveSync {

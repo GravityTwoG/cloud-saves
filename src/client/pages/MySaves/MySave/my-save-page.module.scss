@@ -1,3 +1,8 @@
+.MySavePage {
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+}
+
 .GameSaveSettings {
   display: flex;
   gap: 0.5rem;
@@ -34,4 +39,11 @@
 
   border: 1px solid var(--deco-color);
   border-radius: 6px;
+}
+
+.MetadataLabel {
+}
+
+.MetadataValue {
+  font-weight: bold;
 }

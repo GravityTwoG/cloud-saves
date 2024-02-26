@@ -12,10 +12,10 @@ import { notify } from "@/client/ui/toast";
 
 import { Link } from "wouter";
 import { H2, Paragraph } from "@/client/ui/atoms/Typography";
-import { Button } from "@/client/ui/atoms/Button/Button";
 import { List } from "@/client/ui/molecules/List/List";
 import { Paginator } from "@/client/ui/molecules/Paginator";
-import { SearchForm } from "../../molecules/SearchForm/SearchForm";
+import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
+import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
 
 const defaultQuery: GetSavesQuery = {
   searchQuery: "",
@@ -100,14 +100,14 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
             </div>
 
             <div className={classes.Buttons}>
-              <Button
-                onDoubleClick={() => {
+              <ConfirmButton
+                onClick={() => {
                   onDelete(save.id);
                 }}
                 color="danger"
               >
                 Delete
-              </Button>
+              </ConfirmButton>
             </div>
           </>
         )}

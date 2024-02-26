@@ -38,6 +38,8 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
           mtime: null,
           type: "folder",
           gameId: path.gameId,
+          gameName: path.gameName,
+          gameIconURL: path.gameIconURL,
         }))
       );
     } catch (e) {
@@ -132,12 +134,12 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
           <>
             <div
               onClick={() => {
-                if (file.type === "folder") {
+                if (file.type === "folder" && !file.gameId) {
                   onFolderOpen(file);
                 }
               }}
               className={classes.FileInfo}
-              data-type={file.type}
+              data-type={file.gameId ? "file" : file.type}
             >
               <p>
                 {file.type === "folder" ? "folder: " : "file: "}
@@ -151,7 +153,20 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
               {!!file.mtime && (
                 <p>modified: {file.mtime.toLocaleDateString()}</p>
               )}
-              {!!file.gameId && <GamepadIcon className={classes.GamepadIcon} />}
+              {!!file.gameId && (
+                <div className={classes.GameInfo}>
+                  {file.gameIconURL ? (
+                    <img
+                      src={file.gameIconURL}
+                      alt={file.gameName}
+                      className={classes.GameIcon}
+                    />
+                  ) : (
+                    <GamepadIcon className={classes.GameIcon} />
+                  )}
+                  <span>{file.gameName}</span>
+                </div>
+              )}
             </div>
 
             <Button

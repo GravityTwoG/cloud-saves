@@ -1,9 +1,7 @@
 import { Game, GamePath, Metadata } from "@/types";
 
 export interface IOSAPI {
-  getSavePaths: (
-    paths: { path: string; gameId?: string }[]
-  ) => Promise<ElectronApiResponse<GamePath[]>>;
+  getSavePaths: (paths: GamePath[]) => Promise<ElectronApiResponse<GamePath[]>>;
 
   getFolderInfo(folderPath: string): Promise<FolderInfo>;
 

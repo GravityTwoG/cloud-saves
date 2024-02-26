@@ -18,8 +18,15 @@
   margin: 1rem 0;
 }
 
-.GamepadIcon {
-  margin-top: 0.5rem;
-  width: 16px;
-  height: 16px;
+.GameInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+
+  .GameIcon {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+  }
 }

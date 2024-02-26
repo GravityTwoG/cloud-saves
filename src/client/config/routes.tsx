@@ -8,7 +8,7 @@ import { ResetPasswordPage } from "@/client/pages/ResetPassword/ResetPasswordPag
 
 import { ProfilePage } from "@/client/pages/Profile/ProfilePage";
 import { MySavesPage } from "@/client/pages/MySaves/MySavesPage";
-import { MySavePage } from "@/client/pages/MySave/MySavePage";
+import { MySavePage } from "@/client/pages/MySaves/MySave/MySavePage";
 import { SharedSavesPage } from "@/client/pages/SharedSaves/SharedSavesPage";
 import { PublicSavesPage } from "@/client/pages/PublicSaves/PublicSavesPage";
 

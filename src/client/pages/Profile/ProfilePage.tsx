@@ -1,4 +1,5 @@
 import { useAuthContext } from "@/client/contexts/AuthContext/useAuthContext";
+import { notify } from "@/client/ui/toast";
 
 import { Container } from "@/client/ui/atoms/Container/Container";
 import { H1, H2 } from "@/client/ui/atoms/Typography";
@@ -32,7 +33,7 @@ export const ProfilePage = () => {
         newPassword: data.newPassword,
       });
 
-      alert("Password changed");
+      notify.success("Password changed");
     } catch (error) {
       if (error instanceof Error) {
         return error.message;

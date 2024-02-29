@@ -43,7 +43,13 @@ export class AuthAPI implements IAuthAPI {
   };
 
   changePassword = (credentials: ChangePasswordCredentials): Promise<void> => {
-    return fetcher.post("/auth/change-password", { body: credentials });
+    return fetcher.post("/auth/auth-change-password", {
+      body: {
+        oldPassword: credentials.oldPassword,
+        password: credentials.newPassword,
+        repeatedPassword: credentials.newPassword,
+      },
+    });
   };
 
   requestPasswordReset = (email: string): Promise<void> => {
@@ -51,7 +57,13 @@ export class AuthAPI implements IAuthAPI {
   };
 
   resetPassword = (credentials: ResetPasswordCredentials): Promise<void> => {
-    return fetcher.post("/auth/reset-password", { body: credentials });
+    return fetcher.post("/auth/change-password", {
+      body: {
+        token: credentials.token,
+        password: credentials.newPassword,
+        repeatedPassword: credentials.newPassword,
+      },
+    });
   };
 
   logout = async (): Promise<void> => {

@@ -41,6 +41,7 @@ export const GamePage = () => {
       await gameAPI.updateGame({
         id: gameId,
         name: data.name,
+        description: data.description,
         icon: data.icon[0] || undefined,
         paths: data.paths.map((path) => path.path),
         extractionPipeline: data.extractionPipeline,

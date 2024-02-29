@@ -23,6 +23,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
   } = useForm<GameFormData>({
     defaultValues: {
       name: args.defaultValue?.name,
+      description: args.defaultValue?.description,
       paths: args.defaultValue?.paths.map((path) => ({ path })) || [],
       extractionPipeline: args.defaultValue?.extractionPipeline || [],
       metadataSchema: args.defaultValue?.metadataSchema || {

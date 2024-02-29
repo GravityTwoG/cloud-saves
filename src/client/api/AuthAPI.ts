@@ -16,10 +16,7 @@ const roleMap = {
 type ServerUser = {
   email: string;
   username: string;
-  role: {
-    id: number;
-    name: keyof typeof roleMap;
-  };
+  role: keyof typeof roleMap;
 };
 
 export class AuthAPI implements IAuthAPI {
@@ -36,13 +33,13 @@ export class AuthAPI implements IAuthAPI {
       body: credentials,
     });
 
-    return { ...user, role: roleMap[user.role.name] };
+    return { ...user, role: roleMap[user.role] };
   };
 
   getCurrentUser = async (): Promise<User> => {
     const user = await fetcher.get<ServerUser>("/auth/me");
 
-    return { ...user, role: roleMap[user.role.name] };
+    return { ...user, role: roleMap[user.role] };
   };
 
   changePassword = (credentials: ChangePasswordCredentials): Promise<void> => {
@@ -58,7 +55,17 @@ export class AuthAPI implements IAuthAPI {
   };
 
   logout = async (): Promise<void> => {
-    return;
-    await fetcher.post("/auth/logout");
+    try {
+      await fetcher.post("/auth/logout");
+    } catch (e) {
+      if (
+        e instanceof SyntaxError &&
+        e.message === "Unexpected end of JSON input"
+      ) {
+        return;
+      }
+
+      throw e;
+    }
   };
 }

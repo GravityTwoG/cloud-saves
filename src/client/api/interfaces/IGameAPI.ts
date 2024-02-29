@@ -13,6 +13,7 @@ export type GetGamesResponse = {
 
 export type AddGameDTO = {
   name: string;
+  description: string;
   icon: Blob;
   paths: string[];
   extractionPipeline: {
@@ -26,6 +27,7 @@ export type AddGameDTO = {
 export type UpdateGameDTO = {
   id: string;
   name?: string;
+  description?: string;
   icon?: Blob;
   paths?: string[];
   extractionPipeline?: {

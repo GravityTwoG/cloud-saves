@@ -47,6 +47,14 @@ export const GameForm = (props: GameFormProps) => {
       {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
 
       <InputField
+        label="Game Description"
+        type="text"
+        placeholder="Enter game description"
+        {...register("description")}
+      />
+      {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
+
+      <InputField
         label="Icon"
         type="file"
         placeholder="Upload image"

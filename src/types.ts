@@ -45,6 +45,7 @@ export type PipelineItemType = "sav-to-json";
 export type Game = {
   id: string;
   name: string;
+  description: string;
   iconURL: string;
   paths: string[];
   extractionPipeline: {

@@ -2,6 +2,7 @@ import { MetadataSchema, MetadataType, PipelineItemType } from "@/types";
 
 export type GameFormData = {
   name: string;
+  description: string;
   icon: FileList;
   paths: { path: string }[];
   extractionPipeline: {

@@ -82,6 +82,7 @@ export class GameAPIMock implements IGameAPI {
       const updatedGame: Game = {
         id: game.id,
         name: game.name || existingGame.name,
+        description: game.description || existingGame.description,
         iconURL: "",
         paths: game.paths || existingGame.paths,
         extractionPipeline:

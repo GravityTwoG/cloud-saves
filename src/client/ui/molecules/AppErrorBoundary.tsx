@@ -37,7 +37,7 @@ export class AppErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <Container className="min-h-[100vh] m-8 flex items-center justify-center flex-col">
+        <Container>
           <div>
             <H1>Unknown error</H1>
 

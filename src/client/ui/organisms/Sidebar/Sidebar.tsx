@@ -5,8 +5,8 @@ import { NavLinkType } from "@/client/config/navLinks";
 import { useAuthContext } from "@/client/contexts/AuthContext/useAuthContext";
 
 import { Link, useRoute } from "wouter";
-import { AuthGuard } from "@/client/ui/molecules/Guard/AuthGuard";
-import { AnonymousGuard } from "@/client/ui/molecules/Guard/AnonumousGuard";
+import { AuthGuard } from "@/client/lib/components/Guard/AuthGuard";
+import { AnonymousGuard } from "@/client/lib/components/Guard/AnonumousGuard";
 import LogoutIcon from "@/client/ui/icons/Logout.svg";
 import { RouteAccess } from "@/client/config/routes";
 

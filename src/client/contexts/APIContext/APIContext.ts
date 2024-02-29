@@ -11,6 +11,7 @@ import { AuthAPIMock } from "@/client/api/mocks/AuthAPIMock";
 import { GameSaveAPIMock } from "@/client/api/mocks/GameSaveAPIMock";
 import { GameAPIMock } from "../../api/mocks/GameAPIMock";
 import { UsersAPIMock } from "../../api/mocks/UsersAPIMock";
+import { AuthAPI } from "@/client/api/AuthAPI";
 
 interface APIContext {
   osAPI: IOSAPI;
@@ -21,7 +22,9 @@ interface APIContext {
 }
 
 const osAPI = new OSAPI();
-const authAPI = new AuthAPIMock();
+const authAPI = import.meta.env.VITE_API_BASE_URL
+  ? new AuthAPI()
+  : new AuthAPIMock();
 const gameAPI = new GameAPIMock();
 const gameSaveAPI = new GameSaveAPIMock(osAPI, gameAPI);
 const usersAPI = new UsersAPIMock();

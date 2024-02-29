@@ -99,7 +99,7 @@ class Fetcher {
 }
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5173/api";
 
 export const fetcher = new Fetcher({
   baseURL: API_BASE_URL,

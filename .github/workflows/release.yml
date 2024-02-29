@@ -7,9 +7,6 @@ on:
 permissions:
   contents: read # for checkout
 
-env:
-  VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
-
 jobs:
   release:
     name: Release
@@ -32,9 +29,8 @@ jobs:
         run: npm clean-install
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
-      - name: Print env
-        run: echo "Hello $VITE_API_BASE_URL"
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_API_BASE_URL: http://localhost:8080
         run: npx semantic-release

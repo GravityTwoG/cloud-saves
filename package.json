@@ -1,7 +1,7 @@
 {
   "name": "cloud-saves",
   "productName": "cloud-saves",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Desktop app for managing game saves in cloud",
   "private": true,
   "repository": {

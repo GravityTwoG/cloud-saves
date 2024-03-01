@@ -79,6 +79,10 @@ class Fetcher {
     return response.json() as R;
   }
 
+  getBaseURL() {
+    return this.baseURL;
+  }
+
   private toFetchBody(body?: Record<string, unknown> | FormData) {
     if (body instanceof FormData) {
       return body;

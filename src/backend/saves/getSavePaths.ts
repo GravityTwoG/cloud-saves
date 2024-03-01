@@ -20,8 +20,6 @@ function replaceShorthands(path: string) {
 export async function getSavePaths(paths: GamePath[]): Promise<GamePath[]> {
   const validPaths: GamePath[] = [];
 
-  console.log(paths);
-
   for (const gamePath of paths) {
     const realPath = replaceShorthands(gamePath.path);
 

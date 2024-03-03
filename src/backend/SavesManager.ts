@@ -4,8 +4,8 @@ import path from "path";
 
 import { Game } from "@/types";
 
-import { convert } from "./metadata/convertToJSON";
-import { extractMetadataFromJSON } from "./metadata/extract";
+import { convertSAVToJSON } from "./metadata/convertSAVToJSON";
+import { extractMetadataFromJSON } from "./metadata/extractMetadataFromJSON";
 
 export class SavesManager {
   async uploadSave(folder: { path: string; name: string }, game?: Game) {
@@ -38,7 +38,7 @@ export class SavesManager {
 
     for (const pipelineItem of game.extractionPipeline) {
       if (pipelineItem.type === "sav-to-json") {
-        await convert(
+        await convertSAVToJSON(
           folder.path,
           pipelineItem.inputFilename,
           pipelineItem.outputFilename

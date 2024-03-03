@@ -119,6 +119,8 @@ export class GameSaveAPIMock implements IGameSaveAPI {
       metadata: response.metadata,
       archiveURL: save.path,
       size: 42,
+      uploadedAt: new Date().toLocaleString(),
+      updatedAt: new Date().toLocaleString(),
       createdAt: new Date().toLocaleString(),
     };
 

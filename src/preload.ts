@@ -22,6 +22,12 @@ const electronApi: Window["electronAPI"] = {
 
   downloadAndExtractSave: (archiveURL, path) =>
     ipcRenderer.invoke("downloadAndExtractSave", archiveURL, path),
+
+  onGetSyncedSaves: (callback) => {
+    ipcRenderer.on("getSyncedSaves", callback);
+  },
+
+  sendSyncedSaves: (args) => ipcRenderer.invoke("sendSyncedSaves", args),
 };
 
 contextBridge.exposeInMainWorld("electronAPI", electronApi);

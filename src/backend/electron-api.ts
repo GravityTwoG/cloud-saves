@@ -1,10 +1,9 @@
 import { dialog, ipcMain } from "electron";
-
-import { getFolderInfo } from "../saves/getFolderInfo";
-import { getSavePaths } from "../saves/getSavePaths";
-import { uploadSave } from "../saves/uploadSave";
-import { downloadAndExtractSave, downloadSave } from "../saves/downloadSave";
 import { Game, GamePath } from "@/types";
+
+import { getFolderInfo } from "./fs/getFolderInfo";
+import { getSavePaths } from "./fs/getSavePaths";
+import { savesManager } from ".";
 
 export function setupIPC() {
   ipcMain.handle("showFolderDialog", async () => {
@@ -50,7 +49,7 @@ export function setupIPC() {
       game: Game
     ) => {
       try {
-        const data = await uploadSave(folder, game);
+        const data = await savesManager.uploadSave(folder, game);
         return { data };
       } catch (error) {
         return { data: null, error: (error as Error)?.toString() };
@@ -60,7 +59,7 @@ export function setupIPC() {
 
   ipcMain.handle("downloadSave", async (_, archiveURL: string) => {
     try {
-      await downloadSave(archiveURL);
+      await savesManager.downloadSave(archiveURL);
       return { data: null };
     } catch (error) {
       return { data: null, error: (error as Error).toString() };
@@ -71,23 +70,11 @@ export function setupIPC() {
     "downloadAndExtractSave",
     async (_, archiveURL: string, path: string) => {
       try {
-        await downloadAndExtractSave(archiveURL, path);
+        await savesManager.downloadAndExtractSave(archiveURL, path);
         return { data: null };
       } catch (error) {
         return { data: null, error: (error as Error).toString() };
       }
     }
   );
-
-  // ipcMain.handle(
-  //   "toggleSync",
-  //   async (_, { path, enabled }: { path: string; enabled: boolean }) => {
-  //     try {
-  //       await toggleSync(path, enabled);
-  //       return { data: null };
-  //     } catch (error) {
-  //       return { data: null, error: (error as Error).toString() };
-  //     }
-  //   }
-  // );
 }

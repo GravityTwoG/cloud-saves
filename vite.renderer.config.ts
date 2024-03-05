@@ -1,30 +1,19 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import path from "path";
+import { config } from "./vite.common.config";
 
 // https://vitejs.dev/config
 export default defineConfig({
+  ...config,
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
   plugins: [
-    react({
-      include: "**/*.tsx",
-    }),
     svgr({
       include: "**/*.svg",
     }),
   ],
-  server: {
-    proxy: {
-      "/api": {
-        target: "http://localhost:8080",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-    },
-  },
 });

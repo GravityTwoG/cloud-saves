@@ -1,13 +1,16 @@
 import path from "path";
 import { BrowserWindow, Menu, Tray, app, nativeImage, Event } from "electron";
 
-import { setupIPC } from "./backend/api/saves-api";
+import { setupIPC } from "./backend/electron-api";
+import { SyncManager } from "./backend/SyncManager";
+import { syncManager } from "./backend";
 
 const clientProtocol = "cloud-saves://";
 
 export class Application {
   private mainWindow: BrowserWindow | null = null;
   private isAppQuitting = false;
+  private syncManager: SyncManager = syncManager;
 
   constructor() {}
 
@@ -15,10 +18,14 @@ export class Application {
     app.commandLine.appendSwitch("lang", "en-US");
     this.registerProtocolClient();
 
+    this.syncManager.init(() => {
+      this.mainWindow?.webContents.send("getSyncedSaves");
+    });
+
     const gotTheLock = app.requestSingleInstanceLock();
 
     if (!gotTheLock) {
-      app.quit();
+      this.quitApp();
       return;
     } else {
       app.on("second-instance", (_, commandLine) => {
@@ -48,7 +55,7 @@ export class Application {
     // Handle creating/removing shortcuts on Windows when installing/uninstalling.
     if (require("electron-squirrel-startup")) {
       this.isAppQuitting = true;
-      app.quit();
+      this.quitApp();
     }
 
     // This method will be called when Electron has finished
@@ -80,7 +87,7 @@ export class Application {
     // explicitly with Cmd + Q.
     app.on("window-all-closed", () => {
       if (process.platform !== "darwin") {
-        app.quit();
+        this.quitApp();
       }
     });
   }
@@ -155,7 +162,7 @@ export class Application {
         type: "normal",
         click: () => {
           this.isAppQuitting = true;
-          app.quit();
+          this.quitApp();
         },
       },
     ]);
@@ -168,5 +175,10 @@ export class Application {
     });
 
     return tray;
+  }
+
+  private quitApp() {
+    app.quit();
+    this.syncManager?.stop();
   }
 }

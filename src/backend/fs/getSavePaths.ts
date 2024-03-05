@@ -31,13 +31,17 @@ export async function getSavePaths(paths: GamePath[]): Promise<GamePath[]> {
         path: realPath,
       });
     } else if (isGlob) {
-      const files = getFiles(realPath);
+      try {
+        const files = getFiles(realPath);
 
-      for (const file of files) {
-        validPaths.push({
-          ...gamePath,
-          path: file.path,
-        });
+        for (const file of files) {
+          validPaths.push({
+            ...gamePath,
+            path: file.path,
+          });
+        }
+      } catch (e) {
+        console.error(e);
       }
     }
   }

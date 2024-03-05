@@ -3,6 +3,7 @@ import fs from "fs/promises";
 import path from "path";
 
 import { decompressSAV } from "./decompressSAV";
+import { Converter } from "./Converter";
 
 const UESAVE_TYPE_MAPS = [
   ".worldSaveData.CharacterSaveParameterMap.Key=Struct",
@@ -27,21 +28,18 @@ async function readFile(save_path: string, file: string) {
   return data;
 }
 
-export async function convert(
-  save_path: string,
-  inputFilename: string,
-  outputFilename: string
+export const convertSAVToJSON: Converter = async function (
+  save_path,
+  inputFilename,
+  outputFilename
 ) {
   const uncompressed_data = await readFile(save_path, inputFilename);
-
-  // Save the uncompressed file
-  // await fs.writeFile(save_path + "/" + file + ".gvas", uncompressed_data);
 
   try {
     const uepath = path.join(__dirname, `./assets/uesave.exe`).split("\\");
     const uesave_cwd = uepath.slice(0, uepath.length - 1).join("\\");
     const command = uepath[uepath.length - 1];
-    const args = uesave_params(
+    const args = toUesaveParams(
       path.join(save_path, outputFilename),
       UESAVE_TYPE_MAPS
     );
@@ -64,9 +62,9 @@ export async function convert(
     }
     throw error;
   }
-}
+};
 
-function uesave_params(out_path: string, uesave_type_maps: string[]) {
+function toUesaveParams(out_path: string, uesave_type_maps: string[]) {
   const args = ["to-json", "--output", out_path];
   for (const map_type of uesave_type_maps) {
     args.push("--type");

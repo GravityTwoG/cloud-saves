@@ -81,5 +81,8 @@ export type GameSave = {
 
   archiveURL: string;
   size: number;
+
+  uploadedAt: string;
+  updatedAt: string;
   createdAt: string;
 };

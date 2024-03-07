@@ -35,3 +35,11 @@ Package app
 ```sh
 npm run package
 ```
+
+Modules diagram
+
+```sh
+npx madge --image graph.svg .\src\renderer.ts
+npx madge --image graph.svg .\src\renderer.ts --circular
+npx tsuml2 -o out.svg  -g ".\src\**\*.ts(x)?"
+```

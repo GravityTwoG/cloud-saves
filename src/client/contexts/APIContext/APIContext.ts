@@ -13,6 +13,7 @@ import { GameAPIMock } from "../../api/mocks/GameAPIMock";
 import { UsersAPIMock } from "../../api/mocks/UsersAPIMock";
 import { AuthAPI } from "@/client/api/AuthAPI";
 import { GameAPI } from "@/client/api/GameAPI";
+import { Fetcher } from "@/client/api/Fetcher";
 
 interface APIContext {
   osAPI: IOSAPI;
@@ -22,13 +23,16 @@ interface APIContext {
   usersAPI: IUsersAPI;
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const fetcher = new Fetcher({
+  baseURL: API_BASE_URL || "http://localhost:5173/api",
+  credentials: "include",
+});
+
 const osAPI = new OSAPI();
-const authAPI = import.meta.env.VITE_API_BASE_URL
-  ? new AuthAPI()
-  : new AuthAPIMock();
-const gameAPI = import.meta.env.VITE_API_BASE_URL
-  ? new GameAPI()
-  : new GameAPIMock();
+const authAPI = API_BASE_URL ? new AuthAPI(fetcher) : new AuthAPIMock();
+const gameAPI = API_BASE_URL ? new GameAPI(fetcher) : new GameAPIMock();
 const gameSaveAPI = new GameSaveAPIMock(osAPI, gameAPI);
 const usersAPI = new UsersAPIMock();
 

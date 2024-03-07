@@ -28,41 +28,43 @@ async function readFile(save_path: string, file: string) {
   return data;
 }
 
-export const convertSAVToJSON: Converter = async function (
-  save_path,
-  inputFilename,
-  outputFilename
-) {
-  const uncompressed_data = await readFile(save_path, inputFilename);
+export class SAVtoJSONConverter implements Converter {
+  convert = async function (
+    save_path: string,
+    inputFilename: string,
+    outputFilename: string
+  ) {
+    const uncompressed_data = await readFile(save_path, inputFilename);
 
-  try {
-    const uepath = path.join(__dirname, `./assets/uesave.exe`).split("\\");
-    const uesave_cwd = uepath.slice(0, uepath.length - 1).join("\\");
-    const command = uepath[uepath.length - 1];
-    const args = toUesaveParams(
-      path.join(save_path, outputFilename),
-      UESAVE_TYPE_MAPS
-    );
+    try {
+      const uepath = path.join(__dirname, `./assets/uesave.exe`).split("\\");
+      const uesave_cwd = uepath.slice(0, uepath.length - 1).join("\\");
+      const command = uepath[uepath.length - 1];
+      const args = toUesaveParams(
+        path.join(save_path, outputFilename),
+        UESAVE_TYPE_MAPS
+      );
 
-    // Convert to json with uesave
-    console.log("Converting to JSON", inputFilename);
-    const status = await child_process.spawnSync(command, args, {
-      input: uncompressed_data,
-      cwd: uesave_cwd,
-    });
+      // Convert to json with uesave
+      console.log("Converting to JSON", inputFilename);
+      const status = await child_process.spawnSync(command, args, {
+        input: uncompressed_data,
+        cwd: uesave_cwd,
+      });
 
-    if (status.status !== 0) {
-      throw status.stderr;
+      if (status.status !== 0) {
+        throw status.stderr;
+      }
+      console.log(`File ${inputFilename} converted to JSON successfully`);
+    } catch (error) {
+      console.log(`uesave.exe failed to convert ${inputFilename}`);
+      if (error instanceof Buffer) {
+        throw new Error(error.toString());
+      }
+      throw error;
     }
-    console.log(`File ${inputFilename} converted to JSON successfully`);
-  } catch (error) {
-    console.log(`uesave.exe failed to convert ${inputFilename}`);
-    if (error instanceof Buffer) {
-      throw new Error(error.toString());
-    }
-    throw error;
-  }
-};
+  };
+}
 
 function toUesaveParams(out_path: string, uesave_type_maps: string[]) {
   const args = ["to-json", "--output", out_path];

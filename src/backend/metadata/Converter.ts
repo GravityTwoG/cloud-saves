@@ -1,5 +1,7 @@
-export type Converter = (
-  folderPath: string,
-  inputFilename: string,
-  outputFilename: string
-) => Promise<void>;
+export interface Converter {
+  convert: (
+    folderPath: string,
+    inputFilename: string,
+    outputFilename: string
+  ) => Promise<void>;
+}

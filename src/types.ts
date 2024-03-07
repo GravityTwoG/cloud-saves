@@ -1,3 +1,13 @@
+export type JSONType = {
+  [key: string | number]:
+    | string
+    | number
+    | boolean
+    | null
+    | JSONType
+    | JSONType[];
+};
+
 export enum UserRole {
   "USER" = "USER",
   "ADMIN" = "ADMIN",
@@ -7,16 +17,6 @@ export type User = {
   email: string;
   username: string;
   role: UserRole;
-};
-
-export type JSONType = {
-  [key: string | number]:
-    | string
-    | number
-    | boolean
-    | null
-    | JSONType
-    | JSONType[];
 };
 
 export type MetadataType = "string" | "number" | "boolean" | "seconds";

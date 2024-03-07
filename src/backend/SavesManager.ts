@@ -4,8 +4,12 @@ import path from "path";
 
 import { Game } from "@/types";
 
-import { convertSAVToJSON } from "./metadata/convertSAVToJSON";
+import { SAVtoJSONConverter } from "./metadata/convertSAVToJSON";
 import { extractMetadataFromJSON } from "./metadata/extractMetadataFromJSON";
+
+const converters = {
+  "sav-to-json": new SAVtoJSONConverter(),
+};
 
 export class SavesManager {
   async uploadSave(folder: { path: string; name: string }, game?: Game) {
@@ -38,7 +42,7 @@ export class SavesManager {
 
     for (const pipelineItem of game.extractionPipeline) {
       if (pipelineItem.type === "sav-to-json") {
-        await convertSAVToJSON(
+        await converters["sav-to-json"].convert(
           folder.path,
           pipelineItem.inputFilename,
           pipelineItem.outputFilename

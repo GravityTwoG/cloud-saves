@@ -3,14 +3,14 @@ import { createContext } from "react";
 import { IOSAPI } from "@/client/api/interfaces/IOSAPI";
 import { IAuthAPI } from "@/client/api/interfaces/IAuthAPI";
 import { IGameSaveAPI } from "@/client/api/interfaces/IGameSaveAPI";
-import { IGameAPI } from "../../api/interfaces/IGameAPI";
-import { IUsersAPI } from "../../api/interfaces/IUsersAPI";
+import { IGameAPI } from "@/client/api/interfaces/IGameAPI";
+import { IUsersAPI } from "@/client/api/interfaces/IUsersAPI";
 
 import { OSAPI } from "@/client/api/OSAPI";
 import { AuthAPIMock } from "@/client/api/mocks/AuthAPIMock";
 import { GameSaveAPIMock } from "@/client/api/mocks/GameSaveAPIMock";
-import { GameAPIMock } from "../../api/mocks/GameAPIMock";
-import { UsersAPIMock } from "../../api/mocks/UsersAPIMock";
+import { GameAPIMock } from "@/client/api/mocks/GameAPIMock";
+import { UsersAPIMock } from "@/client/api/mocks/UsersAPIMock";
 import { AuthAPI } from "@/client/api/AuthAPI";
 import { GameAPI } from "@/client/api/GameAPI";
 import { Fetcher } from "@/client/api/Fetcher";

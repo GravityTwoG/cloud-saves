@@ -1,15 +1,8 @@
 import AdmZip from "adm-zip";
 import fs from "fs/promises";
-import path from "path";
 
 import { Game } from "@/types";
-
-import { SAVtoJSONConverter } from "./metadata/convertSAVToJSON";
-import { extractMetadataFromJSON } from "./metadata/extractMetadataFromJSON";
-
-const converters = {
-  "sav-to-json": new SAVtoJSONConverter(),
-};
+import { extractMetadata } from "./metadata/extractMetadata";
 
 export class SavesManager {
   async uploadSave(folder: { path: string; name: string }, game?: Game) {
@@ -24,7 +17,7 @@ export class SavesManager {
     }
     // await zip.writeZipPromise(`${path}.zip`);
     const metadata = game
-      ? await this.getMetadata(folder, game)
+      ? await extractMetadata(folder, game)
       : { fields: [] };
 
     const buffer = zip.toBuffer();
@@ -32,39 +25,6 @@ export class SavesManager {
       buffer,
       metadata,
     };
-  }
-
-  private async getMetadata(
-    folder: { path: string; name: string },
-    game: Game
-  ) {
-    const createdFiles: string[] = [];
-
-    for (const pipelineItem of game.extractionPipeline) {
-      if (pipelineItem.type === "sav-to-json") {
-        await converters["sav-to-json"].convert(
-          folder.path,
-          pipelineItem.inputFilename,
-          pipelineItem.outputFilename
-        );
-        createdFiles.push(path.join(folder.path, pipelineItem.outputFilename));
-      }
-    }
-
-    const metadataSchema = game.metadataSchema;
-
-    const json = await fs.readFile(
-      path.join(folder.path, metadataSchema.filename),
-      {
-        encoding: "utf-8",
-      }
-    );
-
-    const metadata = extractMetadataFromJSON(JSON.parse(json), metadataSchema);
-
-    await Promise.allSettled(createdFiles.map((file) => fs.unlink(file)));
-
-    return metadata;
   }
 
   async downloadSave(archiveURL: string) {

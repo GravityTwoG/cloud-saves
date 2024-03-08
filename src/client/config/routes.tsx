@@ -1,4 +1,3 @@
-import { path } from "@/client/lib/path";
 import { UserRole } from "@/types";
 
 import { LoginPage } from "@/client/pages/Login/LoginPage";
@@ -22,42 +21,7 @@ import ProfileIcon from "@/client/ui/icons/Profile.svg";
 import SaveIcon from "@/client/ui/icons/Save.svg";
 import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
 import UsersIcon from "@/client/ui/icons/Users.svg";
-
-const register = path("/register");
-const login = path("/login");
-const requestPasswordReset = path("/request-password-reset");
-const resetPassword = path("/reset-password");
-
-const profile = path("/");
-const mySaves = path("/my-saves");
-const mySave = mySaves.path("/:gameSaveId");
-const sharedSaves = path("/shared-saves");
-const publicSaves = path("/public-saves");
-
-const games = path("/games");
-const gameAdd = path("/games-add");
-const game = games.path("/:gameId");
-
-const users = path("/users");
-
-export const paths = {
-  register,
-  login,
-  requestPasswordReset,
-  resetPassword,
-
-  profile,
-  mySaves,
-  mySave,
-  sharedSaves,
-  publicSaves,
-
-  games,
-  game,
-  gameAdd,
-
-  users,
-};
+import { paths } from "./paths";
 
 export enum RouteAccess {
   "ANONYMOUS" = "ANONYMOUS",

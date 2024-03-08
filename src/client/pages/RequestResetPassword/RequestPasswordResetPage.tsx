@@ -1,6 +1,6 @@
 import classes from "./request-password-reset-page.module.scss";
 
-import { paths } from "../../config/routes";
+import { paths } from "@/client/config/paths";
 import { useAuthContext } from "@/client/contexts/AuthContext/useAuthContext";
 
 import { Container } from "@/client/ui/atoms/Container/Container";

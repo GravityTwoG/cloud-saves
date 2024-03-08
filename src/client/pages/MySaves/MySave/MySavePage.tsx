@@ -7,7 +7,7 @@ import { GameSave, GameSaveSync, Metadata, MetadataType } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
 import { notify } from "@/client/ui/toast";
 import { navigate } from "@/client/useHashLocation";
-import { paths } from "@/client/config/routes";
+import { paths } from "@/client/config/paths";
 
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
 import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";

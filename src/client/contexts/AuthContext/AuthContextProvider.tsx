@@ -2,7 +2,7 @@ import { ReactNode, useCallback, useEffect, useState } from "react";
 
 import { navigate } from "@/client/useHashLocation";
 import { User } from "@/types";
-import { paths } from "@/client/config/routes";
+import { paths } from "@/client/config/paths";
 
 import {
   ChangePasswordCredentials,

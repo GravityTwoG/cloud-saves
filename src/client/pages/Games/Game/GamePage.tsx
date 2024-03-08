@@ -7,7 +7,7 @@ import { Game } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
 import { notify } from "@/client/ui/toast";
 import { navigate } from "@/client/useHashLocation";
-import { paths } from "@/client/config/routes";
+import { paths } from "@/client/config/paths";
 import { GameFormData } from "../utils";
 
 import { H1 } from "@/client/ui/atoms/Typography";

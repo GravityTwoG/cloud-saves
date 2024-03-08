@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import classes from "./games-page.module.scss";
 
 import { Game } from "@/types";
-import { paths } from "@/client/config/routes";
+import { paths } from "@/client/config/paths";
 import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
 import { useDebouncedCallback } from "@/client/lib/hooks/useDebouncedCallback";
 import { GetGamesQuery } from "@/client/api/interfaces/IGameAPI";

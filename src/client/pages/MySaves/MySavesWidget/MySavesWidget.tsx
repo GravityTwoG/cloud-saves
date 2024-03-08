@@ -4,7 +4,7 @@ import { clsx } from "clsx";
 import classes from "./my-saves-widget.module.scss";
 
 import { GameSave } from "@/types";
-import { paths } from "@/client/config/routes";
+import { paths } from "@/client/config/paths";
 import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
 import { useDebouncedCallback } from "@/client/lib/hooks/useDebouncedCallback";
 import { GetSavesQuery } from "@/client/api/interfaces/IGameSaveAPI";

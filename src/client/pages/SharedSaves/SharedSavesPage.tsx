@@ -7,7 +7,7 @@ import { useDebouncedCallback } from "@/client/lib/hooks/useDebouncedCallback";
 import { GetSavesQuery } from "@/client/api/interfaces/IGameSaveAPI";
 import { GameSave } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
-import { paths } from "@/client/config/routes";
+import { paths } from "@/client/config/paths";
 
 import { Link } from "wouter";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";

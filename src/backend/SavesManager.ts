@@ -2,9 +2,15 @@ import AdmZip from "adm-zip";
 import fs from "fs/promises";
 
 import { Game } from "@/types";
-import { extractGameStateValues } from "./gameStateParameters/extractGameStateValues";
+import { ValueExtractor } from "./game-state-parameters/ValueExtractor";
 
 export class SavesManager {
+  private readonly valueExtractor: ValueExtractor;
+
+  constructor(valueExtractor: ValueExtractor) {
+    this.valueExtractor = valueExtractor;
+  }
+
   async uploadSave(folder: { path: string; name: string }, game?: Game) {
     const zip = new AdmZip();
 
@@ -17,7 +23,7 @@ export class SavesManager {
     }
     // await zip.writeZipPromise(`${path}.zip`);
     const gameStateValues = game
-      ? await extractGameStateValues(folder, game)
+      ? await this.valueExtractor.extract(folder, game)
       : { fields: [] };
 
     const buffer = zip.toBuffer();
@@ -37,14 +43,14 @@ export class SavesManager {
     // TODO
     const save = await this.downloadSave(archiveURL);
     // TODO
-    this.extract(save.path);
+    this.extractZIP(save.path);
 
     console.log("Extracted to", path);
 
     return save;
   }
 
-  private extract(filePath: string) {
+  private extractZIP(filePath: string) {
     const zip = new AdmZip(filePath);
 
     const zipEntries = zip.getEntries();

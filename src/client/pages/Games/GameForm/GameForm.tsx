@@ -30,10 +30,10 @@ export const GameForm = (props: GameFormProps) => {
     appendExtractionPipeline,
     removeExtractionPipeline,
     pipelineItemTypes,
-    metadataSchemaFields,
-    appendMetadataSchemaField,
-    removeMetadataSchemaField,
-    metadataSchemaFieldTypes,
+    gameStateParameters,
+    appendGameStateParameter,
+    removeGameStateParameter,
+    gameStateParameterTypes,
   } = useGameForm({ defaultValue: props.game });
 
   return (
@@ -52,7 +52,9 @@ export const GameForm = (props: GameFormProps) => {
         placeholder="Enter game description"
         {...register("description")}
       />
-      {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
+      {errors.description && (
+        <ErrorText>{errors.description.message}</ErrorText>
+      )}
 
       <InputField
         label="Icon"
@@ -118,35 +120,44 @@ export const GameForm = (props: GameFormProps) => {
       {errors.extractionPipeline && errors.extractionPipeline.root && (
         <ErrorText>{errors.extractionPipeline.root.message}</ErrorText>
       )}
+      {errors.extractionPipeline?.map
+        ? errors.extractionPipeline.map((error, idx) => (
+            <ErrorText key={idx}>{error?.message}</ErrorText>
+          ))
+        : null}
 
       <InputField
-        label="Metadata Schema filename"
-        {...register("metadataSchema.filename")}
-        placeholder="Metadata Schema filename"
+        label="Parameters Schema filename"
+        {...register("gameStateParameters.filename")}
+        placeholder="Parameters Schema filename"
       />
+      {errors.gameStateParameters?.filename &&
+        errors.gameStateParameters.filename && (
+          <ErrorText>{errors.gameStateParameters.filename.message}</ErrorText>
+        )}
 
-      <Field label="Metadata Schema fields">
-        {metadataSchemaFields.map((field, index) => (
+      <Field label="Parameters Schema fields">
+        {gameStateParameters.map((field, index) => (
           <div key={field.id} className={classes.SchemaField}>
             <Input
-              {...register(`metadataSchema.fields.${index}.key`)}
+              {...register(`gameStateParameters.fields.${index}.key`)}
               placeholder="Key"
             />
             <Select
-              {...register(`metadataSchema.fields.${index}.type`)}
-              options={metadataSchemaFieldTypes}
+              {...register(`gameStateParameters.fields.${index}.type`)}
+              options={gameStateParameterTypes}
             />
             <Input
-              {...register(`metadataSchema.fields.${index}.label`)}
+              {...register(`gameStateParameters.fields.${index}.label`)}
               placeholder="Label"
             />
             <Input
-              {...register(`metadataSchema.fields.${index}.description`)}
+              {...register(`gameStateParameters.fields.${index}.description`)}
               placeholder="Description"
             />
             <Button
               color="danger"
-              onClick={() => removeMetadataSchemaField(index)}
+              onClick={() => removeGameStateParameter(index)}
             >
               Remove
             </Button>
@@ -154,7 +165,7 @@ export const GameForm = (props: GameFormProps) => {
         ))}
         <Button
           onClick={() =>
-            appendMetadataSchemaField({
+            appendGameStateParameter({
               key: "",
               type: "string",
               label: "",
@@ -165,9 +176,15 @@ export const GameForm = (props: GameFormProps) => {
           Add Schema field
         </Button>
       </Field>
-      {errors.metadataSchema && errors.metadataSchema.root && (
-        <ErrorText>{errors.metadataSchema.root.message}</ErrorText>
+      {errors.gameStateParameters && errors.gameStateParameters.root && (
+        <ErrorText>{errors.gameStateParameters.root.message}</ErrorText>
       )}
+
+      {errors.gameStateParameters?.fields?.map
+        ? errors.gameStateParameters.fields.map((error, idx) => (
+            <ErrorText key={idx}>{error?.message}</ErrorText>
+          ))
+        : null}
 
       <div className={classes.AddGameButtons}>
         <CTAButton type="submit">Submit</CTAButton>

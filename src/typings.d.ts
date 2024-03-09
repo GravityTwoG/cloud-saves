@@ -73,7 +73,7 @@ interface Window {
     ) => Promise<
       ElectronApiResponse<{
         buffer: Buffer;
-        metadata: import("./types").Metadata;
+        gameStateValues: import("./types").GameStateValues;
       }>
     >;
 

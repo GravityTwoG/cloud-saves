@@ -3,13 +3,13 @@ import fs from "fs/promises";
 
 import { Game } from "@/types";
 import { SAVtoJSONConverter } from "./convertSAVToJSON";
-import { extractMetadataFromJSON } from "./extractMetadataFromJSON";
+import { extractGameStateValuesFromJSON } from "./extractGameStateValuesFromJSON";
 
 export const converters = {
   "sav-to-json": new SAVtoJSONConverter(),
 };
 
-export async function extractMetadata(
+export async function extractGameStateValues(
   folder: { path: string; name: string },
   game: Game
 ) {
@@ -26,18 +26,21 @@ export async function extractMetadata(
     }
   }
 
-  const metadataSchema = game.metadataSchema;
+  const gameStateParameters = game.gameStateParameters;
 
   const json = await fs.readFile(
-    path.join(folder.path, metadataSchema.filename),
+    path.join(folder.path, gameStateParameters.filename),
     {
       encoding: "utf-8",
     }
   );
 
-  const metadata = extractMetadataFromJSON(JSON.parse(json), metadataSchema);
+  const gameStateValues = extractGameStateValuesFromJSON(
+    JSON.parse(json),
+    gameStateParameters
+  );
 
   await Promise.allSettled(createdFiles.map((file) => fs.unlink(file)));
 
-  return metadata;
+  return gameStateValues;
 }

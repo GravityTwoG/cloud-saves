@@ -1,4 +1,4 @@
-import { Game, MetadataSchema, PipelineItemType } from "@/types";
+import { Game, GameStateParameters, PipelineItemType } from "@/types";
 
 export type GetGamesQuery = {
   searchQuery: string;
@@ -21,7 +21,7 @@ export type AddGameDTO = {
     type: PipelineItemType;
     outputFilename: string;
   }[];
-  metadataSchema: MetadataSchema;
+  gameStateParameters: GameStateParameters;
 };
 
 export type UpdateGameDTO = {
@@ -35,7 +35,7 @@ export type UpdateGameDTO = {
     type: string;
     outputFilename: string;
   }[];
-  metadataSchema?: MetadataSchema;
+  gameStateParameters?: GameStateParameters;
 };
 
 export interface IGameAPI {

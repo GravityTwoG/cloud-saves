@@ -45,7 +45,7 @@ export const GamePage = () => {
         icon: data.icon[0] || undefined,
         paths: data.paths.map((path) => path.path),
         extractionPipeline: data.extractionPipeline,
-        metadataSchema: data.metadataSchema,
+        gameStateParameters: data.gameStateParameters,
       });
       navigate(paths.games({}));
     } catch (error) {

@@ -87,7 +87,8 @@ export class GameAPIMock implements IGameAPI {
         paths: game.paths || existingGame.paths,
         extractionPipeline:
           game.extractionPipeline || existingGame.extractionPipeline,
-        metadataSchema: game.metadataSchema || existingGame.metadataSchema,
+        gameStateParameters:
+          game.gameStateParameters || existingGame.gameStateParameters,
       };
 
       games[game.id] = updatedGame;

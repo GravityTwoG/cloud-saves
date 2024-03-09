@@ -1,4 +1,8 @@
-import { MetadataSchema, MetadataType, PipelineItemType } from "@/types";
+import {
+  GameStateParameters,
+  GameStateParameterType,
+  PipelineItemType,
+} from "@/types";
 
 export type GameFormData = {
   name: string;
@@ -10,17 +14,19 @@ export type GameFormData = {
     type: PipelineItemType;
     outputFilename: string;
   }[];
-  metadataSchema: MetadataSchema;
+  gameStateParameters: GameStateParameters;
 };
 
 export const pipelineItemTypes: { name: string; value: PipelineItemType }[] = [
   { name: ".sav to .json", value: "sav-to-json" },
 ];
 
-export const metadataSchemaFieldTypes: { name: string; value: MetadataType }[] =
-  [
-    { name: "string", value: "string" },
-    { name: "number", value: "number" },
-    { name: "seconds", value: "seconds" },
-    { name: "boolean", value: "boolean" },
-  ];
+export const gameStateParameterTypes: {
+  name: string;
+  value: GameStateParameterType;
+}[] = [
+  { name: "string", value: "string" },
+  { name: "number", value: "number" },
+  { name: "seconds", value: "seconds" },
+  { name: "boolean", value: "boolean" },
+];

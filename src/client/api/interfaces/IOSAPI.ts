@@ -1,4 +1,4 @@
-import { Game, GamePath, Metadata } from "@/types";
+import { Game, GamePath, GameStateValues } from "@/types";
 
 export interface IOSAPI {
   getSavePaths: (paths: GamePath[]) => Promise<ElectronApiResponse<GamePath[]>>;
@@ -13,7 +13,7 @@ export interface IOSAPI {
       name: string;
     },
     game?: Game
-  ): Promise<{ buffer: Buffer; metadata: Metadata }>;
+  ): Promise<{ buffer: Buffer; gameStateValues: GameStateValues }>;
 
   // Just download
   downloadSave(archiveURL: string): Promise<void>;

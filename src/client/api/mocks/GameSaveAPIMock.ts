@@ -116,7 +116,7 @@ export class GameSaveAPIMock implements IGameSaveAPI {
       path: save.path,
       name: game ? game.name : save.name,
       sync: GameSaveSync.NO,
-      metadata: response.metadata,
+      gameStateValues: response.gameStateValues,
       archiveURL: save.path,
       size: 42,
       uploadedAt: new Date().toLocaleString(),

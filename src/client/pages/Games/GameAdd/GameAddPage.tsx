@@ -21,7 +21,7 @@ export const GameAddPage = () => {
         icon: data.icon[0] || "",
         paths: data.paths.map((path) => path.path),
         extractionPipeline: data.extractionPipeline,
-        metadataSchema: data.metadataSchema,
+        gameStateParameters: data.gameStateParameters,
       });
 
       navigate(paths.games({}));

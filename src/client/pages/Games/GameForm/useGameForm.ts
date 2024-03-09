@@ -5,7 +5,7 @@ import { Game } from "@/types";
 import { useFilePreview } from "@/client/lib/hooks/useFilePreview";
 import {
   GameFormData,
-  metadataSchemaFieldTypes,
+  gameStateParameterTypes,
   pipelineItemTypes,
 } from "../utils";
 
@@ -26,7 +26,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
       description: args.defaultValue?.description,
       paths: args.defaultValue?.paths.map((path) => ({ path })) || [],
       extractionPipeline: args.defaultValue?.extractionPipeline || [],
-      metadataSchema: args.defaultValue?.metadataSchema || {
+      gameStateParameters: args.defaultValue?.gameStateParameters || {
         fields: [],
       },
     },
@@ -73,19 +73,30 @@ export const useGameForm = (args: UseGameFormArgs) => {
   } = useFieldArray({
     control,
     name: "extractionPipeline",
+    rules: {
+      validate: {
+        notEmptyValues: (fields) => {
+          return fields.every(
+            (field) =>
+              (field.inputFilename && field.outputFilename && field.type) ||
+              "Field must not be empty"
+          );
+        },
+      },
+    },
   });
 
   const {
-    fields: metadataSchemaFields,
-    append: appendMetadataSchemaField,
-    remove: removeMetadataSchemaField,
+    fields: gameStateParameters,
+    append: appendGameStateParameter,
+    remove: removeGameStateParameter,
   } = useFieldArray({
     control,
-    name: "metadataSchema.fields",
+    name: "gameStateParameters.fields",
     rules: {
       required: {
         value: true,
-        message: "Metadata schema is required",
+        message: "Parameters schema is required",
       },
       validate: {
         notEmptyValues: (fields) => {
@@ -111,7 +122,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
       type: "sav-to-json",
       outputFilename: "",
     });
-    appendMetadataSchemaField({
+    appendGameStateParameter({
       key: "",
       type: "string",
       description: "",
@@ -131,9 +142,9 @@ export const useGameForm = (args: UseGameFormArgs) => {
     appendExtractionPipeline,
     removeExtractionPipeline,
     pipelineItemTypes,
-    metadataSchemaFields,
-    appendMetadataSchemaField,
-    removeMetadataSchemaField,
-    metadataSchemaFieldTypes,
+    gameStateParameters,
+    appendGameStateParameter,
+    removeGameStateParameter,
+    gameStateParameterTypes,
   };
 };

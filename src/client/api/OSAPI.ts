@@ -1,4 +1,4 @@
-import { Game, GamePath, Metadata } from "@/types";
+import { Game, GamePath, GameStateValues } from "@/types";
 import { IOSAPI } from "./interfaces/IOSAPI";
 import { ApiError } from "./ApiError";
 
@@ -37,14 +37,17 @@ export class OSAPI implements IOSAPI {
       name: string;
     },
     game: Game
-  ): Promise<{ buffer: Buffer; metadata: Metadata }> => {
+  ): Promise<{ buffer: Buffer; gameStateValues: GameStateValues }> => {
     const response = await window.electronAPI.uploadSave(save, game);
 
     if (!response.data) {
       throw new ApiError(response.error || "Failed to upload save");
     }
 
-    return response.data as { buffer: Buffer; metadata: Metadata };
+    return response.data as {
+      buffer: Buffer;
+      gameStateValues: GameStateValues;
+    };
   };
 
   downloadSave = async (archiveURL: string): Promise<void> => {

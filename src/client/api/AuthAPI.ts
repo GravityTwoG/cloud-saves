@@ -31,7 +31,10 @@ export class AuthAPI implements IAuthAPI {
       body: credentials,
     });
 
-    return this.login(credentials);
+    return this.login({
+      username: credentials.username,
+      password: credentials.password,
+    });
   };
 
   login = async (credentials: LoginCredentials): Promise<User> => {

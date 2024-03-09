@@ -2,7 +2,7 @@ import AdmZip from "adm-zip";
 import fs from "fs/promises";
 
 import { Game } from "@/types";
-import { extractMetadata } from "./metadata/extractMetadata";
+import { extractGameStateValues } from "./gameStateParameters/extractGameStateValues";
 
 export class SavesManager {
   async uploadSave(folder: { path: string; name: string }, game?: Game) {
@@ -16,14 +16,14 @@ export class SavesManager {
       zip.addLocalFile(folder.path);
     }
     // await zip.writeZipPromise(`${path}.zip`);
-    const metadata = game
-      ? await extractMetadata(folder, game)
+    const gameStateValues = game
+      ? await extractGameStateValues(folder, game)
       : { fields: [] };
 
     const buffer = zip.toBuffer();
     return {
       buffer,
-      metadata,
+      gameStateValues,
     };
   }
 

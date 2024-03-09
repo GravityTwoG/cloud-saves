@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import classes from "./error-text.module.scss";
 
 export type ErrorTextProps = {
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 export const ErrorText = (props: ErrorTextProps) => {

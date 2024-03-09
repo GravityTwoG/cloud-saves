@@ -1,4 +1,4 @@
-import { Game, MetadataSchema } from "@/types";
+import { Game, GameStateParameters } from "@/types";
 import { Fetcher } from "./Fetcher";
 import {
   AddGameDTO,
@@ -18,7 +18,7 @@ type GameFromServer = {
     type: "sav-to-json";
     outputFilename: string;
   }[];
-  schema: MetadataSchema;
+  schema: GameStateParameters;
   imageId: number;
 };
 
@@ -60,7 +60,7 @@ export class GameAPI implements IGameAPI {
         description: game.description,
         paths: game.paths.map((path) => ({ path })),
         extractionPipeline: game.extractionPipeline,
-        schema: game.metadataSchema,
+        schema: game.gameStateParameters,
       })
     );
 
@@ -84,7 +84,7 @@ export class GameAPI implements IGameAPI {
         description: game.description,
         paths: game.paths ? game.paths.map((path) => ({ path })) : undefined,
         extractionPipeline: game.extractionPipeline,
-        schema: game.metadataSchema,
+        schema: game.gameStateParameters,
       })
     );
 
@@ -105,7 +105,7 @@ export class GameAPI implements IGameAPI {
       description: game.description,
       paths: game.paths.map((path) => path.path),
       extractionPipeline: game.extractionPipeline,
-      metadataSchema: game.schema,
+      gameStateParameters: game.schema,
       iconURL: `${this.fetcher.getBaseURL()}/games/image/${game.imageId}`,
     };
   };

@@ -3,7 +3,12 @@ import { useParams } from "wouter";
 
 import classes from "./my-save-page.module.scss";
 
-import { GameSave, GameSaveSync, Metadata, MetadataType } from "@/types";
+import {
+  GameSave,
+  GameSaveSync,
+  GameStateValues,
+  GameStateParameterType,
+} from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
 import { notify } from "@/client/ui/toast";
 import { navigate } from "@/client/useHashLocation";
@@ -174,7 +179,7 @@ export const MySavePage = () => {
 
       <H2>About</H2>
 
-      <MetadataView metadata={gameSave.metadata} />
+      <ParametersView gameStateValues={gameSave.gameStateValues} />
 
       <div className={classes.GameSaveArchive}>
         <span>
@@ -201,15 +206,15 @@ export const MySavePage = () => {
   );
 };
 
-type MetadataViewProps = {
-  metadata: Metadata;
+type ParametersViewProps = {
+  gameStateValues: GameStateValues;
 };
 
-const MetadataView = (props: MetadataViewProps) => {
+const ParametersView = (props: ParametersViewProps) => {
   return (
     <div>
-      {props.metadata.fields.map((field, idx) => (
-        <MetadataViewItem key={idx} {...field} />
+      {props.gameStateValues.fields.map((field, idx) => (
+        <ParameterViewItem key={idx} {...field} />
       ))}
     </div>
   );
@@ -234,17 +239,17 @@ function formatTime(value: number, type: "seconds") {
   return `${value}`;
 }
 
-const MetadataViewItem = (props: {
+const ParameterViewItem = (props: {
   label: string;
   value: string | number | boolean;
-  type: MetadataType;
+  type: GameStateParameterType;
   description: string;
 }) => {
   if (props.type === "seconds" && typeof props.value === "number") {
     return (
       <div>
-        <span className={classes.MetadataLabel}>{props.label}</span>:{" "}
-        <span className={classes.MetadataValue}>
+        <span>{props.label}</span>:{" "}
+        <span className={classes.ParameterValue}>
           {formatTime(props.value, props.type)}
         </span>
       </div>
@@ -253,8 +258,8 @@ const MetadataViewItem = (props: {
 
   return (
     <div>
-      <span className={classes.MetadataLabel}>{props.label}</span>:{" "}
-      <span className={classes.MetadataValue}>{props.value.toString()}</span>
+      <span>{props.label}</span>:{" "}
+      <span className={classes.ParameterValue}>{props.value.toString()}</span>
     </div>
   );
 };

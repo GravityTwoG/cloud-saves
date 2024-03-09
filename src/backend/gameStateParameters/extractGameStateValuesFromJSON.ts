@@ -1,16 +1,16 @@
-import { JSONType, Metadata, MetadataSchema } from "@/types";
+import { JSONType, GameStateValues, GameStateParameters } from "@/types";
 
-export function extractMetadataFromJSON(
+export function extractGameStateValuesFromJSON(
   input: JSONType,
-  schema: MetadataSchema
-): Metadata {
-  const metadata: Metadata = { fields: [] };
+  schema: GameStateParameters
+): GameStateValues {
+  const gameStateValues: GameStateValues = { fields: [] };
 
   for (const field of schema.fields) {
     const value = readByKey(field.key, input);
 
     if (!isObject(value) && !Array.isArray(value) && value !== null) {
-      metadata.fields.push({
+      gameStateValues.fields.push({
         value: value,
         type: field.type,
         description: field.description,
@@ -19,7 +19,7 @@ export function extractMetadataFromJSON(
     }
   }
 
-  return metadata;
+  return gameStateValues;
 }
 
 function isObject(value: unknown): value is JSONType {

@@ -1,12 +1,8 @@
-import { useEffect, useState } from "react";
-
 import classes from "./games-page.module.scss";
 
-import { Game } from "@/types";
 import { paths } from "@/client/config/paths";
 import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
-import { useDebouncedCallback } from "@/client/lib/hooks/useDebouncedCallback";
-import { GetGamesQuery } from "@/client/api/interfaces/IGameAPI";
+import { useResource } from "@/client/lib/hooks/useResource";
 import { notify } from "@/client/ui/toast";
 
 import { Link } from "wouter";
@@ -18,45 +14,16 @@ import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
 import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
 
-const defaultQuery: GetGamesQuery = {
-  searchQuery: "",
-  pageNumber: 1,
-  pageSize: 12,
-};
-
 export const GamesPage = () => {
   const { gameAPI } = useAPIContext();
 
-  const [games, setGames] = useState<{ games: Game[]; totalCount: number }>({
-    games: [],
-    totalCount: 0,
-  });
-  const [query, setQuery] = useState<GetGamesQuery>(defaultQuery);
-
-  useEffect(() => {
-    loadGames(query);
-  }, []);
-
-  const loadGames = useDebouncedCallback(
-    async (query: GetGamesQuery) => {
-      try {
-        const data = await gameAPI.getGames(query);
-        setGames({
-          games: data.items,
-          totalCount: data.totalCount,
-        });
-        setQuery(query);
-      } catch (error) {
-        notify.error(error);
-      }
-    },
-    [],
-    200
-  );
-
-  const onSearch = () => {
-    loadGames({ ...query, pageNumber: 1 });
-  };
+  const {
+    query,
+    resource: games,
+    onSearch,
+    loadResource: loadGames,
+    setQuery,
+  } = useResource(gameAPI.getGames);
 
   const onDelete = async (gameId: string) => {
     try {
@@ -82,7 +49,7 @@ export const GamesPage = () => {
 
       <List
         className={classes.GamesList}
-        elements={games.games}
+        elements={games.items}
         getKey={(game) => game.id}
         elementClassName={classes.GameItem}
         renderElement={(game) => (

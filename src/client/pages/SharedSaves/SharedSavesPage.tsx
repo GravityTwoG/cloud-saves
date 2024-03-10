@@ -1,12 +1,7 @@
-import { useEffect, useState } from "react";
-
 import classes from "./shared-saves-page.module.scss";
 
-import { notify } from "@/client/ui/toast";
-import { useDebouncedCallback } from "@/client/lib/hooks/useDebouncedCallback";
-import { GetSavesQuery } from "@/client/api/interfaces/IGameSaveAPI";
-import { GameSave } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
+import { useResource } from "@/client/lib/hooks/useResource";
 import { paths } from "@/client/config/paths";
 
 import { Link } from "wouter";
@@ -18,41 +13,14 @@ import { Paginator } from "@/client/ui/molecules/Paginator";
 
 export const SharedSavesPage = () => {
   const { gameSaveAPI } = useAPIContext();
-  const [query, setQuery] = useState(() => ({
-    searchQuery: "",
-    pageNumber: 1,
-    pageSize: 12,
-  }));
 
-  const [saves, setSaves] = useState<{ saves: GameSave[]; totalCount: number }>(
-    () => ({
-      saves: [],
-      totalCount: 0,
-    })
-  );
-
-  const onSearch = () => {};
-
-  const loadSaves = useDebouncedCallback(
-    async (query: GetSavesQuery) => {
-      try {
-        const data = await gameSaveAPI.getSharedSaves(query);
-        setSaves({
-          saves: data.items,
-          totalCount: data.totalCount,
-        });
-        setQuery(query);
-      } catch (error) {
-        notify.error(error);
-      }
-    },
-    [],
-    200
-  );
-
-  useEffect(() => {
-    loadSaves(query);
-  }, []);
+  const {
+    query,
+    resource: saves,
+    onSearch,
+    loadResource: loadSaves,
+    setQuery,
+  } = useResource(gameSaveAPI.getSharedSaves);
 
   return (
     <Container>
@@ -66,7 +34,7 @@ export const SharedSavesPage = () => {
 
       <List
         className={classes.SavesList}
-        elements={saves.saves}
+        elements={saves.items}
         getKey={(save) => save.gameId}
         renderElement={(save) => (
           <>

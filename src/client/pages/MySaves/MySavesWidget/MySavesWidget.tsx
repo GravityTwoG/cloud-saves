@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { clsx } from "clsx";
 
 import classes from "./my-saves-widget.module.scss";
 
-import { GameSave } from "@/types";
 import { paths } from "@/client/config/paths";
 import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
-import { useDebouncedCallback } from "@/client/lib/hooks/useDebouncedCallback";
-import { GetSavesQuery } from "@/client/api/interfaces/IGameSaveAPI";
+import { useResource } from "@/client/lib/hooks/useResource";
 import { notify } from "@/client/ui/toast";
 
 import { Link } from "wouter";
@@ -17,12 +15,6 @@ import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
 import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
 
-const defaultQuery: GetSavesQuery = {
-  searchQuery: "",
-  pageNumber: 1,
-  pageSize: 12,
-};
-
 export type SavesWidgetProps = {
   setOnSaveUpload: (saveUploaded: () => void) => void;
   className?: string;
@@ -31,39 +23,17 @@ export type SavesWidgetProps = {
 export const MySavesWidget = (props: SavesWidgetProps) => {
   const { gameSaveAPI } = useAPIContext();
 
-  const [saves, setSaves] = useState<{ saves: GameSave[]; totalCount: number }>(
-    { saves: [], totalCount: 0 }
-  );
-  const [query, setQuery] = useState<GetSavesQuery>(defaultQuery);
+  const {
+    query,
+    resource: saves,
+    onSearch,
+    loadResource: loadSaves,
+    setQuery,
+  } = useResource(gameSaveAPI.getUserSaves);
 
   useEffect(() => {
     props.setOnSaveUpload(() => loadSaves(query));
   }, [query]);
-
-  useEffect(() => {
-    loadSaves(query);
-  }, []);
-
-  const loadSaves = useDebouncedCallback(
-    async (query: GetSavesQuery) => {
-      try {
-        const data = await gameSaveAPI.getUserSaves(query);
-        setSaves({
-          saves: data.items,
-          totalCount: data.totalCount,
-        });
-        setQuery(query);
-      } catch (error) {
-        notify.error(error);
-      }
-    },
-    [],
-    200
-  );
-
-  const onSearch = () => {
-    loadSaves({ ...query, pageNumber: 1 });
-  };
 
   const onDelete = async (path: string) => {
     try {
@@ -85,7 +55,7 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
 
       <List
         className={classes.SavesList}
-        elements={saves.saves}
+        elements={saves.items}
         getKey={(save) => save.gameId}
         renderElement={(save) => (
           <>

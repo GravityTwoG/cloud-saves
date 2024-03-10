@@ -1,11 +1,7 @@
-import { useEffect, useState } from "react";
-
 import classes from "./users-page.module.scss";
 
 import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
-import { useDebouncedCallback } from "@/client/lib/hooks/useDebouncedCallback";
-import { GetUsersQuery, UserForAdmin } from "@/client/api/interfaces/IUsersAPI";
-import { GetGamesQuery } from "@/client/api/interfaces/IGameAPI";
+import { useResource } from "@/client/lib/hooks/useResource";
 import { notify } from "@/client/ui/toast";
 
 import { H1 } from "@/client/ui/atoms/Typography";
@@ -15,48 +11,16 @@ import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
 import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
 
-const defaultQuery: GetUsersQuery = {
-  searchQuery: "",
-  pageNumber: 1,
-  pageSize: 12,
-};
-
 export const UsersPage = () => {
   const { usersAPI } = useAPIContext();
 
-  const [users, setUsers] = useState<{
-    users: UserForAdmin[];
-    totalCount: number;
-  }>({
-    users: [],
-    totalCount: 0,
-  });
-  const [query, setQuery] = useState<GetUsersQuery>(defaultQuery);
-
-  useEffect(() => {
-    loadUsers(query);
-  }, []);
-
-  const loadUsers = useDebouncedCallback(
-    async (query: GetGamesQuery) => {
-      try {
-        const data = await usersAPI.getUsers(query);
-        setUsers({
-          users: data.items,
-          totalCount: data.totalCount,
-        });
-        setQuery(query);
-      } catch (error) {
-        notify.error(error);
-      }
-    },
-    [],
-    200
-  );
-
-  const onSearch = () => {
-    loadUsers({ ...query, pageNumber: 1 });
-  };
+  const {
+    query,
+    resource: users,
+    onSearch,
+    loadResource: loadUsers,
+    setQuery,
+  } = useResource(usersAPI.getUsers);
 
   const onBlock = async (userId: string) => {
     try {
@@ -88,7 +52,7 @@ export const UsersPage = () => {
 
       <List
         className={classes.UsersList}
-        elements={users.users}
+        elements={users.items}
         getKey={(user) => user.id}
         elementClassName={classes.UserItem}
         renderElement={(user) => (

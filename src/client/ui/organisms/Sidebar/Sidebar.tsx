@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 import classes from "./sidebar.module.scss";
 
 import { NavLinkType } from "@/client/config/navLinks";
-import { useAuthContext } from "@/client/contexts/AuthContext/useAuthContext";
+import { useAuthContext } from "@/client/contexts/AuthContext";
 
 import { Link, useRoute } from "wouter";
 import { AuthGuard } from "@/client/lib/components/Guard/AuthGuard";

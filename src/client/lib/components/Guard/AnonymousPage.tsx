@@ -4,8 +4,7 @@ import { Redirect } from "wouter";
 import classes from "./page-guard.module.scss";
 
 import { paths } from "@/client/config/paths";
-import { AuthStatus } from "@/client/contexts/AuthContext/AuthContext";
-import { useAuthContext } from "@/client/contexts/AuthContext/useAuthContext";
+import { AuthStatus, useAuthContext } from "@/client/contexts/AuthContext";
 
 import { Spinner } from "@/client/ui/atoms/Spinner";
 import { Container } from "@/client/ui/atoms/Container/Container";

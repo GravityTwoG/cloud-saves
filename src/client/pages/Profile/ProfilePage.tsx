@@ -1,5 +1,5 @@
-import { useAuthContext } from "@/client/contexts/AuthContext/useAuthContext";
-import { notify } from "@/client/ui/toast";
+import { useAuthContext } from "@/client/contexts/AuthContext";
+import { useUIContext } from "@/client/contexts/UIContext";
 
 import { Container } from "@/client/ui/atoms/Container/Container";
 import { H1, H2 } from "@/client/ui/atoms/Typography";
@@ -25,6 +25,7 @@ const formConfig = {
 
 export const ProfilePage = () => {
   const { user, changePassword } = useAuthContext();
+  const { notify } = useUIContext();
 
   const onChangePassword = async (data: FormData<typeof formConfig>) => {
     try {

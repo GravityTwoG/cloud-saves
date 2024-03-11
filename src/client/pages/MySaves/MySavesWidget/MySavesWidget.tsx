@@ -4,9 +4,9 @@ import { clsx } from "clsx";
 import classes from "./my-saves-widget.module.scss";
 
 import { paths } from "@/client/config/paths";
-import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
+import { useAPIContext } from "@/client/contexts/APIContext";
+import { useUIContext } from "@/client/contexts/UIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
-import { notify } from "@/client/ui/toast";
 
 import { Link } from "wouter";
 import { H2, Paragraph } from "@/client/ui/atoms/Typography";
@@ -22,6 +22,7 @@ export type SavesWidgetProps = {
 
 export const MySavesWidget = (props: SavesWidgetProps) => {
   const { gameSaveAPI } = useAPIContext();
+  const { notify } = useUIContext();
 
   const {
     query,

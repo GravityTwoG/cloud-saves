@@ -2,8 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { clsx } from "clsx";
 
 import classes from "./folder-explorer.module.scss";
-import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
-import { notify } from "@/client/ui/toast";
+
+import { useAPIContext } from "@/client/contexts/APIContext";
+import { useUIContext } from "@/client/contexts/UIContext";
 
 import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
 import { Button } from "@/client/ui/atoms/Button/Button";
@@ -24,6 +25,7 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
   const [selectedFolder, setSelectedFolder] = useState<string>("");
   const [parentFolder, setParentFolder] = useState<string>("");
   const [files, setFiles] = useState<FileInfo[]>([]);
+  const { notify } = useUIContext();
 
   const getSavePaths = useCallback(async () => {
     try {

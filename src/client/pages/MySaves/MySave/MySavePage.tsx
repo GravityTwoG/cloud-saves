@@ -9,8 +9,8 @@ import {
   GameStateValues,
   GameStateParameterType,
 } from "@/types";
-import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
-import { notify } from "@/client/ui/toast";
+import { useAPIContext } from "@/client/contexts/APIContext";
+import { useUIContext } from "@/client/contexts/UIContext";
 import { navigate } from "@/client/useHashLocation";
 import { paths } from "@/client/config/paths";
 
@@ -25,6 +25,7 @@ export const MySavePage = () => {
   const { gameSaveAPI } = useAPIContext();
   const [gameSave, setGameSave] = useState<GameSave | null>(null);
   const { gameSaveId } = useParams();
+  const { notify } = useUIContext();
 
   useEffect(() => {
     (async () => {

@@ -1,8 +1,8 @@
 import classes from "./users-page.module.scss";
 
-import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
+import { useAPIContext } from "@/client/contexts/APIContext";
+import { useUIContext } from "@/client/contexts/UIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
-import { notify } from "@/client/ui/toast";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container/Container";
@@ -21,6 +21,8 @@ export const UsersPage = () => {
     loadResource: loadUsers,
     setQuery,
   } = useResource(usersAPI.getUsers);
+
+  const { notify } = useUIContext();
 
   const onBlock = async (userId: string) => {
     try {

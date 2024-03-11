@@ -1,9 +1,9 @@
 import classes from "./games-page.module.scss";
 
 import { paths } from "@/client/config/paths";
-import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
+import { useAPIContext } from "@/client/contexts/APIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
-import { notify } from "@/client/ui/toast";
+import { useUIContext } from "@/client/contexts/UIContext";
 
 import { Link } from "wouter";
 import { H1 } from "@/client/ui/atoms/Typography";
@@ -16,6 +16,7 @@ import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton
 
 export const GamesPage = () => {
   const { gameAPI } = useAPIContext();
+  const { notify } = useUIContext();
 
   const {
     query,

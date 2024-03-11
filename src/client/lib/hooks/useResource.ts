@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { useUIContext } from "@/client/contexts/UIContext";
 import { useDebouncedCallback } from "./useDebouncedCallback";
-import { notify } from "@/client/ui/toast";
 
 // Hook that loads a resource with pagination and search query
 // parameter loadResource must be memoized or should use useCallback
@@ -24,6 +24,8 @@ export const useResource = <
     items: [],
     totalCount: 0,
   }));
+
+  const { notify } = useUIContext();
 
   const loadResourceDebounced = useDebouncedCallback(
     async (query: Q) => {

@@ -4,8 +4,8 @@ import { useParams } from "wouter";
 import classes from "./game-page.module.scss";
 
 import { Game } from "@/types";
-import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
-import { notify } from "@/client/ui/toast";
+import { useAPIContext } from "@/client/contexts/APIContext";
+import { useUIContext } from "@/client/contexts/UIContext";
 import { navigate } from "@/client/useHashLocation";
 import { paths } from "@/client/config/paths";
 import { GameFormData } from "../utils";
@@ -18,6 +18,7 @@ import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton
 export const GamePage = () => {
   const { gameAPI } = useAPIContext();
   const { gameId } = useParams();
+  const { notify } = useUIContext();
 
   const [game, setGame] = useState<Game | null>(null);
 

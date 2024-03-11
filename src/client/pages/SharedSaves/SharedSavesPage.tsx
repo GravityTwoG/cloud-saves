@@ -1,6 +1,6 @@
 import classes from "./shared-saves-page.module.scss";
 
-import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
+import { useAPIContext } from "@/client/contexts/APIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
 import { paths } from "@/client/config/paths";
 

@@ -10,7 +10,7 @@ import {
   RegisterCredentials,
   ResetPasswordCredentials,
 } from "@/client/api/interfaces/IAuthAPI";
-import { useAPIContext } from "../APIContext/useAPIContext";
+import { useAPIContext } from "../APIContext";
 import { AuthStatus, emptyUser, AuthContext } from "./AuthContext";
 
 export const AuthContextProvider = (props: { children: ReactNode }) => {

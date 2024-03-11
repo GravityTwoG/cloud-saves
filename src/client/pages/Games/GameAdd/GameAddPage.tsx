@@ -1,7 +1,7 @@
 import classes from "./game-add-page.module.scss";
 
-import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
-import { notify } from "@/client/ui/toast";
+import { useAPIContext } from "@/client/contexts/APIContext";
+import { useUIContext } from "@/client/contexts/UIContext";
 import { navigate } from "@/client/useHashLocation";
 import { paths } from "@/client/config/paths";
 import { GameFormData } from "../utils";
@@ -12,6 +12,7 @@ import { GameForm } from "../GameForm/GameForm";
 
 export const GameAddPage = () => {
   const { gameAPI } = useAPIContext();
+  const { notify } = useUIContext();
 
   const onSubmit = async (data: GameFormData) => {
     try {

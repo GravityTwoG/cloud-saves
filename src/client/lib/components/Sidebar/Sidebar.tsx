@@ -3,12 +3,15 @@ import classes from "./sidebar.module.scss";
 
 import { NavLinkType } from "@/client/config/navLinks";
 import { useAuthContext } from "@/client/contexts/AuthContext";
+import { useThemeContext } from "@/client/ui/contexts/ThemeContext";
+import { RouteAccess } from "@/client/config/routes";
 
 import { Link, useRoute } from "wouter";
+
 import { AuthGuard } from "@/client/lib/components/Guard/AuthGuard";
 import { AnonymousGuard } from "@/client/lib/components/Guard/AnonumousGuard";
+
 import LogoutIcon from "@/client/ui/icons/Logout.svg";
-import { RouteAccess } from "@/client/config/routes";
 
 export type SidebarProps = {
   links: NavLinkType[];
@@ -16,6 +19,7 @@ export type SidebarProps = {
 
 export const Sidebar = (props: SidebarProps) => {
   const { logout } = useAuthContext();
+  const { theme, toggleTheme } = useThemeContext();
 
   const onLogout = async () => {
     try {
@@ -47,6 +51,16 @@ export const Sidebar = (props: SidebarProps) => {
           <LogoutIcon />
         </button>
       </AuthGuard>
+
+      <button
+        className={classes.ThemeButton}
+        type="button"
+        onClick={toggleTheme}
+        title="Toggle theme"
+        aria-label="Toggle theme"
+      >
+        {theme === "light" ? "☀️" : "🌑"}
+      </button>
     </aside>
   );
 };

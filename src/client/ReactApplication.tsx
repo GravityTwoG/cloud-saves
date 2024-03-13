@@ -5,6 +5,7 @@ import { UIContextProvider } from "./contexts/UIContext";
 import { AppErrorBoundary } from "./ui/molecules/AppErrorBoundary";
 import { ToastsManager } from "./ui/toast";
 import { Router } from "./Router";
+import { ThemeContextProvider } from "./ui/contexts/ThemeContext";
 
 export const ReactApplication = () => {
   return (
@@ -12,8 +13,10 @@ export const ReactApplication = () => {
       <APIContextProvider>
         <AuthContextProvider>
           <UIContextProvider>
-            <Router />
-            <ToastsManager />
+            <ThemeContextProvider>
+              <Router />
+              <ToastsManager />
+            </ThemeContextProvider>
           </UIContextProvider>
         </AuthContextProvider>
       </APIContextProvider>

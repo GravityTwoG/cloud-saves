@@ -5,7 +5,7 @@ interface UIContext {
   notify: typeof notify;
 }
 
-export const uiContextValue = {
+export const uiContextValue: UIContext = {
   notify,
 };
 

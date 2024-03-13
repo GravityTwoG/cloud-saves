@@ -1,7 +1,6 @@
 import { createRoot } from "react-dom/client";
 
-import "./styles/index.css";
-import "./styles/theme.css";
+import "./ui/styles/theme.css";
 import "./styles/utility.css";
 
 import { SyncedSavesAPI } from "./api/SyncedSavesAPI";

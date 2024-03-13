@@ -89,3 +89,24 @@
     }
   }
 }
+
+.ThemeButton {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  border-color: transparent;
+  border-radius: 6px;
+  background-color: transparent;
+  cursor: pointer;
+
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  vertical-align: top;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background: var(--deco-color);
+  }
+}

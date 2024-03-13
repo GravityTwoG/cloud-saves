@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { clsx } from "clsx";
 import classes from "./download-manager.module.scss";
 
-import { Spoiler } from "../../molecules/Spoiler/Spoiler";
+import { Spoiler } from "../../../ui/molecules/Spoiler/Spoiler";
 import { DownloadManagerPortal } from "./DownloadManagerPortal";
-import { List } from "../../molecules/List/List";
+import { List } from "../../../ui/molecules/List/List";
 
 export type DownloadItem = {
   id: string;

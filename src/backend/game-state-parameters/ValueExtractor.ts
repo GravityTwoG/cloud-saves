@@ -3,12 +3,12 @@ import fs from "fs/promises";
 
 import { Game, GameStateParameters, GameStateValues, JSONType } from "@/types";
 
-import { Converter } from "./converters/Converter";
+import { FileConverter } from "./converters/FileConverter";
 
 export class ValueExtractor {
-  private readonly converters: Record<string, Converter> = {};
+  private readonly converters: Record<string, FileConverter> = {};
 
-  constructor(converters: Record<string, Converter>) {
+  constructor(converters: Record<string, FileConverter>) {
     this.converters = converters;
   }
 

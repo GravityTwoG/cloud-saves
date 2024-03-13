@@ -1,4 +1,4 @@
-export interface Converter {
+export interface FileConverter {
   convert: (
     folderPath: string,
     inputFilename: string,

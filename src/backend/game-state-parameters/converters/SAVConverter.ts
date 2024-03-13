@@ -3,7 +3,7 @@ import fs from "fs/promises";
 import path from "path";
 
 import { decompressSAV } from "./decompressSAV";
-import { Converter } from "./Converter";
+import { FileConverter } from "./FileConverter";
 
 const UESAVE_TYPE_MAPS = [
   ".worldSaveData.CharacterSaveParameterMap.Key=Struct",
@@ -28,7 +28,7 @@ async function readFile(save_path: string, file: string) {
   return data;
 }
 
-export class SAVtoJSONConverter implements Converter {
+export class SAVConverter implements FileConverter {
   convert = async function (
     save_path: string,
     inputFilename: string,

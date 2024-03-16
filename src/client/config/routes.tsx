@@ -2,7 +2,7 @@ import { UserRole } from "@/types";
 
 import { LoginPage } from "@/client/pages/Login/LoginPage";
 import { RegisterPage } from "@/client/pages/Register/RegisterPage";
-import { RequestPasswordResetPage } from "@/client/pages/RequestResetPassword/RequestPasswordResetPage";
+import { RequestPasswordResetPage } from "@/client/pages/RequestPasswordReset/RequestPasswordResetPage";
 import { ResetPasswordPage } from "@/client/pages/ResetPassword/ResetPasswordPage";
 
 import { ProfilePage } from "@/client/pages/Profile/ProfilePage";

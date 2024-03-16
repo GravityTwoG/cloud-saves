@@ -6,8 +6,11 @@ import "./styles/utility.css";
 import { SyncedSavesAPI } from "./api/SyncedSavesAPI";
 
 import { ReactApplication } from "./ReactApplication";
+import { initI18n } from "./locales";
 
 function bootstrap() {
+  initI18n();
+
   const syncedSavesAPI = new SyncedSavesAPI();
 
   window.electronAPI.onGetSyncedSaves(async () => {

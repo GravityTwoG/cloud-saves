@@ -3,6 +3,7 @@ import classes from "./sidebar.module.scss";
 
 import { NavLinkType } from "@/client/config/navLinks";
 import { useAuthContext } from "@/client/contexts/AuthContext";
+import { useUIContext } from "@/client/contexts/UIContext";
 import { useThemeContext } from "@/client/ui/contexts/ThemeContext";
 import { RouteAccess } from "@/client/config/routes";
 
@@ -19,13 +20,14 @@ export type SidebarProps = {
 
 export const Sidebar = (props: SidebarProps) => {
   const { logout } = useAuthContext();
+  const { notify } = useUIContext();
   const { theme, toggleTheme } = useThemeContext();
 
   const onLogout = async () => {
     try {
       await logout();
     } catch (error) {
-      console.error(error);
+      notify.error(error);
     }
   };
 

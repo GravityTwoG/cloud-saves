@@ -1,0 +1,22 @@
+{
+  "form": {
+    "TITLE": "Register",
+    "USERNAME_LABEL": "Username",
+    "USERNAME_PLACEHOLDER": "Enter username",
+    "USERNAME_REQUIRED": "Username is required",
+    "EMAIL_LABEL": "Email",
+    "EMAIL_PLACEHOLDER": "Enter email",
+    "EMAIL_REQUIRED": "Email is required",
+    "PASSWORD_LABEL": "Password",
+    "PASSWORD_PLACEHOLDER": "Enter password",
+    "PASSWORD_REQUIRED": "Password is required",
+    "CONFIRM_PASSWORD_LABEL": "Confirm password",
+    "CONFIRM_PASSWORD_PLACEHOLDER": "Confirm password",
+    "CONFIRM_PASSWORD_REQUIRED": "Confirm password is required",
+    "SUBMIT_BUTTON": "Register",
+    "PASSWORDS_DO_NOT_MATCH": "Passwords do not match",
+    "ERROR_MESSAGE": "Error while registering"
+  },
+  "PROMPT_TO_SIGN_IN": "Already have an account?",
+  "LINK_TO_SIGN_IN": "Login."
+}

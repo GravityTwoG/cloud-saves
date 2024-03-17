@@ -29,7 +29,7 @@ export enum RouteAccess {
 }
 
 type Link = {
-  label: string;
+  label: string; // key of translation
   path: string;
   icon?: React.ReactNode;
 };
@@ -57,7 +57,7 @@ export const routes: RouteDescriptor[] = [
     component: LoginPage,
     access: RouteAccess.ANONYMOUS,
     link: {
-      label: "Login",
+      label: "login",
       path: paths.login({}),
     },
   },
@@ -66,7 +66,7 @@ export const routes: RouteDescriptor[] = [
     component: RegisterPage,
     access: RouteAccess.ANONYMOUS,
     link: {
-      label: "Register",
+      label: "register",
       path: paths.register({}),
     },
   },
@@ -87,7 +87,7 @@ export const routes: RouteDescriptor[] = [
     access: RouteAccess.AUTHENTICATED,
     forRoles: [],
     link: {
-      label: "Profile",
+      label: "profile",
       path: paths.profile({}),
       icon: <ProfileIcon />,
     },
@@ -98,7 +98,7 @@ export const routes: RouteDescriptor[] = [
     access: RouteAccess.AUTHENTICATED,
     forRoles: [UserRole.USER],
     link: {
-      label: "My Saves",
+      label: "my-saves",
       path: paths.mySaves({}),
       icon: <SaveIcon />,
     },
@@ -109,7 +109,7 @@ export const routes: RouteDescriptor[] = [
     access: RouteAccess.AUTHENTICATED,
     forRoles: [UserRole.USER],
     link: {
-      label: "Shared Saves",
+      label: "shared-saves",
       path: paths.sharedSaves({}),
       icon: <SaveIcon />,
     },
@@ -118,7 +118,7 @@ export const routes: RouteDescriptor[] = [
     path: paths.publicSaves.pattern,
     component: PublicSavesPage,
     link: {
-      label: "Public Saves",
+      label: "public-saves",
       path: paths.publicSaves({}),
       icon: <SaveIcon />,
     },
@@ -136,7 +136,7 @@ export const routes: RouteDescriptor[] = [
     access: RouteAccess.AUTHENTICATED,
     forRoles: [UserRole.ADMIN],
     link: {
-      label: "Games",
+      label: "games",
       path: paths.games({}),
       icon: <GamepadIcon />,
     },
@@ -160,7 +160,7 @@ export const routes: RouteDescriptor[] = [
     access: RouteAccess.AUTHENTICATED,
     forRoles: [UserRole.ADMIN],
     link: {
-      label: "Users",
+      label: "users",
       path: paths.users({}),
       icon: <UsersIcon />,
     },

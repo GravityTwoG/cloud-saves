@@ -1,0 +1,22 @@
+{
+  "form": {
+    "username-placeholder": "Введите имя пользователя",
+    "username-label": "Имя пользователя",
+    "username-is-required": "Имя пользователя обязательно",
+    "email-placeholder": "Введите email",
+    "email-label": "Email",
+    "email-is-required": "Email обязателен",
+    "password-placeholder": "Введите пароль",
+    "password-label": "Пароль",
+    "password-is-required": "Пароль обязателен",
+    "confirm-password-placeholder": "Подтвердите пароль",
+    "confirm-password-label": "Подтвердите пароль",
+    "confirm-password-is-required": "Подтвердите пароль",
+    "passwords-do-not-match": "Пароли не совпадают",
+    "error-message": "Ошибка при регистрации",
+    "title": "Регистрация",
+    "submit-button": "Зарегистрироваться"
+  },
+  "prompt-to-sign-in": "У вас уже есть аккаунт?",
+  "link-to-sign-in": "Вход."
+}

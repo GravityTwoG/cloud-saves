@@ -1,0 +1,23 @@
+{
+  "game-save-not-found": "Game Save not found",
+  "save": "Save",
+  "setup-sync": "Setup Sync",
+  "is-public-no": "Is public: no",
+  "make-public": "Make public",
+  "shared-with-nobody": "Shared with: nobody",
+  "share": "Share",
+  "delete-save-0": "Delete save",
+  "sync-settings": "Sync settings",
+  "select-period": "Select period:",
+  "every-hour": "Every hour",
+  "every-day": "Every day",
+  "every-week": "Every week",
+  "every-month": "Every month",
+  "no": "No",
+  "confirm": "Confirm",
+  "about": "About",
+  "uploaded-at": "Uploaded at:",
+  "download": "Download",
+  "size": "Size",
+  "sync": "Sync"
+}

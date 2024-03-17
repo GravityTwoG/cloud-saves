@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import classes from "./shared-saves-page.module.scss";
 
 import { useAPIContext } from "@/client/contexts/APIContext";
@@ -13,6 +15,7 @@ import { Paginator } from "@/client/ui/molecules/Paginator";
 
 export const SharedSavesPage = () => {
   const { gameSaveAPI } = useAPIContext();
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.sharedSaves" });
 
   const {
     query,
@@ -24,7 +27,7 @@ export const SharedSavesPage = () => {
 
   return (
     <Container>
-      <H1>Shared Saves</H1>
+      <H1>{t("shared-saves")}</H1>
 
       <SearchForm
         searchQuery={query.searchQuery}
@@ -45,7 +48,9 @@ export const SharedSavesPage = () => {
               >
                 {save.name}
               </Link>
-              <Paragraph>Sync: {save.sync}</Paragraph>
+              <Paragraph>
+                {t("game-sync")} {save.sync}
+              </Paragraph>
             </div>
           </>
         )}

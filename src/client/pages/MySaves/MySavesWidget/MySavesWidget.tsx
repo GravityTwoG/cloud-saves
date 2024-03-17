@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { clsx } from "clsx";
 
 import classes from "./my-saves-widget.module.scss";
@@ -7,6 +8,7 @@ import { paths } from "@/client/config/paths";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
+import { syncMap } from "../utils";
 
 import { Link } from "wouter";
 import { H2, Paragraph } from "@/client/ui/atoms/Typography";
@@ -23,6 +25,7 @@ export type SavesWidgetProps = {
 export const MySavesWidget = (props: SavesWidgetProps) => {
   const { gameSaveAPI } = useAPIContext();
   const { notify } = useUIContext();
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.mySaves" });
 
   const {
     query,
@@ -47,7 +50,7 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
 
   return (
     <div className={clsx(props.className)}>
-      <H2>Uploaded Saves</H2>
+      <H2>{t("uploaded-saves")}</H2>
       <SearchForm
         searchQuery={query.searchQuery}
         onSearch={onSearch}
@@ -67,7 +70,9 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
               >
                 {save.name}
               </Link>
-              <Paragraph>Sync: {save.sync}</Paragraph>
+              <Paragraph>
+                {t("sync")}: {t(syncMap[save.sync])}
+              </Paragraph>
             </div>
 
             <div className={classes.Buttons}>
@@ -77,7 +82,7 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
                 }}
                 color="danger"
               >
-                Delete
+                {t("delete-save")}{" "}
               </ConfirmButton>
             </div>
           </>

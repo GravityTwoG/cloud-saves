@@ -18,15 +18,15 @@ export const ResetPasswordPage = () => {
   const formConfig = {
     password: {
       type: "password",
-      placeholder: t("form.PASSWORD_PLACEHOLDER"),
-      label: t("form.PASSWORD_LABEL"),
-      required: t("form.PASSWORD_REQUIRED"),
+      placeholder: t("form.password-placeholder"),
+      label: t("form.password-label"),
+      required: t("form.password-is-required"),
     },
     confirmPassword: {
       type: "password",
-      placeholder: t("form.CONFIRM_PASSWORD_PLACEHOLDER"),
-      label: t("form.CONFIRM_PASSWORD_LABEL"),
-      required: t("form.CONFIRM_PASSWORD_REQUIRED"),
+      placeholder: t("form.confirm-password-placeholder"),
+      label: t("form.confirm-password-label"),
+      required: t("form.confirm-password-is-required"),
     },
   } satisfies FormConfig;
   const [passwordResetted, setPasswordResetted] = useState(false);
@@ -36,7 +36,7 @@ export const ResetPasswordPage = () => {
   const onSubmit = async (data: FormData<typeof formConfig>) => {
     try {
       if (data.password !== data.confirmPassword) {
-        return t("form.PASSWORDS_DO_NOT_MATCH");
+        return t("form.passwords-do-not-match");
       }
 
       await resetPassword({
@@ -50,7 +50,7 @@ export const ResetPasswordPage = () => {
       if (error instanceof Error) {
         return error.message;
       }
-      return t("form.ERROR_MESSAGE");
+      return t("form.error-message");
     }
   };
 
@@ -58,11 +58,11 @@ export const ResetPasswordPage = () => {
     return (
       <Container className={classes.ResetPasswordPage}>
         <section>
-          <H1 className="tac">{t("form.TITLE")}</H1>
+          <H1 className="tac">{t("form.title")}</H1>
           <Paragraph>
-            {t("PASSWORD_RESETTED")}{" "}
+            {t("password-resetted")}{" "}
             <CommonLink href={paths.login({})}>
-              {t("LINK_TO_SIGN_IN")}
+              {t("link-to-sign-in")}
             </CommonLink>
           </Paragraph>
         </section>
@@ -73,11 +73,11 @@ export const ResetPasswordPage = () => {
   return (
     <Container className={classes.ResetPasswordPage}>
       <section>
-        <H1 className="tac">{t("form.TITLE")}</H1>
+        <H1 className="tac">{t("form.title")}</H1>
         <Form
           config={formConfig}
           onSubmit={onSubmit}
-          submitText={t("form.SUBMIT_BUTTON")}
+          submitText={t("form.submit-button")}
         />
       </section>
     </Container>

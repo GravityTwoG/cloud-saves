@@ -1,22 +1,12 @@
 import { use } from "i18next";
 import { initReactI18next } from "react-i18next";
 
-import loginPage from "./en/pages/login.json";
-import registerPage from "./en/pages/register.json";
-import resetPasswordPage from "./en/pages/resetPassword.json";
-import requestPasswordResetPage from "./en/pages/requestPasswordReset.json";
+import { resourcesEN } from "./resources-en";
+import { resourcesRU } from "./resources-ru";
 
 export const resources = {
-  en: {
-    translation: {
-      pages: {
-        login: loginPage,
-        register: registerPage,
-        resetPassword: resetPasswordPage,
-        requestPasswordReset: requestPasswordResetPage,
-      },
-    },
-  },
+  en: resourcesEN,
+  ru: resourcesRU,
 } as const;
 
 export const initI18n = () => {

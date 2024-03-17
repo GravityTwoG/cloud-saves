@@ -1,0 +1,15 @@
+{
+  "old-password": "Старый пароль",
+  "old-password-is-required": "Старый пароль обязателен",
+  "new-password": "Новый пароль",
+  "new-password-is-required": "Новый пароль обязателен",
+  "confirm-new-password": "Подтвердите новый пароль",
+  "confirm-new-password-is-required": "Подтвердите новый пароль",
+  "password-changed": "Пароль изменен",
+  "unexpected-error": "Произошла ошибка",
+  "profile": "Профиль",
+  "user-information": "Информация о пользователе",
+  "change-password": "Изменить пароль",
+  "username": "Имя пользователя:",
+  "email": "Email:"
+}

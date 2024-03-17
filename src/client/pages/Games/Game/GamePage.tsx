@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "wouter";
+import { useTranslation } from "react-i18next";
 
 import classes from "./game-page.module.scss";
 
@@ -19,6 +20,7 @@ export const GamePage = () => {
   const { gameAPI } = useAPIContext();
   const { gameId } = useParams();
   const { notify } = useUIContext();
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.game" });
 
   const [game, setGame] = useState<Game | null>(null);
 
@@ -57,7 +59,7 @@ export const GamePage = () => {
   if (!game) {
     return (
       <Container>
-        <H1>Game not found</H1>
+        <H1>{t("game-not-found")}</H1>
       </Container>
     );
   }
@@ -80,7 +82,7 @@ export const GamePage = () => {
           }}
           color="danger"
         >
-          Delete Game
+          {t("delete-game")}{" "}
         </ConfirmButton>
       </div>
 

@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import classes from "./users-page.module.scss";
 
 import { useAPIContext } from "@/client/contexts/APIContext";
@@ -13,6 +15,7 @@ import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton
 
 export const UsersPage = () => {
   const { usersAPI } = useAPIContext();
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.users" });
 
   const {
     query,
@@ -44,7 +47,7 @@ export const UsersPage = () => {
 
   return (
     <Container>
-      <H1>Games</H1>
+      <H1>{t("users")}</H1>
 
       <SearchForm
         searchQuery={query.searchQuery}
@@ -74,9 +77,9 @@ export const UsersPage = () => {
                   }
                 }}
                 color={user.isBlocked ? "primary" : "danger"}
-                prompt={user.isBlocked ? "Unblock user?" : "Block user?"}
+                prompt={user.isBlocked ? t("unblock-user") : t("block-user")}
               >
-                {user.isBlocked ? "Unblock" : "Block"}
+                {user.isBlocked ? t("unblock") : t("block")}
               </ConfirmButton>
             </div>
           </>

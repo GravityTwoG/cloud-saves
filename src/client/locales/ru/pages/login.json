@@ -1,0 +1,16 @@
+{
+  "form": {
+    "username-placeholder": "Введите имя пользователя",
+    "username-label": "Имя пользователя",
+    "username-is-required": "Имя пользователя обязательно",
+    "password-placeholder": "Введите пароль",
+    "password-label": "Пароль",
+    "password-is-required": "Пароль обязателен",
+    "error-message": "Ошибка при входе",
+    "title": "Вход",
+    "submit-button": "Войти"
+  },
+  "prompt-to-sign-up": "У вас нет аккаунта?",
+  "link-to-sign-up": "Зарегистрируйтесь.",
+  "link-to-forgot-pasword": "Забыли пароль?"
+}

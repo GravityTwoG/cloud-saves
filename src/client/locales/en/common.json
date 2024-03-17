@@ -1,0 +1,16 @@
+{
+  "toggle-theme": "Toggle theme",
+  "change-language": "Change language",
+  "logout": "Logout",
+  "navLinks": {
+    "login": "Login",
+    "register": "Register",
+
+    "profile": "Profile",
+    "my-saves": "My saves",
+    "shared-saves": "Shared saves",
+    "public-saves": "Public saves",
+    "games": "Games",
+    "users": "Users"
+  }
+}

@@ -17,15 +17,15 @@ export const LoginPage = () => {
   const formConfig = {
     username: {
       type: "string",
-      placeholder: t("form.USERNAME_PLACEHOLDER"),
-      label: t("form.USERNAME_LABEL"),
-      required: t("form.USERNAME_REQUIRED"),
+      placeholder: t("form.username-placeholder"),
+      label: t("form.username-label"),
+      required: t("form.username-is-required"),
     },
     password: {
       type: "password",
-      placeholder: t("form.PASSWORD_PLACEHOLDER"),
-      label: t("form.PASSWORD_LABEL"),
-      required: t("form.PASSWORD_REQUIRED"),
+      placeholder: t("form.password-placeholder"),
+      label: t("form.password-label"),
+      required: t("form.password-is-required"),
     },
   } satisfies FormConfig;
 
@@ -41,27 +41,27 @@ export const LoginPage = () => {
       if (error instanceof Error) {
         return error.message;
       }
-      return t("form.ERROR_MESSAGE");
+      return t("form.error-message");
     }
   };
 
   return (
     <Container className={classes.LoginPage}>
       <section>
-        <H1 className="tac">{t("form.TITLE")}</H1>
+        <H1 className="tac">{t("form.title")}</H1>
         <Form
           config={formConfig}
           onSubmit={onSubmit}
-          submitText={t("form.SUBMIT_BUTTON")}
+          submitText={t("form.submit-button")}
         />
 
         <Paragraph>
-          {t("PROMPT_TO_SIGN_UP")}{" "}
+          {t("prompt-to-sign-up")}{" "}
           <CommonLink href={paths.register({})}>
-            {t("LINK_TO_SIGN_UP")}{" "}
+            {t("link-to-sign-up")}{" "}
           </CommonLink>
           <CommonLink href={paths.requestPasswordReset({})}>
-            {t("LINK_TO_FORGOT_PASSWORD")}
+            {t("link-to-forgot-pasword")}
           </CommonLink>
         </Paragraph>
       </section>

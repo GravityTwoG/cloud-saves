@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import classes from "./game-add-page.module.scss";
 
 import { useAPIContext } from "@/client/contexts/APIContext";
@@ -13,6 +15,7 @@ import { GameForm } from "../GameForm/GameForm";
 export const GameAddPage = () => {
   const { gameAPI } = useAPIContext();
   const { notify } = useUIContext();
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.addGame" });
 
   const onSubmit = async (data: GameFormData) => {
     try {
@@ -33,7 +36,7 @@ export const GameAddPage = () => {
 
   return (
     <Container className={classes.GameAddPage}>
-      <H1>Add Game</H1>
+      <H1>{t("add-game")}</H1>
 
       <GameForm onSubmit={onSubmit} />
     </Container>

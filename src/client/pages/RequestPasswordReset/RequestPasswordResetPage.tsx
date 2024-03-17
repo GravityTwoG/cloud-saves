@@ -19,9 +19,9 @@ export const RequestPasswordResetPage = () => {
   const formConfig = {
     email: {
       type: "string",
-      placeholder: t("form.EMAIL_PLACEHOLDER"),
-      label: t("form.EMAIL_LABEL"),
-      required: t("form.EMAIL_REQUIRED"),
+      placeholder: t("form.email-placeholder"),
+      label: t("form.email-label"),
+      required: t("form.email-is-required"),
     },
   } satisfies FormConfig;
   const [emailSent, setEmailSent] = useState(false);
@@ -36,7 +36,7 @@ export const RequestPasswordResetPage = () => {
       if (error instanceof Error) {
         return error.message;
       }
-      return t("form.ERROR_MESSAGE");
+      return t("form.error-message");
     }
   };
 
@@ -44,9 +44,9 @@ export const RequestPasswordResetPage = () => {
     return (
       <Container className={classes.ResetPasswordPage}>
         <section>
-          <H1 className="tac">{t("form.TITLE")}</H1>
-          <Paragraph>{t("EMAIL_SENT")}</Paragraph>
-          <Paragraph>{t("PROMPT_TO_CHECK_EMAIL")}</Paragraph>
+          <H1 className="tac">{t("form.title")}</H1>
+          <Paragraph>{t("email-sent")}</Paragraph>
+          <Paragraph>{t("prompt-to-check-email")}</Paragraph>
         </section>
       </Container>
     );
@@ -55,13 +55,13 @@ export const RequestPasswordResetPage = () => {
   return (
     <Container className={classes.ResetPasswordPage}>
       <section>
-        <H1 className="tac">{t("form.TITLE")}</H1>
+        <H1 className="tac">{t("form.title")}</H1>
         <Form config={formConfig} onSubmit={onSubmit} />
 
         <Paragraph>
-          {t("PROMPT_TO_SIGN_UP")}{" "}
+          {t("prompt-to-sign-up")}{" "}
           <CommonLink href={paths.register({})}>
-            {t("LINK_TO_SIGN_UP")}
+            {t("link-to-sign-up")}
           </CommonLink>
         </Paragraph>
       </section>

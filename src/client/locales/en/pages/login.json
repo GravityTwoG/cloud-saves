@@ -1,16 +1,16 @@
 {
   "form": {
-    "TITLE": "Login",
-    "USERNAME_LABEL": "Username",
-    "USERNAME_PLACEHOLDER": "Enter username",
-    "USERNAME_REQUIRED": "Username is required",
-    "PASSWORD_LABEL": "Password",
-    "PASSWORD_PLACEHOLDER": "Enter password",
-    "PASSWORD_REQUIRED": "Password is required",
-    "SUBMIT_BUTTON": "Login",
-    "ERROR_MESSAGE": "Error while logging in"
+    "username-placeholder": "Enter username",
+    "username-label": "Username",
+    "username-is-required": "Username is required",
+    "password-placeholder": "Enter password",
+    "password-label": "Password",
+    "password-is-required": "Password is required",
+    "error-message": "Error while logging in",
+    "title": "Login",
+    "submit-button": "Login"
   },
-  "PROMPT_TO_SIGN_UP": "Don't have an account?",
-  "LINK_TO_SIGN_UP": "Register.",
-  "LINK_TO_FORGOT_PASSWORD": "Forgot password?"
+  "prompt-to-sign-up": "Don't have an account?",
+  "link-to-sign-up": "Register.",
+  "link-to-forgot-pasword": "Forgot password?"
 }

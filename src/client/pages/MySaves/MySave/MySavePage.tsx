@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "wouter";
 
 import classes from "./my-save-page.module.scss";
@@ -20,9 +21,12 @@ import { Container } from "@/client/ui/atoms/Container/Container";
 import { Button } from "@/client/ui/atoms/Button/Button";
 import { Modal } from "@/client/ui/molecules/Modal/Modal";
 import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
+import { syncMap } from "../utils";
 
 export const MySavePage = () => {
   const { gameSaveAPI } = useAPIContext();
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.mySave" });
+
   const [gameSave, setGameSave] = useState<GameSave | null>(null);
   const { gameSaveId } = useParams();
   const { notify } = useUIContext();
@@ -46,7 +50,7 @@ export const MySavePage = () => {
   if (!gameSave) {
     return (
       <Container>
-        <H1>Game Save not found</H1>
+        <H1>{t("game-save-not-found")}</H1>
       </Container>
     );
   }
@@ -94,27 +98,27 @@ export const MySavePage = () => {
 
   return (
     <Container className={classes.MySavePage}>
-      <H1>{gameSave?.name || "Save"}</H1>
+      <H1>{gameSave?.name || t("save")}</H1>
 
       <div className={classes.GameSaveSettings}>
         <div className={classes.GameSaveSettingsLeft}>
           <Paragraph>Path: {gameSave?.path}</Paragraph>
           <Paragraph>
-            Sync: {gameSave?.sync}{" "}
+            {t("sync")}: {t(syncMap[gameSave?.sync])}{" "}
             <Button
               onClick={() => {
                 setSyncSettingsAreOpen(true);
                 setSync(gameSave.sync);
               }}
             >
-              Setup Sync
+              {t("setup-sync")}{" "}
             </Button>
           </Paragraph>
           <Paragraph>
-            Is public: no <Button>Make public</Button>
+            {t("is-public-no")} <Button>{t("make-public")}</Button>
           </Paragraph>
           <Paragraph>
-            Shared with: nobody <Button>Share</Button>
+            {t("shared-with-nobody")} <Button>{t("share")}</Button>
           </Paragraph>
         </div>
 
@@ -125,7 +129,7 @@ export const MySavePage = () => {
             }}
             color="danger"
           >
-            Delete save
+            {t("delete-save-0")}{" "}
           </ConfirmButton>
         </div>
       </div>
@@ -133,40 +137,40 @@ export const MySavePage = () => {
       <Modal
         isOpen={syncSettingsAreOpen}
         closeModal={() => setSyncSettingsAreOpen(false)}
-        title="Sync settings"
+        title={t("sync-settings")}
       >
-        <Paragraph>Select period:</Paragraph>
+        <Paragraph>{t("select-period")}</Paragraph>
 
         <div className={classes.SyncSettingsPeriods}>
           <Button
             onClick={() => setSync(GameSaveSync.NO)}
             color={sync === GameSaveSync.NO ? "primary" : "secondary"}
           >
-            No
+            {t("no")}{" "}
           </Button>
           <Button
             onClick={() => setSync(GameSaveSync.EVERY_HOUR)}
             color={sync === GameSaveSync.EVERY_HOUR ? "primary" : "secondary"}
           >
-            Every hour
+            {t("every-hour")}{" "}
           </Button>
           <Button
             onClick={() => setSync(GameSaveSync.EVERY_DAY)}
             color={sync === GameSaveSync.EVERY_DAY ? "primary" : "secondary"}
           >
-            Every day
+            {t("every-day")}{" "}
           </Button>
           <Button
             onClick={() => setSync(GameSaveSync.EVERY_WEEK)}
             color={sync === GameSaveSync.EVERY_WEEK ? "primary" : "secondary"}
           >
-            Every week
+            {t("every-week")}{" "}
           </Button>
           <Button
             onClick={() => setSync(GameSaveSync.EVERY_MONTH)}
             color={sync === GameSaveSync.EVERY_MONTH ? "primary" : "secondary"}
           >
-            Every month
+            {t("every-month")}{" "}
           </Button>
         </div>
 
@@ -174,19 +178,21 @@ export const MySavePage = () => {
           onClick={setupSync}
           className={classes.SyncSettingsConfirmButton}
         >
-          Confirm
+          {t("confirm")}{" "}
         </Button>
       </Modal>
 
-      <H2>About</H2>
+      <H2>{t("about")}</H2>
 
       <ParametersView gameStateValues={gameSave.gameStateValues} />
 
       <div className={classes.GameSaveArchive}>
         <span>
-          Size: <Bytes bytes={gameSave.size} />
+          {t("size")}: <Bytes bytes={gameSave.size} />
         </span>
-        <span>Uploaded at: {gameSave.createdAt}</span>
+        <span>
+          {t("uploaded-at")} {gameSave.createdAt}
+        </span>
 
         <div className={classes.Buttons}>
           <Button
@@ -199,7 +205,7 @@ export const MySavePage = () => {
               });
             }}
           >
-            Download
+            {t("download")}{" "}
           </Button>
         </div>
       </div>

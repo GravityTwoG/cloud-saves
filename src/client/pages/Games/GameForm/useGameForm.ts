@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 import { Game } from "@/types";
 import { useFilePreview } from "@/client/lib/hooks/useFilePreview";
@@ -14,6 +15,7 @@ type UseGameFormArgs = {
 };
 
 export const useGameForm = (args: UseGameFormArgs) => {
+  const { t } = useTranslation(undefined, { keyPrefix: "forms.gameForm" });
   const {
     register,
     handleSubmit,
@@ -45,21 +47,21 @@ export const useGameForm = (args: UseGameFormArgs) => {
     rules: {
       required: {
         value: true,
-        message: "Paths are required",
+        message: t("paths-are-required"),
       },
       minLength: {
         value: 1,
-        message: "At least one path is required",
+        message: t("at-least-one-path-is-required"),
       },
       validate: {
         noDuplicates: (paths) => {
           const uniquePaths = new Set(paths);
-          return uniquePaths.size === paths.length || "Paths must be unique";
+          return uniquePaths.size === paths.length || t("paths-must-be-unique");
         },
         notEmptyValue: (paths) => {
           return (
             paths.every((path) => path.path.length > 0) ||
-            "Path must not be empty"
+            t("path-must-not-be-empty")
           );
         },
       },
@@ -79,7 +81,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
           return fields.every(
             (field) =>
               (field.inputFilename && field.outputFilename && field.type) ||
-              "Field must not be empty"
+              t("field-must-not-be-empty")
           );
         },
       },
@@ -96,7 +98,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
     rules: {
       required: {
         value: true,
-        message: "Parameters schema is required",
+        message: t("parameters-schema-is-required"),
       },
       validate: {
         notEmptyValues: (fields) => {
@@ -106,7 +108,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
                 field.key.length > 0 &&
                 field.type.length > 0 &&
                 field.label.length > 0
-            ) || "Field must not be empty"
+            ) || t("field-must-not-be-empty")
           );
         },
       },

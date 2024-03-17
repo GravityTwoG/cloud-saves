@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import classes from "./games-page.module.scss";
 
 import { paths } from "@/client/config/paths";
@@ -17,6 +19,7 @@ import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton
 export const GamesPage = () => {
   const { gameAPI } = useAPIContext();
   const { notify } = useUIContext();
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.games" });
 
   const {
     query,
@@ -38,8 +41,8 @@ export const GamesPage = () => {
   return (
     <Container>
       <div className={classes.Header}>
-        <H1>Games</H1>
-        <CommonLink href={paths.gameAdd({})}>Add Game</CommonLink>
+        <H1>{t("games")}</H1>
+        <CommonLink href={paths.gameAdd({})}>{t("add-game")}</CommonLink>
       </div>
 
       <SearchForm
@@ -74,7 +77,7 @@ export const GamesPage = () => {
                 }}
                 color="danger"
               >
-                Delete
+                {t("games-delete-game")}{" "}
               </ConfirmButton>
             </div>
           </>

@@ -1,0 +1,15 @@
+{
+  "old-password": "Old password",
+  "old-password-is-required": "Old password is required",
+  "new-password": "New password",
+  "new-password-is-required": "New password is required",
+  "confirm-new-password": "Confirm new password",
+  "confirm-new-password-is-required": "Confirm new password is required",
+  "password-changed": "Password changed",
+  "unexpected-error": "Unexpected error",
+  "profile": "Profile",
+  "user-information": "User information",
+  "change-password": "Change password",
+  "username": "Username:",
+  "email": "Email:"
+}

@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import classes from "./public-saves-page.module.scss";
 
 import { useAPIContext } from "@/client/contexts/APIContext";
@@ -13,6 +15,7 @@ import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
 
 export const PublicSavesPage = () => {
   const { gameSaveAPI } = useAPIContext();
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.publicSaves" });
 
   const {
     query,
@@ -24,7 +27,7 @@ export const PublicSavesPage = () => {
 
   return (
     <Container>
-      <H1>Public Saves</H1>
+      <H1>{t("public-saves")}</H1>
 
       <SearchForm
         searchQuery={query.searchQuery}
@@ -45,7 +48,9 @@ export const PublicSavesPage = () => {
               >
                 {save.name}
               </Link>
-              <Paragraph>Sync: {save.sync}</Paragraph>
+              <Paragraph>
+                {t("game-sync")} {save.sync}
+              </Paragraph>
             </div>
           </>
         )}

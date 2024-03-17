@@ -134,7 +134,16 @@ export const useGameForm = (args: UseGameFormArgs) => {
 
   return {
     register,
-    handleSubmit,
+    handleSubmit: (cb: Parameters<typeof handleSubmit>[0]) =>
+      handleSubmit((fields) =>
+        cb({
+          ...fields,
+          paths: fields.paths.map((path) => ({
+            ...path,
+            path: path.path.replaceAll(/\//g, "\\"),
+          })),
+        })
+      ),
     errors,
     iconPreview,
     pathFields,

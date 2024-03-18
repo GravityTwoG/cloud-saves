@@ -1,0 +1,22 @@
+{
+  "form": {
+    "username-placeholder": "Enter username",
+    "username-label": "Username",
+    "username-is-required": "Username is required",
+    "email-placeholder": "Enter email",
+    "email-label": "Email",
+    "email-is-required": "Email is required",
+    "password-placeholder": "Enter password",
+    "password-label": "Password",
+    "password-is-required": "Password is required",
+    "confirm-password-placeholder": "Confirm password",
+    "confirm-password-label": "Confirm password",
+    "confirm-password-is-required": "Confirm password is required",
+    "passwords-do-not-match": "Passwords do not match",
+    "error-message": "Error while registering",
+    "title": "Register",
+    "submit-button": "Register"
+  },
+  "prompt-to-sign-in": "Already have an account?",
+  "link-to-sign-in": "Login."
+}

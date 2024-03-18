@@ -1,7 +1,8 @@
-import { Game } from "@/types";
+import { useTranslation } from "react-i18next";
 
 import classes from "./game-form.module.scss";
 
+import { Game } from "@/types";
 import { GameFormData } from "../utils";
 import { useGameForm } from "./useGameForm";
 
@@ -18,6 +19,7 @@ export type GameFormProps = {
 };
 
 export const GameForm = (props: GameFormProps) => {
+  const { t } = useTranslation(undefined, { keyPrefix: "forms.gameForm" });
   const {
     register,
     handleSubmit,
@@ -30,62 +32,70 @@ export const GameForm = (props: GameFormProps) => {
     appendExtractionPipeline,
     removeExtractionPipeline,
     pipelineItemTypes,
-    metadataSchemaFields,
-    appendMetadataSchemaField,
-    removeMetadataSchemaField,
-    metadataSchemaFieldTypes,
+    gameStateParameters,
+    appendGameStateParameter,
+    removeGameStateParameter,
+    gameStateParameterTypes,
   } = useGameForm({ defaultValue: props.game });
 
   return (
     <form onSubmit={handleSubmit(props.onSubmit)}>
       <InputField
-        label="Game Name"
+        label={t("game-name")}
         type="text"
-        placeholder="Enter game name"
-        {...register("name", { required: "Game name is required" })}
+        placeholder={t("enter-game-name")}
+        {...register("name", { required: t("game-name-is-required") })}
       />
       {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
 
       <InputField
-        label="Game Description"
+        label={t("game-description")}
         type="text"
-        placeholder="Enter game description"
+        placeholder={t("enter-game-description")}
         {...register("description")}
       />
-      {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
+      {errors.description && (
+        <ErrorText>{errors.description.message}</ErrorText>
+      )}
 
       <InputField
-        label="Icon"
+        label={t("game-icon")}
         type="file"
-        placeholder="Upload image"
+        placeholder={t("upload-image")}
         {...register("icon")}
       />
       {iconPreview && (
-        <img src={iconPreview} alt="Icon" className={classes.ImagePreview} />
+        <img
+          src={iconPreview}
+          alt={t("game-icon")}
+          className={classes.ImagePreview}
+        />
       )}
       {errors.icon && <ErrorText>{errors.icon.message}</ErrorText>}
 
-      <Field label="Save Paths">
+      <Field label={t("save-paths")}>
         {pathFields.map((field, index) => (
           <div key={field.id} className={classes.PathItem}>
             <Input {...register(`paths.${index}.path`)} />
             <Button color="danger" onClick={() => removePath(index)}>
-              Remove
+              {t("remove-path")}{" "}
             </Button>
           </div>
         ))}
-        <Button onClick={() => appendPath({ path: "" })}>Add path</Button>
+        <Button onClick={() => appendPath({ path: "" })}>
+          {t("add-path")}
+        </Button>
       </Field>
       {errors.paths && errors.paths.root && (
         <ErrorText>{errors.paths.root.message}</ErrorText>
       )}
 
-      <Field label="Extraction Pipeline">
+      <Field label={t("extraction-pipeline")}>
         {extractionPipelineFields.map((field, index) => (
           <div key={field.id} className={classes.PipelineItem}>
             <Input
               {...register(`extractionPipeline.${index}.inputFilename`)}
-              placeholder="Input filename"
+              placeholder={t("input-filename")}
             />
             <Select
               {...register(`extractionPipeline.${index}.type`)}
@@ -93,13 +103,13 @@ export const GameForm = (props: GameFormProps) => {
             />
             <Input
               {...register(`extractionPipeline.${index}.outputFilename`)}
-              placeholder="Output filename"
+              placeholder={t("output-filename")}
             />
             <Button
               color="danger"
               onClick={() => removeExtractionPipeline(index)}
             >
-              Remove
+              {t("remove-extraction-pipeline")}
             </Button>
           </div>
         ))}
@@ -112,49 +122,59 @@ export const GameForm = (props: GameFormProps) => {
             })
           }
         >
-          Add pipeline item
+          {t("add-pipeline-item")}{" "}
         </Button>
       </Field>
       {errors.extractionPipeline && errors.extractionPipeline.root && (
         <ErrorText>{errors.extractionPipeline.root.message}</ErrorText>
       )}
+      {errors.extractionPipeline?.map
+        ? errors.extractionPipeline.map((error, idx) => (
+            <ErrorText key={idx}>{error?.message}</ErrorText>
+          ))
+        : null}
 
       <InputField
-        label="Metadata Schema filename"
-        {...register("metadataSchema.filename")}
-        placeholder="Metadata Schema filename"
+        label={t("parameters-schema-filename")}
+        {...register("gameStateParameters.filename")}
+        placeholder={t("parameters-schema-filename-0")}
       />
+      {errors.gameStateParameters?.filename &&
+        errors.gameStateParameters.filename && (
+          <ErrorText>{errors.gameStateParameters.filename.message}</ErrorText>
+        )}
 
-      <Field label="Metadata Schema fields">
-        {metadataSchemaFields.map((field, index) => (
+      <Field label={t("parameters-schema-fields")}>
+        {gameStateParameters.map((field, index) => (
           <div key={field.id} className={classes.SchemaField}>
             <Input
-              {...register(`metadataSchema.fields.${index}.key`)}
-              placeholder="Key"
+              {...register(`gameStateParameters.fields.${index}.key`)}
+              placeholder={t("parameter-key")}
             />
             <Select
-              {...register(`metadataSchema.fields.${index}.type`)}
-              options={metadataSchemaFieldTypes}
+              {...register(`gameStateParameters.fields.${index}.type`)}
+              options={gameStateParameterTypes}
             />
             <Input
-              {...register(`metadataSchema.fields.${index}.label`)}
-              placeholder="Label"
+              {...register(`gameStateParameters.fields.${index}.label`)}
+              placehparameter-label={t("parameter-label")}
             />
             <Input
-              {...register(`metadataSchema.fields.${index}.description`)}
-              placeholder="Description"
+              {...register(`gameStateParameters.fields.${index}.description`)}
+              parameter-descriptionlder={t("parameter-description")}
             />
             <Button
               color="danger"
-              onClick={() => removeMetadataSchemaField(index)}
+              onClick={() => removeGameStateParameter(index)}
+              remove-parameter
             >
-              Remove
+              {t("remove-parameter")}
             </Button>
           </div>
         ))}
         <Button
           onClick={() =>
-            appendMetadataSchemaField({
+            appendGameStateParameter({
               key: "",
               type: "string",
               label: "",
@@ -162,15 +182,21 @@ export const GameForm = (props: GameFormProps) => {
             })
           }
         >
-          Add Schema field
+          {t("add-schema-field")}{" "}
         </Button>
       </Field>
-      {errors.metadataSchema && errors.metadataSchema.root && (
-        <ErrorText>{errors.metadataSchema.root.message}</ErrorText>
+      {errors.gameStateParameters && errors.gameStateParameters.root && (
+        <ErrorText>{errors.gameStateParameters.root.message}</ErrorText>
       )}
 
+      {errors.gameStateParameters?.fields?.map
+        ? errors.gameStateParameters.fields.map((error, idx) => (
+            <ErrorText key={idx}>{error?.message}</ErrorText>
+          ))
+        : null}
+
       <div className={classes.AddGameButtons}>
-        <CTAButton type="submit">Submit</CTAButton>
+        <CTAButton type="submit">{t("add-game-submit")}</CTAButton>
       </div>
     </form>
   );

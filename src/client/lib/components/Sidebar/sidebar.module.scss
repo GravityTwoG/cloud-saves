@@ -1,0 +1,122 @@
+.Sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 4rem;
+  min-height: 100vh;
+  padding: 0.5rem 0.25rem;
+  border-right: 1px solid var(--deco-color);
+  overflow: hidden;
+}
+
+.Logo {
+  margin-bottom: 4rem;
+  font-weight: bold;
+}
+
+.Nav {
+  width: 100%;
+
+  & > ul {
+    width: 100%;
+  }
+}
+
+.NavLink {
+  margin-bottom: 1rem;
+  display: block;
+  width: 100%;
+  font-size: 12px;
+  text-align: center;
+
+  & > a {
+    display: block;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+
+    & > span {
+      max-width: 100%;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+      overflow: hidden;
+    }
+
+    & > .NavIcon {
+      margin: auto;
+      width: 100%;
+      max-width: 3rem;
+      padding: 8px 8px 0 8px;
+
+      & > svg {
+        width: 100%;
+        height: 100%;
+      }
+
+      & path {
+        stroke: var(--text-color);
+        transition: stroke 0.3s ease;
+      }
+    }
+  }
+
+  &:hover,
+  &.NavLinkActive {
+    & > a {
+      color: var(--accent-color);
+    }
+
+    & > a > .NavIcon path {
+      stroke: var(--accent-color);
+    }
+  }
+}
+
+.AppButtons {
+  margin-top: auto;
+}
+
+.AppButton {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  border-color: transparent;
+  border-radius: 6px;
+  background-color: transparent;
+  cursor: pointer;
+
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--text-color);
+  vertical-align: baseline;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background: var(--deco-color);
+  }
+}
+
+.LogoutButton {
+  padding: 2px 0 0 0;
+  & > svg {
+    width: 1.5rem;
+
+    & > path {
+      stroke: var(--text-color);
+      transition: stroke 0.3s ease;
+    }
+  }
+
+  &:hover {
+    color: var(--accent-color);
+
+    & > svg path {
+      stroke: var(--accent-color);
+    }
+  }
+}

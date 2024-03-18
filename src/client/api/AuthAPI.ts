@@ -1,5 +1,5 @@
 import { User, UserRole } from "@/types";
-import { fetcher } from "./fetcher";
+import { Fetcher } from "./Fetcher";
 import {
   ChangePasswordCredentials,
   IAuthAPI,
@@ -20,16 +20,25 @@ type ServerUser = {
 };
 
 export class AuthAPI implements IAuthAPI {
+  private readonly fetcher: Fetcher;
+
+  constructor(fetcher: Fetcher) {
+    this.fetcher = fetcher;
+  }
+
   register = async (credentials: RegisterCredentials): Promise<User> => {
-    await fetcher.post<ServerUser>("/auth/registration", {
+    await this.fetcher.post<ServerUser>("/auth/registration", {
       body: credentials,
     });
 
-    return this.login(credentials);
+    return this.login({
+      username: credentials.username,
+      password: credentials.password,
+    });
   };
 
   login = async (credentials: LoginCredentials): Promise<User> => {
-    const user = await fetcher.post<ServerUser>("/auth/login", {
+    const user = await this.fetcher.post<ServerUser>("/auth/login", {
       body: credentials,
     });
 
@@ -37,13 +46,13 @@ export class AuthAPI implements IAuthAPI {
   };
 
   getCurrentUser = async (): Promise<User> => {
-    const user = await fetcher.get<ServerUser>("/auth/me");
+    const user = await this.fetcher.get<ServerUser>("/auth/me");
 
     return { ...user, role: roleMap[user.role] };
   };
 
   changePassword = (credentials: ChangePasswordCredentials): Promise<void> => {
-    return fetcher.post("/auth/auth-change-password", {
+    return this.fetcher.post("/auth/auth-change-password", {
       body: {
         oldPassword: credentials.oldPassword,
         password: credentials.newPassword,
@@ -53,11 +62,11 @@ export class AuthAPI implements IAuthAPI {
   };
 
   requestPasswordReset = (email: string): Promise<void> => {
-    return fetcher.post("/auth/recover-password", { body: { email } });
+    return this.fetcher.post("/auth/recover-password", { body: { email } });
   };
 
   resetPassword = (credentials: ResetPasswordCredentials): Promise<void> => {
-    return fetcher.post("/auth/change-password", {
+    return this.fetcher.post("/auth/change-password", {
       body: {
         token: credentials.token,
         password: credentials.newPassword,
@@ -68,7 +77,7 @@ export class AuthAPI implements IAuthAPI {
 
   logout = async (): Promise<void> => {
     try {
-      await fetcher.post("/auth/logout");
+      await this.fetcher.post("/auth/logout");
     } catch (e) {
       if (
         e instanceof SyntaxError &&

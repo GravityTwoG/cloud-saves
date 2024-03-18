@@ -1,5 +1,4 @@
-import { AuthStatus } from "@/client/contexts/AuthContext/AuthContext";
-import { useAuthContext } from "@/client/contexts/AuthContext/useAuthContext";
+import { AuthStatus, useAuthContext } from "@/client/contexts/AuthContext";
 import { UserRole } from "@/types";
 
 export type AuthGuardProps = {

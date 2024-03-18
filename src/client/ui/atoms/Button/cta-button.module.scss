@@ -3,7 +3,7 @@
   background-color: var(--accent-color);
   padding: 11px 12px 11px;
   border-radius: 6px;
-  border: none;
+  border: 2px solid transparent;
   outline: none;
   cursor: pointer;
   text-decoration: none;
@@ -28,6 +28,10 @@
 
   &:disabled {
     opacity: 0.5;
+  }
+
+  &:focus-visible {
+    border-color: var(--deco-color);
   }
 
   &.isLoading {

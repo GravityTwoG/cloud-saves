@@ -1,13 +1,16 @@
 import AdmZip from "adm-zip";
 import fs from "fs/promises";
-import path from "path";
 
 import { Game } from "@/types";
-
-import { convertSAVToJSON } from "./metadata/convertSAVToJSON";
-import { extractMetadataFromJSON } from "./metadata/extractMetadataFromJSON";
+import { ValueExtractor } from "./game-state-parameters/ValueExtractor";
 
 export class SavesManager {
+  private readonly valueExtractor: ValueExtractor;
+
+  constructor(valueExtractor: ValueExtractor) {
+    this.valueExtractor = valueExtractor;
+  }
+
   async uploadSave(folder: { path: string; name: string }, game?: Game) {
     const zip = new AdmZip();
 
@@ -19,48 +22,15 @@ export class SavesManager {
       zip.addLocalFile(folder.path);
     }
     // await zip.writeZipPromise(`${path}.zip`);
-    const metadata = game
-      ? await this.getMetadata(folder, game)
+    const gameStateValues = game
+      ? await this.valueExtractor.extract(folder, game)
       : { fields: [] };
 
     const buffer = zip.toBuffer();
     return {
       buffer,
-      metadata,
+      gameStateValues,
     };
-  }
-
-  private async getMetadata(
-    folder: { path: string; name: string },
-    game: Game
-  ) {
-    const createdFiles: string[] = [];
-
-    for (const pipelineItem of game.extractionPipeline) {
-      if (pipelineItem.type === "sav-to-json") {
-        await convertSAVToJSON(
-          folder.path,
-          pipelineItem.inputFilename,
-          pipelineItem.outputFilename
-        );
-        createdFiles.push(path.join(folder.path, pipelineItem.outputFilename));
-      }
-    }
-
-    const metadataSchema = game.metadataSchema;
-
-    const json = await fs.readFile(
-      path.join(folder.path, metadataSchema.filename),
-      {
-        encoding: "utf-8",
-      }
-    );
-
-    const metadata = extractMetadataFromJSON(JSON.parse(json), metadataSchema);
-
-    await Promise.allSettled(createdFiles.map((file) => fs.unlink(file)));
-
-    return metadata;
   }
 
   async downloadSave(archiveURL: string) {
@@ -73,14 +43,14 @@ export class SavesManager {
     // TODO
     const save = await this.downloadSave(archiveURL);
     // TODO
-    this.extract(save.path);
+    this.extractZIP(save.path);
 
     console.log("Extracted to", path);
 
     return save;
   }
 
-  private extract(filePath: string) {
+  private extractZIP(filePath: string) {
     const zip = new AdmZip(filePath);
 
     const zipEntries = zip.getEntries();

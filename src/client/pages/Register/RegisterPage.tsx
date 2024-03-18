@@ -1,47 +1,50 @@
+import { useTranslation } from "react-i18next";
+
 import classes from "./register-page.module.scss";
 
-import { paths } from "@/client/config/routes";
-import { useAuthContext } from "@/client/contexts/AuthContext/useAuthContext";
+import { paths } from "@/client/config/paths";
+import { useAuthContext } from "@/client/contexts/AuthContext";
 
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container/Container";
 import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
 import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";
 
-const formConfig = {
-  username: {
-    type: "string",
-    placeholder: "Enter username",
-    label: "Username",
-    required: "Username is required",
-  },
-  email: {
-    type: "string",
-    placeholder: "Enter email",
-    label: "Email",
-    required: "Email is required",
-  },
-  password: {
-    type: "password",
-    placeholder: "Enter password",
-    label: "Password",
-    required: "Password is required",
-  },
-  confirmPassword: {
-    type: "password",
-    placeholder: "Confirm password",
-    label: "Confirm Password",
-    required: "Confirm Password is required",
-  },
-} satisfies FormConfig;
-
 export const RegisterPage = () => {
   const { register } = useAuthContext();
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.register" });
+
+  const formConfig = {
+    username: {
+      type: "string",
+      placeholder: t("form.username-placeholder"),
+      label: t("form.username-label"),
+      required: t("form.username-is-required"),
+    },
+    email: {
+      type: "string",
+      placeholder: t("form.email-placeholder"),
+      label: t("form.email-label"),
+      required: t("form.email-is-required"),
+    },
+    password: {
+      type: "password",
+      placeholder: t("form.password-placeholder"),
+      label: t("form.password-label"),
+      required: t("form.password-is-required"),
+    },
+    confirmPassword: {
+      type: "password",
+      placeholder: t("form.confirm-password-placeholder"),
+      label: t("form.confirm-password-label"),
+      required: t("form.confirm-password-is-required"),
+    },
+  } satisfies FormConfig;
 
   const onSubmit = async (data: FormData<typeof formConfig>) => {
     try {
       if (data.password !== data.confirmPassword) {
-        return "Passwords do not match";
+        return t("form.passwords-do-not-match");
       }
 
       await register({
@@ -55,19 +58,23 @@ export const RegisterPage = () => {
       if (error instanceof Error) {
         return error.message;
       }
-      return "Error";
+      return t("form.error-message");
     }
   };
 
   return (
     <Container className={classes.RegisterPage}>
       <section>
-        <H1 className="tac">Register</H1>
-        <Form config={formConfig} onSubmit={onSubmit} />
+        <H1 className="tac">{t("form.title")}</H1>
+        <Form
+          config={formConfig}
+          onSubmit={onSubmit}
+          submitText={t("form.submit-button")}
+        />
 
         <Paragraph>
-          Already have an account?{" "}
-          <CommonLink href={paths.login({})}>Login</CommonLink>
+          {t("prompt-to-sign-in")}{" "}
+          <CommonLink href={paths.login({})}>{t("link-to-sign-in")}</CommonLink>
         </Paragraph>
       </section>
     </Container>

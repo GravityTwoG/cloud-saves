@@ -1,3 +1,13 @@
+export type JSONType = {
+  [key: string | number]:
+    | string
+    | number
+    | boolean
+    | null
+    | JSONType
+    | JSONType[];
+};
+
 export enum UserRole {
   "USER" = "USER",
   "ADMIN" = "ADMIN",
@@ -9,32 +19,26 @@ export type User = {
   role: UserRole;
 };
 
-export type JSONType = {
-  [key: string | number]:
-    | string
-    | number
-    | boolean
-    | null
-    | JSONType
-    | JSONType[];
-};
+export type GameStateParameterType =
+  | "string"
+  | "number"
+  | "boolean"
+  | "seconds";
 
-export type MetadataType = "string" | "number" | "boolean" | "seconds";
-
-export type MetadataSchema = {
+export type GameStateParameters = {
   filename: string;
   fields: {
     key: string;
-    type: MetadataType;
+    type: GameStateParameterType;
     description: string;
     label: string;
   }[];
 };
 
-export type Metadata = {
+export type GameStateValues = {
   fields: {
     value: string | number | boolean;
-    type: MetadataType;
+    type: GameStateParameterType;
     description: string;
     label: string;
   }[];
@@ -48,12 +52,13 @@ export type Game = {
   description: string;
   iconURL: string;
   paths: string[];
+  // schema
   extractionPipeline: {
     inputFilename: string;
     type: PipelineItemType;
     outputFilename: string;
   }[];
-  metadataSchema: MetadataSchema;
+  gameStateParameters: GameStateParameters;
 };
 
 export type GamePath = {
@@ -77,7 +82,7 @@ export type GameSave = {
   name: string;
   path: string;
   sync: GameSaveSync;
-  metadata: Metadata;
+  gameStateValues: GameStateValues;
 
   archiveURL: string;
   size: number;

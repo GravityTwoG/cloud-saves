@@ -19,7 +19,7 @@ export class GameSaveAPI {
       game
     );
 
-    // upload buffer and metadata
+    // upload buffer and gameStateValues
     // await fetch(`${import.meta.env.VITE_API_BASE_URL}/game-saves`, {
     //   method: "POST",
     //   headers: {
@@ -27,7 +27,7 @@ export class GameSaveAPI {
     //   },
     //   body: JSON.stringify({
     //     buffer: response.buffer,
-    //     metadata: response.metadata,
+    //     gameStateValues: response.gameStateValues,
     //   }),
     // });
 
@@ -64,7 +64,7 @@ export class GameSaveAPI {
       description: game.description,
       paths: game.paths.map((path: { path: string }) => path.path),
       extractionPipeline: game.extractionPipeline,
-      metadataSchema: game.schema,
+      gameStateParameters: game.schema,
       iconURL: `${import.meta.env.VITE_API_BASE_URL}/games/image/${
         game.imageId
       }`,

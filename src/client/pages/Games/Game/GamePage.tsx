@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "wouter";
+import { useTranslation } from "react-i18next";
 
 import classes from "./game-page.module.scss";
 
 import { Game } from "@/types";
-import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
-import { notify } from "@/client/ui/toast";
+import { useAPIContext } from "@/client/contexts/APIContext";
+import { useUIContext } from "@/client/contexts/UIContext";
 import { navigate } from "@/client/useHashLocation";
-import { paths } from "@/client/config/routes";
+import { paths } from "@/client/config/paths";
 import { GameFormData } from "../utils";
 
 import { H1 } from "@/client/ui/atoms/Typography";
@@ -18,6 +19,8 @@ import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton
 export const GamePage = () => {
   const { gameAPI } = useAPIContext();
   const { gameId } = useParams();
+  const { notify } = useUIContext();
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.game" });
 
   const [game, setGame] = useState<Game | null>(null);
 
@@ -45,7 +48,7 @@ export const GamePage = () => {
         icon: data.icon[0] || undefined,
         paths: data.paths.map((path) => path.path),
         extractionPipeline: data.extractionPipeline,
-        metadataSchema: data.metadataSchema,
+        gameStateParameters: data.gameStateParameters,
       });
       navigate(paths.games({}));
     } catch (error) {
@@ -56,7 +59,7 @@ export const GamePage = () => {
   if (!game) {
     return (
       <Container>
-        <H1>Game not found</H1>
+        <H1>{t("game-not-found")}</H1>
       </Container>
     );
   }
@@ -79,7 +82,7 @@ export const GamePage = () => {
           }}
           color="danger"
         >
-          Delete Game
+          {t("delete-game")}{" "}
         </ConfirmButton>
       </div>
 

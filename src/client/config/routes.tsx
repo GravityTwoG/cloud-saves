@@ -1,9 +1,8 @@
-import { path } from "@/client/lib/path";
 import { UserRole } from "@/types";
 
 import { LoginPage } from "@/client/pages/Login/LoginPage";
 import { RegisterPage } from "@/client/pages/Register/RegisterPage";
-import { RequestPasswordResetPage } from "@/client/pages/RequestResetPassword/RequestPasswordResetPage";
+import { RequestPasswordResetPage } from "@/client/pages/RequestPasswordReset/RequestPasswordResetPage";
 import { ResetPasswordPage } from "@/client/pages/ResetPassword/ResetPasswordPage";
 
 import { ProfilePage } from "@/client/pages/Profile/ProfilePage";
@@ -22,42 +21,7 @@ import ProfileIcon from "@/client/ui/icons/Profile.svg";
 import SaveIcon from "@/client/ui/icons/Save.svg";
 import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
 import UsersIcon from "@/client/ui/icons/Users.svg";
-
-const register = path("/register");
-const login = path("/login");
-const requestPasswordReset = path("/request-password-reset");
-const resetPassword = path("/reset-password");
-
-const profile = path("/");
-const mySaves = path("/my-saves");
-const mySave = mySaves.path("/:gameSaveId");
-const sharedSaves = path("/shared-saves");
-const publicSaves = path("/public-saves");
-
-const games = path("/games");
-const gameAdd = path("/games-add");
-const game = games.path("/:gameId");
-
-const users = path("/users");
-
-export const paths = {
-  register,
-  login,
-  requestPasswordReset,
-  resetPassword,
-
-  profile,
-  mySaves,
-  mySave,
-  sharedSaves,
-  publicSaves,
-
-  games,
-  game,
-  gameAdd,
-
-  users,
-};
+import { paths } from "./paths";
 
 export enum RouteAccess {
   "ANONYMOUS" = "ANONYMOUS",
@@ -65,7 +29,7 @@ export enum RouteAccess {
 }
 
 type Link = {
-  label: string;
+  label: string; // key of translation
   path: string;
   icon?: React.ReactNode;
 };
@@ -93,7 +57,7 @@ export const routes: RouteDescriptor[] = [
     component: LoginPage,
     access: RouteAccess.ANONYMOUS,
     link: {
-      label: "Login",
+      label: "login",
       path: paths.login({}),
     },
   },
@@ -102,7 +66,7 @@ export const routes: RouteDescriptor[] = [
     component: RegisterPage,
     access: RouteAccess.ANONYMOUS,
     link: {
-      label: "Register",
+      label: "register",
       path: paths.register({}),
     },
   },
@@ -123,7 +87,7 @@ export const routes: RouteDescriptor[] = [
     access: RouteAccess.AUTHENTICATED,
     forRoles: [],
     link: {
-      label: "Profile",
+      label: "profile",
       path: paths.profile({}),
       icon: <ProfileIcon />,
     },
@@ -134,7 +98,7 @@ export const routes: RouteDescriptor[] = [
     access: RouteAccess.AUTHENTICATED,
     forRoles: [UserRole.USER],
     link: {
-      label: "My Saves",
+      label: "my-saves",
       path: paths.mySaves({}),
       icon: <SaveIcon />,
     },
@@ -145,7 +109,7 @@ export const routes: RouteDescriptor[] = [
     access: RouteAccess.AUTHENTICATED,
     forRoles: [UserRole.USER],
     link: {
-      label: "Shared Saves",
+      label: "shared-saves",
       path: paths.sharedSaves({}),
       icon: <SaveIcon />,
     },
@@ -154,7 +118,7 @@ export const routes: RouteDescriptor[] = [
     path: paths.publicSaves.pattern,
     component: PublicSavesPage,
     link: {
-      label: "Public Saves",
+      label: "public-saves",
       path: paths.publicSaves({}),
       icon: <SaveIcon />,
     },
@@ -172,7 +136,7 @@ export const routes: RouteDescriptor[] = [
     access: RouteAccess.AUTHENTICATED,
     forRoles: [UserRole.ADMIN],
     link: {
-      label: "Games",
+      label: "games",
       path: paths.games({}),
       icon: <GamepadIcon />,
     },
@@ -196,7 +160,7 @@ export const routes: RouteDescriptor[] = [
     access: RouteAccess.AUTHENTICATED,
     forRoles: [UserRole.ADMIN],
     link: {
-      label: "Users",
+      label: "users",
       path: paths.users({}),
       icon: <UsersIcon />,
     },

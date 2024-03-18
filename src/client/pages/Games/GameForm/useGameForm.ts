@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 import { Game } from "@/types";
 import { useFilePreview } from "@/client/lib/hooks/useFilePreview";
 import {
   GameFormData,
-  metadataSchemaFieldTypes,
+  gameStateParameterTypes,
   pipelineItemTypes,
 } from "../utils";
 
@@ -14,6 +15,7 @@ type UseGameFormArgs = {
 };
 
 export const useGameForm = (args: UseGameFormArgs) => {
+  const { t } = useTranslation(undefined, { keyPrefix: "forms.gameForm" });
   const {
     register,
     handleSubmit,
@@ -26,7 +28,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
       description: args.defaultValue?.description,
       paths: args.defaultValue?.paths.map((path) => ({ path })) || [],
       extractionPipeline: args.defaultValue?.extractionPipeline || [],
-      metadataSchema: args.defaultValue?.metadataSchema || {
+      gameStateParameters: args.defaultValue?.gameStateParameters || {
         fields: [],
       },
     },
@@ -45,21 +47,21 @@ export const useGameForm = (args: UseGameFormArgs) => {
     rules: {
       required: {
         value: true,
-        message: "Paths are required",
+        message: t("paths-are-required"),
       },
       minLength: {
         value: 1,
-        message: "At least one path is required",
+        message: t("at-least-one-path-is-required"),
       },
       validate: {
         noDuplicates: (paths) => {
           const uniquePaths = new Set(paths);
-          return uniquePaths.size === paths.length || "Paths must be unique";
+          return uniquePaths.size === paths.length || t("paths-must-be-unique");
         },
         notEmptyValue: (paths) => {
           return (
             paths.every((path) => path.path.length > 0) ||
-            "Path must not be empty"
+            t("path-must-not-be-empty")
           );
         },
       },
@@ -73,19 +75,30 @@ export const useGameForm = (args: UseGameFormArgs) => {
   } = useFieldArray({
     control,
     name: "extractionPipeline",
+    rules: {
+      validate: {
+        notEmptyValues: (fields) => {
+          return fields.every(
+            (field) =>
+              (field.inputFilename && field.outputFilename && field.type) ||
+              t("field-must-not-be-empty")
+          );
+        },
+      },
+    },
   });
 
   const {
-    fields: metadataSchemaFields,
-    append: appendMetadataSchemaField,
-    remove: removeMetadataSchemaField,
+    fields: gameStateParameters,
+    append: appendGameStateParameter,
+    remove: removeGameStateParameter,
   } = useFieldArray({
     control,
-    name: "metadataSchema.fields",
+    name: "gameStateParameters.fields",
     rules: {
       required: {
         value: true,
-        message: "Metadata schema is required",
+        message: t("parameters-schema-is-required"),
       },
       validate: {
         notEmptyValues: (fields) => {
@@ -95,7 +108,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
                 field.key.length > 0 &&
                 field.type.length > 0 &&
                 field.label.length > 0
-            ) || "Field must not be empty"
+            ) || t("field-must-not-be-empty")
           );
         },
       },
@@ -111,7 +124,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
       type: "sav-to-json",
       outputFilename: "",
     });
-    appendMetadataSchemaField({
+    appendGameStateParameter({
       key: "",
       type: "string",
       description: "",
@@ -121,7 +134,16 @@ export const useGameForm = (args: UseGameFormArgs) => {
 
   return {
     register,
-    handleSubmit,
+    handleSubmit: (cb: Parameters<typeof handleSubmit>[0]) =>
+      handleSubmit((fields) =>
+        cb({
+          ...fields,
+          paths: fields.paths.map((path) => ({
+            ...path,
+            path: path.path.replaceAll(/\//g, "\\"),
+          })),
+        })
+      ),
     errors,
     iconPreview,
     pathFields,
@@ -131,9 +153,9 @@ export const useGameForm = (args: UseGameFormArgs) => {
     appendExtractionPipeline,
     removeExtractionPipeline,
     pipelineItemTypes,
-    metadataSchemaFields,
-    appendMetadataSchemaField,
-    removeMetadataSchemaField,
-    metadataSchemaFieldTypes,
+    gameStateParameters,
+    appendGameStateParameter,
+    removeGameStateParameter,
+    gameStateParameterTypes,
   };
 };

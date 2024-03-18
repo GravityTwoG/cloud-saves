@@ -6,7 +6,7 @@ export type MyRequestInit =
     })
   | undefined;
 
-class Fetcher {
+export class Fetcher {
   private readonly baseURL: string;
   private readonly credentials?: RequestCredentials;
 
@@ -101,11 +101,3 @@ class Fetcher {
     }
   }
 }
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5173/api";
-
-export const fetcher = new Fetcher({
-  baseURL: API_BASE_URL,
-  credentials: "include",
-});

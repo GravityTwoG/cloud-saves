@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import classes from "./public-saves-page.module.scss";
 
-import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
-import { GetSavesQuery } from "@/client/api/interfaces/IGameSaveAPI";
-import { notify } from "@/client/ui/toast";
-import { useDebouncedCallback } from "@/client/lib/hooks/useDebouncedCallback";
-import { GameSave } from "@/types";
-import { paths } from "@/client/config/routes";
+import { useAPIContext } from "@/client/contexts/APIContext";
+import { useResource } from "@/client/lib/hooks/useResource";
+import { paths } from "@/client/config/paths";
 
 import { Link } from "wouter";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
@@ -18,46 +15,19 @@ import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
 
 export const PublicSavesPage = () => {
   const { gameSaveAPI } = useAPIContext();
-  const [query, setQuery] = useState(() => ({
-    searchQuery: "",
-    pageNumber: 1,
-    pageSize: 12,
-  }));
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.publicSaves" });
 
-  const [saves, setSaves] = useState<{
-    saves: GameSave[];
-    totalCount: number;
-  }>(() => ({
-    saves: [],
-    totalCount: 0,
-  }));
-
-  const onSearch = () => {};
-
-  const loadSaves = useDebouncedCallback(
-    async (query: GetSavesQuery) => {
-      try {
-        const data = await gameSaveAPI.getSharedSaves(query);
-        setSaves({
-          saves: data.items,
-          totalCount: data.totalCount,
-        });
-        setQuery(query);
-      } catch (error) {
-        notify.error(error);
-      }
-    },
-    [],
-    200
-  );
-
-  useEffect(() => {
-    loadSaves(query);
-  }, []);
+  const {
+    query,
+    resource: saves,
+    onSearch,
+    loadResource: loadSaves,
+    setQuery,
+  } = useResource(gameSaveAPI.getSharedSaves);
 
   return (
     <Container>
-      <H1>Public Saves</H1>
+      <H1>{t("public-saves")}</H1>
 
       <SearchForm
         searchQuery={query.searchQuery}
@@ -67,7 +37,7 @@ export const PublicSavesPage = () => {
 
       <List
         className={classes.SavesList}
-        elements={saves.saves}
+        elements={saves.items}
         getKey={(save) => save.gameId}
         renderElement={(save) => (
           <>
@@ -78,7 +48,9 @@ export const PublicSavesPage = () => {
               >
                 {save.name}
               </Link>
-              <Paragraph>Sync: {save.sync}</Paragraph>
+              <Paragraph>
+                {t("game-sync")} {save.sync}
+              </Paragraph>
             </div>
           </>
         )}

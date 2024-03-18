@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import classes from "./users-page.module.scss";
 
-import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
-import { useDebouncedCallback } from "@/client/lib/hooks/useDebouncedCallback";
-import { GetUsersQuery, UserForAdmin } from "@/client/api/interfaces/IUsersAPI";
-import { GetGamesQuery } from "@/client/api/interfaces/IGameAPI";
-import { notify } from "@/client/ui/toast";
+import { useAPIContext } from "@/client/contexts/APIContext";
+import { useUIContext } from "@/client/contexts/UIContext";
+import { useResource } from "@/client/lib/hooks/useResource";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container/Container";
@@ -15,48 +13,19 @@ import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
 import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
 
-const defaultQuery: GetUsersQuery = {
-  searchQuery: "",
-  pageNumber: 1,
-  pageSize: 12,
-};
-
 export const UsersPage = () => {
   const { usersAPI } = useAPIContext();
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.users" });
 
-  const [users, setUsers] = useState<{
-    users: UserForAdmin[];
-    totalCount: number;
-  }>({
-    users: [],
-    totalCount: 0,
-  });
-  const [query, setQuery] = useState<GetUsersQuery>(defaultQuery);
+  const {
+    query,
+    resource: users,
+    onSearch,
+    loadResource: loadUsers,
+    setQuery,
+  } = useResource(usersAPI.getUsers);
 
-  useEffect(() => {
-    loadUsers(query);
-  }, []);
-
-  const loadUsers = useDebouncedCallback(
-    async (query: GetGamesQuery) => {
-      try {
-        const data = await usersAPI.getUsers(query);
-        setUsers({
-          users: data.items,
-          totalCount: data.totalCount,
-        });
-        setQuery(query);
-      } catch (error) {
-        notify.error(error);
-      }
-    },
-    [],
-    200
-  );
-
-  const onSearch = () => {
-    loadUsers({ ...query, pageNumber: 1 });
-  };
+  const { notify } = useUIContext();
 
   const onBlock = async (userId: string) => {
     try {
@@ -78,7 +47,7 @@ export const UsersPage = () => {
 
   return (
     <Container>
-      <H1>Games</H1>
+      <H1>{t("users")}</H1>
 
       <SearchForm
         searchQuery={query.searchQuery}
@@ -88,7 +57,7 @@ export const UsersPage = () => {
 
       <List
         className={classes.UsersList}
-        elements={users.users}
+        elements={users.items}
         getKey={(user) => user.id}
         elementClassName={classes.UserItem}
         renderElement={(user) => (
@@ -108,9 +77,9 @@ export const UsersPage = () => {
                   }
                 }}
                 color={user.isBlocked ? "primary" : "danger"}
-                prompt={user.isBlocked ? "Unblock user?" : "Block user?"}
+                prompt={user.isBlocked ? t("unblock-user") : t("block-user")}
               >
-                {user.isBlocked ? "Unblock" : "Block"}
+                {user.isBlocked ? t("unblock") : t("block")}
               </ConfirmButton>
             </div>
           </>

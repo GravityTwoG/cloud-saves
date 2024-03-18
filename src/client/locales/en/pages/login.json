@@ -1,0 +1,16 @@
+{
+  "form": {
+    "username-placeholder": "Enter username",
+    "username-label": "Username",
+    "username-is-required": "Username is required",
+    "password-placeholder": "Enter password",
+    "password-label": "Password",
+    "password-is-required": "Password is required",
+    "error-message": "Error while logging in",
+    "title": "Login",
+    "submit-button": "Login"
+  },
+  "prompt-to-sign-up": "Don't have an account?",
+  "link-to-sign-up": "Register.",
+  "link-to-forgot-pasword": "Forgot password?"
+}

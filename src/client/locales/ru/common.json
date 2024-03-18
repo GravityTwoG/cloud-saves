@@ -1,0 +1,16 @@
+{
+  "toggle-theme": "Переключить тему",
+  "change-language": "Изменить язык",
+  "logout": "Выйти",
+  "navLinks": {
+    "login": "Вход",
+    "register": "Регистрация",
+
+    "profile": "Профиль",
+    "my-saves": "Мои сохранения",
+    "shared-saves": "Общие сохранения",
+    "public-saves": "Публичные сохранения",
+    "games": "Игры",
+    "users": "Пользователи"
+  }
+}

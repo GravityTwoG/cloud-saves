@@ -1,4 +1,5 @@
-import { Game, MetadataSchema } from "@/types";
+import { Game, GameStateParameters } from "@/types";
+import { Fetcher } from "./Fetcher";
 import {
   AddGameDTO,
   GetGamesQuery,
@@ -6,7 +7,6 @@ import {
   IGameAPI,
   UpdateGameDTO,
 } from "./interfaces/IGameAPI";
-import { fetcher } from "./fetcher";
 
 type GameFromServer = {
   id: number;
@@ -18,19 +18,25 @@ type GameFromServer = {
     type: "sav-to-json";
     outputFilename: string;
   }[];
-  schema: MetadataSchema;
+  schema: GameStateParameters;
   imageId: number;
 };
 
 export class GameAPI implements IGameAPI {
+  private readonly fetcher: Fetcher;
+
+  constructor(fetcher: Fetcher) {
+    this.fetcher = fetcher;
+  }
+
   async getGame(gameId: string): Promise<Game> {
-    const game = await fetcher.get<GameFromServer>(`/games/${gameId}`);
+    const game = await this.fetcher.get<GameFromServer>(`/games/${gameId}`);
 
     return this.mapGameFromServer(game);
   }
 
   async getGames(query: GetGamesQuery): Promise<GetGamesResponse> {
-    const games = await fetcher.get<{
+    const games = await this.fetcher.get<{
       items: GameFromServer[];
       totalCount: number;
     }>(
@@ -54,11 +60,11 @@ export class GameAPI implements IGameAPI {
         description: game.description,
         paths: game.paths.map((path) => ({ path })),
         extractionPipeline: game.extractionPipeline,
-        schema: game.metadataSchema,
+        schema: game.gameStateParameters,
       })
     );
 
-    return fetcher.post("/games", {
+    return this.fetcher.post("/games", {
       headers: {},
       body: formData,
     });
@@ -78,18 +84,18 @@ export class GameAPI implements IGameAPI {
         description: game.description,
         paths: game.paths ? game.paths.map((path) => ({ path })) : undefined,
         extractionPipeline: game.extractionPipeline,
-        schema: game.metadataSchema,
+        schema: game.gameStateParameters,
       })
     );
 
-    return fetcher.put(`/games/${game.id}`, {
+    return this.fetcher.put(`/games/${game.id}`, {
       headers: {},
       body: formData,
     });
   }
 
   deleteGame(gameId: string): Promise<void> {
-    return fetcher.delete(`/games/${gameId}`);
+    return this.fetcher.delete(`/games/${gameId}`);
   }
 
   private mapGameFromServer = (game: GameFromServer): Game => {
@@ -99,8 +105,8 @@ export class GameAPI implements IGameAPI {
       description: game.description,
       paths: game.paths.map((path) => path.path),
       extractionPipeline: game.extractionPipeline,
-      metadataSchema: game.schema,
-      iconURL: `${fetcher.getBaseURL()}/games/image/${game.imageId}`,
+      gameStateParameters: game.schema,
+      iconURL: `${this.fetcher.getBaseURL()}/games/image/${game.imageId}`,
     };
   };
 }

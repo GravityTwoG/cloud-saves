@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { clsx } from "clsx";
 
 import classes from "./folder-explorer.module.scss";
-import { useAPIContext } from "@/client/contexts/APIContext/useAPIContext";
-import { notify } from "@/client/ui/toast";
+
+import { useAPIContext } from "@/client/contexts/APIContext";
+import { useUIContext } from "@/client/contexts/UIContext";
 
 import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
 import { Button } from "@/client/ui/atoms/Button/Button";
@@ -21,6 +23,8 @@ export type FolderExplorerProps = {
 
 export const FolderExplorer = (props: FolderExplorerProps) => {
   const { gameSaveAPI, osAPI } = useAPIContext();
+  const { notify } = useUIContext();
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.mySaves" });
   const [selectedFolder, setSelectedFolder] = useState<string>("");
   const [parentFolder, setParentFolder] = useState<string>("");
   const [files, setFiles] = useState<FileInfo[]>([]);
@@ -116,14 +120,14 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
             }
             className={classes.MiniButton}
           >
-            Back
+            {t("back")}{" "}
           </Button>
         )}
         <Button onClick={getSavePaths} className={classes.MiniButton}>
-          Home
+          {t("home")}{" "}
         </Button>
         <Button onClick={onOpenDialog} className={classes.MiniButton}>
-          Choose folder to list files
+          {t("choose-folder-to-list-files")}{" "}
         </Button>
       </div>
 
@@ -175,7 +179,7 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
               }}
               className={clsx(classes.MiniButton, classes.FileButton)}
             >
-              Upload
+              {t("upload")}{" "}
             </Button>
           </>
         )}

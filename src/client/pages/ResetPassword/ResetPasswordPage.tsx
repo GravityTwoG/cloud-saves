@@ -1,32 +1,34 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import classes from "./reset-password-page.module.scss";
 
 import { useSearchParams } from "@/client/useHashLocation";
-import { paths } from "../../config/routes";
-import { useAuthContext } from "@/client/contexts/AuthContext/useAuthContext";
+import { paths } from "@/client/config/paths";
+import { useAuthContext } from "@/client/contexts/AuthContext";
 
 import { Container } from "@/client/ui/atoms/Container/Container";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";
 import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
 
-const formConfig = {
-  password: {
-    type: "password",
-    placeholder: "Enter password",
-    label: "Password",
-    required: "Password is required",
-  },
-  confirmPassword: {
-    type: "password",
-    placeholder: "Enter password",
-    label: "Confirm password",
-    required: "Confirm password is required",
-  },
-} satisfies FormConfig;
-
 export const ResetPasswordPage = () => {
   const { resetPassword } = useAuthContext();
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.resetPassword" });
+
+  const formConfig = {
+    password: {
+      type: "password",
+      placeholder: t("form.password-placeholder"),
+      label: t("form.password-label"),
+      required: t("form.password-is-required"),
+    },
+    confirmPassword: {
+      type: "password",
+      placeholder: t("form.confirm-password-placeholder"),
+      label: t("form.confirm-password-label"),
+      required: t("form.confirm-password-is-required"),
+    },
+  } satisfies FormConfig;
   const [passwordResetted, setPasswordResetted] = useState(false);
 
   const params = useSearchParams();
@@ -34,7 +36,7 @@ export const ResetPasswordPage = () => {
   const onSubmit = async (data: FormData<typeof formConfig>) => {
     try {
       if (data.password !== data.confirmPassword) {
-        return "Passwords do not match";
+        return t("form.passwords-do-not-match");
       }
 
       await resetPassword({
@@ -48,7 +50,7 @@ export const ResetPasswordPage = () => {
       if (error instanceof Error) {
         return error.message;
       }
-      return "Error";
+      return t("form.error-message");
     }
   };
 
@@ -56,10 +58,12 @@ export const ResetPasswordPage = () => {
     return (
       <Container className={classes.ResetPasswordPage}>
         <section>
-          <H1 className="tac">Reset password</H1>
+          <H1 className="tac">{t("form.title")}</H1>
           <Paragraph>
-            Password has been reset.{" "}
-            <CommonLink href={paths.login({})}>Login</CommonLink>
+            {t("password-resetted")}{" "}
+            <CommonLink href={paths.login({})}>
+              {t("link-to-sign-in")}
+            </CommonLink>
           </Paragraph>
         </section>
       </Container>
@@ -69,8 +73,12 @@ export const ResetPasswordPage = () => {
   return (
     <Container className={classes.ResetPasswordPage}>
       <section>
-        <H1 className="tac">Reset password</H1>
-        <Form config={formConfig} onSubmit={onSubmit} />
+        <H1 className="tac">{t("form.title")}</H1>
+        <Form
+          config={formConfig}
+          onSubmit={onSubmit}
+          submitText={t("form.submit-button")}
+        />
       </section>
     </Container>
   );

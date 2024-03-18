@@ -2,7 +2,7 @@ import { ReactNode, useCallback, useEffect, useState } from "react";
 
 import { navigate } from "@/client/useHashLocation";
 import { User } from "@/types";
-import { paths } from "@/client/config/routes";
+import { paths } from "@/client/config/paths";
 
 import {
   ChangePasswordCredentials,
@@ -10,7 +10,7 @@ import {
   RegisterCredentials,
   ResetPasswordCredentials,
 } from "@/client/api/interfaces/IAuthAPI";
-import { useAPIContext } from "../APIContext/useAPIContext";
+import { useAPIContext } from "../APIContext";
 import { AuthStatus, emptyUser, AuthContext } from "./AuthContext";
 
 export const AuthContextProvider = (props: { children: ReactNode }) => {

@@ -29,13 +29,13 @@ export class GameAPI implements IGameAPI {
     this.fetcher = fetcher;
   }
 
-  async getGame(gameId: string): Promise<Game> {
+  getGame = async (gameId: string): Promise<Game> => {
     const game = await this.fetcher.get<GameFromServer>(`/games/${gameId}`);
 
     return this.mapGameFromServer(game);
-  }
+  };
 
-  async getGames(query: GetGamesQuery): Promise<GetGamesResponse> {
+  getGames = async (query: GetGamesQuery): Promise<GetGamesResponse> => {
     const games = await this.fetcher.get<{
       items: GameFromServer[];
       totalCount: number;
@@ -47,9 +47,9 @@ export class GameAPI implements IGameAPI {
       items: games.items.map(this.mapGameFromServer),
       totalCount: games.totalCount,
     };
-  }
+  };
 
-  addGame(game: AddGameDTO): Promise<Game> {
+  addGame = (game: AddGameDTO): Promise<Game> => {
     const formData = new FormData();
 
     formData.append("image", game.icon);
@@ -68,9 +68,9 @@ export class GameAPI implements IGameAPI {
       headers: {},
       body: formData,
     });
-  }
+  };
 
-  updateGame(game: UpdateGameDTO): Promise<Game> {
+  updateGame = (game: UpdateGameDTO): Promise<Game> => {
     const formData = new FormData();
 
     if (game.icon) {
@@ -92,11 +92,11 @@ export class GameAPI implements IGameAPI {
       headers: {},
       body: formData,
     });
-  }
+  };
 
-  deleteGame(gameId: string): Promise<void> {
+  deleteGame = (gameId: string): Promise<void> => {
     return this.fetcher.delete(`/games/${gameId}`);
-  }
+  };
 
   private mapGameFromServer = (game: GameFromServer): Game => {
     return {

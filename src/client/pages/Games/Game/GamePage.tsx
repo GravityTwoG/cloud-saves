@@ -5,11 +5,11 @@ import { useTranslation } from "react-i18next";
 import classes from "./game-page.module.scss";
 
 import { Game } from "@/types";
+import { GameFormData } from "../GameForm/useGameForm";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { navigate } from "@/client/useHashLocation";
 import { paths } from "@/client/config/paths";
-import { GameFormData } from "../utils";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container/Container";

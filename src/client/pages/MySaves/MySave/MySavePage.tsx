@@ -4,12 +4,7 @@ import { useParams } from "wouter";
 
 import classes from "./my-save-page.module.scss";
 
-import {
-  GameSave,
-  GameSaveSync,
-  GameStateValues,
-  GameStateParameterType,
-} from "@/types";
+import { GameSave, GameSaveSync, GameStateValue } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { navigate } from "@/client/useHashLocation";
@@ -214,13 +209,13 @@ export const MySavePage = () => {
 };
 
 type ParametersViewProps = {
-  gameStateValues: GameStateValues;
+  gameStateValues: GameStateValue[];
 };
 
 const ParametersView = (props: ParametersViewProps) => {
   return (
     <div>
-      {props.gameStateValues.fields.map((field, idx) => (
+      {props.gameStateValues.map((field, idx) => (
         <ParameterViewItem key={idx} {...field} />
       ))}
     </div>
@@ -248,16 +243,16 @@ function formatTime(value: number, type: "seconds") {
 
 const ParameterViewItem = (props: {
   label: string;
-  value: string | number | boolean;
-  type: GameStateParameterType;
+  value: string;
+  type: string;
   description: string;
 }) => {
-  if (props.type === "seconds" && typeof props.value === "number") {
+  if (props.type === "seconds") {
     return (
       <div>
         <span>{props.label}</span>:{" "}
         <span className={classes.ParameterValue}>
-          {formatTime(props.value, props.type)}
+          {formatTime(parseFloat(props.value), props.type)}
         </span>
       </div>
     );

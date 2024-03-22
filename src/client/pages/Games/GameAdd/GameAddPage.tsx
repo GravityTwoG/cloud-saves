@@ -6,7 +6,7 @@ import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { navigate } from "@/client/useHashLocation";
 import { paths } from "@/client/config/paths";
-import { GameFormData } from "../utils";
+import { GameFormData } from "../GameForm/useGameForm";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container/Container";

@@ -3,8 +3,7 @@ import { useTranslation } from "react-i18next";
 import classes from "./game-form.module.scss";
 
 import { Game } from "@/types";
-import { GameFormData } from "../utils";
-import { useGameForm } from "./useGameForm";
+import { GameFormData, useGameForm } from "./useGameForm";
 
 import { CTAButton } from "@/client/ui/atoms/Button/CTAButton";
 import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
@@ -148,19 +147,21 @@ export const GameForm = (props: GameFormProps) => {
         {gameStateParameters.map((field, index) => (
           <div key={field.id} className={classes.SchemaField}>
             <Input
-              {...register(`gameStateParameters.fields.${index}.key`)}
+              {...register(`gameStateParameters.parameters.${index}.key`)}
               placeholder={t("parameter-key")}
             />
             <Select
-              {...register(`gameStateParameters.fields.${index}.type`)}
+              {...register(`gameStateParameters.parameters.${index}.type.id`)}
               options={gameStateParameterTypes}
             />
             <Input
-              {...register(`gameStateParameters.fields.${index}.label`)}
+              {...register(`gameStateParameters.parameters.${index}.label`)}
               placehparameter-label={t("parameter-label")}
             />
             <Input
-              {...register(`gameStateParameters.fields.${index}.description`)}
+              {...register(
+                `gameStateParameters.parameters.${index}.description`
+              )}
               parameter-descriptionlder={t("parameter-description")}
             />
             <Button
@@ -176,7 +177,10 @@ export const GameForm = (props: GameFormProps) => {
           onClick={() =>
             appendGameStateParameter({
               key: "",
-              type: "string",
+              type: {
+                id: "",
+                type: "",
+              },
               label: "",
               description: "",
             })
@@ -189,8 +193,8 @@ export const GameForm = (props: GameFormProps) => {
         <ErrorText>{errors.gameStateParameters.root.message}</ErrorText>
       )}
 
-      {errors.gameStateParameters?.fields?.map
-        ? errors.gameStateParameters.fields.map((error, idx) => (
+      {errors.gameStateParameters?.parameters?.map
+        ? errors.gameStateParameters.parameters.map((error, idx) => (
             <ErrorText key={idx}>{error?.message}</ErrorText>
           ))
         : null}

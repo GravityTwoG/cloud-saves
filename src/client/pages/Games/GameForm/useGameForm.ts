@@ -2,13 +2,35 @@ import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { Game } from "@/types";
+import { Game, GameStateParameters, PipelineItemType } from "@/types";
 import { useFilePreview } from "@/client/lib/hooks/useFilePreview";
-import {
-  GameFormData,
-  gameStateParameterTypes,
-  pipelineItemTypes,
-} from "../utils";
+
+export type GameFormData = {
+  name: string;
+  description: string;
+  icon: FileList;
+  paths: { path: string }[];
+  extractionPipeline: {
+    inputFilename: string;
+    type: PipelineItemType;
+    outputFilename: string;
+  }[];
+  gameStateParameters: GameStateParameters;
+};
+
+const pipelineItemTypes: { name: string; value: PipelineItemType }[] = [
+  { name: ".sav to .json", value: "sav-to-json" },
+];
+
+const gameStateParameterTypes: {
+  name: string;
+  value: string;
+}[] = [
+  { name: "string", value: "string" },
+  { name: "number", value: "number" },
+  { name: "seconds", value: "seconds" },
+  { name: "boolean", value: "boolean" },
+];
 
 type UseGameFormArgs = {
   defaultValue?: Game;
@@ -29,7 +51,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
       paths: args.defaultValue?.paths.map((path) => ({ path })) || [],
       extractionPipeline: args.defaultValue?.extractionPipeline || [],
       gameStateParameters: args.defaultValue?.gameStateParameters || {
-        fields: [],
+        parameters: [],
       },
     },
   });
@@ -94,7 +116,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
     remove: removeGameStateParameter,
   } = useFieldArray({
     control,
-    name: "gameStateParameters.fields",
+    name: "gameStateParameters.parameters",
     rules: {
       required: {
         value: true,
@@ -106,7 +128,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
             fields.every(
               (field) =>
                 field.key.length > 0 &&
-                field.type.length > 0 &&
+                field.type.id.length > 0 &&
                 field.label.length > 0
             ) || t("field-must-not-be-empty")
           );
@@ -126,7 +148,10 @@ export const useGameForm = (args: UseGameFormArgs) => {
     });
     appendGameStateParameter({
       key: "",
-      type: "string",
+      type: {
+        id: "",
+        type: "",
+      },
       description: "",
       label: "",
     });

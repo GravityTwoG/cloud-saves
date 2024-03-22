@@ -1,13 +1,3 @@
-export type JSONType = {
-  [key: string | number]:
-    | string
-    | number
-    | boolean
-    | null
-    | JSONType
-    | JSONType[];
-};
-
 export enum UserRole {
   "USER" = "USER",
   "ADMIN" = "ADMIN",
@@ -19,29 +9,28 @@ export type User = {
   role: UserRole;
 };
 
-export type GameStateParameterType =
-  | "string"
-  | "number"
-  | "boolean"
-  | "seconds";
+export type GameStateParameterType = {
+  id: string;
+  type: string;
+};
+
+export type CommonParameter = {
+  id: string;
+  type: GameStateParameterType;
+  label: string;
+  description: string;
+};
+
+export type GameStateParameter = {
+  key: string;
+  type: GameStateParameterType;
+  description: string;
+  label: string;
+};
 
 export type GameStateParameters = {
   filename: string;
-  fields: {
-    key: string;
-    type: GameStateParameterType;
-    description: string;
-    label: string;
-  }[];
-};
-
-export type GameStateValues = {
-  fields: {
-    value: string | number | boolean;
-    type: GameStateParameterType;
-    description: string;
-    label: string;
-  }[];
+  parameters: GameStateParameter[];
 };
 
 export type PipelineItemType = "sav-to-json";
@@ -76,13 +65,20 @@ export enum GameSaveSync {
   EVERY_MONTH = "every month",
 }
 
+export type GameStateValue = {
+  value: string;
+  type: string;
+  description: string;
+  label: string;
+};
+
 export type GameSave = {
   id: string;
   gameId: string;
   name: string;
   path: string;
   sync: GameSaveSync;
-  gameStateValues: GameStateValues;
+  gameStateValues: GameStateValue[];
 
   archiveURL: string;
   size: number;
@@ -90,4 +86,14 @@ export type GameSave = {
   uploadedAt: string;
   updatedAt: string;
   createdAt: string;
+};
+
+export type JSONType = {
+  [key: string | number]:
+    | string
+    | number
+    | boolean
+    | null
+    | JSONType
+    | JSONType[];
 };

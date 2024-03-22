@@ -1,4 +1,4 @@
-import { Game, GamePath, GameStateValues } from "@/types";
+import { Game, GamePath, GameStateValue } from "@/types";
 import { IOSAPI } from "./interfaces/IOSAPI";
 import { ApiError } from "./ApiError";
 
@@ -37,7 +37,7 @@ export class OSAPI implements IOSAPI {
       name: string;
     },
     game: Game
-  ): Promise<{ buffer: Buffer; gameStateValues: GameStateValues }> => {
+  ): Promise<{ buffer: Buffer; gameStateValues: GameStateValue[] }> => {
     const response = await window.electronAPI.uploadSave(save, game);
 
     if (!response.data) {
@@ -46,7 +46,7 @@ export class OSAPI implements IOSAPI {
 
     return response.data as {
       buffer: Buffer;
-      gameStateValues: GameStateValues;
+      gameStateValues: GameStateValue[];
     };
   };
 

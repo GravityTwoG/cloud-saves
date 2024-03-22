@@ -1,5 +1,16 @@
 {
   "games": "Игры",
   "games-delete-game": "Удалить",
-  "add-game": "Добавить игру"
+  "add-game": "Добавить игру",
+  "parameter-types": "Типы параметров",
+  "type": "Тип параметра",
+  "type-is-required": "Название типа параметра обязательно",
+  "create-type": "Добавить",
+  "delete-type": "Удалить",
+  "common-parameters": "Общие параметры",
+  "common-parameter-label": "Название",
+  "common-parameter-label-required": "Название обязательно",
+  "common-parameter-description": "Описание",
+  "add-common-parameter": "Добавить общий параметр",
+  "save": "Сохранить"
 }

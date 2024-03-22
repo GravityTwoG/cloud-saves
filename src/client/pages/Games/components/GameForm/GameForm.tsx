@@ -156,18 +156,17 @@ export const GameForm = (props: GameFormProps) => {
             />
             <Input
               {...register(`gameStateParameters.parameters.${index}.label`)}
-              placehparameter-label={t("parameter-label")}
+              placeholder={t("parameter-label")}
             />
             <Input
               {...register(
                 `gameStateParameters.parameters.${index}.description`
               )}
-              parameter-descriptionlder={t("parameter-description")}
+              placeholder={t("parameter-description")}
             />
             <Button
               color="danger"
               onClick={() => removeGameStateParameter(index)}
-              remove-parameter
             >
               {t("remove-parameter")}
             </Button>

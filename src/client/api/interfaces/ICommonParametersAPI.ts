@@ -11,7 +11,7 @@ export type CommonParametersResponse = {
   totalCount: number;
 };
 
-export interface ICommonParameterAPI {
+export interface ICommonParametersAPI {
   getParameters: (
     query: GetCommonParametersQuery
   ) => Promise<CommonParametersResponse>;

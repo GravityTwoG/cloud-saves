@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import classes from "./game-page.module.scss";
 
 import { Game } from "@/types";
-import { GameFormData } from "../GameForm/useGameForm";
+import { GameFormData } from "../components/GameForm/useGameForm";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { navigate } from "@/client/useHashLocation";
@@ -13,7 +13,7 @@ import { paths } from "@/client/config/paths";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container/Container";
-import { GameForm } from "../GameForm/GameForm";
+import { GameForm } from "../components/GameForm/GameForm";
 import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
 
 export const GamePage = () => {

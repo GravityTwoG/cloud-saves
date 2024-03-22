@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { clsx } from "clsx";
 
 import classes from "./form.module.scss";
 
@@ -10,10 +11,15 @@ import {
   useForm,
 } from "react-hook-form";
 import { CTAButton } from "@/client/ui/atoms/Button/CTAButton";
+import { Button } from "../../atoms/Button/Button";
 import { Input } from "@/client/ui/atoms/Input/Input";
 import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
+import { Select } from "../../atoms/Select/Select";
 
-export type ComboboxOption = unknown;
+export type ComboboxOption = {
+  label: string;
+  value: string;
+};
 
 export type SimpleField = {
   type: "string" | "number" | "date" | "password";
@@ -47,6 +53,8 @@ export type FormProps<C = FormConfig> = {
   onSubmit: (formData: FormData<C>) => Promise<Message | null>;
   submitText?: string;
   actions?: React.ReactNode;
+  className?: string;
+  submitButtonType?: "CTA" | "common";
 };
 
 export function Form<C extends FormConfig>(props: FormProps<C>) {
@@ -98,7 +106,7 @@ export function Form<C extends FormConfig>(props: FormProps<C>) {
   const root = getFieldState("root" as Path<FormData<C>>);
 
   return (
-    <form onSubmit={onSubmit} className={classes.Form}>
+    <form onSubmit={onSubmit} className={clsx(classes.Form, props.className)}>
       {props.title && <h3>{props.title}</h3>}
       {Object.keys(props.config).map((field) => (
         <Field
@@ -119,13 +127,23 @@ export function Form<C extends FormConfig>(props: FormProps<C>) {
       {root.error && <ErrorText>{root.error.message}</ErrorText>}
 
       <div className={classes.FormActions}>
-        <CTAButton
-          type="submit"
-          className={classes.SubmitButton}
-          isLoading={isLoading}
-        >
-          {props.submitText || "Submit"}
-        </CTAButton>
+        {props.submitButtonType === "common" ? (
+          <Button
+            type="submit"
+            className={classes.SubmitButton}
+            isLoading={isLoading}
+          >
+            {props.submitText || "Submit"}
+          </Button>
+        ) : (
+          <CTAButton
+            type="submit"
+            className={classes.SubmitButton}
+            isLoading={isLoading}
+          >
+            {props.submitText || "Submit"}
+          </CTAButton>
+        )}
         {props.actions}
       </div>
     </form>
@@ -165,6 +183,29 @@ function Field<C extends FormConfig>(props: FieldProps<C>) {
   const field = config[fieldName];
   const fieldValue = formData[fieldName];
 
+  const [selectKey, setSelectKey] = useState(0);
+  const [options, setOptions] = useState<{ name: string; value: string }[]>([]);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        if (field.type === "combobox" && typeof fieldValue !== "string") {
+          const options = await field.loadOptions("");
+          setOptions(
+            options.map((option) => ({
+              name: option.label,
+              value: option.value,
+            }))
+          );
+          setSelectKey((key) => (key == 0 ? 1 : 0));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    load();
+  }, [fieldValue]);
+
   if (field.type === "combobox" && typeof fieldValue !== "string") {
     return (
       <div key={fieldName} className={classes.Field}>
@@ -179,6 +220,7 @@ function Field<C extends FormConfig>(props: FieldProps<C>) {
           onChange={(e) => handleChange(e, fieldName)}
           id={fieldName}
         /> */}
+        <Select key={selectKey} id={fieldName} options={options} />
         {props.error && <ErrorText>{props.error}</ErrorText>}
       </div>
     );

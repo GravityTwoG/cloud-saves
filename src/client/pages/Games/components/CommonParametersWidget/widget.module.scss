@@ -1,0 +1,16 @@
+.Form {
+  margin: 0.5rem 0 1rem;
+}
+
+.ParametersList {
+  margin: 1rem 0;
+}
+
+.ParameterItem {
+  align-items: flex-start;
+  justify-content: space-between;
+
+  & > form {
+    flex: 1;
+  }
+}

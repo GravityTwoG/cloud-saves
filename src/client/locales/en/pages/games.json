@@ -1,5 +1,16 @@
 {
   "games": "Games",
   "games-delete-game": "Delete",
-  "add-game": "Add Game"
+  "add-game": "Add Game",
+  "parameter-types": "Parameter Types",
+  "common-parameters": "Common Parameters",
+  "type": "Parameter Type",
+  "type-is-required": "Type name is required",
+  "create-type": "Add",
+  "delete-type": "Delete",
+  "common-parameter-label": "Name",
+  "common-parameter-label-required": "Name is required",
+  "common-parameter-description": "Description",
+  "add-common-parameter": "Add Common Parameter",
+  "save": "Save"
 }

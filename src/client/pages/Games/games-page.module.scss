@@ -4,6 +4,14 @@
   justify-content: space-between;
 }
 
+.GameActions {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
 .GamesList {
   margin: 1rem 0;
 }

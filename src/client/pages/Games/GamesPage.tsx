@@ -6,9 +6,12 @@ import { paths } from "@/client/config/paths";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
 import { useUIContext } from "@/client/contexts/UIContext";
+import { useParameterTypesModal } from "./components/ParameterTypesWidget";
+import { useCommonParametersModal } from "./components/CommonParametersWidget";
 
 import { Link } from "wouter";
 import { H1 } from "@/client/ui/atoms/Typography";
+import { Button } from "@/client/ui/atoms/Button/Button";
 import { Container } from "@/client/ui/atoms/Container/Container";
 import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
 import { List } from "@/client/ui/molecules/List/List";
@@ -38,12 +41,29 @@ export const GamesPage = () => {
     }
   };
 
+  const [parameterTypesModal, openParameterTypesModal] =
+    useParameterTypesModal();
+  const [commonParametersModal, openCommonParametersModal] =
+    useCommonParametersModal();
+
   return (
     <Container>
       <div className={classes.Header}>
         <H1>{t("games")}</H1>
         <CommonLink href={paths.gameAdd({})}>{t("add-game")}</CommonLink>
       </div>
+
+      <div className={classes.GameActions}>
+        <Button onClick={openParameterTypesModal}>
+          {t("parameter-types")}
+        </Button>
+        <Button onClick={openCommonParametersModal}>
+          {t("common-parameters")}
+        </Button>
+      </div>
+
+      {parameterTypesModal}
+      {commonParametersModal}
 
       <SearchForm
         searchQuery={query.searchQuery}
@@ -89,7 +109,7 @@ export const GamesPage = () => {
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
         count={games.totalCount}
-        onPageSelect={(page) => loadGames({ ...query, pageNumber: page })}
+        onPageSelect={(pageNumber) => loadGames({ ...query, pageNumber })}
       />
     </Container>
   );

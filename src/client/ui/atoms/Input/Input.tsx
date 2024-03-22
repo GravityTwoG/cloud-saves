@@ -5,7 +5,7 @@ import classes from "./input.module.scss";
 
 import { ReactTagProps } from "@/client/ui/types";
 
-export type InputProps = ReactTagProps<"input">;
+export type InputProps = Omit<ReactTagProps<"input">, "children">;
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ type = "text", ...props }, ref) => {

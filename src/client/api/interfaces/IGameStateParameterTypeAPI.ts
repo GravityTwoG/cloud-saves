@@ -1,26 +1,24 @@
-import { CommonParameter, GameStateParameterType } from "@/types";
+import { GameStateParameterType } from "@/types";
 
-export type GetCommonParameterTypesQuery = {
+export type GetParameterTypesQuery = {
   pageNumber: number;
   pageSize: number;
   searchQuery: string;
 };
 
-export type CommonParameterTypesResponse = {
+export type ParameterTypesResponse = {
   items: GameStateParameterType[];
   totalCount: number;
 };
 
 export interface IGameStateParameterTypeAPI {
-  getTypes: (
-    query: GetCommonParameterTypesQuery
-  ) => Promise<CommonParameterTypesResponse>;
+  getTypes: (query: GetParameterTypesQuery) => Promise<ParameterTypesResponse>;
 
   getType: (typeId: string) => Promise<GameStateParameterType>;
 
-  createType: (parameter: CommonParameter) => Promise<GameStateParameterType>;
+  createType: (type: GameStateParameterType) => Promise<GameStateParameterType>;
 
-  updateType: (parameter: CommonParameter) => Promise<GameStateParameterType>;
+  updateType: (type: GameStateParameterType) => Promise<GameStateParameterType>;
 
   deleteType: (typeId: string) => Promise<void>;
 }

@@ -1,11 +1,12 @@
 .ModalHeader > div {
   text-align: center;
+  line-height: 1;
   margin: 0;
   flex: 1;
 }
 
 .ModalBody {
-  padding: 0.5rem;
+  padding: 0.5rem !important;
 }
 
 .ConfirmActions {

@@ -2,24 +2,12 @@ import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { Game, GameStateParameters, PipelineItemType } from "@/types";
+import { Game, GameStateParameterType } from "@/types";
 import { useFilePreview } from "@/client/lib/hooks/useFilePreview";
+import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
 
-export type GameFormData = {
-  name: string;
-  description: string;
-  icon: FileList;
-  paths: { path: string }[];
-  extractionPipeline: {
-    inputFilename: string;
-    type: PipelineItemType;
-    outputFilename: string;
-  }[];
-  gameStateParameters: GameStateParameters;
-};
-
-const pipelineItemTypes: { name: string; value: PipelineItemType }[] = [
-  { name: ".sav to .json", value: "sav-to-json" },
+const pipelineItemTypes: { name: string; value: string }[] = [
+  { name: "sav-to-json", value: "sav-to-json" },
 ];
 
 const gameStateParameterTypes: {
@@ -31,6 +19,29 @@ const gameStateParameterTypes: {
   { name: "seconds", value: "seconds" },
   { name: "boolean", value: "boolean" },
 ];
+
+type GameFormData = {
+  name: string;
+  description: string;
+  icon: FileList;
+  paths: { id: string; path: string }[];
+  extractionPipeline: {
+    id: string;
+    inputFilename: string;
+    type: string;
+    outputFilename: string;
+  }[];
+  gameStateParameters: {
+    filename: string;
+    parameters: {
+      id: string;
+      key: string;
+      type: GameStateParameterType;
+      label: string;
+      description: string;
+    }[];
+  };
+};
 
 type UseGameFormArgs = {
   defaultValue?: Game;
@@ -48,7 +59,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
     defaultValues: {
       name: args.defaultValue?.name,
       description: args.defaultValue?.description,
-      paths: args.defaultValue?.paths.map((path) => ({ path })) || [],
+      paths: args.defaultValue?.paths || [],
       extractionPipeline: args.defaultValue?.extractionPipeline || [],
       gameStateParameters: args.defaultValue?.gameStateParameters || {
         parameters: [],
@@ -140,13 +151,15 @@ export const useGameForm = (args: UseGameFormArgs) => {
   useEffect(() => {
     if (args.defaultValue) return;
 
-    appendPath({ path: "" });
+    appendPath({ id: "", path: "" });
     appendExtractionPipeline({
+      id: "",
       inputFilename: "",
       type: "sav-to-json",
       outputFilename: "",
     });
     appendGameStateParameter({
+      id: "",
       key: "",
       type: {
         id: "",
@@ -159,10 +172,11 @@ export const useGameForm = (args: UseGameFormArgs) => {
 
   return {
     register,
-    handleSubmit: (cb: Parameters<typeof handleSubmit>[0]) =>
+    handleSubmit: (cb: (data: AddGameDTO) => void) =>
       handleSubmit((fields) =>
         cb({
           ...fields,
+          icon: fields.icon ? fields.icon[0] : undefined,
           paths: fields.paths.map((path) => ({
             ...path,
             path: path.path.replaceAll(/\//g, "\\"),

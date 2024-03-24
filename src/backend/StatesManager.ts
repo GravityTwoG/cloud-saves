@@ -4,7 +4,7 @@ import fs from "fs/promises";
 import { Game } from "@/types";
 import { ValueExtractor } from "./game-state-parameters/ValueExtractor";
 
-export class SavesManager {
+export class StatesManager {
   private readonly valueExtractor: ValueExtractor;
 
   constructor(valueExtractor: ValueExtractor) {
@@ -33,21 +33,21 @@ export class SavesManager {
     };
   }
 
-  async downloadSave(archiveURL: string) {
+  async downloadState(archiveURL: string) {
     // TODO
-    console.log("Downloading save", archiveURL);
+    console.log("Downloading state", archiveURL);
     return { path: "" };
   }
 
   async downloadAndExtractSave(archiveURL: string, path: string) {
     // TODO
-    const save = await this.downloadSave(archiveURL);
+    const state = await this.downloadState(archiveURL);
     // TODO
-    this.extractZIP(save.path);
+    this.extractZIP(state.path);
 
     console.log("Extracted to", path);
 
-    return save;
+    return state;
   }
 
   private extractZIP(filePath: string) {

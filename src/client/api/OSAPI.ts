@@ -1,4 +1,4 @@
-import { Game, GamePath, GameStateValue } from "@/types";
+import { Game, GamePath } from "@/types";
 import { IOSAPI } from "./interfaces/IOSAPI";
 import { ApiError } from "./ApiError";
 
@@ -31,30 +31,33 @@ export class OSAPI implements IOSAPI {
     return response.data;
   };
 
-  uploadSave = async (
-    save: {
+  uploadState = async (
+    state: {
       path: string;
       name: string;
     },
     game: Game
-  ): Promise<{ buffer: Buffer; gameStateValues: GameStateValue[] }> => {
-    const response = await window.electronAPI.uploadSave(save, game);
+  ): Promise<{
+    buffer: Buffer;
+    gameStateValues: {
+      gameStateParameterId: string;
+      value: string;
+    }[];
+  }> => {
+    const response = await window.electronAPI.uploadSave(state, game);
 
     if (!response.data) {
-      throw new ApiError(response.error || "Failed to upload save");
+      throw new ApiError(response.error || "Failed to upload state");
     }
 
-    return response.data as {
-      buffer: Buffer;
-      gameStateValues: GameStateValue[];
-    };
+    return response.data;
   };
 
-  downloadSave = async (archiveURL: string): Promise<void> => {
+  downloadState = async (archiveURL: string): Promise<void> => {
     await window.electronAPI.downloadSave(archiveURL);
   };
 
-  downloadAndExtractSave = async (
+  downloadAndExtractState = async (
     archiveURL: string,
     path: string
   ): Promise<void> => {

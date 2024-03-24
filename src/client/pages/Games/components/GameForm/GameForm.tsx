@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import classes from "./game-form.module.scss";
 
 import { Game } from "@/types";
-import { GameFormData, useGameForm } from "./useGameForm";
+import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
+import { useGameForm } from "./useGameForm";
 
 import { CTAButton } from "@/client/ui/atoms/Button/CTAButton";
 import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
@@ -14,7 +15,7 @@ import { Field, InputField } from "@/client/ui/molecules/Field";
 
 export type GameFormProps = {
   game?: Game;
-  onSubmit: (data: GameFormData) => void;
+  onSubmit: (data: AddGameDTO) => void;
 };
 
 export const GameForm = (props: GameFormProps) => {
@@ -81,7 +82,7 @@ export const GameForm = (props: GameFormProps) => {
             </Button>
           </div>
         ))}
-        <Button onClick={() => appendPath({ path: "" })}>
+        <Button onClick={() => appendPath({ id: "", path: "" })}>
           {t("add-path")}
         </Button>
       </Field>
@@ -115,6 +116,7 @@ export const GameForm = (props: GameFormProps) => {
         <Button
           onClick={() =>
             appendExtractionPipeline({
+              id: "",
               inputFilename: "",
               type: "sav-to-json",
               outputFilename: "",
@@ -175,6 +177,7 @@ export const GameForm = (props: GameFormProps) => {
         <Button
           onClick={() =>
             appendGameStateParameter({
+              id: "",
               key: "",
               type: {
                 id: "",

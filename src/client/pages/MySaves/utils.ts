@@ -1,9 +1,9 @@
-import { GameSaveSync } from "@/types";
+import { GameStateSync } from "@/types";
 
 export const syncMap = {
-  [GameSaveSync.NO]: "no",
-  [GameSaveSync.EVERY_HOUR]: "every-hour",
-  [GameSaveSync.EVERY_DAY]: "every-day",
-  [GameSaveSync.EVERY_WEEK]: "every-week",
-  [GameSaveSync.EVERY_MONTH]: "every-month",
+  [GameStateSync.NO]: "no",
+  [GameStateSync.EVERY_HOUR]: "every-hour",
+  [GameStateSync.EVERY_DAY]: "every-day",
+  [GameStateSync.EVERY_WEEK]: "every-week",
+  [GameStateSync.EVERY_MONTH]: "every-month",
 } as const;

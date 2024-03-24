@@ -1,4 +1,4 @@
-import { Game, GameStateParameters, PipelineItemType } from "@/types";
+import { Game, GameStateParameterType } from "@/types";
 
 export type GetGamesQuery = {
   searchQuery: string;
@@ -14,29 +14,29 @@ export type GetGamesResponse = {
 export type AddGameDTO = {
   name: string;
   description: string;
-  icon: Blob;
-  paths: string[];
+  icon: Blob | undefined;
+  paths: { id: string; path: string }[];
   extractionPipeline: {
-    inputFilename: string;
-    type: PipelineItemType;
-    outputFilename: string;
-  }[];
-  gameStateParameters: GameStateParameters;
-};
-
-export type UpdateGameDTO = {
-  id: string;
-  name?: string;
-  description?: string;
-  icon?: Blob;
-  paths?: string[];
-  extractionPipeline?: {
+    id: string;
     inputFilename: string;
     type: string;
     outputFilename: string;
   }[];
-  gameStateParameters?: GameStateParameters;
+  gameStateParameters: {
+    filename: string;
+    parameters: {
+      id: string;
+      key: string;
+      type: GameStateParameterType;
+      label: string;
+      description: string;
+    }[];
+  };
 };
+
+export type UpdateGameDTO = {
+  id: string;
+} & AddGameDTO;
 
 export interface IGameAPI {
   getGames(query: GetGamesQuery): Promise<GetGamesResponse>;

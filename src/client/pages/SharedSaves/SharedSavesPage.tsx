@@ -14,7 +14,7 @@ import { List } from "@/client/ui/molecules/List/List";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 
 export const SharedSavesPage = () => {
-  const { gameSaveAPI } = useAPIContext();
+  const { gameStateAPI } = useAPIContext();
   const { t } = useTranslation(undefined, { keyPrefix: "pages.sharedSaves" });
 
   const {
@@ -23,7 +23,7 @@ export const SharedSavesPage = () => {
     onSearch,
     loadResource: loadSaves,
     setQuery,
-  } = useResource(gameSaveAPI.getSharedSaves);
+  } = useResource(gameStateAPI.getSharedStates);
 
   return (
     <Container>
@@ -44,7 +44,7 @@ export const SharedSavesPage = () => {
             <div>
               <Link
                 className={classes.GameSaveLink}
-                href={paths.mySave({ gameSaveId: save.id })}
+                href={paths.mySave({ gameStateId: save.id })}
               >
                 {save.name}
               </Link>

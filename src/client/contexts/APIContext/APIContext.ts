@@ -2,13 +2,13 @@ import { createContext } from "react";
 
 import { IOSAPI } from "@/client/api/interfaces/IOSAPI";
 import { IAuthAPI } from "@/client/api/interfaces/IAuthAPI";
-import { IGameSaveAPI } from "@/client/api/interfaces/IGameSaveAPI";
+import { IGameStateAPI } from "@/client/api/interfaces/IGameStateAPI";
 import { IGameAPI } from "@/client/api/interfaces/IGameAPI";
 import { IUsersAPI } from "@/client/api/interfaces/IUsersAPI";
 
 import { OSAPI } from "@/client/api/OSAPI";
 import { AuthAPIMock } from "@/client/api/mocks/AuthAPIMock";
-import { GameSaveAPIMock } from "@/client/api/mocks/GameSaveAPIMock";
+import { GameStateAPIMock } from "@/client/api/mocks/GameStateAPIMock";
 import { GameAPIMock } from "@/client/api/mocks/GameAPIMock";
 import { UsersAPIMock } from "@/client/api/mocks/UsersAPIMock";
 import { AuthAPI } from "@/client/api/AuthAPI";
@@ -18,11 +18,12 @@ import { ICommonParametersAPI } from "@/client/api/interfaces/ICommonParametersA
 import { IGameStateParameterTypeAPI } from "@/client/api/interfaces/IGameStateParameterTypeAPI";
 import { CommonParametersAPIMock } from "@/client/api/mocks/CommonParametersAPIMock";
 import { GameStateParameterTypesAPIMock } from "@/client/api/mocks/GameStateParameterTypesAPIMock";
+import { GameStateAPI } from "@/client/api/GameStateAPI";
 
 interface APIContext {
   osAPI: IOSAPI;
   authAPI: IAuthAPI;
-  gameSaveAPI: IGameSaveAPI;
+  gameStateAPI: IGameStateAPI;
   gameAPI: IGameAPI;
   usersAPI: IUsersAPI;
   commonParametersAPI: ICommonParametersAPI;
@@ -39,7 +40,9 @@ const fetcher = new Fetcher({
 const osAPI = new OSAPI();
 const authAPI = API_BASE_URL ? new AuthAPI(fetcher) : new AuthAPIMock();
 const gameAPI = API_BASE_URL ? new GameAPI(fetcher) : new GameAPIMock();
-const gameSaveAPI = new GameSaveAPIMock(osAPI, gameAPI);
+const gameStateAPI = API_BASE_URL
+  ? new GameStateAPI(fetcher, osAPI, gameAPI)
+  : new GameStateAPIMock(osAPI, gameAPI);
 const usersAPI = new UsersAPIMock();
 
 const commonParametersAPI = new CommonParametersAPIMock();
@@ -48,7 +51,7 @@ const parameterTypesAPI = new GameStateParameterTypesAPIMock();
 export const api = {
   osAPI,
   authAPI,
-  gameSaveAPI,
+  gameStateAPI,
   gameAPI,
   usersAPI,
   commonParametersAPI,

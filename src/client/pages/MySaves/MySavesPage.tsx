@@ -9,17 +9,17 @@ import { MySavesWidget } from "@/client/pages/MySaves/MySavesWidget/MySavesWidge
 export const MySavesPage = () => {
   const { t } = useTranslation(undefined, { keyPrefix: "pages.mySaves" });
 
-  const [onSaveUpload, setOnSaveUpload] = useState(() => ({
-    saveUploaded: () => {},
+  const [onStateUpload, setOnStateUpload] = useState(() => ({
+    stateUploaded: () => {},
   }));
 
   return (
     <Container>
       <H1>{t("my-saves")}</H1>
-      <FolderExplorer saveUploaded={onSaveUpload.saveUploaded} />
+      <FolderExplorer stateUploaded={onStateUpload.stateUploaded} />
 
       <MySavesWidget
-        setOnSaveUpload={(f) => setOnSaveUpload({ saveUploaded: f })}
+        setOnSaveUpload={(f) => setOnStateUpload({ stateUploaded: f })}
       />
     </Container>
   );

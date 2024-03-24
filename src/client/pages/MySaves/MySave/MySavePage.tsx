@@ -4,7 +4,7 @@ import { useParams } from "wouter";
 
 import classes from "./my-save-page.module.scss";
 
-import { GameSave, GameSaveSync, GameStateValue } from "@/types";
+import { GameState, GameStateSync, GameStateValue } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { navigate } from "@/client/useHashLocation";
@@ -19,30 +19,30 @@ import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton
 import { syncMap } from "../utils";
 
 export const MySavePage = () => {
-  const { gameSaveAPI } = useAPIContext();
+  const { gameStateAPI } = useAPIContext();
   const { t } = useTranslation(undefined, { keyPrefix: "pages.mySave" });
 
-  const [gameSave, setGameSave] = useState<GameSave | null>(null);
-  const { gameSaveId } = useParams();
+  const [gameState, setGameState] = useState<GameState | null>(null);
+  const { gameStateId } = useParams();
   const { notify } = useUIContext();
 
   useEffect(() => {
     (async () => {
-      if (!gameSaveId) return;
+      if (!gameStateId) return;
       try {
-        const data = await gameSaveAPI.getUserSave(gameSaveId);
-        setGameSave(data);
+        const data = await gameStateAPI.getGameState(gameStateId);
+        setGameState(data);
       } catch (error) {
         notify.error(error);
-        setGameSave(null);
+        setGameState(null);
       }
     })();
   }, []);
 
   const [syncSettingsAreOpen, setSyncSettingsAreOpen] = useState(false);
-  const [sync, setSync] = useState<GameSaveSync>(GameSaveSync.NO);
+  const [sync, setSync] = useState<GameStateSync>(GameStateSync.NO);
 
-  if (!gameSave) {
+  if (!gameState) {
     return (
       <Container>
         <H1>{t("game-save-not-found")}</H1>
@@ -52,12 +52,12 @@ export const MySavePage = () => {
 
   const setupSync = async () => {
     try {
-      await gameSaveAPI.setupSync({
-        gameSaveId: gameSave.id,
+      await gameStateAPI.setupSync({
+        gameStateId: gameState.id,
         sync: sync,
       });
-      setGameSave({
-        ...gameSave,
+      setGameState({
+        ...gameState,
         sync: sync,
       });
       setSyncSettingsAreOpen(false);
@@ -66,25 +66,36 @@ export const MySavePage = () => {
     }
   };
 
-  const downloadSave = async (save: {
+  const onReuploadSave = async () => {
+    try {
+      await gameStateAPI.reuploadState({
+        id: gameState.id,
+        gameId: gameState.gameId,
+        path: gameState.localPath,
+        name: gameState.name,
+      });
+    } catch (error) {
+      notify.error(error);
+    }
+  };
+
+  const downloadSave = async (state: {
     url: string;
     id: string;
     size: number;
     createdAt: string;
   }) => {
     try {
-      const response = await gameSaveAPI.downloadSave(save.url);
+      const response = await gameStateAPI.downloadState(state.url);
       console.log(response);
     } catch (error) {
       notify.error(error);
     }
   };
 
-  const deleteSave = async (gameSaveArchiveId: string) => {
-    if (!gameSave) return;
-
+  const deleteState = async (gameStateId: string) => {
     try {
-      await gameSaveAPI.deleteSave(gameSaveArchiveId);
+      await gameStateAPI.deleteState(gameStateId);
       navigate(paths.mySaves({}));
     } catch (error) {
       notify.error(error);
@@ -93,17 +104,17 @@ export const MySavePage = () => {
 
   return (
     <Container className={classes.MySavePage}>
-      <H1>{gameSave?.name || t("save")}</H1>
+      <H1>{gameState?.name || t("save")}</H1>
 
       <div className={classes.GameSaveSettings}>
         <div className={classes.GameSaveSettingsLeft}>
-          <Paragraph>Path: {gameSave?.path}</Paragraph>
+          <Paragraph>Path: {gameState?.localPath}</Paragraph>
           <Paragraph>
-            {t("sync")}: {t(syncMap[gameSave?.sync])}{" "}
+            {t("sync")}: {t(syncMap[gameState?.sync])}{" "}
             <Button
               onClick={() => {
                 setSyncSettingsAreOpen(true);
-                setSync(gameSave.sync);
+                setSync(gameState.sync);
               }}
             >
               {t("setup-sync")}{" "}
@@ -118,9 +129,10 @@ export const MySavePage = () => {
         </div>
 
         <div>
+          <Button onClick={onReuploadSave}>{t("upload-save")}</Button>
           <ConfirmButton
             onClick={() => {
-              deleteSave(gameSave.id);
+              deleteState(gameState.id);
             }}
             color="danger"
           >
@@ -138,32 +150,32 @@ export const MySavePage = () => {
 
         <div className={classes.SyncSettingsPeriods}>
           <Button
-            onClick={() => setSync(GameSaveSync.NO)}
-            color={sync === GameSaveSync.NO ? "primary" : "secondary"}
+            onClick={() => setSync(GameStateSync.NO)}
+            color={sync === GameStateSync.NO ? "primary" : "secondary"}
           >
             {t("no")}{" "}
           </Button>
           <Button
-            onClick={() => setSync(GameSaveSync.EVERY_HOUR)}
-            color={sync === GameSaveSync.EVERY_HOUR ? "primary" : "secondary"}
+            onClick={() => setSync(GameStateSync.EVERY_HOUR)}
+            color={sync === GameStateSync.EVERY_HOUR ? "primary" : "secondary"}
           >
             {t("every-hour")}{" "}
           </Button>
           <Button
-            onClick={() => setSync(GameSaveSync.EVERY_DAY)}
-            color={sync === GameSaveSync.EVERY_DAY ? "primary" : "secondary"}
+            onClick={() => setSync(GameStateSync.EVERY_DAY)}
+            color={sync === GameStateSync.EVERY_DAY ? "primary" : "secondary"}
           >
             {t("every-day")}{" "}
           </Button>
           <Button
-            onClick={() => setSync(GameSaveSync.EVERY_WEEK)}
-            color={sync === GameSaveSync.EVERY_WEEK ? "primary" : "secondary"}
+            onClick={() => setSync(GameStateSync.EVERY_WEEK)}
+            color={sync === GameStateSync.EVERY_WEEK ? "primary" : "secondary"}
           >
             {t("every-week")}{" "}
           </Button>
           <Button
-            onClick={() => setSync(GameSaveSync.EVERY_MONTH)}
-            color={sync === GameSaveSync.EVERY_MONTH ? "primary" : "secondary"}
+            onClick={() => setSync(GameStateSync.EVERY_MONTH)}
+            color={sync === GameStateSync.EVERY_MONTH ? "primary" : "secondary"}
           >
             {t("every-month")}{" "}
           </Button>
@@ -179,24 +191,24 @@ export const MySavePage = () => {
 
       <H2>{t("about")}</H2>
 
-      <ParametersView gameStateValues={gameSave.gameStateValues} />
+      <ParametersView gameStateValues={gameState.gameStateValues} />
 
       <div className={classes.GameSaveArchive}>
         <span>
-          {t("size")}: <Bytes bytes={gameSave.size} />
+          {t("size")}: <Bytes bytes={gameState.sizeInBytes} />
         </span>
         <span>
-          {t("uploaded-at")} {gameSave.createdAt}
+          {t("uploaded-at")} {gameState.createdAt}
         </span>
 
         <div className={classes.Buttons}>
           <Button
             onClick={async () => {
               downloadSave({
-                id: gameSave.id,
-                url: gameSave.archiveURL,
-                size: gameSave.size,
-                createdAt: gameSave.createdAt,
+                id: gameState.id,
+                url: gameState.archiveURL,
+                size: gameState.sizeInBytes,
+                createdAt: gameState.createdAt,
               });
             }}
           >

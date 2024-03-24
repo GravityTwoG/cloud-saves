@@ -1,19 +1,19 @@
-import { GameSave } from "@/types";
+import { GameState } from "@/types";
 
-export class SyncedSavesAPI {
-  getSyncedSaves = async (): Promise<GameSave[]> => {
-    const savesJSON = localStorage.getItem("saves");
+export class SyncedStatesAPI {
+  getSyncedStates = async (): Promise<GameState[]> => {
+    const statesJSON = localStorage.getItem("saves");
 
-    if (savesJSON) {
-      const saves = JSON.parse(savesJSON);
+    if (statesJSON) {
+      const states = JSON.parse(statesJSON);
 
-      const savesArray: GameSave[] = [];
+      const statesArray: GameState[] = [];
 
-      for (const key in saves) {
-        savesArray.push(saves[key]);
+      for (const key in states) {
+        statesArray.push(states[key]);
       }
 
-      return savesArray;
+      return statesArray;
     }
 
     return [];

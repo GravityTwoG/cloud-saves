@@ -1,6 +1,6 @@
-import { GameSaveAPI } from "./GameSaveAPI";
+import { GameStateAPI } from "./GameStateAPI";
 
-import { SavesManager } from "./SavesManager";
+import { StatesManager } from "./StatesManager";
 import { SyncManager } from "./SyncManager";
 
 import { ValueExtractor } from "./game-state-parameters/ValueExtractor";
@@ -14,5 +14,5 @@ const converters = {
 };
 
 const valueExtractor = new ValueExtractor(converters);
-export const savesManager = new SavesManager(valueExtractor);
-export const syncManager = new SyncManager(new GameSaveAPI(savesManager));
+export const statesManager = new StatesManager(valueExtractor);
+export const syncManager = new SyncManager(new GameStateAPI(statesManager));

@@ -23,7 +23,7 @@ export type SavesWidgetProps = {
 };
 
 export const MySavesWidget = (props: SavesWidgetProps) => {
-  const { gameSaveAPI } = useAPIContext();
+  const { gameStateAPI } = useAPIContext();
   const { notify } = useUIContext();
   const { t } = useTranslation(undefined, { keyPrefix: "pages.mySaves" });
 
@@ -33,7 +33,7 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
     onSearch,
     loadResource: loadSaves,
     setQuery,
-  } = useResource(gameSaveAPI.getUserSaves);
+  } = useResource(gameStateAPI.getUserStates);
 
   useEffect(() => {
     props.setOnSaveUpload(() => loadSaves(query));
@@ -41,7 +41,7 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
 
   const onDelete = async (path: string) => {
     try {
-      await gameSaveAPI.deleteSave(path);
+      await gameStateAPI.deleteState(path);
       loadSaves(query);
     } catch (error) {
       notify.error(error);
@@ -66,7 +66,7 @@ export const MySavesWidget = (props: SavesWidgetProps) => {
             <div>
               <Link
                 className={classes.GameSaveLink}
-                href={paths.mySave({ gameSaveId: save.id })}
+                href={paths.mySave({ gameStateId: save.id })}
               >
                 {save.name}
               </Link>

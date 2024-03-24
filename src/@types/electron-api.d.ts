@@ -43,7 +43,10 @@ interface Window {
     ) => Promise<
       ElectronApiResponse<{
         buffer: Buffer;
-        gameStateValues: import("../types").GameStateValues;
+        gameStateValues: {
+          gameStateParameterId: string;
+          value: string;
+        }[];
       }>
     >;
 
@@ -57,7 +60,7 @@ interface Window {
     onGetSyncedSaves: (callback: () => void) => void;
 
     sendSyncedSaves: (
-      args: import("../types").GameSave[]
+      args: import("../types").GameState[]
     ) => Promise<ElectronApiResponse<void>>;
   };
 }

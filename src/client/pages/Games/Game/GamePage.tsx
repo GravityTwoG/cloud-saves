@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import classes from "./game-page.module.scss";
 
 import { Game } from "@/types";
-import { GameFormData } from "../components/GameForm/useGameForm";
+import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { navigate } from "@/client/useHashLocation";
@@ -37,7 +37,7 @@ export const GamePage = () => {
     }
   };
 
-  const onSubmit = async (data: GameFormData) => {
+  const onSubmit = async (data: AddGameDTO) => {
     try {
       if (!gameId) return;
 
@@ -45,8 +45,8 @@ export const GamePage = () => {
         id: gameId,
         name: data.name,
         description: data.description,
-        icon: data.icon[0] || undefined,
-        paths: data.paths.map((path) => path.path),
+        icon: data.icon,
+        paths: data.paths,
         extractionPipeline: data.extractionPipeline,
         gameStateParameters: data.gameStateParameters,
       });

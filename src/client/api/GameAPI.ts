@@ -1,4 +1,4 @@
-import { Game, GameStateParameters } from "@/types";
+import { Game } from "@/types";
 import { Fetcher } from "./Fetcher";
 import {
   AddGameDTO,
@@ -12,14 +12,23 @@ type GameFromServer = {
   id: number;
   name: string;
   description: string;
-  paths: { path: string }[];
+  paths: { id: string; path: string }[];
   extractionPipeline: {
     inputFilename: string;
     type: "sav-to-json";
     outputFilename: string;
   }[];
-  schema: GameStateParameters;
-  imageId: number;
+  schema: {
+    filename: string;
+    gameStateParameters: {
+      id: number;
+      key: string;
+      type: string;
+      label: string;
+      description: string;
+    }[];
+  };
+  imageUrl: string;
 };
 
 export class GameAPI implements IGameAPI {
@@ -52,7 +61,7 @@ export class GameAPI implements IGameAPI {
   addGame = (game: AddGameDTO): Promise<Game> => {
     const formData = new FormData();
 
-    formData.append("image", game.icon);
+    formData.append("image", game.icon || new Blob());
     formData.append(
       "gameData",
       JSON.stringify({
@@ -60,7 +69,17 @@ export class GameAPI implements IGameAPI {
         description: game.description,
         paths: game.paths.map((path) => ({ path })),
         extractionPipeline: game.extractionPipeline,
-        schema: game.gameStateParameters,
+        schema: {
+          filename: game.gameStateParameters.filename,
+          gameStateParameters: game.gameStateParameters.parameters.map(
+            (field) => ({
+              key: field.key,
+              type: field.type.type || field.type.id,
+              label: field.label,
+              description: field.description,
+            })
+          ),
+        },
       })
     );
 
@@ -73,22 +92,33 @@ export class GameAPI implements IGameAPI {
   updateGame = (game: UpdateGameDTO): Promise<Game> => {
     const formData = new FormData();
 
-    if (game.icon) {
-      formData.append("image", game.icon);
-    }
+    // if (game.icon) {
+    formData.append("image", game.icon || "");
+    // }
 
     formData.append(
       "gameData",
       JSON.stringify({
         name: game.name,
         description: game.description,
-        paths: game.paths ? game.paths.map((path) => ({ path })) : undefined,
+        paths: game.paths,
         extractionPipeline: game.extractionPipeline,
-        schema: game.gameStateParameters,
+        schema: {
+          filename: game.gameStateParameters.filename,
+          gameStateParameters: game.gameStateParameters.parameters.map(
+            (field) => ({
+              id: field.id,
+              key: field.key,
+              type: field.type.type || field.type.id,
+              label: field.label,
+              description: field.description,
+            })
+          ),
+        },
       })
     );
 
-    return this.fetcher.put(`/games/${game.id}`, {
+    return this.fetcher.patch(`/games/${game.id}`, {
       headers: {},
       body: formData,
     });
@@ -103,10 +133,22 @@ export class GameAPI implements IGameAPI {
       id: game.id.toString(),
       name: game.name,
       description: game.description,
-      paths: game.paths.map((path) => path.path),
+      paths: game.paths,
       extractionPipeline: game.extractionPipeline,
-      gameStateParameters: game.schema,
-      iconURL: `${this.fetcher.getBaseURL()}/games/image/${game.imageId}`,
+      gameStateParameters: {
+        filename: game.schema.filename,
+        parameters: game.schema.gameStateParameters.map((field) => ({
+          id: field.id.toString(),
+          key: field.key,
+          type: {
+            type: field.type,
+            id: field.type,
+          },
+          label: field.label,
+          description: field.description,
+        })),
+      },
+      iconURL: game.imageUrl,
     };
   };
 }

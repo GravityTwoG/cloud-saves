@@ -7,7 +7,7 @@ const resetPassword = path("/reset-password");
 
 const profile = path("/");
 const mySaves = path("/my-saves");
-const mySave = mySaves.path("/:gameSaveId");
+const mySave = mySaves.path("/:gameStateId");
 const sharedSaves = path("/shared-saves");
 const publicSaves = path("/public-saves");
 

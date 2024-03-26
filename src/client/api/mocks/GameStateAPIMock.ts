@@ -1,12 +1,9 @@
 import { GamePath, GameState, GameStateSync } from "@/types";
-import {
-  GetStatesQuery,
-  GetStatesResponse,
-  IGameStateAPI,
-} from "../interfaces/IGameStateAPI";
+import { IGameStateAPI } from "../interfaces/IGameStateAPI";
 import { IOSAPI } from "../interfaces/IOSAPI";
 import { ApiError } from "../ApiError";
 import { IGameAPI } from "../interfaces/IGameAPI";
+import { ResourceRequest, ResourceResponse } from "../interfaces/common";
 
 export class GameStateAPIMock implements IGameStateAPI {
   private readonly osAPI: IOSAPI;
@@ -46,7 +43,20 @@ export class GameStateAPIMock implements IGameStateAPI {
     return response.data;
   };
 
-  getUserStates = async (query: GetStatesQuery): Promise<GetStatesResponse> => {
+  getGameState = async (gameStateId: string): Promise<GameState> => {
+    const statesJSON = localStorage.getItem("states");
+
+    if (statesJSON) {
+      const states = JSON.parse(statesJSON);
+      return states[gameStateId];
+    }
+
+    throw new ApiError("Game state not found");
+  };
+
+  getUserStates = async (
+    query: ResourceRequest
+  ): Promise<ResourceResponse<GameState>> => {
     console.log("getUserStates", query);
     const statesJSON = localStorage.getItem("states");
 
@@ -71,20 +81,9 @@ export class GameStateAPIMock implements IGameStateAPI {
     };
   };
 
-  getGameState = async (gameStateId: string): Promise<GameState> => {
-    const statesJSON = localStorage.getItem("states");
-
-    if (statesJSON) {
-      const states = JSON.parse(statesJSON);
-      return states[gameStateId];
-    }
-
-    throw new ApiError("Game state not found");
-  };
-
   getSharedStates = async (
-    query: GetStatesQuery
-  ): Promise<GetStatesResponse> => {
+    query: ResourceRequest
+  ): Promise<ResourceResponse<GameState>> => {
     console.log("getSharedStates", query);
     return {
       items: [],
@@ -93,8 +92,8 @@ export class GameStateAPIMock implements IGameStateAPI {
   };
 
   getPublicStates = async (
-    query: GetStatesQuery
-  ): Promise<GetStatesResponse> => {
+    query: ResourceRequest
+  ): Promise<ResourceResponse<GameState>> => {
     console.log("getGlobalStates", query);
     return {
       items: [],

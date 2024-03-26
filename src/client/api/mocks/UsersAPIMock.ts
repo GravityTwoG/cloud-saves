@@ -1,14 +1,12 @@
 import { User } from "@/types";
-import {
-  GetUsersQuery,
-  GetUsersResponse,
-  IUsersAPI,
-  UserForAdmin,
-} from "../interfaces/IUsersAPI";
+import { IUsersAPI, UserForAdmin } from "../interfaces/IUsersAPI";
 import { ApiError } from "../ApiError";
+import { ResourceRequest, ResourceResponse } from "../interfaces/common";
 
 export class UsersAPIMock implements IUsersAPI {
-  async getUsers(query: GetUsersQuery): Promise<GetUsersResponse> {
+  async getUsers(
+    query: ResourceRequest
+  ): Promise<ResourceResponse<UserForAdmin>> {
     console.log("getUsers", query);
     const usersJSON = localStorage.getItem("users");
 

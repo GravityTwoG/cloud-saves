@@ -1,15 +1,5 @@
 import { Game, GameStateParameterType } from "@/types";
-
-export type GetGamesQuery = {
-  searchQuery: string;
-  pageNumber: number;
-  pageSize: number;
-};
-
-export type GetGamesResponse = {
-  items: Game[];
-  totalCount: number;
-};
+import { ResourceRequest, ResourceResponse } from "./common";
 
 export type AddGameDTO = {
   name: string;
@@ -42,7 +32,7 @@ export type UpdateGameDTO = {
 } & AddGameDTO;
 
 export interface IGameAPI {
-  getGames(query: GetGamesQuery): Promise<GetGamesResponse>;
+  getGames(query: ResourceRequest): Promise<ResourceResponse<Game>>;
 
   getGame(gameId: string): Promise<Game>;
 

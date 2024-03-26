@@ -1,15 +1,5 @@
 import { GamePath, GameState, GameStateSync } from "@/types";
-
-export type GetStatesQuery = {
-  searchQuery: string;
-  pageNumber: number;
-  pageSize: number;
-};
-
-export type GetStatesResponse = {
-  items: GameState[];
-  totalCount: number;
-};
+import { ResourceRequest, ResourceResponse } from "./common";
 
 export interface IGameStateAPI {
   getStatePaths(): Promise<GamePath[]>;
@@ -38,11 +28,11 @@ export interface IGameStateAPI {
 
   deleteState(gameStateId: string): Promise<void>;
 
-  getUserStates(query: GetStatesQuery): Promise<GetStatesResponse>;
-
   getGameState(gameStateId: string): Promise<GameState>;
 
-  getSharedStates(query: GetStatesQuery): Promise<GetStatesResponse>;
+  getUserStates(query: ResourceRequest): Promise<ResourceResponse<GameState>>;
 
-  getPublicStates(query: GetStatesQuery): Promise<GetStatesResponse>;
+  getSharedStates(query: ResourceRequest): Promise<ResourceResponse<GameState>>;
+
+  getPublicStates(query: ResourceRequest): Promise<ResourceResponse<GameState>>;
 }

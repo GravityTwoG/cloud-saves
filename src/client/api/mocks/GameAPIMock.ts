@@ -1,15 +1,12 @@
 import { Game } from "@/types";
 import { ApiError } from "../ApiError";
-import {
-  AddGameDTO,
-  GetGamesQuery,
-  GetGamesResponse,
-  IGameAPI,
-  UpdateGameDTO,
-} from "../interfaces/IGameAPI";
+import { AddGameDTO, IGameAPI, UpdateGameDTO } from "../interfaces/IGameAPI";
+import { ResourceRequest, ResourceResponse } from "../interfaces/common";
 
 export class GameAPIMock implements IGameAPI {
-  getGames = async (query: GetGamesQuery): Promise<GetGamesResponse> => {
+  getGames = async (
+    query: ResourceRequest
+  ): Promise<ResourceResponse<Game>> => {
     console.log("getGames", query);
     const gamesJSON = localStorage.getItem("games");
 

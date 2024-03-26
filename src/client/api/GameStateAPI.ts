@@ -1,13 +1,10 @@
 import { GamePath, GameState, GameStateSync } from "@/types";
-import {
-  GetStatesQuery,
-  GetStatesResponse,
-  IGameStateAPI,
-} from "./interfaces/IGameStateAPI";
+import { IGameStateAPI } from "./interfaces/IGameStateAPI";
 import { IOSAPI } from "./interfaces/IOSAPI";
 import { ApiError } from "./ApiError";
 import { IGameAPI } from "./interfaces/IGameAPI";
 import { Fetcher } from "./Fetcher";
+import { ResourceRequest, ResourceResponse } from "./interfaces/common";
 
 type GameStateFromServer = {
   archiveUrl: string;
@@ -66,7 +63,17 @@ export class GameStateAPI implements IGameStateAPI {
     return response.data;
   };
 
-  getUserStates = async (query: GetStatesQuery): Promise<GetStatesResponse> => {
+  getGameState = async (gameStateId: string): Promise<GameState> => {
+    const state = await this.fetcher.get<GameStateFromServer>(
+      `${apiPrefix}/${gameStateId}`
+    );
+
+    return this.mapGameStateFromServer(state);
+  };
+
+  getUserStates = async (
+    query: ResourceRequest
+  ): Promise<ResourceResponse<GameState>> => {
     const states = await this.fetcher.get<{
       items: GameStateFromServer[];
       totalCount: number;
@@ -80,17 +87,9 @@ export class GameStateAPI implements IGameStateAPI {
     };
   };
 
-  getGameState = async (gameStateId: string): Promise<GameState> => {
-    const state = await this.fetcher.get<GameStateFromServer>(
-      `${apiPrefix}/${gameStateId}`
-    );
-
-    return this.mapGameStateFromServer(state);
-  };
-
   getSharedStates = async (
-    query: GetStatesQuery
-  ): Promise<GetStatesResponse> => {
+    query: ResourceRequest
+  ): Promise<ResourceResponse<GameState>> => {
     console.log("getSharedStates", query);
     return {
       items: [],
@@ -99,8 +98,8 @@ export class GameStateAPI implements IGameStateAPI {
   };
 
   getPublicStates = async (
-    query: GetStatesQuery
-  ): Promise<GetStatesResponse> => {
+    query: ResourceRequest
+  ): Promise<ResourceResponse<GameState>> => {
     console.log("getGlobalStates", query);
     return {
       items: [],

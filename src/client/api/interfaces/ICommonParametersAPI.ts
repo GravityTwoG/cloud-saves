@@ -1,20 +1,10 @@
 import { CommonParameter } from "@/types";
-
-export type GetCommonParametersQuery = {
-  pageNumber: number;
-  pageSize: number;
-  searchQuery: string;
-};
-
-export type CommonParametersResponse = {
-  items: CommonParameter[];
-  totalCount: number;
-};
+import { ResourceRequest, ResourceResponse } from "./common";
 
 export interface ICommonParametersAPI {
   getParameters: (
-    query: GetCommonParametersQuery
-  ) => Promise<CommonParametersResponse>;
+    query: ResourceRequest
+  ) => Promise<ResourceResponse<CommonParameter>>;
 
   getParameter: (parameterId: string) => Promise<CommonParameter>;
 

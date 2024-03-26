@@ -1,12 +1,7 @@
 import { Game } from "@/types";
 import { Fetcher } from "./Fetcher";
-import {
-  AddGameDTO,
-  GetGamesQuery,
-  GetGamesResponse,
-  IGameAPI,
-  UpdateGameDTO,
-} from "./interfaces/IGameAPI";
+import { AddGameDTO, IGameAPI, UpdateGameDTO } from "./interfaces/IGameAPI";
+import { ResourceRequest, ResourceResponse } from "./interfaces/common";
 
 type GameFromServer = {
   id: number;
@@ -44,7 +39,9 @@ export class GameAPI implements IGameAPI {
     return this.mapGameFromServer(game);
   };
 
-  getGames = async (query: GetGamesQuery): Promise<GetGamesResponse> => {
+  getGames = async (
+    query: ResourceRequest
+  ): Promise<ResourceResponse<Game>> => {
     const games = await this.fetcher.get<{
       items: GameFromServer[];
       totalCount: number;

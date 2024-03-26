@@ -1,11 +1,9 @@
 import { CommonParameter } from "@/types";
-import {
-  GetCommonParametersQuery,
-  ICommonParametersAPI,
-} from "../interfaces/ICommonParametersAPI";
+import { ICommonParametersAPI } from "../interfaces/ICommonParametersAPI";
+import { ResourceRequest } from "../interfaces/common";
 
 export class CommonParametersAPIMock implements ICommonParametersAPI {
-  getParameters = async (query: GetCommonParametersQuery) => {
+  getParameters = async (query: ResourceRequest) => {
     console.log("getParameters", query);
     return {
       items: [

@@ -1,13 +1,11 @@
 import { GameStateParameterType } from "@/types";
-import {
-  GetParameterTypesQuery,
-  IGameStateParameterTypeAPI,
-} from "../interfaces/IGameStateParameterTypeAPI";
+import { IGameStateParameterTypeAPI } from "../interfaces/IGameStateParameterTypeAPI";
+import { ResourceRequest } from "../interfaces/common";
 
 export class GameStateParameterTypesAPIMock
   implements IGameStateParameterTypeAPI
 {
-  getTypes = async (query: GetParameterTypesQuery) => {
+  getTypes = async (query: ResourceRequest) => {
     console.log("getParameterTypes", query);
     return {
       items: [

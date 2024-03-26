@@ -1,10 +1,5 @@
 import { GameStateParameterType } from "@/types";
-
-export type GetParameterTypesQuery = {
-  pageNumber: number;
-  pageSize: number;
-  searchQuery: string;
-};
+import { ResourceRequest, ResourceResponse } from "./common";
 
 export type ParameterTypesResponse = {
   items: GameStateParameterType[];
@@ -12,7 +7,9 @@ export type ParameterTypesResponse = {
 };
 
 export interface IGameStateParameterTypeAPI {
-  getTypes: (query: GetParameterTypesQuery) => Promise<ParameterTypesResponse>;
+  getTypes: (
+    query: ResourceRequest
+  ) => Promise<ResourceResponse<GameStateParameterType>>;
 
   getType: (typeId: string) => Promise<GameStateParameterType>;
 

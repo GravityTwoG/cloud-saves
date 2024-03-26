@@ -7,13 +7,13 @@ type Callback<T> = (res: SelectOption<T>[]) => void;
 
 export type AsyncEntitySelectProps<T> = Pick<
   AsyncSelectProps<T>,
-  "option" | "onChange" | "onBlur" | "id"
+  "option" | "onChange" | "onBlur" | "id" | "name" | "disabled" | "placeholder"
 > & {
   loadOptions: (inputValue: string) => Promise<SelectOption<T>[]>;
 };
 
 const defaultOption = {
-  label: "Не выбрано",
+  label: "-",
   value: "",
   object: null,
 } as SelectOption<string>;
@@ -56,6 +56,10 @@ export function AsyncEntitySelect<T>(props: AsyncEntitySelectProps<T>) {
       option={props.option}
       onChange={props.onChange}
       id={props.id}
+      name={props.name}
+      onBlur={props.onBlur}
+      disabled={props.disabled}
+      placeholder={props.placeholder}
     />
   );
 }

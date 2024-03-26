@@ -3,6 +3,7 @@
   "games-delete-game": "Delete",
   "add-game": "Add Game",
   "parameter-types": "Parameter Types",
+  "parameter-type": "Parameter Type",
   "common-parameters": "Common Parameters",
   "type": "Parameter Type",
   "type-is-required": "Type name is required",

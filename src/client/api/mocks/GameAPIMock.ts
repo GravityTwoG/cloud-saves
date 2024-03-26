@@ -61,7 +61,30 @@ export class GameAPIMock implements IGameAPI {
 
       localStorage.setItem("games", JSON.stringify(games));
 
-      return gameToSave;
+      return {
+        ...gameToSave,
+        gameStateParameters: {
+          filename: gameToSave.gameStateParameters.filename,
+          parameters: gameToSave.gameStateParameters.parameters.map(
+            (field) => ({
+              id: field.id,
+              key: field.key,
+              type: field.type,
+              commonParameter: {
+                id: "id",
+                type: {
+                  id: field.type.id,
+                  type: field.type.type,
+                },
+                label: "label",
+                description: "description",
+              },
+              label: field.label,
+              description: field.description,
+            })
+          ),
+        },
+      };
     } else {
       localStorage.setItem(
         "games",
@@ -78,7 +101,7 @@ export class GameAPIMock implements IGameAPI {
     if (gamesJSON) {
       const games = JSON.parse(gamesJSON);
 
-      const existingGame = games[game.id];
+      const existingGame: Game = games[game.id];
       const updatedGame: Game = {
         id: game.id,
         name: game.name || existingGame.name,
@@ -87,8 +110,27 @@ export class GameAPIMock implements IGameAPI {
         paths: game.paths || existingGame.paths,
         extractionPipeline:
           game.extractionPipeline || existingGame.extractionPipeline,
-        gameStateParameters:
-          game.gameStateParameters || existingGame.gameStateParameters,
+        gameStateParameters: game.gameStateParameters
+          ? {
+              filename: game.gameStateParameters.filename,
+              parameters: game.gameStateParameters.parameters.map((field) => ({
+                id: field.id,
+                key: field.key,
+                type: field.type,
+                commonParameter: {
+                  id: "id",
+                  type: {
+                    id: field.type.id,
+                    type: field.type.type,
+                  },
+                  label: "label",
+                  description: "description",
+                },
+                label: field.label,
+                description: field.description,
+              })),
+            }
+          : existingGame.gameStateParameters,
       };
 
       games[game.id] = updatedGame;

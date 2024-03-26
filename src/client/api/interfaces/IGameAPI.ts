@@ -28,6 +28,9 @@ export type AddGameDTO = {
       id: string;
       key: string;
       type: GameStateParameterType;
+      commonParameter: {
+        id: string;
+      };
       label: string;
       description: string;
     }[];

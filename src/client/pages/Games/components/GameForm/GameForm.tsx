@@ -4,14 +4,17 @@ import classes from "./game-form.module.scss";
 
 import { Game } from "@/types";
 import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
+import { useAPIContext } from "@/client/contexts/APIContext";
 import { useGameForm } from "./useGameForm";
 
+import { Controller } from "react-hook-form";
 import { CTAButton } from "@/client/ui/atoms/Button/CTAButton";
 import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
 import { Button } from "@/client/ui/atoms/Button/Button";
 import { Input } from "@/client/ui/atoms/Input/Input";
 import { Select } from "@/client/ui/atoms/Select/Select";
 import { Field, InputField } from "@/client/ui/molecules/Field";
+import { AsyncEntitySelect } from "@/client/ui/atoms/Select/AsyncSelect/AsyncEntitySelect";
 
 export type GameFormProps = {
   game?: Game;
@@ -19,6 +22,7 @@ export type GameFormProps = {
 };
 
 export const GameForm = (props: GameFormProps) => {
+  const { commonParametersAPI, parameterTypesAPI } = useAPIContext();
   const { t } = useTranslation(undefined, { keyPrefix: "forms.gameForm" });
   const {
     register,
@@ -35,7 +39,7 @@ export const GameForm = (props: GameFormProps) => {
     gameStateParameters,
     appendGameStateParameter,
     removeGameStateParameter,
-    gameStateParameterTypes,
+    control,
   } = useGameForm({ defaultValue: props.game });
 
   return (
@@ -152,9 +156,68 @@ export const GameForm = (props: GameFormProps) => {
               {...register(`gameStateParameters.parameters.${index}.key`)}
               placeholder={t("parameter-key")}
             />
-            <Select
-              {...register(`gameStateParameters.parameters.${index}.type.id`)}
-              options={gameStateParameterTypes}
+            <Controller
+              name={`gameStateParameters.parameters.${index}.type`}
+              control={control}
+              render={({ field: selectField }) => (
+                <AsyncEntitySelect
+                  option={{
+                    label: selectField.value.type,
+                    value: selectField.value.id,
+                  }}
+                  onChange={(value) =>
+                    selectField.onChange({
+                      type: value.label,
+                      id: value.value,
+                    })
+                  }
+                  name={selectField.name}
+                  placeholder={t("parameter-type")}
+                  loadOptions={async (input) => {
+                    const types = await parameterTypesAPI.getTypes({
+                      searchQuery: input,
+                      pageNumber: 1,
+                      pageSize: 25,
+                    });
+                    return types.items.map((type) => ({
+                      value: type.id,
+                      label: type.type,
+                    }));
+                  }}
+                />
+              )}
+            />
+            <Controller
+              name={`gameStateParameters.parameters.${index}.commonParameter`}
+              control={control}
+              render={({ field: selectField }) => (
+                <AsyncEntitySelect
+                  loadOptions={async (query) => {
+                    const parameters = await commonParametersAPI.getParameters({
+                      searchQuery: query,
+                      pageNumber: 1,
+                      pageSize: 25,
+                    });
+                    return parameters.items.map((parameter) => ({
+                      value: parameter.id,
+                      label: parameter.label,
+                    }));
+                  }}
+                  onChange={(value) => {
+                    selectField.onChange({
+                      label: value.label,
+                      id: value.value,
+                    });
+                  }}
+                  onBlur={() => selectField.onBlur()}
+                  option={{
+                    label: selectField.value.label,
+                    value: selectField.value.id,
+                  }}
+                  name={selectField.name}
+                  placeholder={t("common-parameter")}
+                />
+              )}
             />
             <Input
               {...register(`gameStateParameters.parameters.${index}.label`)}
@@ -183,6 +246,7 @@ export const GameForm = (props: GameFormProps) => {
                 id: "",
                 type: "",
               },
+              commonParameter: { label: "-", id: "" },
               label: "",
               description: "",
             })

@@ -27,6 +27,7 @@ export type GameStateParameter = {
   id: string;
   key: string;
   type: GameStateParameterType;
+  commonParameter: CommonParameter;
   description: string;
   label: string;
 };

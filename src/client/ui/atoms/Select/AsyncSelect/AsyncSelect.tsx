@@ -11,7 +11,7 @@ export type SelectOption<T> = {
 export type LoadOptionsCallback<T> = (res: SelectOption<T>[]) => void;
 
 export type AsyncSelectProps<T> = {
-  option: SelectOption<T>;
+  option?: SelectOption<T>;
   options: SelectOption<T>[];
 
   onChange?: (option: SelectOption<T>) => void;
@@ -26,6 +26,8 @@ export type AsyncSelectProps<T> = {
 
   placeholder?: string;
   id?: string;
+  name?: string;
+  disabled?: boolean;
 };
 
 export const AsyncSelect = function <T>(props: AsyncSelectProps<T>) {
@@ -43,9 +45,11 @@ export const AsyncSelect = function <T>(props: AsyncSelectProps<T>) {
         onBlur={props.onBlur}
         placeholder={props.placeholder}
         id={props.id}
+        name={props.name}
         cacheOptions
         menuPlacement="auto"
         theme={themeFactory}
+        isDisabled={props.disabled}
       />
     </div>
   );

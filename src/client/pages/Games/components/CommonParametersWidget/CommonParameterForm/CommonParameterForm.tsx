@@ -1,19 +1,18 @@
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import classes from "./form.module.scss";
 
 import { CommonParameter } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
 
-import { Select } from "@/client/ui/atoms/Select/Select";
 import { Input } from "@/client/ui/atoms/Input/Input";
 import { Button } from "@/client/ui/atoms/Button/Button";
 import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
+import { AsyncEntitySelect } from "@/client/ui/atoms/Select/AsyncSelect/AsyncEntitySelect";
 
 type FormData = {
-  typeId: string;
+  type: { id: string; type: string };
   label: string;
   description: string;
 };
@@ -40,42 +39,18 @@ export const CommonParameterForm = ({
     handleSubmit,
     formState: { errors },
     reset,
+    control,
   } = useForm<FormData>({
     defaultValues: {
-      typeId: props.defaultValue?.type.id,
+      type: props.defaultValue?.type || { id: "", type: "" },
       label: props.defaultValue?.label,
       description: props.defaultValue?.description,
     },
   });
 
-  const [selectKey, setSelectKey] = useState(0);
-  const [options, setOptions] = useState<{ name: string; value: string }[]>([]);
-
-  useEffect(() => {
-    async function load() {
-      try {
-        const options = await parameterTypesAPI.getTypes({
-          pageNumber: 1,
-          pageSize: 24,
-          searchQuery: "",
-        });
-        setOptions(
-          options.items.map((option) => ({
-            value: option.id,
-            name: option.type,
-          }))
-        );
-        setSelectKey((key) => (key == 0 ? 1 : 0));
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    load();
-  }, []);
-
   const onSubmit = async (data: FormData) => {
     await props.onSubmit({
-      type: { id: data.typeId, type: "" },
+      type: data.type,
       label: data.label,
       description: data.description,
     });
@@ -103,8 +78,35 @@ export const CommonParameterForm = ({
         <ErrorText>{errors.description.message}</ErrorText>
       )}
 
-      <Select key={selectKey} {...register("typeId")} options={options} />
-      {errors.typeId && <ErrorText>{errors.typeId.message}</ErrorText>}
+      <Controller
+        name="type"
+        control={control}
+        render={({ field }) => (
+          <AsyncEntitySelect
+            onChange={(value) => {
+              field.onChange({
+                id: value.value,
+                type: value.label,
+              });
+            }}
+            placeholder={t("parameter-type")}
+            loadOptions={async (input) => {
+              const types = await parameterTypesAPI.getTypes({
+                searchQuery: input,
+                pageNumber: 1,
+                pageSize: 25,
+              });
+              return types.items.map((type) => ({
+                label: type.type,
+                value: type.id,
+              }));
+            }}
+            onBlur={() => field.onBlur()}
+            option={{ label: field.value.type, value: field.value.id }}
+          />
+        )}
+      />
+      {errors.type && <ErrorText>{errors.type.message}</ErrorText>}
 
       {errors.root && <ErrorText>{errors.root.message}</ErrorText>}
 

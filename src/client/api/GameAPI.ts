@@ -144,6 +144,15 @@ export class GameAPI implements IGameAPI {
             type: field.type,
             id: field.type,
           },
+          commonParameter: {
+            id: field.id.toString(),
+            type: {
+              type: field.type,
+              id: field.type,
+            },
+            label: "label",
+            description: "description",
+          },
           label: field.label,
           description: field.description,
         })),

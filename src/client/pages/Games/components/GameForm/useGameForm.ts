@@ -2,22 +2,12 @@ import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { Game, GameStateParameterType } from "@/types";
+import { Game } from "@/types";
 import { useFilePreview } from "@/client/ui/hooks/useFilePreview";
 import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
 
 const pipelineItemTypes: { name: string; value: string }[] = [
   { name: "sav-to-json", value: "sav-to-json" },
-];
-
-const gameStateParameterTypes: {
-  name: string;
-  value: string;
-}[] = [
-  { name: "string", value: "string" },
-  { name: "number", value: "number" },
-  { name: "seconds", value: "seconds" },
-  { name: "boolean", value: "boolean" },
 ];
 
 type GameFormData = {
@@ -36,7 +26,8 @@ type GameFormData = {
     parameters: {
       id: string;
       key: string;
-      type: GameStateParameterType;
+      type: { id: string; type: string };
+      commonParameter: { label: string; id: string };
       label: string;
       description: string;
     }[];
@@ -129,10 +120,6 @@ export const useGameForm = (args: UseGameFormArgs) => {
     control,
     name: "gameStateParameters.parameters",
     rules: {
-      required: {
-        value: true,
-        message: t("parameters-schema-is-required"),
-      },
       validate: {
         notEmptyValues: (fields) => {
           return (
@@ -165,6 +152,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
         id: "",
         type: "",
       },
+      commonParameter: { label: "-", id: "" },
       description: "",
       label: "",
     });
@@ -195,6 +183,6 @@ export const useGameForm = (args: UseGameFormArgs) => {
     gameStateParameters,
     appendGameStateParameter,
     removeGameStateParameter,
-    gameStateParameterTypes,
+    control,
   };
 };

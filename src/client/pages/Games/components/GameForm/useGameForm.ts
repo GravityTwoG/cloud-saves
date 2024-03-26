@@ -3,7 +3,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { Game, GameStateParameterType } from "@/types";
-import { useFilePreview } from "@/client/lib/hooks/useFilePreview";
+import { useFilePreview } from "@/client/ui/hooks/useFilePreview";
 import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
 
 const pipelineItemTypes: { name: string; value: string }[] = [

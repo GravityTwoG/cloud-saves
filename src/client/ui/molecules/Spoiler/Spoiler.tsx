@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { clsx } from "clsx";
 import classes from "./spoiler.module.scss";
-import { useOnClickOutside } from "@/client/lib/hooks/useOnClickOutside";
+import { useOnClickOutside } from "@/client/ui/hooks/useOnClickOutside";
 
 export type SpoilerProps = {
   children?: React.ReactNode;

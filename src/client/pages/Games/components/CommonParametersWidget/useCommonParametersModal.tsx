@@ -1,6 +1,6 @@
 import { CommonParametersWidget } from "./CommonParametersWidget";
 import { useTranslation } from "react-i18next";
-import { useModal } from "@/client/lib/hooks/useModal";
+import { useModal } from "@/client/ui/hooks/useModal";
 
 export const useCommonParametersModal = () => {
   const { t } = useTranslation(undefined, { keyPrefix: "pages.games" });

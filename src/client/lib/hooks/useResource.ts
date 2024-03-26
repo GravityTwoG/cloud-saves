@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useUIContext } from "@/client/contexts/UIContext";
-import { useDebouncedCallback } from "./useDebouncedCallback";
+import { useDebouncedCallback } from "@/client/ui/hooks/useDebouncedCallback";
 
 // Hook that loads a resource with pagination and search query
 // parameter loadResource must be memoized or should use useCallback

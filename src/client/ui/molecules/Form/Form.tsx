@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { clsx } from "clsx";
 
 import classes from "./form.module.scss";
@@ -14,7 +14,7 @@ import { CTAButton } from "@/client/ui/atoms/Button/CTAButton";
 import { Button } from "../../atoms/Button/Button";
 import { Input } from "@/client/ui/atoms/Input/Input";
 import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
-import { Select } from "../../atoms/Select/Select";
+import { AsyncEntitySelect } from "@/client/ui/atoms/Select/AsyncSelect/AsyncEntitySelect";
 
 export type ComboboxOption = {
   label: string;
@@ -183,29 +183,6 @@ function Field<C extends FormConfig>(props: FieldProps<C>) {
   const field = config[fieldName];
   const fieldValue = formData[fieldName];
 
-  const [selectKey, setSelectKey] = useState(0);
-  const [options, setOptions] = useState<{ name: string; value: string }[]>([]);
-
-  useEffect(() => {
-    async function load() {
-      try {
-        if (field.type === "combobox" && typeof fieldValue !== "string") {
-          const options = await field.loadOptions("");
-          setOptions(
-            options.map((option) => ({
-              name: option.label,
-              value: option.value,
-            }))
-          );
-          setSelectKey((key) => (key == 0 ? 1 : 0));
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    load();
-  }, [fieldValue]);
-
   if (field.type === "combobox" && typeof fieldValue !== "string") {
     return (
       <div key={fieldName} className={classes.Field}>
@@ -214,13 +191,12 @@ function Field<C extends FormConfig>(props: FieldProps<C>) {
             <p>{field.label}</p>
           </label>
         )}
-        {/* <EntitySelect
-          loadOptions={field.loadOptions}
-          option={fieldValue}
-          onChange={(e) => handleChange(e, fieldName)}
+        <AsyncEntitySelect
           id={fieldName}
-        /> */}
-        <Select key={selectKey} id={fieldName} options={options} />
+          option={fieldValue}
+          onChange={(e) => props.handleChange(e, fieldName)}
+          loadOptions={field.loadOptions}
+        />
         {props.error && <ErrorText>{props.error}</ErrorText>}
       </div>
     );

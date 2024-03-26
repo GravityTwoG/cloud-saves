@@ -5,7 +5,7 @@ import {
   useRef,
   useLayoutEffect,
 } from "react";
-import { Callback, debounce } from "../debounce";
+import { Callback, debounce } from "../lib/debounce";
 
 export interface DebounceOptions {
   leading?: boolean | undefined;

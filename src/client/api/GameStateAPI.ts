@@ -5,6 +5,9 @@ import { ApiError } from "./ApiError";
 import { IGameAPI } from "./interfaces/IGameAPI";
 import { Fetcher } from "./Fetcher";
 import { ResourceRequest, ResourceResponse } from "./interfaces/common";
+import { LocalStorage } from "./mocks/LocalStorage";
+
+const ls = new LocalStorage("game_states_not_mock_");
 
 type GameStateFromServer = {
   archiveUrl: string;
@@ -178,12 +181,12 @@ export class GameStateAPI implements IGameStateAPI {
     gameStateId: string;
     sync: GameStateSync;
   }) => {
-    const statesJSON = localStorage.getItem("states");
-
-    if (statesJSON) {
-      const states = JSON.parse(statesJSON);
+    try {
+      const states = ls.getItem<Record<string, GameState>>("states");
       states[settings.gameStateId].sync = settings.sync;
-      localStorage.setItem("states", JSON.stringify(states));
+      ls.setItem("states", states);
+    } catch (e) {
+      console.log(e);
     }
   };
 

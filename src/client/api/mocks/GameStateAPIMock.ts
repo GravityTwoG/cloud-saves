@@ -4,6 +4,9 @@ import { IOSAPI } from "../interfaces/IOSAPI";
 import { ApiError } from "../ApiError";
 import { IGameAPI } from "../interfaces/IGameAPI";
 import { ResourceRequest, ResourceResponse } from "../interfaces/common";
+import { LocalStorage } from "./LocalStorage";
+
+const ls = new LocalStorage("game_states_");
 
 export class GameStateAPIMock implements IGameStateAPI {
   private readonly osAPI: IOSAPI;
@@ -44,25 +47,20 @@ export class GameStateAPIMock implements IGameStateAPI {
   };
 
   getGameState = async (gameStateId: string): Promise<GameState> => {
-    const statesJSON = localStorage.getItem("states");
-
-    if (statesJSON) {
-      const states = JSON.parse(statesJSON);
+    try {
+      const states = ls.getItem<Record<string, GameState>>("states");
       return states[gameStateId];
+    } catch (e) {
+      throw new ApiError("Game state not found");
     }
-
-    throw new ApiError("Game state not found");
   };
 
   getUserStates = async (
     query: ResourceRequest
   ): Promise<ResourceResponse<GameState>> => {
     console.log("getUserStates", query);
-    const statesJSON = localStorage.getItem("states");
-
-    if (statesJSON) {
-      const states = JSON.parse(statesJSON);
-
+    try {
+      const states = ls.getItem<Record<string, GameState>>("states");
       const statesArray: GameState[] = [];
 
       for (const key in states) {
@@ -73,12 +71,12 @@ export class GameStateAPIMock implements IGameStateAPI {
         items: statesArray,
         totalCount: statesArray.length,
       };
+    } catch (e) {
+      return {
+        items: [],
+        totalCount: 0,
+      };
     }
-
-    return {
-      items: [],
-      totalCount: 0,
-    };
   };
 
   getSharedStates = async (
@@ -113,13 +111,19 @@ export class GameStateAPIMock implements IGameStateAPI {
     const response = await this.osAPI.uploadState(state, game);
 
     const gameStateId = state.path.split("/").join("-").split(" ").join("_");
-    const gameState = {
+    const gameState: GameState = {
       id: gameStateId,
       gameId: state.path,
       localPath: state.path,
       name: game ? game.name : state.name,
       sync: GameStateSync.NO,
-      gameStateValues: response.gameStateValues,
+      gameStateValues: response.gameStateValues.map((field) => ({
+        gameStateParameterId: field.gameStateParameterId,
+        value: field.value,
+        type: "string",
+        label: "label",
+        description: "description",
+      })),
       archiveURL: state.path,
       sizeInBytes: 42,
       uploadedAt: new Date().toLocaleString(),
@@ -127,19 +131,14 @@ export class GameStateAPIMock implements IGameStateAPI {
       createdAt: new Date().toLocaleString(),
     };
 
-    const statesJSON = localStorage.getItem("states");
-
-    if (statesJSON) {
-      const states = JSON.parse(statesJSON);
+    try {
+      const states = ls.getItem<Record<string, GameState>>("states");
       states[gameStateId] = gameState;
-      localStorage.setItem("states", JSON.stringify(states));
-    } else {
-      localStorage.setItem(
-        "states",
-        JSON.stringify({
-          [gameStateId]: gameState,
-        })
-      );
+      ls.setItem("states", states);
+    } catch (e) {
+      ls.setItem("states", {
+        [gameStateId]: gameState,
+      });
     }
   };
 
@@ -156,13 +155,19 @@ export class GameStateAPIMock implements IGameStateAPI {
     const response = await this.osAPI.uploadState(state, game);
 
     const gameStateId = state.path.split("/").join("-").split(" ").join("_");
-    const gameState = {
+    const gameState: GameState = {
       id: gameStateId,
       gameId: state.path,
       localPath: state.path,
       name: game ? game.name : state.name,
       sync: GameStateSync.NO,
-      gameStateValues: response.gameStateValues,
+      gameStateValues: response.gameStateValues.map((field) => ({
+        gameStateParameterId: field.gameStateParameterId,
+        value: field.value,
+        type: "string",
+        label: "label",
+        description: "description",
+      })),
       archiveURL: state.path,
       sizeInBytes: 42,
       uploadedAt: new Date().toLocaleString(),
@@ -170,19 +175,14 @@ export class GameStateAPIMock implements IGameStateAPI {
       createdAt: new Date().toLocaleString(),
     };
 
-    const statesJSON = localStorage.getItem("states");
-
-    if (statesJSON) {
-      const states = JSON.parse(statesJSON);
+    try {
+      const states = ls.getItem<Record<string, GameState>>("states");
       states[gameStateId] = gameState;
-      localStorage.setItem("states", JSON.stringify(states));
-    } else {
-      localStorage.setItem(
-        "states",
-        JSON.stringify({
-          [gameStateId]: gameState,
-        })
-      );
+      ls.setItem("states", states);
+    } catch (e) {
+      ls.setItem("states", {
+        [gameStateId]: gameState,
+      });
     }
   };
 
@@ -190,12 +190,12 @@ export class GameStateAPIMock implements IGameStateAPI {
     gameStateId: string;
     sync: GameStateSync;
   }) => {
-    const statesJSON = localStorage.getItem("states");
-
-    if (statesJSON) {
-      const states = JSON.parse(statesJSON);
+    try {
+      const states = ls.getItem<Record<string, GameState>>("states");
       states[settings.gameStateId].sync = settings.sync;
-      localStorage.setItem("states", JSON.stringify(states));
+      ls.setItem("states", states);
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -211,12 +211,12 @@ export class GameStateAPIMock implements IGameStateAPI {
   };
 
   deleteState = async (gameStateId: string): Promise<void> => {
-    const statesJSON = localStorage.getItem("states");
-
-    if (statesJSON) {
-      const states = JSON.parse(statesJSON);
+    try {
+      const states = ls.getItem<Record<string, GameState>>("states");
       delete states[gameStateId];
-      localStorage.setItem("states", JSON.stringify(states));
+      ls.setItem("states", states);
+    } catch (e) {
+      console.log(e);
     }
   };
 }

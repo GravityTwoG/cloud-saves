@@ -7,6 +7,9 @@ import {
   ResetPasswordCredentials,
 } from "../interfaces/IAuthAPI";
 import { ApiError } from "../ApiError";
+import { LocalStorage } from "./LocalStorage";
+
+const ls = new LocalStorage("users_mock");
 
 export class AuthAPIMock implements IAuthAPI {
   private sleep = (ms: number) => {
@@ -22,9 +25,9 @@ export class AuthAPIMock implements IAuthAPI {
       id: Math.random().toString(),
     };
 
-    const usersJSON = localStorage.getItem("users");
-    if (usersJSON) {
-      const users = JSON.parse(usersJSON);
+    try {
+      const users = ls.getItem<User[]>("users");
+
       const userExists = !!users.find(
         (user: User) =>
           user.email === credentials.email ||
@@ -37,8 +40,8 @@ export class AuthAPIMock implements IAuthAPI {
 
       users.push(user);
 
-      localStorage.setItem("users", JSON.stringify(users));
-    } else {
+      ls.setItem("users", users);
+    } catch (error) {
       const admin = {
         email: "admin@example.com",
         username: "admin",
@@ -47,11 +50,11 @@ export class AuthAPIMock implements IAuthAPI {
         isBlocked: false,
         id: Math.random().toString(),
       };
-      localStorage.setItem("users", JSON.stringify([user, admin]));
+      ls.setItem("users", [user, admin]);
     }
 
-    localStorage.setItem("isAuthenticated", "true");
-    localStorage.setItem("user", JSON.stringify(user));
+    ls.setItem("isAuthenticated", "true");
+    ls.setItem("user", user);
 
     return {
       email: user.email,
@@ -62,12 +65,10 @@ export class AuthAPIMock implements IAuthAPI {
 
   login = async (credentials: LoginCredentials): Promise<User> => {
     await this.sleep(500);
-    const usersJSON = localStorage.getItem("users");
-
-    if (usersJSON) {
-      const users = JSON.parse(usersJSON);
+    try {
+      const users = ls.getItem<(User & { password: string })[]>("users");
       const user = users.find(
-        (user: User & { password: string }) =>
+        (user) =>
           user.username === credentials.username &&
           user.password === credentials.password
       );
@@ -76,27 +77,27 @@ export class AuthAPIMock implements IAuthAPI {
         throw new ApiError("User not found");
       }
 
-      localStorage.setItem("isAuthenticated", "true");
-      localStorage.setItem("user", JSON.stringify(user));
+      ls.setItem("isAuthenticated", "true");
+      ls.setItem("user", user);
       return {
         email: user.email,
         username: user.username,
         role: user.role,
       };
-    } else {
+    } catch (error) {
       throw new ApiError("User not found");
     }
   };
 
   getCurrentUser = async (): Promise<User> => {
     await this.sleep(500);
-    const isAuthenticated = localStorage.getItem("isAuthenticated");
+    const isAuthenticated = ls.getItem<string>("isAuthenticated");
 
     if (!isAuthenticated || isAuthenticated === "false") {
       throw new ApiError("Not authenticated");
     }
 
-    const user = JSON.parse(localStorage.getItem("user") || "");
+    const user = ls.getItem<User>("user");
     return user;
   };
 
@@ -125,7 +126,7 @@ export class AuthAPIMock implements IAuthAPI {
   };
 
   logout = async (): Promise<void> => {
-    localStorage.setItem("isAuthenticated", "false");
-    localStorage.setItem("user", "");
+    ls.setItem("isAuthenticated", "false");
+    ls.setItem("user", "");
   };
 }

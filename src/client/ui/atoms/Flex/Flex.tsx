@@ -1,44 +1,50 @@
+import { memo } from "react";
 import { clsx } from "clsx";
 
 import classes from "./flex.module.scss";
 
 import { ReactTagProps } from "@/client/ui/types";
 
-const shorthands = [
-  "fxww",
-  "fxdc",
-  "jcsb",
-  "jcsa",
-  "jcc",
-  "jcfe",
-  "jcfs",
-  "aic",
-  "ais",
-  "aifs",
-  "aife",
-] as const;
+const shorthands = {
+  fxww: true,
+  fxdc: true,
+  jcsb: true,
+  jcsa: true,
+  jcc: true,
+  jcfe: true,
+  jcfs: true,
+  aic: true,
+  ais: true,
+  aifs: true,
+  aife: true,
+} as const;
 
-export type Shorthand = (typeof shorthands)[number];
-export type Shorthands = { [K in Shorthand]?: boolean };
+export type Shorthands = typeof shorthands;
 
-export type FlexProps = ReactTagProps<"div"> & Shorthands;
+export type FlexProps = ReactTagProps<"div"> &
+  Partial<Shorthands> & { gap?: string | number };
 
-export const Flex = (props: FlexProps) => {
-  const { className, ...otherProps } = props;
+export const Flex = memo((props: FlexProps) => {
+  const { className, gap, ...otherProps } = props;
 
-  const classNames = shorthands.reduce((acc: string[], s: string) => {
-    const p = props as unknown as { [k: string]: unknown };
+  const divProps: ReactTagProps<"div"> & Record<string, unknown> = {};
+  const classNames: string[] = [];
 
-    if (s in p && p[s]) {
-      acc.push(classes[s]);
+  const keys = Object.keys(otherProps) as (keyof typeof otherProps &
+    keyof Shorthands)[];
+  for (const key of keys) {
+    if (key in shorthands && shorthands[key]) {
+      classNames.push(classes[key]);
+    } else {
+      divProps[key] = otherProps[key];
     }
-    return acc;
-  }, []);
+  }
 
   return (
     <div
-      {...otherProps}
+      {...divProps}
+      style={{ gap, ...divProps.style }}
       className={clsx(classNames, className, classes.Flex)}
     />
   );
-};
+});

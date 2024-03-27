@@ -1,4 +1,4 @@
-import { GamePath, GameState, GameStateSync } from "@/types";
+import { GamePath, GameState, GameStateSync, Share } from "@/types";
 import { IGameStateAPI } from "../interfaces/IGameStateAPI";
 import { IOSAPI } from "../interfaces/IOSAPI";
 import { ApiError } from "../ApiError";
@@ -218,5 +218,23 @@ export class GameStateAPIMock implements IGameStateAPI {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  addShare = async (share: {
+    gameStateId: string;
+    userId: string;
+  }): Promise<void> => {
+    console.log("addShare", share);
+  };
+
+  getShares = async (gameStateId: string): Promise<{ items: Share[] }> => {
+    console.log("getShares", gameStateId);
+    return {
+      items: [],
+    };
+  };
+
+  deleteShare = async (shareId: string): Promise<void> => {
+    console.log("deleteShare", shareId);
   };
 }

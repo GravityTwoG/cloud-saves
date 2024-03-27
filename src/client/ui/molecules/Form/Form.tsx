@@ -4,6 +4,8 @@ import { clsx } from "clsx";
 import classes from "./form.module.scss";
 
 import {
+  Control,
+  Controller,
   DefaultValues,
   Message,
   Path,
@@ -72,6 +74,7 @@ export function Form<C extends FormConfig>(props: FormProps<C>) {
     formState: { errors },
     getFieldState,
     setError,
+    control,
   } = useForm<FormData<C>>({
     defaultValues: formData as DefaultValues<FormData<C>>,
   });
@@ -96,13 +99,6 @@ export function Form<C extends FormConfig>(props: FormProps<C>) {
     }
   });
 
-  const handleChange = (value: string | ComboboxOption, field: keyof C) => {
-    setFormData({
-      ...formData,
-      [field]: value,
-    });
-  };
-
   const root = getFieldState("root" as Path<FormData<C>>);
 
   return (
@@ -113,9 +109,8 @@ export function Form<C extends FormConfig>(props: FormProps<C>) {
           key={field}
           config={props.config}
           fieldName={field}
-          formData={formData}
-          handleChange={handleChange}
           register={register}
+          control={control}
           error={
             (errors[field] !== undefined
               ? errors[field]!.message
@@ -157,7 +152,10 @@ function extractDefaultValues<C extends FormConfig>(config: C) {
     if (config[field].type === "combobox") {
       return {
         ...acc,
-        [field]: config[field].defaultValue || null,
+        [field]: config[field].defaultValue || {
+          label: "-",
+          value: "",
+        },
       };
     }
 
@@ -171,19 +169,17 @@ function extractDefaultValues<C extends FormConfig>(config: C) {
 type FieldProps<C extends FormConfig> = {
   config: C;
   fieldName: string;
-  formData: FormData<C>;
-  handleChange: (value: string | ComboboxOption, fieldName: keyof C) => void;
   register: UseFormRegister<FormData<C>>;
   error: Message;
+  control: Control<FormData<C>>;
 };
 
 function Field<C extends FormConfig>(props: FieldProps<C>) {
-  const { config, fieldName, formData } = props;
+  const { config, fieldName } = props;
 
   const field = config[fieldName];
-  const fieldValue = formData[fieldName];
 
-  if (field.type === "combobox" && typeof fieldValue !== "string") {
+  if (field.type === "combobox") {
     return (
       <div key={fieldName} className={classes.Field}>
         {field.label && (
@@ -191,19 +187,22 @@ function Field<C extends FormConfig>(props: FieldProps<C>) {
             <p>{field.label}</p>
           </label>
         )}
-        <AsyncEntitySelect
-          id={fieldName}
-          option={fieldValue}
-          onChange={(e) => props.handleChange(e, fieldName)}
-          loadOptions={field.loadOptions}
+        <Controller
+          control={props.control}
+          name={fieldName as Path<FormData<C>>}
+          render={({ field: selectField }) => (
+            <AsyncEntitySelect
+              name={selectField.name}
+              option={selectField.value as ComboboxOption}
+              onBlur={selectField.onBlur}
+              onChange={(value) => selectField.onChange(value)}
+              loadOptions={field.loadOptions}
+            />
+          )}
         />
         {props.error && <ErrorText>{props.error}</ErrorText>}
       </div>
     );
-  }
-
-  if (typeof fieldValue !== "string") {
-    return null;
   }
 
   if (!field.label) {

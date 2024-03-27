@@ -92,6 +92,13 @@ export type GameState = {
   createdAt: string;
 };
 
+export type Share = {
+  id: string;
+  gameStateId: string;
+  userId: string;
+  username: string;
+};
+
 export type JSONType = {
   [key: string | number]:
     | string

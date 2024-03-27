@@ -1,4 +1,4 @@
-import { GamePath, GameState, GameStateSync } from "@/types";
+import { GamePath, GameState, GameStateSync, Share } from "@/types";
 import { ResourceRequest, ResourceResponse } from "./common";
 
 export interface IGameStateAPI {
@@ -35,4 +35,10 @@ export interface IGameStateAPI {
   getSharedStates(query: ResourceRequest): Promise<ResourceResponse<GameState>>;
 
   getPublicStates(query: ResourceRequest): Promise<ResourceResponse<GameState>>;
+
+  addShare(share: { gameStateId: string; userId: string }): Promise<void>;
+
+  getShares(gameStateId: string): Promise<{ items: Share[] }>;
+
+  deleteShare(shareId: string): Promise<void>;
 }

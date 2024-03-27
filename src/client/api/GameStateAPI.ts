@@ -1,4 +1,4 @@
-import { GamePath, GameState, GameStateSync } from "@/types";
+import { GamePath, GameState, GameStateSync, Share } from "@/types";
 import { IGameStateAPI } from "./interfaces/IGameStateAPI";
 import { IOSAPI } from "./interfaces/IOSAPI";
 import { ApiError } from "./ApiError";
@@ -225,5 +225,42 @@ export class GameStateAPI implements IGameStateAPI {
       createdAt: new Date().toLocaleString(),
       updatedAt: new Date().toLocaleString(),
     };
+  };
+
+  addShare = async (share: {
+    gameStateId: string;
+    userId: string;
+  }): Promise<void> => {
+    console.log("addShare", share);
+  };
+
+  getShares = async (gameStateId: string): Promise<{ items: Share[] }> => {
+    console.log("getShares", gameStateId);
+    return {
+      items: [
+        {
+          id: "1",
+          gameStateId,
+          userId: "1",
+          username: "username",
+        },
+        {
+          id: "2",
+          gameStateId,
+          userId: "2",
+          username: "username2",
+        },
+        {
+          id: "3",
+          gameStateId,
+          userId: "3",
+          username: "username3",
+        },
+      ],
+    };
+  };
+
+  deleteShare = async (shareId: string): Promise<void> => {
+    console.log("deleteShare", shareId);
   };
 }

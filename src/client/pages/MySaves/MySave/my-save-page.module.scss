@@ -10,6 +10,11 @@
   .GameSaveSettingsLeft {
     flex: 1;
   }
+
+  .GameSaveSettingsRight {
+    width: auto;
+    flex-grow: 0;
+  }
 }
 
 .SyncSettingsPeriods {

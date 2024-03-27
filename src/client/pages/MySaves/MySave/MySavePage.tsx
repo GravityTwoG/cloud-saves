@@ -9,14 +9,16 @@ import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { navigate } from "@/client/useHashLocation";
 import { paths } from "@/client/config/paths";
+import { syncMap } from "../utils";
 
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
 import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
 import { Container } from "@/client/ui/atoms/Container/Container";
 import { Button } from "@/client/ui/atoms/Button/Button";
+import { Flex } from "@/client/ui/atoms/Flex";
 import { Modal } from "@/client/ui/molecules/Modal/Modal";
 import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
-import { syncMap } from "../utils";
+import { SharesWidget } from "@/client/lib/components/SharesWidget";
 
 export const MySavePage = () => {
   const { gameStateAPI } = useAPIContext();
@@ -108,7 +110,9 @@ export const MySavePage = () => {
 
       <div className={classes.GameSaveSettings}>
         <div className={classes.GameSaveSettingsLeft}>
-          <Paragraph>Path: {gameState?.localPath}</Paragraph>
+          <Paragraph>
+            {t("path")}: {gameState?.localPath}
+          </Paragraph>
           <Paragraph>
             {t("sync")}: {t(syncMap[gameState?.sync])}{" "}
             <Button
@@ -124,11 +128,11 @@ export const MySavePage = () => {
             {t("is-public-no")} <Button>{t("make-public")}</Button>
           </Paragraph>
           <Paragraph>
-            {t("shared-with-nobody")} <Button>{t("share")}</Button>
+            {t("shared-with")}: <SharesWidget gameStateId={gameState.id} />
           </Paragraph>
         </div>
 
-        <div>
+        <Flex fxdc aife gap="0.5rem" className={classes.GameSaveSettingsRight}>
           <Button onClick={onReuploadSave}>{t("upload-save")}</Button>
           <ConfirmButton
             onClick={() => {
@@ -136,9 +140,9 @@ export const MySavePage = () => {
             }}
             color="danger"
           >
-            {t("delete-save-0")}{" "}
+            {t("delete-save")}{" "}
           </ConfirmButton>
-        </div>
+        </Flex>
       </div>
 
       <Modal

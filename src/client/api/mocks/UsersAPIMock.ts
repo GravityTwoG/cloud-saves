@@ -1,4 +1,4 @@
-import { User } from "@/types";
+import { User, UserRole } from "@/types";
 import { IUsersAPI, UserForAdmin } from "../interfaces/IUsersAPI";
 import { ApiError } from "../ApiError";
 import { ResourceRequest, ResourceResponse } from "../interfaces/common";
@@ -23,6 +23,19 @@ export class UsersAPIMock implements IUsersAPI {
 
         usersArray.push(users[key]);
       }
+
+      return {
+        items: [
+          {
+            email: "User2",
+            id: "User2",
+            isBlocked: false,
+            username: "User2",
+            role: UserRole.USER,
+          },
+        ],
+        totalCount: usersArray.length,
+      };
 
       return {
         items: usersArray as UserForAdmin[],

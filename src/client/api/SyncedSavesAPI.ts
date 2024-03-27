@@ -1,21 +1,22 @@
-import { GameSave } from "@/types";
+import { GameState } from "@/types";
+import { LocalStorage } from "./mocks/LocalStorage";
 
-export class SyncedSavesAPI {
-  getSyncedSaves = async (): Promise<GameSave[]> => {
-    const savesJSON = localStorage.getItem("saves");
+const ls = new LocalStorage("game_states_");
 
-    if (savesJSON) {
-      const saves = JSON.parse(savesJSON);
+export class SyncedStatesAPI {
+  getSyncedStates = async (): Promise<GameState[]> => {
+    try {
+      const states = ls.getItem<Record<string, GameState>>("saves");
 
-      const savesArray: GameSave[] = [];
+      const statesArray: GameState[] = [];
 
-      for (const key in saves) {
-        savesArray.push(saves[key]);
+      for (const key in states) {
+        statesArray.push(states[key]);
       }
 
-      return savesArray;
+      return statesArray;
+    } catch (e) {
+      return [];
     }
-
-    return [];
   };
 }

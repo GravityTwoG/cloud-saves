@@ -18,11 +18,11 @@ function last(arr: string[]) {
 }
 
 export type FolderExplorerProps = {
-  saveUploaded: () => void;
+  stateUploaded: () => void;
 };
 
 export const FolderExplorer = (props: FolderExplorerProps) => {
-  const { gameSaveAPI, osAPI } = useAPIContext();
+  const { gameStateAPI, osAPI } = useAPIContext();
   const { notify } = useUIContext();
   const { t } = useTranslation(undefined, { keyPrefix: "pages.mySaves" });
   const [selectedFolder, setSelectedFolder] = useState<string>("");
@@ -31,7 +31,7 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
 
   const getSavePaths = useCallback(async () => {
     try {
-      const paths = await gameSaveAPI.getSavePaths();
+      const paths = await gameStateAPI.getStatePaths();
 
       setSelectedFolder("");
       setFiles(
@@ -94,8 +94,8 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
     name: string;
   }) => {
     try {
-      await gameSaveAPI.uploadSave(folder);
-      props.saveUploaded();
+      await gameStateAPI.uploadState(folder);
+      props.stateUploaded();
     } catch (e) {
       notify.error(e);
     }

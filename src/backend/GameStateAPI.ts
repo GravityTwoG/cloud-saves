@@ -1,21 +1,21 @@
 import { session } from "electron";
-import { Game, GameSave } from "@/types";
-import { SavesManager } from "./SavesManager";
+import { Game, GameState } from "@/types";
+import { StatesManager } from "./StatesManager";
 
-export class GameSaveAPI {
-  private savesManager: SavesManager;
+export class GameStateAPI {
+  private statesManager: StatesManager;
 
-  constructor(savesManager: SavesManager) {
-    this.savesManager = savesManager;
+  constructor(statesManager: StatesManager) {
+    this.statesManager = statesManager;
   }
 
-  uploadSave = async (gameSave: GameSave) => {
-    const game = gameSave.gameId
-      ? await this.getGame(gameSave.gameId)
+  uploadState = async (gameState: GameState) => {
+    const game = gameState.gameId
+      ? await this.getGame(gameState.gameId)
       : undefined;
 
-    const response = await this.savesManager.uploadSave(
-      { name: gameSave.name, path: gameSave.path },
+    const response = await this.statesManager.uploadSave(
+      { name: gameState.name, path: gameState.localPath },
       game
     );
 
@@ -34,8 +34,8 @@ export class GameSaveAPI {
     return response;
   };
 
-  downloadSave = async (gameSave: GameSave) => {
-    await this.savesManager.downloadSave(gameSave.path);
+  downloadState = async (gameState: GameState) => {
+    await this.statesManager.downloadState(gameState.localPath);
   };
 
   private async getGame(gameId: string): Promise<Game> {

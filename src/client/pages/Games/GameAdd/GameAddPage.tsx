@@ -6,24 +6,24 @@ import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { navigate } from "@/client/useHashLocation";
 import { paths } from "@/client/config/paths";
-import { GameFormData } from "../utils";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container/Container";
-import { GameForm } from "../GameForm/GameForm";
+import { GameForm } from "../components/GameForm/GameForm";
+import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
 
 export const GameAddPage = () => {
   const { gameAPI } = useAPIContext();
   const { notify } = useUIContext();
   const { t } = useTranslation(undefined, { keyPrefix: "pages.addGame" });
 
-  const onSubmit = async (data: GameFormData) => {
+  const onSubmit = async (data: AddGameDTO) => {
     try {
       await gameAPI.addGame({
         name: data.name,
         description: data.description,
-        icon: data.icon[0] || "",
-        paths: data.paths.map((path) => path.path),
+        icon: data.icon,
+        paths: data.paths,
         extractionPipeline: data.extractionPipeline,
         gameStateParameters: data.gameStateParameters,
       });

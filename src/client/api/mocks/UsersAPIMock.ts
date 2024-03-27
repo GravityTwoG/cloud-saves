@@ -1,23 +1,19 @@
-import { User } from "@/types";
-import {
-  GetUsersQuery,
-  GetUsersResponse,
-  IUsersAPI,
-  UserForAdmin,
-} from "../interfaces/IUsersAPI";
+import { User, UserRole } from "@/types";
+import { IUsersAPI, UserForAdmin } from "../interfaces/IUsersAPI";
 import { ApiError } from "../ApiError";
+import { ResourceRequest, ResourceResponse } from "../interfaces/common";
+import { LocalStorage } from "./LocalStorage";
+
+const ls = new LocalStorage("users_mock_");
 
 export class UsersAPIMock implements IUsersAPI {
-  async getUsers(query: GetUsersQuery): Promise<GetUsersResponse> {
+  async getUsers(
+    query: ResourceRequest
+  ): Promise<ResourceResponse<UserForAdmin>> {
     console.log("getUsers", query);
-    const usersJSON = localStorage.getItem("users");
-
-    if (usersJSON) {
-      const users = JSON.parse(usersJSON);
-
-      const currentUserJSON = localStorage.getItem("user");
-      const currentUser = currentUserJSON ? JSON.parse(currentUserJSON) : null;
-
+    try {
+      const users = ls.getItem<UserForAdmin[]>("users");
+      const currentUser = ls.getItem<User>("user");
       const usersArray: User[] = [];
 
       for (const key in users) {
@@ -29,58 +25,65 @@ export class UsersAPIMock implements IUsersAPI {
       }
 
       return {
+        items: [
+          {
+            email: "User2",
+            id: "User2",
+            isBlocked: false,
+            username: "User2",
+            role: UserRole.USER,
+          },
+        ],
+        totalCount: usersArray.length,
+      };
+
+      return {
         items: usersArray as UserForAdmin[],
         totalCount: usersArray.length,
       };
+    } catch (e) {
+      return {
+        items: [],
+        totalCount: 0,
+      };
     }
-
-    return {
-      items: [],
-      totalCount: 0,
-    };
   }
 
   async blockUser(userId: string): Promise<void> {
-    const usersJSON = localStorage.getItem("users");
-
-    if (usersJSON) {
-      const users = JSON.parse(usersJSON);
-
+    try {
+      const users = ls.getItem<UserForAdmin[]>("users");
       const user = users.find((user: UserForAdmin) => user.id === userId);
 
       if (user) {
         user.isBlocked = true;
 
-        localStorage.setItem("users", JSON.stringify(users));
+        ls.setItem("users", users);
 
         return;
       }
 
       throw new ApiError("User not found");
+    } catch (e) {
+      throw new ApiError("User not found");
     }
-
-    throw new ApiError("User not found");
   }
 
   async unblockUser(userId: string): Promise<void> {
-    const usersJSON = localStorage.getItem("users");
-
-    if (usersJSON) {
-      const users = JSON.parse(usersJSON);
-
+    try {
+      const users = ls.getItem<UserForAdmin[]>("users");
       const user = users.find((user: UserForAdmin) => user.id === userId);
 
       if (user) {
         user.isBlocked = false;
 
-        localStorage.setItem("users", JSON.stringify(users));
+        ls.setItem("users", users);
 
         return;
       }
 
       throw new ApiError("User not found");
+    } catch (e) {
+      throw new ApiError("User not found");
     }
-
-    throw new ApiError("User not found");
   }
 }

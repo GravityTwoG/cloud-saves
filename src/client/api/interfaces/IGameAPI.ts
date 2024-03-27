@@ -1,45 +1,38 @@
-import { Game, GameStateParameters, PipelineItemType } from "@/types";
-
-export type GetGamesQuery = {
-  searchQuery: string;
-  pageNumber: number;
-  pageSize: number;
-};
-
-export type GetGamesResponse = {
-  items: Game[];
-  totalCount: number;
-};
+import { Game, GameStateParameterType } from "@/types";
+import { ResourceRequest, ResourceResponse } from "./common";
 
 export type AddGameDTO = {
   name: string;
   description: string;
-  icon: Blob;
-  paths: string[];
+  icon: Blob | undefined;
+  paths: { id: string; path: string }[];
   extractionPipeline: {
-    inputFilename: string;
-    type: PipelineItemType;
-    outputFilename: string;
-  }[];
-  gameStateParameters: GameStateParameters;
-};
-
-export type UpdateGameDTO = {
-  id: string;
-  name?: string;
-  description?: string;
-  icon?: Blob;
-  paths?: string[];
-  extractionPipeline?: {
+    id: string;
     inputFilename: string;
     type: string;
     outputFilename: string;
   }[];
-  gameStateParameters?: GameStateParameters;
+  gameStateParameters: {
+    filename: string;
+    parameters: {
+      id: string;
+      key: string;
+      type: GameStateParameterType;
+      commonParameter: {
+        id: string;
+      };
+      label: string;
+      description: string;
+    }[];
+  };
 };
 
+export type UpdateGameDTO = {
+  id: string;
+} & AddGameDTO;
+
 export interface IGameAPI {
-  getGames(query: GetGamesQuery): Promise<GetGamesResponse>;
+  getGames(query: ResourceRequest): Promise<ResourceResponse<Game>>;
 
   getGame(gameId: string): Promise<Game>;
 

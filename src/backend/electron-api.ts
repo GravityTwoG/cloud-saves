@@ -2,8 +2,8 @@ import { dialog, ipcMain } from "electron";
 import { Game, GamePath } from "@/types";
 
 import { getFolderInfo } from "./fs/getFolderInfo";
-import { getSavePaths } from "./fs/getSavePaths";
-import { savesManager } from ".";
+import { getStatePaths } from "./fs/getStatePaths";
+import { statesManager } from ".";
 
 export function setupIPC() {
   ipcMain.handle("showFolderDialog", async () => {
@@ -24,7 +24,7 @@ export function setupIPC() {
 
   ipcMain.handle("getSavePaths", async (_, paths: GamePath[]) => {
     try {
-      const filteredPaths = await getSavePaths(paths);
+      const filteredPaths = await getStatePaths(paths);
       return { data: filteredPaths };
     } catch (error) {
       return { data: null, error: (error as Error).toString() };
@@ -49,7 +49,7 @@ export function setupIPC() {
       game: Game
     ) => {
       try {
-        const data = await savesManager.uploadSave(folder, game);
+        const data = await statesManager.uploadSave(folder, game);
         return { data };
       } catch (error) {
         return { data: null, error: (error as Error)?.toString() };
@@ -59,7 +59,7 @@ export function setupIPC() {
 
   ipcMain.handle("downloadSave", async (_, archiveURL: string) => {
     try {
-      await savesManager.downloadSave(archiveURL);
+      await statesManager.downloadState(archiveURL);
       return { data: null };
     } catch (error) {
       return { data: null, error: (error as Error).toString() };
@@ -70,7 +70,7 @@ export function setupIPC() {
     "downloadAndExtractSave",
     async (_, archiveURL: string, path: string) => {
       try {
-        await savesManager.downloadAndExtractSave(archiveURL, path);
+        await statesManager.downloadAndExtractSave(archiveURL, path);
         return { data: null };
       } catch (error) {
         return { data: null, error: (error as Error).toString() };

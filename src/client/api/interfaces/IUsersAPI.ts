@@ -1,4 +1,5 @@
 import { UserRole } from "@/types";
+import { ResourceRequest, ResourceResponse } from "./common";
 
 export type UserForAdmin = {
   id: string;
@@ -8,19 +9,8 @@ export type UserForAdmin = {
   isBlocked: boolean;
 };
 
-export type GetUsersQuery = {
-  searchQuery: string;
-  pageNumber: number;
-  pageSize: number;
-};
-
-export type GetUsersResponse = {
-  items: UserForAdmin[];
-  totalCount: number;
-};
-
 export interface IUsersAPI {
-  getUsers(query: GetUsersQuery): Promise<GetUsersResponse>;
+  getUsers(query: ResourceRequest): Promise<ResourceResponse<UserForAdmin>>;
 
   blockUser(userId: string): Promise<void>;
 

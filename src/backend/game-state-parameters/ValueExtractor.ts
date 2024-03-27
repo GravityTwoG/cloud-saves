@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs/promises";
 
-import { Game, GameStateParameters, GameStateValues, JSONType } from "@/types";
+import { Game, GameStateParameters, JSONType } from "@/types";
 
 import { FileConverter } from "./converters/FileConverter";
 
@@ -48,18 +48,22 @@ export class ValueExtractor {
   private extractValues(
     input: JSONType,
     schema: GameStateParameters
-  ): GameStateValues {
-    const gameStateValues: GameStateValues = { fields: [] };
+  ): {
+    gameStateParameterId: string;
+    value: string;
+  }[] {
+    const gameStateValues: {
+      gameStateParameterId: string;
+      value: string;
+    }[] = [];
 
-    for (const field of schema.fields) {
+    for (const field of schema.parameters) {
       const value = this.readByKey(field.key, input);
 
       if (!isObject(value) && !Array.isArray(value) && value !== null) {
-        gameStateValues.fields.push({
+        gameStateValues.push({
+          gameStateParameterId: field.id,
           value: value,
-          type: field.type,
-          description: field.description,
-          label: field.label,
         });
       }
     }
@@ -67,20 +71,31 @@ export class ValueExtractor {
     return gameStateValues;
   }
 
-  private readByKey(
-    key: string,
-    input: JSONType
-  ): string | number | boolean | null | JSONType | JSONType[] {
+  private readByKey(key: string, input: JSONType): string | null {
     const keys = key.split(".");
+    let currentValue = input;
 
-    const res = keys.reduce((object, cur) => {
-      if (object !== null && isObject(object)) {
-        return object[cur];
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const value = currentValue[key];
+
+      if (typeof value === "number") {
+        return value.toString();
       }
-      return null;
-    }, input as string | number | boolean | null | JSONType | JSONType[]);
+      if (typeof value === "boolean") {
+        return value.toString();
+      }
+      if (typeof value === "string") {
+        return value;
+      }
+      if (value === null || !isObject(value) || Array.isArray(value)) {
+        return null;
+      }
 
-    return res;
+      currentValue = value;
+    }
+
+    return null;
   }
 }
 

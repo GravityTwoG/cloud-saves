@@ -1,13 +1,3 @@
-export type JSONType = {
-  [key: string | number]:
-    | string
-    | number
-    | boolean
-    | null
-    | JSONType
-    | JSONType[];
-};
-
 export enum UserRole {
   "USER" = "USER",
   "ADMIN" = "ADMIN",
@@ -19,43 +9,44 @@ export type User = {
   role: UserRole;
 };
 
-export type GameStateParameterType =
-  | "string"
-  | "number"
-  | "boolean"
-  | "seconds";
+// Game
+
+export type GameStateParameterType = {
+  id: string;
+  type: string;
+};
+
+export type CommonParameter = {
+  id: string;
+  type: GameStateParameterType;
+  label: string;
+  description: string;
+};
+
+export type GameStateParameter = {
+  id: string;
+  key: string;
+  type: GameStateParameterType;
+  commonParameter: CommonParameter;
+  description: string;
+  label: string;
+};
 
 export type GameStateParameters = {
   filename: string;
-  fields: {
-    key: string;
-    type: GameStateParameterType;
-    description: string;
-    label: string;
-  }[];
+  parameters: GameStateParameter[];
 };
-
-export type GameStateValues = {
-  fields: {
-    value: string | number | boolean;
-    type: GameStateParameterType;
-    description: string;
-    label: string;
-  }[];
-};
-
-export type PipelineItemType = "sav-to-json";
 
 export type Game = {
   id: string;
   name: string;
   description: string;
   iconURL: string;
-  paths: string[];
+  paths: { id: string; path: string }[];
   // schema
   extractionPipeline: {
     inputFilename: string;
-    type: PipelineItemType;
+    type: string;
     outputFilename: string;
   }[];
   gameStateParameters: GameStateParameters;
@@ -68,7 +59,9 @@ export type GamePath = {
   gameIconURL: string | undefined;
 };
 
-export enum GameSaveSync {
+// Game State
+
+export enum GameStateSync {
   NO = "no",
   EVERY_HOUR = "every hour",
   EVERY_DAY = "every day",
@@ -76,18 +69,42 @@ export enum GameSaveSync {
   EVERY_MONTH = "every month",
 }
 
-export type GameSave = {
+export type GameStateValue = {
+  value: string;
+  type: string;
+  description: string;
+  label: string;
+};
+
+export type GameState = {
   id: string;
   gameId: string;
   name: string;
-  path: string;
-  sync: GameSaveSync;
-  gameStateValues: GameStateValues;
+  localPath: string;
+  sync: GameStateSync;
+  gameStateValues: GameStateValue[];
 
   archiveURL: string;
-  size: number;
+  sizeInBytes: number;
 
   uploadedAt: string;
   updatedAt: string;
   createdAt: string;
+};
+
+export type Share = {
+  id: string;
+  gameStateId: string;
+  userId: string;
+  username: string;
+};
+
+export type JSONType = {
+  [key: string | number]:
+    | string
+    | number
+    | boolean
+    | null
+    | JSONType
+    | JSONType[];
 };

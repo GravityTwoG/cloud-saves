@@ -3,22 +3,26 @@ import { useTranslation } from "react-i18next";
 import classes from "./game-form.module.scss";
 
 import { Game } from "@/types";
-import { GameFormData } from "../utils";
+import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
+import { useAPIContext } from "@/client/contexts/APIContext";
 import { useGameForm } from "./useGameForm";
 
+import { Controller } from "react-hook-form";
 import { CTAButton } from "@/client/ui/atoms/Button/CTAButton";
 import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
 import { Button } from "@/client/ui/atoms/Button/Button";
 import { Input } from "@/client/ui/atoms/Input/Input";
 import { Select } from "@/client/ui/atoms/Select/Select";
 import { Field, InputField } from "@/client/ui/molecules/Field";
+import { AsyncEntitySelect } from "@/client/ui/atoms/Select/AsyncSelect/AsyncEntitySelect";
 
 export type GameFormProps = {
   game?: Game;
-  onSubmit: (data: GameFormData) => void;
+  onSubmit: (data: AddGameDTO) => void;
 };
 
 export const GameForm = (props: GameFormProps) => {
+  const { commonParametersAPI, parameterTypesAPI } = useAPIContext();
   const { t } = useTranslation(undefined, { keyPrefix: "forms.gameForm" });
   const {
     register,
@@ -35,7 +39,7 @@ export const GameForm = (props: GameFormProps) => {
     gameStateParameters,
     appendGameStateParameter,
     removeGameStateParameter,
-    gameStateParameterTypes,
+    control,
   } = useGameForm({ defaultValue: props.game });
 
   return (
@@ -82,7 +86,7 @@ export const GameForm = (props: GameFormProps) => {
             </Button>
           </div>
         ))}
-        <Button onClick={() => appendPath({ path: "" })}>
+        <Button onClick={() => appendPath({ id: "", path: "" })}>
           {t("add-path")}
         </Button>
       </Field>
@@ -116,6 +120,7 @@ export const GameForm = (props: GameFormProps) => {
         <Button
           onClick={() =>
             appendExtractionPipeline({
+              id: "",
               inputFilename: "",
               type: "sav-to-json",
               outputFilename: "",
@@ -148,25 +153,85 @@ export const GameForm = (props: GameFormProps) => {
         {gameStateParameters.map((field, index) => (
           <div key={field.id} className={classes.SchemaField}>
             <Input
-              {...register(`gameStateParameters.fields.${index}.key`)}
+              {...register(`gameStateParameters.parameters.${index}.key`)}
               placeholder={t("parameter-key")}
             />
-            <Select
-              {...register(`gameStateParameters.fields.${index}.type`)}
-              options={gameStateParameterTypes}
+            <Controller
+              name={`gameStateParameters.parameters.${index}.type`}
+              control={control}
+              render={({ field: selectField }) => (
+                <AsyncEntitySelect
+                  option={{
+                    label: selectField.value.type,
+                    value: selectField.value.id,
+                  }}
+                  onChange={(value) =>
+                    selectField.onChange({
+                      type: value.label,
+                      id: value.value,
+                    })
+                  }
+                  name={selectField.name}
+                  placeholder={t("parameter-type")}
+                  loadOptions={async (input) => {
+                    const types = await parameterTypesAPI.getTypes({
+                      searchQuery: input,
+                      pageNumber: 1,
+                      pageSize: 25,
+                    });
+                    return types.items.map((type) => ({
+                      value: type.id,
+                      label: type.type,
+                    }));
+                  }}
+                />
+              )}
+            />
+            <Controller
+              name={`gameStateParameters.parameters.${index}.commonParameter`}
+              control={control}
+              render={({ field: selectField }) => (
+                <AsyncEntitySelect
+                  loadOptions={async (query) => {
+                    const parameters = await commonParametersAPI.getParameters({
+                      searchQuery: query,
+                      pageNumber: 1,
+                      pageSize: 25,
+                    });
+                    return parameters.items.map((parameter) => ({
+                      value: parameter.id,
+                      label: parameter.label,
+                    }));
+                  }}
+                  onChange={(value) => {
+                    selectField.onChange({
+                      label: value.label,
+                      id: value.value,
+                    });
+                  }}
+                  onBlur={() => selectField.onBlur()}
+                  option={{
+                    label: selectField.value.label,
+                    value: selectField.value.id,
+                  }}
+                  name={selectField.name}
+                  placeholder={t("common-parameter")}
+                />
+              )}
             />
             <Input
-              {...register(`gameStateParameters.fields.${index}.label`)}
-              placehparameter-label={t("parameter-label")}
+              {...register(`gameStateParameters.parameters.${index}.label`)}
+              placeholder={t("parameter-label")}
             />
             <Input
-              {...register(`gameStateParameters.fields.${index}.description`)}
-              parameter-descriptionlder={t("parameter-description")}
+              {...register(
+                `gameStateParameters.parameters.${index}.description`
+              )}
+              placeholder={t("parameter-description")}
             />
             <Button
               color="danger"
               onClick={() => removeGameStateParameter(index)}
-              remove-parameter
             >
               {t("remove-parameter")}
             </Button>
@@ -175,8 +240,13 @@ export const GameForm = (props: GameFormProps) => {
         <Button
           onClick={() =>
             appendGameStateParameter({
+              id: "",
               key: "",
-              type: "string",
+              type: {
+                id: "",
+                type: "",
+              },
+              commonParameter: { label: "-", id: "" },
               label: "",
               description: "",
             })
@@ -189,8 +259,8 @@ export const GameForm = (props: GameFormProps) => {
         <ErrorText>{errors.gameStateParameters.root.message}</ErrorText>
       )}
 
-      {errors.gameStateParameters?.fields?.map
-        ? errors.gameStateParameters.fields.map((error, idx) => (
+      {errors.gameStateParameters?.parameters?.map
+        ? errors.gameStateParameters.parameters.map((error, idx) => (
             <ErrorText key={idx}>{error?.message}</ErrorText>
           ))
         : null}

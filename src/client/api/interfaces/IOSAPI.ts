@@ -1,4 +1,4 @@
-import { Game, GamePath, GameStateValues } from "@/types";
+import { Game, GamePath } from "@/types";
 
 export interface IOSAPI {
   getSavePaths: (paths: GamePath[]) => Promise<ElectronApiResponse<GamePath[]>>;
@@ -7,17 +7,23 @@ export interface IOSAPI {
 
   showFolderDialog(): Promise<FolderInfo>;
 
-  uploadSave(
-    save: {
+  uploadState(
+    state: {
       path: string;
       name: string;
     },
     game?: Game
-  ): Promise<{ buffer: Buffer; gameStateValues: GameStateValues }>;
+  ): Promise<{
+    buffer: Buffer;
+    gameStateValues: {
+      gameStateParameterId: string;
+      value: string;
+    }[];
+  }>;
 
   // Just download
-  downloadSave(archiveURL: string): Promise<void>;
+  downloadState(archiveURL: string): Promise<void>;
 
-  // Download and extract to saves folder of the game
-  downloadAndExtractSave(archiveURL: string, path: string): Promise<void>;
+  // Download and extract to states folder of the game
+  downloadAndExtractState(archiveURL: string, path: string): Promise<void>;
 }

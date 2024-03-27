@@ -68,6 +68,25 @@ export class Fetcher {
     return response.json() as R;
   }
 
+  async patch<R>(url: string, init?: MyRequestInit) {
+    const { body, ...restInit } = init || {};
+
+    const response = await fetch(`${this.baseURL}${url}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: this.toFetchBody(body),
+      credentials: this.credentials,
+
+      ...restInit,
+    });
+
+    this.handleError(response);
+
+    return response.json() as R;
+  }
+
   async delete<R>(url: string) {
     const response = await fetch(`${this.baseURL}${url}`, {
       method: "DELETE",

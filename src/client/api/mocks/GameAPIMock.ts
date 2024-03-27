@@ -1,21 +1,19 @@
 import { Game } from "@/types";
 import { ApiError } from "../ApiError";
-import {
-  AddGameDTO,
-  GetGamesQuery,
-  GetGamesResponse,
-  IGameAPI,
-  UpdateGameDTO,
-} from "../interfaces/IGameAPI";
+import { AddGameDTO, IGameAPI, UpdateGameDTO } from "../interfaces/IGameAPI";
+import { ResourceRequest, ResourceResponse } from "../interfaces/common";
+import { LocalStorage } from "./LocalStorage";
+
+const ls = new LocalStorage("games_");
 
 export class GameAPIMock implements IGameAPI {
-  getGames = async (query: GetGamesQuery): Promise<GetGamesResponse> => {
+  getGames = async (
+    query: ResourceRequest
+  ): Promise<ResourceResponse<Game>> => {
     console.log("getGames", query);
-    const gamesJSON = localStorage.getItem("games");
 
-    if (gamesJSON) {
-      const games = JSON.parse(gamesJSON);
-
+    try {
+      const games = ls.getItem<Game[]>("games");
       const gamesArray: Game[] = [];
 
       for (const key in games) {
@@ -26,59 +24,70 @@ export class GameAPIMock implements IGameAPI {
         items: gamesArray,
         totalCount: gamesArray.length,
       };
+    } catch (e) {
+      return {
+        items: [],
+        totalCount: 0,
+      };
     }
-
-    return {
-      items: [],
-      totalCount: 0,
-    };
   };
 
   getGame = async (gameId: string): Promise<Game> => {
-    const gamesJSON = localStorage.getItem("games");
-
-    if (gamesJSON) {
-      const games = JSON.parse(gamesJSON);
+    try {
+      const games = ls.getItem<Record<string, Game>>("games");
       return games[gameId];
+    } catch (e) {
+      throw new ApiError("Game not found");
     }
-
-    throw new ApiError("Game not found");
   };
 
   addGame = async (game: AddGameDTO): Promise<Game> => {
-    const gamesJSON = localStorage.getItem("games");
-
-    const gameToSave = {
-      ...game,
-      id: Math.random().toString(36).substring(2),
+    const gameToSave: Game = {
+      id: Math.floor(Math.random() * 1000).toString(),
+      name: game.name,
+      description: game.description,
       iconURL: "",
+      paths: game.paths,
+      extractionPipeline: game.extractionPipeline,
+      gameStateParameters: {
+        filename: game.gameStateParameters.filename,
+        parameters: game.gameStateParameters.parameters.map((field) => ({
+          id: field.id,
+          key: field.key,
+          type: field.type,
+          commonParameter: {
+            id: "id",
+            type: {
+              id: field.type.id,
+              type: field.type.type,
+            },
+            label: "label",
+            description: "description",
+          },
+          label: field.label,
+          description: field.description,
+        })),
+      },
     };
 
-    if (gamesJSON) {
-      const games = JSON.parse(gamesJSON);
+    try {
+      const games = ls.getItem<Record<string, Game>>("games");
 
       games[gameToSave.id] = gameToSave;
-
-      localStorage.setItem("games", JSON.stringify(games));
+      ls.setItem("games", games);
 
       return gameToSave;
-    } else {
-      localStorage.setItem(
-        "games",
-        JSON.stringify({ [gameToSave.id]: gameToSave })
-      );
+    } catch (e) {
+      ls.setItem("games", { [gameToSave.id]: gameToSave });
+      return gameToSave;
     }
-
-    throw new ApiError("Game not found");
   };
 
   updateGame = async (game: UpdateGameDTO): Promise<Game> => {
-    const gamesJSON = localStorage.getItem("games");
+    try {
+      const games = ls.getItem<Record<string, Game>>("games");
 
-    if (gamesJSON) {
-      const games = JSON.parse(gamesJSON);
-
-      const existingGame = games[game.id];
+      const existingGame: Game = games[game.id];
       const updatedGame: Game = {
         id: game.id,
         name: game.name || existingGame.name,
@@ -87,33 +96,48 @@ export class GameAPIMock implements IGameAPI {
         paths: game.paths || existingGame.paths,
         extractionPipeline:
           game.extractionPipeline || existingGame.extractionPipeline,
-        gameStateParameters:
-          game.gameStateParameters || existingGame.gameStateParameters,
+        gameStateParameters: game.gameStateParameters
+          ? {
+              filename: game.gameStateParameters.filename,
+              parameters: game.gameStateParameters.parameters.map((field) => ({
+                id: field.id,
+                key: field.key,
+                type: field.type,
+                commonParameter: {
+                  id: "id",
+                  type: {
+                    id: field.type.id,
+                    type: field.type.type,
+                  },
+                  label: "label",
+                  description: "description",
+                },
+                label: field.label,
+                description: field.description,
+              })),
+            }
+          : existingGame.gameStateParameters,
       };
 
       games[game.id] = updatedGame;
 
-      localStorage.setItem("games", JSON.stringify(games));
+      ls.setItem("games", games);
 
       return updatedGame;
+    } catch (e) {
+      throw new ApiError("Game not found");
     }
-
-    throw new ApiError("Game not found");
   };
 
   deleteGame = async (gameId: string): Promise<void> => {
-    const gamesJSON = localStorage.getItem("games");
-
-    if (gamesJSON) {
-      const games = JSON.parse(gamesJSON);
+    try {
+      const games = ls.getItem<Record<string, Game>>("games");
 
       delete games[gameId];
-
-      localStorage.setItem("games", JSON.stringify(games));
-
+      ls.setItem("games", games);
       return;
+    } catch (e) {
+      throw new ApiError("Game not found");
     }
-
-    throw new ApiError("Game not found");
   };
 }

@@ -3,12 +3,36 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { Game } from "@/types";
-import { useFilePreview } from "@/client/lib/hooks/useFilePreview";
-import {
-  GameFormData,
-  gameStateParameterTypes,
-  pipelineItemTypes,
-} from "../utils";
+import { useFilePreview } from "@/client/ui/hooks/useFilePreview";
+import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
+
+const pipelineItemTypes: { name: string; value: string }[] = [
+  { name: "sav-to-json", value: "sav-to-json" },
+];
+
+type GameFormData = {
+  name: string;
+  description: string;
+  icon: FileList;
+  paths: { id: string; path: string }[];
+  extractionPipeline: {
+    id: string;
+    inputFilename: string;
+    type: string;
+    outputFilename: string;
+  }[];
+  gameStateParameters: {
+    filename: string;
+    parameters: {
+      id: string;
+      key: string;
+      type: { id: string; type: string };
+      commonParameter: { label: string; id: string };
+      label: string;
+      description: string;
+    }[];
+  };
+};
 
 type UseGameFormArgs = {
   defaultValue?: Game;
@@ -26,10 +50,10 @@ export const useGameForm = (args: UseGameFormArgs) => {
     defaultValues: {
       name: args.defaultValue?.name,
       description: args.defaultValue?.description,
-      paths: args.defaultValue?.paths.map((path) => ({ path })) || [],
+      paths: args.defaultValue?.paths || [],
       extractionPipeline: args.defaultValue?.extractionPipeline || [],
       gameStateParameters: args.defaultValue?.gameStateParameters || {
-        fields: [],
+        parameters: [],
       },
     },
   });
@@ -94,19 +118,15 @@ export const useGameForm = (args: UseGameFormArgs) => {
     remove: removeGameStateParameter,
   } = useFieldArray({
     control,
-    name: "gameStateParameters.fields",
+    name: "gameStateParameters.parameters",
     rules: {
-      required: {
-        value: true,
-        message: t("parameters-schema-is-required"),
-      },
       validate: {
         notEmptyValues: (fields) => {
           return (
             fields.every(
               (field) =>
                 field.key.length > 0 &&
-                field.type.length > 0 &&
+                field.type.id.length > 0 &&
                 field.label.length > 0
             ) || t("field-must-not-be-empty")
           );
@@ -118,15 +138,21 @@ export const useGameForm = (args: UseGameFormArgs) => {
   useEffect(() => {
     if (args.defaultValue) return;
 
-    appendPath({ path: "" });
+    appendPath({ id: "", path: "" });
     appendExtractionPipeline({
+      id: "",
       inputFilename: "",
       type: "sav-to-json",
       outputFilename: "",
     });
     appendGameStateParameter({
+      id: "",
       key: "",
-      type: "string",
+      type: {
+        id: "",
+        type: "",
+      },
+      commonParameter: { label: "-", id: "" },
       description: "",
       label: "",
     });
@@ -134,10 +160,11 @@ export const useGameForm = (args: UseGameFormArgs) => {
 
   return {
     register,
-    handleSubmit: (cb: Parameters<typeof handleSubmit>[0]) =>
+    handleSubmit: (cb: (data: AddGameDTO) => void) =>
       handleSubmit((fields) =>
         cb({
           ...fields,
+          icon: fields.icon ? fields.icon[0] : undefined,
           paths: fields.paths.map((path) => ({
             ...path,
             path: path.path.replaceAll(/\//g, "\\"),
@@ -156,6 +183,6 @@ export const useGameForm = (args: UseGameFormArgs) => {
     gameStateParameters,
     appendGameStateParameter,
     removeGameStateParameter,
-    gameStateParameterTypes,
+    control,
   };
 };

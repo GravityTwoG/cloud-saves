@@ -28,5 +28,7 @@
   "paths-must-be-unique": "Paths must be unique",
   "path-must-not-be-empty": "Path must not be empty",
   "field-must-not-be-empty": "Field must not be empty",
-  "parameters-schema-is-required": "Parameters schema is required"
+  "parameters-schema-is-required": "Parameters schema is required",
+  "common-parameter": "Common Parameter",
+  "parameter-type": "Parameter Type"
 }

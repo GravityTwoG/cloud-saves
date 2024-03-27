@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./ui/styles/theme.css";
 import "./styles/utility.css";
 
-import { SyncedSavesAPI } from "./api/SyncedSavesAPI";
+import { SyncedStatesAPI } from "./api/SyncedSavesAPI";
 
 import { ReactApplication } from "./ReactApplication";
 import { initI18n } from "./locales";
@@ -11,11 +11,11 @@ import { initI18n } from "./locales";
 function bootstrap() {
   initI18n();
 
-  const syncedSavesAPI = new SyncedSavesAPI();
+  const syncedStatesAPI = new SyncedStatesAPI();
 
   window.electronAPI.onGetSyncedSaves(async () => {
-    const saves = await syncedSavesAPI.getSyncedSaves();
-    window.electronAPI.sendSyncedSaves(saves);
+    const states = await syncedStatesAPI.getSyncedStates();
+    window.electronAPI.sendSyncedSaves(states);
   });
 
   const rootElement = document.getElementById("app");

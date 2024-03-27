@@ -5,7 +5,8 @@ import { setupIPC } from "./backend/electron-api";
 import { SyncManager } from "./backend/SyncManager";
 import { syncManager } from "./backend";
 
-const clientProtocol = "cloud-saves://";
+const protocolName = "cloud-saves";
+const clientProtocol = `${protocolName}://`;
 
 export class Application {
   private mainWindow: BrowserWindow | null = null;
@@ -95,12 +96,12 @@ export class Application {
   private registerProtocolClient() {
     if (process.defaultApp) {
       if (process.argv.length >= 2) {
-        app.setAsDefaultProtocolClient("cloud-saves", process.execPath, [
+        app.setAsDefaultProtocolClient(protocolName, process.execPath, [
           path.resolve(process.argv[1]),
         ]);
       }
     } else {
-      app.setAsDefaultProtocolClient("cloud-saves");
+      app.setAsDefaultProtocolClient(protocolName);
     }
   }
 

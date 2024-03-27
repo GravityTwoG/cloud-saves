@@ -16,8 +16,8 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         className={clsx(props.className, classes.Select)}
         ref={ref}
       >
-        {options.map((option, idx: number) => (
-          <option value={option.value} key={idx}>
+        {options.map((option) => (
+          <option value={option.value} key={option.value}>
             {option.name}
           </option>
         ))}

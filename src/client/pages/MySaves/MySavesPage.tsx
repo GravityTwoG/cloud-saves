@@ -59,16 +59,24 @@ export const MySavesPage = () => {
           getKey={(save) => save.gameId}
           renderElement={(save) => (
             <>
-              <div>
-                <Link
-                  className={classes.GameSaveLink}
-                  href={paths.mySave({ gameStateId: save.id })}
-                >
-                  {save.name}
-                </Link>
-                <Paragraph>
-                  {t("sync")}: {t(syncMap[save.sync])}
-                </Paragraph>
+              <div className={classes.GameInfo}>
+                <img
+                  className={classes.GameIcon}
+                  src={save.gameIconURL}
+                  alt={save.name}
+                />
+
+                <div>
+                  <Link
+                    className={classes.GameSaveLink}
+                    href={paths.mySave({ gameStateId: save.id })}
+                  >
+                    <span>{save.name}</span>
+                  </Link>
+                  <Paragraph>
+                    {t("sync")}: {t(syncMap[save.sync])}
+                  </Paragraph>
+                </div>
               </div>
 
               <div className={classes.Buttons}>

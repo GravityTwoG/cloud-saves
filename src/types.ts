@@ -4,6 +4,7 @@ export enum UserRole {
 }
 
 export type User = {
+  id: string;
   email: string;
   username: string;
   role: UserRole;
@@ -79,9 +80,11 @@ export type GameStateValue = {
 export type GameState = {
   id: string;
   gameId: string;
+  gameIconURL: string;
   name: string;
   localPath: string;
   sync: GameStateSync;
+  isPublic: boolean;
   gameStateValues: GameStateValue[];
 
   archiveURL: string;

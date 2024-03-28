@@ -71,7 +71,16 @@ export class GameStateAPI implements IGameStateAPI {
       `${apiPrefix}/${gameStateId}`
     );
 
-    return this.mapGameStateFromServer(state);
+    const syncSettings = this.getSyncSettings();
+
+    const mapped = this.mapGameStateFromServer(state);
+
+    return {
+      ...mapped,
+      sync: syncSettings[mapped.id]
+        ? syncSettings[mapped.id].sync
+        : GameStateSync.NO,
+    };
   };
 
   getUserStates = async (
@@ -84,8 +93,19 @@ export class GameStateAPI implements IGameStateAPI {
       `${apiPrefix}?searchQuery=${query.searchQuery}&pageSize=${query.pageSize}&pageNumber=${query.pageNumber}`
     );
 
+    const syncSettings = this.getSyncSettings();
+
     return {
-      items: states.items.map(this.mapGameStateFromServer),
+      items: states.items.map((state) => {
+        const mapped = this.mapGameStateFromServer(state);
+
+        return {
+          ...mapped,
+          sync: syncSettings[mapped.id]
+            ? syncSettings[mapped.id].sync
+            : GameStateSync.NO,
+        };
+      }),
       totalCount: states.totalCount,
     };
   };
@@ -148,6 +168,7 @@ export class GameStateAPI implements IGameStateAPI {
     gameId?: string;
     path: string;
     name: string;
+    isPublic: boolean;
   }): Promise<void> => {
     const game = state.gameId
       ? await this.gameAPI.getGame(state.gameId)
@@ -163,7 +184,7 @@ export class GameStateAPI implements IGameStateAPI {
         gameId: state.gameId,
         name: game ? game.name : state.name,
         localPath: state.path,
-        // isPublic: false,
+        // isPublic: state.isPublic,
         gameStateValues: response.gameStateValues.map((value) => ({
           value: value.value,
           gameStateParameterId: value.gameStateParameterId,
@@ -178,17 +199,38 @@ export class GameStateAPI implements IGameStateAPI {
   };
 
   setupSync = async (settings: {
+    userId: string;
     gameStateId: string;
     sync: GameStateSync;
   }) => {
     try {
-      const states = ls.getItem<Record<string, GameState>>("states");
-      states[settings.gameStateId].sync = settings.sync;
-      ls.setItem("states", states);
+      const states = ls.getItem<Record<string, GameState>>("sync_settings");
+      states[settings.gameStateId] = {
+        ...states[settings.gameStateId],
+        sync: settings.sync,
+      };
+      ls.setItem("sync_settings", states);
     } catch (e) {
-      console.log(e);
+      ls.setItem("sync_settings", {
+        [settings.gameStateId]: {
+          ...settings,
+          sync: settings.sync,
+        },
+      });
     }
   };
+
+  getSyncSettings(): Record<string, { sync: GameStateSync; userId: string }> {
+    try {
+      const syncSetting =
+        ls.getItem<Record<string, { sync: GameStateSync; userId: string }>>(
+          "sync_settings"
+        );
+      return syncSetting;
+    } catch (e) {
+      return {};
+    }
+  }
 
   downloadState = async (path: string) => {
     await this.osAPI.downloadState(path);
@@ -209,8 +251,10 @@ export class GameStateAPI implements IGameStateAPI {
     return {
       id: state.id.toString(),
       gameId: state.gameId.toString(),
+      gameIconURL: state.gameIconUrl,
       name: state.name,
       sync: GameStateSync.NO,
+      isPublic: false,
       localPath: state.localPath,
       archiveURL: state.archiveUrl,
       sizeInBytes: state.sizeInBytes,
@@ -227,6 +271,7 @@ export class GameStateAPI implements IGameStateAPI {
     };
   };
 
+  // Shares
   addShare = async (share: {
     gameStateId: string;
     userId: string;

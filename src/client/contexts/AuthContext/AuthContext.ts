@@ -9,6 +9,7 @@ import {
 } from "@/client/api/interfaces/IAuthAPI";
 
 export const emptyUser: User = {
+  id: "$USER_ID$",
   email: "$EMAIL$",
   username: "$NAME$",
   role: UserRole.USER,

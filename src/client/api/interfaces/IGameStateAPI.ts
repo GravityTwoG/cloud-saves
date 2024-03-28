@@ -15,9 +15,11 @@ export interface IGameStateAPI {
     gameId?: string;
     path: string;
     name: string;
+    isPublic: boolean;
   }): Promise<void>;
 
   setupSync(settings: {
+    userId: string;
     gameStateId: string;
     sync: GameStateSync;
   }): Promise<void>;

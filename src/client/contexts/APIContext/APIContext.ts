@@ -19,6 +19,8 @@ import { IGameStateParameterTypeAPI } from "@/client/api/interfaces/IGameStatePa
 import { CommonParametersAPIMock } from "@/client/api/mocks/CommonParametersAPIMock";
 import { GameStateParameterTypesAPIMock } from "@/client/api/mocks/GameStateParameterTypesAPIMock";
 import { GameStateAPI } from "@/client/api/GameStateAPI";
+import { CommonParametersAPI } from "@/client/api/CommonParametersAPI";
+import { UsersAPI } from "@/client/api/UsersAPI";
 
 interface APIContext {
   osAPI: IOSAPI;
@@ -43,9 +45,11 @@ const gameAPI = API_BASE_URL ? new GameAPI(fetcher) : new GameAPIMock();
 const gameStateAPI = API_BASE_URL
   ? new GameStateAPI(fetcher, osAPI, gameAPI)
   : new GameStateAPIMock(osAPI, gameAPI);
-const usersAPI = new UsersAPIMock();
+const usersAPI = API_BASE_URL ? new UsersAPI(fetcher) : new UsersAPIMock();
 
-const commonParametersAPI = new CommonParametersAPIMock();
+const commonParametersAPI = API_BASE_URL
+  ? new CommonParametersAPI(fetcher)
+  : new CommonParametersAPIMock();
 const parameterTypesAPI = new GameStateParameterTypesAPIMock();
 
 export const api = {

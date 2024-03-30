@@ -21,7 +21,21 @@ type GameStateFromServer = {
   id: number;
   localPath: string;
   name: string;
+  isPublic: boolean;
   sizeInBytes: number;
+};
+
+type ShareFromServer = {
+  id: string;
+  username: string;
+};
+
+type GamePathFromServer = {
+  id: number;
+  path: string;
+  gameId: number;
+  gameName: string;
+  gameIconUrl: string;
 };
 
 const apiPrefix = "/game-saves";
@@ -38,24 +52,17 @@ export class GameStateAPI implements IGameStateAPI {
   }
 
   getStatePaths = async (): Promise<GamePath[]> => {
-    const paths: GamePath[] = [];
+    const pathsFromServer = await this.fetcher.get<{
+      items: GamePathFromServer[][];
+    }>(`/game-paths?pageSize=1000&pageNumber=1&searchQuery=""`);
 
-    const games = await this.gameAPI.getGames({
-      pageNumber: 1,
-      pageSize: 1000,
-      searchQuery: "",
-    });
-
-    for (const game of games.items) {
-      for (const path of game.paths) {
-        paths.push({
-          path: path.path,
-          gameId: game.id,
-          gameName: game.name,
-          gameIconURL: game.iconURL,
-        });
-      }
-    }
+    const paths: GamePath[] = pathsFromServer.items[0].map((path) => ({
+      id: path.id.toString(),
+      path: path.path,
+      gameId: path.gameId.toString(),
+      gameName: path.gameName,
+      gameIconURL: path.gameIconUrl,
+    }));
 
     const response = await this.osAPI.getSavePaths(paths);
 
@@ -149,7 +156,7 @@ export class GameStateAPI implements IGameStateAPI {
         gameId: state.gameId,
         name: game ? game.name : state.name,
         localPath: state.path,
-        // isPublic: false,
+        isPublic: false,
         gameStateValues: response.gameStateValues.map((value) => ({
           value: value.value,
           gameStateParameterId: value.gameStateParameterId,
@@ -184,7 +191,7 @@ export class GameStateAPI implements IGameStateAPI {
         gameId: state.gameId,
         name: game ? game.name : state.name,
         localPath: state.path,
-        // isPublic: state.isPublic,
+        isPublic: state.isPublic,
         gameStateValues: response.gameStateValues.map((value) => ({
           value: value.value,
           gameStateParameterId: value.gameStateParameterId,
@@ -254,7 +261,7 @@ export class GameStateAPI implements IGameStateAPI {
       gameIconURL: state.gameIconUrl,
       name: state.name,
       sync: GameStateSync.NO,
-      isPublic: false,
+      isPublic: state.isPublic,
       localPath: state.localPath,
       archiveURL: state.archiveUrl,
       sizeInBytes: state.sizeInBytes,
@@ -276,36 +283,37 @@ export class GameStateAPI implements IGameStateAPI {
     gameStateId: string;
     userId: string;
   }): Promise<void> => {
-    console.log("addShare", share);
+    const formData = new FormData();
+    formData.append(
+      "gameStateSharedData",
+      JSON.stringify({
+        gameStateId: share.gameStateId,
+        shareWithId: share.userId,
+      })
+    );
+
+    await this.fetcher.post(`/game-state-shares`, {
+      headers: {},
+      body: formData,
+    });
   };
 
   getShares = async (gameStateId: string): Promise<{ items: Share[] }> => {
-    console.log("getShares", gameStateId);
+    const shares = await this.fetcher.get<{
+      items: ShareFromServer[];
+    }>(`/game-state-shares/${gameStateId}`);
+
     return {
-      items: [
-        {
-          id: "1",
-          gameStateId,
-          userId: "1",
-          username: "username",
-        },
-        {
-          id: "2",
-          gameStateId,
-          userId: "2",
-          username: "username2",
-        },
-        {
-          id: "3",
-          gameStateId,
-          userId: "3",
-          username: "username3",
-        },
-      ],
+      items: shares.items.map((share) => ({
+        id: share.id.toString(),
+        gameStateId,
+        userId: "share.userId",
+        username: share.username,
+      })),
     };
   };
 
   deleteShare = async (shareId: string): Promise<void> => {
-    console.log("deleteShare", shareId);
+    await this.fetcher.delete(`/game-state-shares/${shareId}`);
   };
 }

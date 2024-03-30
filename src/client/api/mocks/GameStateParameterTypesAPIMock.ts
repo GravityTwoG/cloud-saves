@@ -9,10 +9,10 @@ export class GameStateParameterTypesAPIMock
     console.log("getParameterTypes", query);
     return {
       items: [
-        { id: "string", type: "string" },
-        { id: "number", type: "number" },
-        { id: "seconds", type: "seconds" },
-        { id: "boolean", type: "boolean" },
+        { id: "1", type: "string" },
+        { id: "2", type: "number" },
+        { id: "3", type: "seconds" },
+        { id: "4", type: "boolean" },
       ],
       totalCount: 0,
     };

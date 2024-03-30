@@ -48,7 +48,7 @@ export const SharesWidget = (props: SharesWidgetProps) => {
         });
         return users.items.map((user) => ({
           label: user.username,
-          value: user.username,
+          value: user.id,
         }));
       },
     },
@@ -71,6 +71,15 @@ export const SharesWidget = (props: SharesWidgetProps) => {
     }
   };
 
+  const onDelete = async (shareId: string) => {
+    try {
+      await gameStateAPI.deleteShare(shareId);
+      loadShares();
+    } catch (error) {
+      notify.error(error);
+    }
+  };
+
   const [modal, openModal] = useModal({
     children: (
       <div>
@@ -84,10 +93,7 @@ export const SharesWidget = (props: SharesWidgetProps) => {
           renderElement={(share) => (
             <Flex jcsb>
               <div>{share.username}</div>
-              <ConfirmButton
-                color="danger"
-                onClick={() => gameStateAPI.deleteShare(share.id)}
-              >
+              <ConfirmButton color="danger" onClick={() => onDelete(share.id)}>
                 {t("delete-share")}
               </ConfirmButton>
             </Flex>

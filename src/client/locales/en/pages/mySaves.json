@@ -11,5 +11,8 @@
   "every-day": "Every day",
   "every-week": "Every week",
   "every-month": "Every month",
-  "no": "No"
+  "no": "No",
+  "local-saves": "Local Saves",
+  "folder": "Folder",
+  "file": "File"
 }

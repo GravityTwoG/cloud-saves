@@ -49,7 +49,16 @@ export class GameStateAPIMock implements IGameStateAPI {
   getGameState = async (gameStateId: string): Promise<GameState> => {
     try {
       const states = ls.getItem<Record<string, GameState>>("states");
-      return states[gameStateId];
+      const state = states[gameStateId];
+
+      const syncSettings = this.getSyncSettings();
+
+      return {
+        ...state,
+        sync: syncSettings[state.id]
+          ? syncSettings[state.id].sync
+          : GameStateSync.NO,
+      };
     } catch (e) {
       throw new ApiError("Game state not found");
     }
@@ -63,8 +72,16 @@ export class GameStateAPIMock implements IGameStateAPI {
       const states = ls.getItem<Record<string, GameState>>("states");
       const statesArray: GameState[] = [];
 
+      const syncSettings = this.getSyncSettings();
+
       for (const key in states) {
-        statesArray.push(states[key]);
+        const state = states[key];
+        statesArray.push({
+          ...state,
+          sync: syncSettings[state.id]
+            ? syncSettings[state.id].sync
+            : GameStateSync.NO,
+        });
       }
 
       return {
@@ -114,9 +131,11 @@ export class GameStateAPIMock implements IGameStateAPI {
     const gameState: GameState = {
       id: gameStateId,
       gameId: state.path,
+      gameIconURL: "",
       localPath: state.path,
       name: game ? game.name : state.name,
       sync: GameStateSync.NO,
+      isPublic: false,
       gameStateValues: response.gameStateValues.map((field) => ({
         gameStateParameterId: field.gameStateParameterId,
         value: field.value,
@@ -147,6 +166,7 @@ export class GameStateAPIMock implements IGameStateAPI {
     gameId?: string;
     path: string;
     name: string;
+    isPublic: boolean;
   }): Promise<void> => {
     const game = state.gameId
       ? await this.gameAPI.getGame(state.gameId)
@@ -158,9 +178,11 @@ export class GameStateAPIMock implements IGameStateAPI {
     const gameState: GameState = {
       id: gameStateId,
       gameId: state.path,
+      gameIconURL: "",
       localPath: state.path,
       name: game ? game.name : state.name,
       sync: GameStateSync.NO,
+      isPublic: state.isPublic,
       gameStateValues: response.gameStateValues.map((field) => ({
         gameStateParameterId: field.gameStateParameterId,
         value: field.value,
@@ -187,27 +209,45 @@ export class GameStateAPIMock implements IGameStateAPI {
   };
 
   setupSync = async (settings: {
+    userId: string;
     gameStateId: string;
     sync: GameStateSync;
   }) => {
     try {
-      const states = ls.getItem<Record<string, GameState>>("states");
-      states[settings.gameStateId].sync = settings.sync;
-      ls.setItem("states", states);
+      const states = ls.getItem<Record<string, GameState>>("sync_settings");
+      states[settings.gameStateId] = {
+        ...states[settings.gameStateId],
+        sync: settings.sync,
+      };
+      ls.setItem("sync_settings", states);
     } catch (e) {
-      console.log(e);
+      ls.setItem("sync_settings", {
+        [settings.gameStateId]: {
+          ...settings,
+          sync: settings.sync,
+        },
+      });
     }
   };
 
-  downloadState = async (path: string) => {
-    await this.osAPI.downloadState(path);
+  getSyncSettings(): Record<string, { sync: GameStateSync; userId: string }> {
+    try {
+      const syncSetting =
+        ls.getItem<Record<string, { sync: GameStateSync; userId: string }>>(
+          "sync_settings"
+        );
+      return syncSetting;
+    } catch (e) {
+      return {};
+    }
+  }
+
+  downloadState = async (gameState: GameState) => {
+    await this.osAPI.downloadState(gameState);
   };
 
-  downloadAndExtractState = async (
-    archiveURL: string,
-    path: string
-  ): Promise<void> => {
-    await this.osAPI.downloadAndExtractState(archiveURL, path);
+  downloadStateAs = async (gameState: GameState) => {
+    await this.osAPI.downloadStateAs(gameState);
   };
 
   deleteState = async (gameStateId: string): Promise<void> => {

@@ -3,18 +3,32 @@ import { createRoot } from "react-dom/client";
 import "./ui/styles/theme.css";
 import "./styles/utility.css";
 
-import { SyncedStatesAPI } from "./api/SyncedSavesAPI";
+import { api } from "./contexts/APIContext/APIContext";
 
 import { ReactApplication } from "./ReactApplication";
 import { initI18n } from "./locales";
+import { GameState } from "@/types";
 
 function bootstrap() {
   initI18n();
 
-  const syncedStatesAPI = new SyncedStatesAPI();
-
   window.electronAPI.onGetSyncedSaves(async () => {
-    const states = await syncedStatesAPI.getSyncedStates();
+    const statesMap = await api.gameStateAPI.getSyncSettings();
+    const states: GameState[] = [];
+
+    for (const gameStateId in statesMap) {
+      try {
+        const syncSettings = statesMap[gameStateId];
+        const state = await api.gameStateAPI.getGameState(gameStateId);
+        states.push({
+          ...state,
+          sync: syncSettings.sync,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     window.electronAPI.sendSyncedSaves(states);
   });
 

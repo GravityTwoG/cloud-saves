@@ -42,13 +42,13 @@ export class AuthAPI implements IAuthAPI {
       body: credentials,
     });
 
-    return { ...user, role: roleMap[user.role] };
+    return { ...user, role: roleMap[user.role], id: "TODO" };
   };
 
   getCurrentUser = async (): Promise<User> => {
     const user = await this.fetcher.get<ServerUser>("/auth/me");
 
-    return { ...user, role: roleMap[user.role] };
+    return { ...user, role: roleMap[user.role], id: "TODO" };
   };
 
   changePassword = (credentials: ChangePasswordCredentials): Promise<void> => {

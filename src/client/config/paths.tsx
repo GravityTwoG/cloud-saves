@@ -7,6 +7,7 @@ const resetPassword = path("/reset-password");
 
 const profile = path("/");
 const mySaves = path("/my-saves");
+const localSaves = mySaves.path("/local");
 const mySave = mySaves.path("/:gameStateId");
 const sharedSaves = path("/shared-saves");
 const publicSaves = path("/public-saves");
@@ -25,6 +26,7 @@ export const paths = {
 
   profile,
   mySaves,
+  localSaves,
   mySave,
   sharedSaves,
   publicSaves,

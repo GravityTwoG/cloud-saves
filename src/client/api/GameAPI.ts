@@ -21,6 +21,7 @@ type GameFromServer = {
       type: string;
       label: string;
       description: string;
+      commonParameterId: number;
     }[];
   };
   imageUrl: string;
@@ -64,7 +65,7 @@ export class GameAPI implements IGameAPI {
       JSON.stringify({
         name: game.name,
         description: game.description,
-        paths: game.paths.map((path) => ({ path })),
+        paths: game.paths,
         extractionPipeline: game.extractionPipeline,
         schema: {
           filename: game.gameStateParameters.filename,
@@ -72,6 +73,7 @@ export class GameAPI implements IGameAPI {
             (field) => ({
               key: field.key,
               type: field.type.type || field.type.id,
+              commonParameterId: field.commonParameter.id,
               label: field.label,
               description: field.description,
             })
@@ -107,6 +109,7 @@ export class GameAPI implements IGameAPI {
               id: field.id,
               key: field.key,
               type: field.type.type || field.type.id,
+              commonParameterId: field.commonParameter.id,
               label: field.label,
               description: field.description,
             })
@@ -142,13 +145,13 @@ export class GameAPI implements IGameAPI {
             id: field.type,
           },
           commonParameter: {
-            id: field.id.toString(),
+            id: field.commonParameterId.toString(),
             type: {
               type: field.type,
               id: field.type,
             },
-            label: "label",
-            description: "description",
+            label: "",
+            description: "",
           },
           label: field.label,
           description: field.description,

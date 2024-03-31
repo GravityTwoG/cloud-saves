@@ -7,6 +7,7 @@ import classes from "./my-save-page.module.scss";
 import { GameState, GameStateSync, GameStateValue } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
+import { useAuthContext } from "@/client/contexts/AuthContext";
 import { navigate } from "@/client/useHashLocation";
 import { paths } from "@/client/config/paths";
 import { syncMap } from "../utils";
@@ -25,9 +26,10 @@ export const MySavePage = () => {
   const { t } = useTranslation(undefined, { keyPrefix: "pages.mySave" });
 
   const [gameState, setGameState] = useState<GameState | null>(null);
-  const { gameStateId } = useParams();
   const { notify } = useUIContext();
+  const { user } = useAuthContext();
 
+  const { gameStateId } = useParams();
   useEffect(() => {
     (async () => {
       if (!gameStateId) return;
@@ -44,7 +46,7 @@ export const MySavePage = () => {
   const [syncSettingsAreOpen, setSyncSettingsAreOpen] = useState(false);
   const [sync, setSync] = useState<GameStateSync>(GameStateSync.NO);
 
-  if (!gameState) {
+  if (!gameState || !gameStateId) {
     return (
       <Container>
         <H1>{t("game-save-not-found")}</H1>
@@ -55,6 +57,7 @@ export const MySavePage = () => {
   const setupSync = async () => {
     try {
       await gameStateAPI.setupSync({
+        userId: user.id,
         gameStateId: gameState.id,
         sync: sync,
       });
@@ -68,6 +71,22 @@ export const MySavePage = () => {
     }
   };
 
+  const togglePublicity = async () => {
+    try {
+      await gameStateAPI.reuploadState({
+        id: gameState.id,
+        gameId: gameState.gameId,
+        path: gameState.localPath,
+        name: gameState.name,
+        isPublic: !gameState.isPublic,
+      });
+      const data = await gameStateAPI.getGameState(gameStateId);
+      setGameState(data);
+    } catch (error) {
+      notify.error(error);
+    }
+  };
+
   const onReuploadSave = async () => {
     try {
       await gameStateAPI.reuploadState({
@@ -75,20 +94,25 @@ export const MySavePage = () => {
         gameId: gameState.gameId,
         path: gameState.localPath,
         name: gameState.name,
+        isPublic: gameState.isPublic,
       });
     } catch (error) {
       notify.error(error);
     }
   };
 
-  const downloadSave = async (state: {
-    url: string;
-    id: string;
-    size: number;
-    createdAt: string;
-  }) => {
+  const downloadState = async () => {
     try {
-      const response = await gameStateAPI.downloadState(state.url);
+      const response = await gameStateAPI.downloadState(gameState);
+      console.log(response);
+    } catch (error) {
+      notify.error(error);
+    }
+  };
+
+  const downloadStateAs = async () => {
+    try {
+      const response = await gameStateAPI.downloadStateAs(gameState);
       console.log(response);
     } catch (error) {
       notify.error(error);
@@ -106,7 +130,14 @@ export const MySavePage = () => {
 
   return (
     <Container className={classes.MySavePage}>
-      <H1>{gameState?.name || t("save")}</H1>
+      <H1 className={classes.GameStateName}>
+        <img
+          src={gameState.gameIconURL || "https://via.placeholder.com/64"}
+          alt={gameState.name}
+          className={classes.GameIcon}
+        />{" "}
+        {gameState?.name || t("save")}
+      </H1>
 
       <div className={classes.GameSaveSettings}>
         <div className={classes.GameSaveSettingsLeft}>
@@ -125,14 +156,17 @@ export const MySavePage = () => {
             </Button>
           </Paragraph>
           <Paragraph>
-            {t("is-public-no")} <Button>{t("make-public")}</Button>
+            {t("is-public")}: {gameState.isPublic ? t("yes") : t("no")}{" "}
+            <Button onClick={togglePublicity}>
+              {gameState.isPublic ? t("make-private") : t("make-public")}
+            </Button>
           </Paragraph>
           <Paragraph>
             {t("shared-with")}: <SharesWidget gameStateId={gameState.id} />
           </Paragraph>
         </div>
 
-        <Flex fxdc aife gap="0.5rem" className={classes.GameSaveSettingsRight}>
+        <Flex fxdc ais gap="0.5rem" className={classes.GameSaveSettingsRight}>
           <Button onClick={onReuploadSave}>{t("upload-save")}</Button>
           <ConfirmButton
             onClick={() => {
@@ -206,18 +240,8 @@ export const MySavePage = () => {
         </span>
 
         <div className={classes.Buttons}>
-          <Button
-            onClick={async () => {
-              downloadSave({
-                id: gameState.id,
-                url: gameState.archiveURL,
-                size: gameState.sizeInBytes,
-                createdAt: gameState.createdAt,
-              });
-            }}
-          >
-            {t("download")}{" "}
-          </Button>
+          <Button onClick={downloadStateAs}>{t("download-as")} </Button>
+          <Button onClick={downloadState}>{t("download")} </Button>
         </div>
       </div>
     </Container>

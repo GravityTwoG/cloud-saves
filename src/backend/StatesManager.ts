@@ -1,8 +1,13 @@
-import AdmZip from "adm-zip";
 import fs from "fs/promises";
+import path from "path";
+import os from "os";
+import AdmZip from "adm-zip";
 
-import { Game } from "@/types";
+import { Game, GameState } from "@/types";
 import { ValueExtractor } from "./game-state-parameters/ValueExtractor";
+import { moveFolder } from "./fs/moveFolder";
+import { downloadToFolder } from "./fs/downloadToFolder";
+import { extractZIP } from "./fs/extractZIP";
 
 export class StatesManager {
   private readonly valueExtractor: ValueExtractor;
@@ -11,7 +16,7 @@ export class StatesManager {
     this.valueExtractor = valueExtractor;
   }
 
-  async uploadSave(folder: { path: string; name: string }, game?: Game) {
+  async uploadState(folder: { path: string; name: string }, game?: Game) {
     const zip = new AdmZip();
 
     const isDirectory = (await fs.lstat(folder.path)).isDirectory();
@@ -24,7 +29,7 @@ export class StatesManager {
     // await zip.writeZipPromise(`${path}.zip`);
     const gameStateValues = game
       ? await this.valueExtractor.extract(folder, game)
-      : { fields: [] };
+      : [];
 
     const buffer = zip.toBuffer();
     return {
@@ -33,34 +38,17 @@ export class StatesManager {
     };
   }
 
-  async downloadState(archiveURL: string) {
-    // TODO
-    console.log("Downloading state", archiveURL);
-    return { path: "" };
-  }
+  async downloadState(gameState: GameState) {
+    const tempPath = os.tmpdir();
+    const archivePath = path.join(tempPath, "cloud-saves");
+    const filename = `${gameState.name}-archive.zip`;
+    const filePath = path.join(archivePath, filename);
 
-  async downloadAndExtractSave(archiveURL: string, path: string) {
-    // TODO
-    const state = await this.downloadState(archiveURL);
-    // TODO
-    this.extractZIP(state.path);
+    await downloadToFolder(gameState.archiveURL, archivePath, filename);
 
-    console.log("Extracted to", path);
+    const extractedFolderPath = await extractZIP(filePath);
 
-    return state;
-  }
-
-  private extractZIP(filePath: string) {
-    const zip = new AdmZip(filePath);
-
-    const zipEntries = zip.getEntries();
-
-    for (const entry of zipEntries) {
-      console.log(entry.entryName);
-    }
-
-    zip.extractAllTo(filePath.replace(".zip", ".extracted"));
-
-    // TODO
+    // move extracted folder to game folder
+    await moveFolder(extractedFolderPath, gameState.localPath);
   }
 }

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { clsx } from "clsx";
 
-import classes from "./folder-explorer.module.scss";
+import classes from "./local-saves-page.module.scss";
 
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
@@ -10,18 +10,15 @@ import { useUIContext } from "@/client/contexts/UIContext";
 import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
 import { Button } from "@/client/ui/atoms/Button/Button";
 import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
-import { Paragraph } from "@/client/ui/atoms/Typography";
+import { H1, Paragraph } from "@/client/ui/atoms/Typography";
+import { Container } from "@/client/ui/atoms/Container/Container";
 import { List } from "@/client/ui/molecules/List/List";
 
 function last(arr: string[]) {
   return arr[arr.length - 1];
 }
 
-export type FolderExplorerProps = {
-  stateUploaded: () => void;
-};
-
-export const FolderExplorer = (props: FolderExplorerProps) => {
+export const LocalSavesPage = () => {
   const { gameStateAPI, osAPI } = useAPIContext();
   const { notify } = useUIContext();
   const { t } = useTranslation(undefined, { keyPrefix: "pages.mySaves" });
@@ -95,15 +92,18 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
   }) => {
     try {
       await gameStateAPI.uploadState(folder);
-      props.stateUploaded();
     } catch (e) {
       notify.error(e);
     }
   };
 
   return (
-    <div className={classes.FolderExplorer}>
-      <Paragraph>Folder: {selectedFolder}</Paragraph>
+    <Container className={classes.FolderExplorer}>
+      <H1>{t("local-saves")}</H1>
+
+      <Paragraph>
+        {t("folder")}: {selectedFolder}
+      </Paragraph>
 
       <div className={classes.FolderActions}>
         {parentFolder && (
@@ -146,7 +146,7 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
               data-type={file.gameId ? "file" : file.type}
             >
               <p>
-                {file.type === "folder" ? "folder: " : "file: "}
+                {`${file.type === "folder" ? t("folder") : t("file")}: `}
                 {file.name}
               </p>
               {!!file.size && (
@@ -184,6 +184,6 @@ export const FolderExplorer = (props: FolderExplorerProps) => {
           </>
         )}
       />
-    </div>
+    </Container>
   );
 };

@@ -9,6 +9,19 @@
   gap: 0.5rem;
 }
 
+.GameInfo {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+
+  .GameIcon {
+    width: 8rem;
+    height: 6rem;
+    object-fit: contain;
+    background-color: var(--deco-color);
+  }
+}
+
 .GameSaveLink {
   text-decoration: none;
   color: var(--text-color);

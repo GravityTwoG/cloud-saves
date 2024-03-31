@@ -18,16 +18,16 @@ const electronApi: Window["electronAPI"] = {
 
   uploadSave: (folder, game) => ipcRenderer.invoke("uploadSave", folder, game),
 
-  downloadSave: (archiveURL) => ipcRenderer.invoke("downloadSave", archiveURL),
-
-  downloadAndExtractSave: (archiveURL, path) =>
-    ipcRenderer.invoke("downloadAndExtractSave", archiveURL, path),
-
   onGetSyncedSaves: (callback) => {
     ipcRenderer.on("getSyncedSaves", callback);
   },
 
   sendSyncedSaves: (args) => ipcRenderer.invoke("sendSyncedSaves", args),
+
+  downloadState: (gameState) => ipcRenderer.invoke("downloadState", gameState),
+
+  downloadStateAs: (gameState) =>
+    ipcRenderer.invoke("downloadStateAs", gameState),
 };
 
 contextBridge.exposeInMainWorld("electronAPI", electronApi);

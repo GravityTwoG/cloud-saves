@@ -57,6 +57,7 @@ export class AuthAPIMock implements IAuthAPI {
     ls.setItem("user", user);
 
     return {
+      id: user.id,
       email: user.email,
       username: user.username,
       role: user.role,
@@ -80,6 +81,7 @@ export class AuthAPIMock implements IAuthAPI {
       ls.setItem("isAuthenticated", "true");
       ls.setItem("user", user);
       return {
+        id: user.id,
         email: user.email,
         username: user.username,
         role: user.role,

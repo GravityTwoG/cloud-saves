@@ -50,17 +50,14 @@ interface Window {
       }>
     >;
 
-    downloadSave: (archiveURL: string) => Promise<ElectronApiResponse<void>>;
-
-    downloadAndExtractSave: (
-      archiveURL: string,
-      path: string
-    ) => Promise<ElectronApiResponse<void>>;
-
     onGetSyncedSaves: (callback: () => void) => void;
 
     sendSyncedSaves: (
       args: import("../types").GameState[]
     ) => Promise<ElectronApiResponse<void>>;
+
+    downloadState: (gameState: import("../types").GameState) => Promise<void>;
+
+    downloadStateAs: (gameState: import("../types").GameState) => Promise<void>;
   };
 }

@@ -101,14 +101,18 @@ export const MySavePage = () => {
     }
   };
 
-  const downloadSave = async (state: {
-    url: string;
-    id: string;
-    size: number;
-    createdAt: string;
-  }) => {
+  const downloadState = async () => {
     try {
-      const response = await gameStateAPI.downloadState(state.url);
+      const response = await gameStateAPI.downloadState(gameState);
+      console.log(response);
+    } catch (error) {
+      notify.error(error);
+    }
+  };
+
+  const downloadStateAs = async () => {
+    try {
+      const response = await gameStateAPI.downloadStateAs(gameState);
       console.log(response);
     } catch (error) {
       notify.error(error);
@@ -236,18 +240,8 @@ export const MySavePage = () => {
         </span>
 
         <div className={classes.Buttons}>
-          <Button
-            onClick={async () => {
-              downloadSave({
-                id: gameState.id,
-                url: gameState.archiveURL,
-                size: gameState.sizeInBytes,
-                createdAt: gameState.createdAt,
-              });
-            }}
-          >
-            {t("download")}{" "}
-          </Button>
+          <Button onClick={downloadStateAs}>{t("download-as")} </Button>
+          <Button onClick={downloadState}>{t("download")} </Button>
         </div>
       </div>
     </Container>

@@ -24,9 +24,9 @@ export interface IGameStateAPI {
     sync: GameStateSync;
   }): Promise<void>;
 
-  downloadState(archiveURL: string): Promise<void>;
+  downloadState(gameState: GameState): Promise<void>;
 
-  downloadAndExtractState(archiveURL: string, path: string): Promise<void>;
+  downloadStateAs(gameState: GameState): Promise<void>;
 
   deleteState(gameStateId: string): Promise<void>;
 

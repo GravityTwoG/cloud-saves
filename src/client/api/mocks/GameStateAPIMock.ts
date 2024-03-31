@@ -242,15 +242,12 @@ export class GameStateAPIMock implements IGameStateAPI {
     }
   }
 
-  downloadState = async (path: string) => {
-    await this.osAPI.downloadState(path);
+  downloadState = async (gameState: GameState) => {
+    await this.osAPI.downloadState(gameState);
   };
 
-  downloadAndExtractState = async (
-    archiveURL: string,
-    path: string
-  ): Promise<void> => {
-    await this.osAPI.downloadAndExtractState(archiveURL, path);
+  downloadStateAs = async (gameState: GameState) => {
+    await this.osAPI.downloadStateAs(gameState);
   };
 
   deleteState = async (gameStateId: string): Promise<void> => {

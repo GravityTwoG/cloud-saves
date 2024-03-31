@@ -239,15 +239,12 @@ export class GameStateAPI implements IGameStateAPI {
     }
   }
 
-  downloadState = async (path: string) => {
-    await this.osAPI.downloadState(path);
+  downloadState = async (gameState: GameState) => {
+    await this.osAPI.downloadState(gameState);
   };
 
-  downloadAndExtractState = async (
-    archiveURL: string,
-    path: string
-  ): Promise<void> => {
-    await this.osAPI.downloadAndExtractState(archiveURL, path);
+  downloadStateAs = async (gameState: GameState) => {
+    await this.osAPI.downloadStateAs(gameState);
   };
 
   deleteState = async (gameStateId: string): Promise<void> => {
@@ -300,11 +297,11 @@ export class GameStateAPI implements IGameStateAPI {
 
   getShares = async (gameStateId: string): Promise<{ items: Share[] }> => {
     const shares = await this.fetcher.get<{
-      items: ShareFromServer[];
+      gameStateShares: ShareFromServer[];
     }>(`/game-state-shares/${gameStateId}`);
 
     return {
-      items: shares.items.map((share) => ({
+      items: shares.gameStateShares.map((share) => ({
         id: share.id.toString(),
         gameStateId,
         userId: "share.userId",

@@ -1,4 +1,4 @@
-import { Game, GamePath } from "@/types";
+import { Game, GamePath, GameState } from "@/types";
 import { IOSAPI } from "./interfaces/IOSAPI";
 import { ApiError } from "./ApiError";
 
@@ -53,14 +53,11 @@ export class OSAPI implements IOSAPI {
     return response.data;
   };
 
-  downloadState = async (archiveURL: string): Promise<void> => {
-    await window.electronAPI.downloadSave(archiveURL);
+  downloadState = async (gameState: GameState): Promise<void> => {
+    await window.electronAPI.downloadState(gameState);
   };
 
-  downloadAndExtractState = async (
-    archiveURL: string,
-    path: string
-  ): Promise<void> => {
-    await window.electronAPI.downloadAndExtractSave(archiveURL, path);
+  downloadStateAs = async (gameState: GameState): Promise<void> => {
+    await window.electronAPI.downloadStateAs(gameState);
   };
 }

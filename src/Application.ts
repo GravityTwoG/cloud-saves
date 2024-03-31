@@ -1,5 +1,6 @@
 import path from "path";
 import { BrowserWindow, Menu, Tray, app, nativeImage, Event } from "electron";
+import electronDl from "electron-dl";
 
 import { setupIPC } from "./backend/electron-api";
 import { SyncManager } from "./backend/SyncManager";
@@ -18,6 +19,7 @@ export class Application {
   init() {
     app.commandLine.appendSwitch("lang", "en-US");
     this.registerProtocolClient();
+    electronDl();
 
     this.syncManager.init(() => {
       this.mainWindow?.webContents.send("getSyncedSaves");

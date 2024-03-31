@@ -1,5 +1,3 @@
-import { GameStateAPI } from "./GameStateAPI";
-
 import { StatesManager } from "./StatesManager";
 import { SyncManager } from "./SyncManager";
 
@@ -15,4 +13,4 @@ const converters = {
 
 const valueExtractor = new ValueExtractor(converters);
 export const statesManager = new StatesManager(valueExtractor);
-export const syncManager = new SyncManager(new GameStateAPI(statesManager));
+export const syncManager = new SyncManager(statesManager);

@@ -1,4 +1,4 @@
-import { Game, GamePath } from "@/types";
+import { Game, GamePath, GameState } from "@/types";
 
 export interface IOSAPI {
   getSavePaths: (paths: GamePath[]) => Promise<ElectronApiResponse<GamePath[]>>;
@@ -21,9 +21,9 @@ export interface IOSAPI {
     }[];
   }>;
 
-  // Just download
-  downloadState(archiveURL: string): Promise<void>;
-
   // Download and extract to states folder of the game
-  downloadAndExtractState(archiveURL: string, path: string): Promise<void>;
+  downloadState(gameState: GameState): Promise<void>;
+
+  // Just download
+  downloadStateAs(gameState: GameState): Promise<void>;
 }

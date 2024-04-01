@@ -3,7 +3,7 @@ import { Fetcher } from "./Fetcher";
 import { AddGameDTO, IGameAPI, UpdateGameDTO } from "./interfaces/IGameAPI";
 import { ResourceRequest, ResourceResponse } from "./interfaces/common";
 
-type GameFromServer = {
+export type GameFromServer = {
   id: number;
   name: string;
   description: string;

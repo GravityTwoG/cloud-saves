@@ -1,10 +1,10 @@
 import { User, UserRole } from "@/types";
 import {
-  ChangePasswordCredentials,
+  ChangePasswordDTO,
   IAuthAPI,
-  LoginCredentials,
-  RegisterCredentials,
-  ResetPasswordCredentials,
+  LoginDTO,
+  RegisterDTO,
+  ResetPasswordDTO,
 } from "../interfaces/IAuthAPI";
 import { ApiError } from "../ApiError";
 import { LocalStorage } from "./LocalStorage";
@@ -16,7 +16,7 @@ export class AuthAPIMock implements IAuthAPI {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
 
-  register = async (credentials: RegisterCredentials): Promise<User> => {
+  register = async (credentials: RegisterDTO): Promise<User> => {
     await this.sleep(500);
     const user = {
       ...credentials,
@@ -64,7 +64,7 @@ export class AuthAPIMock implements IAuthAPI {
     };
   };
 
-  login = async (credentials: LoginCredentials): Promise<User> => {
+  login = async (credentials: LoginDTO): Promise<User> => {
     await this.sleep(500);
     try {
       const users = ls.getItem<(User & { password: string })[]>("users");
@@ -103,9 +103,7 @@ export class AuthAPIMock implements IAuthAPI {
     return user;
   };
 
-  changePassword = async (
-    credentials: ChangePasswordCredentials
-  ): Promise<void> => {
+  changePassword = async (credentials: ChangePasswordDTO): Promise<void> => {
     await this.sleep(500);
     console.log("changePassword", credentials);
     throw new ApiError("Not implemented");
@@ -118,9 +116,7 @@ export class AuthAPIMock implements IAuthAPI {
     throw new ApiError("Not implemented");
   };
 
-  resetPassword = async (
-    credentials: ResetPasswordCredentials
-  ): Promise<void> => {
+  resetPassword = async (credentials: ResetPasswordDTO): Promise<void> => {
     await this.sleep(500);
     console.log("resetPassword", credentials);
 

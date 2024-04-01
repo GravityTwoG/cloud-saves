@@ -37,7 +37,7 @@ export class GameStateAPIMock implements IGameStateAPI {
       }
     }
 
-    const response = await this.osAPI.getSavePaths(paths);
+    const response = await this.osAPI.getStatePaths(paths);
 
     if (!response.data) {
       throw new ApiError(response.error || "Failed to get state paths");
@@ -118,21 +118,26 @@ export class GameStateAPIMock implements IGameStateAPI {
 
   uploadState = async (state: {
     gameId?: string;
-    path: string;
+    localPath: string;
     name: string;
+    isPublic: boolean;
   }): Promise<void> => {
     const game = state.gameId
       ? await this.gameAPI.getGame(state.gameId)
       : undefined;
 
-    const response = await this.osAPI.uploadState(state, game);
+    const response = await this.osAPI.uploadState(state);
 
-    const gameStateId = state.path.split("/").join("-").split(" ").join("_");
+    const gameStateId = state.localPath
+      .split("/")
+      .join("-")
+      .split(" ")
+      .join("_");
     const gameState: GameState = {
       id: gameStateId,
-      gameId: state.path,
+      gameId: state.localPath,
       gameIconURL: "",
-      localPath: state.path,
+      localPath: state.localPath,
       name: game ? game.name : state.name,
       sync: GameStateSync.NO,
       isPublic: false,
@@ -143,7 +148,7 @@ export class GameStateAPIMock implements IGameStateAPI {
         label: "label",
         description: "description",
       })),
-      archiveURL: state.path,
+      archiveURL: state.localPath,
       sizeInBytes: 42,
       uploadedAt: new Date().toLocaleString(),
       updatedAt: new Date().toLocaleString(),
@@ -161,25 +166,23 @@ export class GameStateAPIMock implements IGameStateAPI {
     }
   };
 
-  reuploadState = async (state: {
-    id: string;
-    gameId?: string;
-    path: string;
-    name: string;
-    isPublic: boolean;
-  }): Promise<void> => {
+  reuploadState = async (state: GameState): Promise<void> => {
     const game = state.gameId
       ? await this.gameAPI.getGame(state.gameId)
       : undefined;
 
-    const response = await this.osAPI.uploadState(state, game);
+    const response = await this.osAPI.uploadState(state);
 
-    const gameStateId = state.path.split("/").join("-").split(" ").join("_");
+    const gameStateId = state.localPath
+      .split("/")
+      .join("-")
+      .split(" ")
+      .join("_");
     const gameState: GameState = {
       id: gameStateId,
-      gameId: state.path,
+      gameId: game ? game.id : Math.random().toString(),
       gameIconURL: "",
-      localPath: state.path,
+      localPath: state.localPath,
       name: game ? game.name : state.name,
       sync: GameStateSync.NO,
       isPublic: state.isPublic,
@@ -190,7 +193,7 @@ export class GameStateAPIMock implements IGameStateAPI {
         label: "label",
         description: "description",
       })),
-      archiveURL: state.path,
+      archiveURL: state.localPath,
       sizeInBytes: 42,
       uploadedAt: new Date().toLocaleString(),
       updatedAt: new Date().toLocaleString(),
@@ -206,6 +209,14 @@ export class GameStateAPIMock implements IGameStateAPI {
         [gameStateId]: gameState,
       });
     }
+  };
+
+  downloadState = async (state: GameState): Promise<void> => {
+    await this.osAPI.downloadState(state);
+  };
+
+  downloadStateAs = async (state: GameState): Promise<void> => {
+    await this.osAPI.downloadStateAs(state);
   };
 
   setupSync = async (settings: {
@@ -241,14 +252,6 @@ export class GameStateAPIMock implements IGameStateAPI {
       return {};
     }
   }
-
-  downloadState = async (gameState: GameState) => {
-    await this.osAPI.downloadState(gameState);
-  };
-
-  downloadStateAs = async (gameState: GameState) => {
-    await this.osAPI.downloadStateAs(gameState);
-  };
 
   deleteState = async (gameStateId: string): Promise<void> => {
     try {

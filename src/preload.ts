@@ -11,18 +11,20 @@ const electronApi: Window["electronAPI"] = {
 
   showFolderDialog: () => ipcRenderer.invoke("showFolderDialog"),
 
-  getSavePaths: (paths) => ipcRenderer.invoke("getSavePaths", paths),
+  getStatePaths: (paths) => ipcRenderer.invoke("getStatePaths", paths),
 
   getFolderInfo: (folderPath) =>
     ipcRenderer.invoke("getFolderInfo", folderPath),
 
-  uploadSave: (folder, game) => ipcRenderer.invoke("uploadSave", folder, game),
-
-  onGetSyncedSaves: (callback) => {
-    ipcRenderer.on("getSyncedSaves", callback);
+  onGetSyncedStates: (callback) => {
+    ipcRenderer.on("getSyncedStates", callback);
   },
 
-  sendSyncedSaves: (args) => ipcRenderer.invoke("sendSyncedSaves", args),
+  sendSyncedStates: (args) => ipcRenderer.invoke("sendSyncedStates", args),
+
+  uploadState: (folder) => ipcRenderer.invoke("uploadState", folder),
+
+  reuploadState: (gameState) => ipcRenderer.invoke("reuploadState", gameState),
 
   downloadState: (gameState) => ipcRenderer.invoke("downloadState", gameState),
 

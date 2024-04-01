@@ -2,10 +2,10 @@ import { createContext } from "react";
 
 import { User, UserRole } from "@/types";
 import {
-  ChangePasswordCredentials,
-  LoginCredentials,
-  RegisterCredentials,
-  ResetPasswordCredentials,
+  ChangePasswordDTO,
+  LoginDTO,
+  RegisterDTO,
+  ResetPasswordDTO,
 } from "@/client/api/interfaces/IAuthAPI";
 
 export const emptyUser: User = {
@@ -26,15 +26,15 @@ interface AuthContext {
   authStatus: AuthStatus;
   user: User;
 
-  register: (credentials: RegisterCredentials) => Promise<void>;
+  register: (credentials: RegisterDTO) => Promise<void>;
 
-  login: (credentials: LoginCredentials) => Promise<void>;
+  login: (credentials: LoginDTO) => Promise<void>;
 
-  changePassword: (credentials: ChangePasswordCredentials) => Promise<void>;
+  changePassword: (credentials: ChangePasswordDTO) => Promise<void>;
 
   requestPasswordReset: (email: string) => Promise<void>;
 
-  resetPassword: (credentials: ResetPasswordCredentials) => Promise<void>;
+  resetPassword: (credentials: ResetPasswordDTO) => Promise<void>;
 
   logout: () => Promise<void>;
 }

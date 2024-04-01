@@ -64,7 +64,7 @@ export class GameStateAPI implements IGameStateAPI {
       gameIconURL: path.gameIconUrl,
     }));
 
-    const response = await this.osAPI.getSavePaths(paths);
+    const response = await this.osAPI.getStatePaths(paths);
 
     if (!response.data) {
       throw new ApiError(response.error || "Failed to get state paths");
@@ -139,70 +139,23 @@ export class GameStateAPI implements IGameStateAPI {
 
   uploadState = async (state: {
     gameId?: string;
-    path: string;
-    name: string;
-  }): Promise<void> => {
-    const game = state.gameId
-      ? await this.gameAPI.getGame(state.gameId)
-      : undefined;
-
-    const response = await this.osAPI.uploadState(state, game);
-
-    const formData = new FormData();
-    formData.append("archive", new Blob([response.buffer]));
-    formData.append(
-      "gameStateData",
-      JSON.stringify({
-        gameId: state.gameId,
-        name: game ? game.name : state.name,
-        localPath: state.path,
-        isPublic: false,
-        gameStateValues: response.gameStateValues.map((value) => ({
-          value: value.value,
-          gameStateParameterId: value.gameStateParameterId,
-        })),
-      })
-    );
-
-    await this.fetcher.post(`${apiPrefix}`, {
-      headers: {},
-      body: formData,
-    });
-  };
-
-  reuploadState = async (state: {
-    id: string;
-    gameId?: string;
-    path: string;
+    localPath: string;
     name: string;
     isPublic: boolean;
   }): Promise<void> => {
-    const game = state.gameId
-      ? await this.gameAPI.getGame(state.gameId)
-      : undefined;
+    await this.osAPI.uploadState(state);
+  };
 
-    const response = await this.osAPI.uploadState(state, game);
+  reuploadState = async (state: GameState): Promise<void> => {
+    await this.osAPI.reuploadState(state);
+  };
 
-    const formData = new FormData();
-    formData.append("archive", new Blob([response.buffer]));
-    formData.append(
-      "gameStateData",
-      JSON.stringify({
-        gameId: state.gameId,
-        name: game ? game.name : state.name,
-        localPath: state.path,
-        isPublic: state.isPublic,
-        gameStateValues: response.gameStateValues.map((value) => ({
-          value: value.value,
-          gameStateParameterId: value.gameStateParameterId,
-        })),
-      })
-    );
+  downloadState = async (state: GameState): Promise<void> => {
+    await this.osAPI.downloadState(state);
+  };
 
-    await this.fetcher.patch(`${apiPrefix}/${state.id}`, {
-      headers: {},
-      body: formData,
-    });
+  downloadStateAs = async (state: GameState): Promise<void> => {
+    await this.osAPI.downloadStateAs(state);
   };
 
   setupSync = async (settings: {
@@ -238,14 +191,6 @@ export class GameStateAPI implements IGameStateAPI {
       return {};
     }
   }
-
-  downloadState = async (gameState: GameState) => {
-    await this.osAPI.downloadState(gameState);
-  };
-
-  downloadStateAs = async (gameState: GameState) => {
-    await this.osAPI.downloadStateAs(gameState);
-  };
 
   deleteState = async (gameStateId: string): Promise<void> => {
     await this.fetcher.delete(`${apiPrefix}/${gameStateId}`);

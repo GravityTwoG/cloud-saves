@@ -12,24 +12,24 @@ export class ValueExtractor {
     this.converters = converters;
   }
 
-  async extract(folder: { path: string; name: string }, game: Game) {
+  async extract(filePath: string, game: Game) {
     const createdFiles: string[] = [];
 
     for (const pipelineItem of game.extractionPipeline) {
       if (this.converters[pipelineItem.type]) {
         await this.converters["sav-to-json"].convert(
-          folder.path,
+          filePath,
           pipelineItem.inputFilename,
           pipelineItem.outputFilename
         );
-        createdFiles.push(path.join(folder.path, pipelineItem.outputFilename));
+        createdFiles.push(path.join(filePath, pipelineItem.outputFilename));
       }
     }
 
     const gameStateParameters = game.gameStateParameters;
 
     const json = await fs.readFile(
-      path.join(folder.path, gameStateParameters.filename),
+      path.join(filePath, gameStateParameters.filename),
       {
         encoding: "utf-8",
       }

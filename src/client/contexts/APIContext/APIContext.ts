@@ -60,6 +60,6 @@ export const api = {
   usersAPI,
   commonParametersAPI,
   parameterTypesAPI,
-};
+} satisfies APIContext;
 
 export const APIContext = createContext<APIContext>(api);

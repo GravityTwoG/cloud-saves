@@ -1,10 +1,17 @@
 import path from "path";
-import { BrowserWindow, Menu, Tray, app, nativeImage, Event } from "electron";
+import {
+  BrowserWindow,
+  Menu,
+  Tray,
+  app,
+  nativeImage,
+  Event,
+  ipcMain,
+} from "electron";
 import electronDl from "electron-dl";
 
-import { setupIPC } from "./backend/electron-api";
 import { SyncManager } from "./backend/SyncManager";
-import { syncManager } from "./backend";
+import { syncManager, electronAPI } from "./backend";
 
 const protocolName = "cloud-saves";
 const clientProtocol = `${protocolName}://`;
@@ -22,7 +29,7 @@ export class Application {
     electronDl();
 
     this.syncManager.init(() => {
-      this.mainWindow?.webContents.send("getSyncedSaves");
+      this.mainWindow?.webContents.send("getSyncedStates");
     });
 
     const gotTheLock = app.requestSingleInstanceLock();
@@ -67,15 +74,14 @@ export class Application {
     app.on("ready", () => {
       this.mainWindow = this.createWindow();
       this.createTray();
-
-      setupIPC();
+      this.setupIPC();
 
       app.on("activate", () => {
         // On OS X it's common to re-create a window in the app when the
         // dock icon is clicked and there are no other windows open.
         if (BrowserWindow.getAllWindows().length === 0) {
           this.mainWindow = this.createWindow();
-          setupIPC();
+          this.setupIPC();
         }
       });
     });
@@ -93,6 +99,29 @@ export class Application {
         this.quitApp();
       }
     });
+  }
+
+  private setupIPC() {
+    function registerHandler<T extends unknown[], R>(
+      name: string,
+      handler: (...args: T) => R
+    ) {
+      ipcMain.handle(name, (_, ...args: unknown[]) => handler(...(args as T)));
+    }
+
+    registerHandler("showFolderDialog", electronAPI.showFolderDialog);
+
+    registerHandler("getStatePaths", electronAPI.getStatePaths);
+
+    registerHandler("getFolderInfo", electronAPI.getFolderInfo);
+
+    registerHandler("uploadState", electronAPI.uploadState);
+
+    registerHandler("reuploadState", electronAPI.reuploadState);
+
+    registerHandler("downloadState", electronAPI.downloadState);
+
+    registerHandler("downloadStateAs", electronAPI.downloadStateAs);
   }
 
   private registerProtocolClient() {

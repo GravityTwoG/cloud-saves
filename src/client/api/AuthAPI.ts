@@ -1,11 +1,11 @@
 import { User, UserRole } from "@/types";
 import { Fetcher } from "./Fetcher";
 import {
-  ChangePasswordCredentials,
+  ChangePasswordDTO,
   IAuthAPI,
-  LoginCredentials,
-  RegisterCredentials,
-  ResetPasswordCredentials,
+  LoginDTO,
+  RegisterDTO,
+  ResetPasswordDTO,
 } from "./interfaces/IAuthAPI";
 
 const roleMap = {
@@ -26,7 +26,7 @@ export class AuthAPI implements IAuthAPI {
     this.fetcher = fetcher;
   }
 
-  register = async (credentials: RegisterCredentials): Promise<User> => {
+  register = async (credentials: RegisterDTO): Promise<User> => {
     await this.fetcher.post<ServerUser>("/auth/registration", {
       body: credentials,
     });
@@ -37,7 +37,7 @@ export class AuthAPI implements IAuthAPI {
     });
   };
 
-  login = async (credentials: LoginCredentials): Promise<User> => {
+  login = async (credentials: LoginDTO): Promise<User> => {
     const user = await this.fetcher.post<ServerUser>("/auth/login", {
       body: credentials,
     });
@@ -51,7 +51,7 @@ export class AuthAPI implements IAuthAPI {
     return { ...user, role: roleMap[user.role], id: "TODO" };
   };
 
-  changePassword = (credentials: ChangePasswordCredentials): Promise<void> => {
+  changePassword = (credentials: ChangePasswordDTO): Promise<void> => {
     return this.fetcher.post("/auth/auth-change-password", {
       body: {
         oldPassword: credentials.oldPassword,
@@ -65,7 +65,7 @@ export class AuthAPI implements IAuthAPI {
     return this.fetcher.post("/auth/recover-password", { body: { email } });
   };
 
-  resetPassword = (credentials: ResetPasswordCredentials): Promise<void> => {
+  resetPassword = (credentials: ResetPasswordDTO): Promise<void> => {
     return this.fetcher.post("/auth/change-password", {
       body: {
         token: credentials.token,

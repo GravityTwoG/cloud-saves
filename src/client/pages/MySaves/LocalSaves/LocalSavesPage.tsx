@@ -85,13 +85,19 @@ export const LocalSavesPage = () => {
     }
   };
 
-  const uploadSave = async (folder: {
+  const uploadState = async (folder: {
     gameId?: string;
+    gameName?: string;
     path: string;
     name: string;
   }) => {
     try {
-      await gameStateAPI.uploadState(folder);
+      await gameStateAPI.uploadState({
+        gameId: folder.gameId,
+        localPath: folder.path,
+        name: folder.gameName || folder.name,
+        isPublic: true,
+      });
     } catch (e) {
       notify.error(e);
     }
@@ -175,7 +181,7 @@ export const LocalSavesPage = () => {
 
             <Button
               onClick={async () => {
-                uploadSave(file);
+                uploadState(file);
               }}
               className={clsx(classes.MiniButton, classes.FileButton)}
             >

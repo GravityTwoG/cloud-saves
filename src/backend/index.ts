@@ -5,6 +5,7 @@ import { ValueExtractor } from "./game-state-parameters/ValueExtractor";
 
 import { SAVConverter } from "./game-state-parameters/converters/SAVConverter";
 import { ColonTextConverter } from "./game-state-parameters/converters/ColonTextConverter";
+export { electronAPI } from "./electron-api";
 
 const converters = {
   "sav-to-json": new SAVConverter(),

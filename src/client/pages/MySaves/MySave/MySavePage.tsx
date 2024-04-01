@@ -74,10 +74,7 @@ export const MySavePage = () => {
   const togglePublicity = async () => {
     try {
       await gameStateAPI.reuploadState({
-        id: gameState.id,
-        gameId: gameState.gameId,
-        path: gameState.localPath,
-        name: gameState.name,
+        ...gameState,
         isPublic: !gameState.isPublic,
       });
       const data = await gameStateAPI.getGameState(gameStateId);
@@ -87,15 +84,9 @@ export const MySavePage = () => {
     }
   };
 
-  const onReuploadSave = async () => {
+  const onReuploadState = async () => {
     try {
-      await gameStateAPI.reuploadState({
-        id: gameState.id,
-        gameId: gameState.gameId,
-        path: gameState.localPath,
-        name: gameState.name,
-        isPublic: gameState.isPublic,
-      });
+      await gameStateAPI.reuploadState(gameState);
     } catch (error) {
       notify.error(error);
     }
@@ -167,7 +158,7 @@ export const MySavePage = () => {
         </div>
 
         <Flex fxdc ais gap="0.5rem" className={classes.GameSaveSettingsRight}>
-          <Button onClick={onReuploadSave}>{t("upload-save")}</Button>
+          <Button onClick={onReuploadState}>{t("upload-save")}</Button>
           <ConfirmButton
             onClick={() => {
               deleteState(gameState.id);

@@ -26,7 +26,7 @@ interface Window {
 
     showFolderDialog: () => Promise<ElectronApiResponse<FolderInfo>>;
 
-    getSavePaths: (
+    getStatePaths: (
       paths: import("../types").GamePath[]
     ) => Promise<ElectronApiResponse<import("../types").GamePath[]>>;
 
@@ -34,30 +34,37 @@ interface Window {
       folderPath: string
     ) => Promise<ElectronApiResponse<FolderInfo>>;
 
-    uploadSave: (
-      folder: {
-        path: string;
-        name: string;
-      },
-      game: import("../types").Game
-    ) => Promise<
-      ElectronApiResponse<{
-        buffer: Buffer;
-        gameStateValues: {
-          gameStateParameterId: string;
-          value: string;
-        }[];
-      }>
-    >;
+    onGetSyncedStates: (callback: () => void) => void;
 
-    onGetSyncedSaves: (callback: () => void) => void;
-
-    sendSyncedSaves: (
+    sendSyncedStates: (
       args: import("../types").GameState[]
     ) => Promise<ElectronApiResponse<void>>;
 
-    downloadState: (gameState: import("../types").GameState) => Promise<void>;
+    uploadState: (folder: {
+      gameId?: string;
+      localPath: string;
+      name: string;
+      isPublic: boolean;
+    }) => Promise<
+      ElectronApiResponse<{
+        buffer: Buffer;
+        gameStateValues: { value: string; gameStateParameterId: string }[];
+      }>
+    >;
 
-    downloadStateAs: (gameState: import("../types").GameState) => Promise<void>;
+    reuploadState: (state: import("../types").GameState) => Promise<
+      ElectronApiResponse<{
+        buffer: Buffer;
+        gameStateValues: { value: string; gameStateParameterId: string }[];
+      }>
+    >;
+
+    downloadState: (
+      gameState: import("../types").GameState
+    ) => Promise<ElectronApiResponse<void>>;
+
+    downloadStateAs: (
+      gameState: import("../types").GameState
+    ) => Promise<ElectronApiResponse<void>>;
   };
 }

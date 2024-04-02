@@ -3,19 +3,17 @@ import { useTranslation } from "react-i18next";
 import classes from "./my-saves-page.module.scss";
 
 import { paths } from "@/client/config/paths";
-import { syncMap } from "./utils";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
 
-import { Link } from "wouter";
-import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
+import { H1, H2 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container/Container";
-import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
-import { List } from "@/client/ui/molecules/List/List";
+import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
-import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
+import { Grid } from "@/client/ui/molecules/Grid";
+import { GameStateCard } from "@/client/lib/components/GameStateCard";
 
 export const MySavesPage = () => {
   const { gameStateAPI } = useAPIContext();
@@ -53,43 +51,16 @@ export const MySavesPage = () => {
           onQueryChange={(searchQuery) => setQuery({ ...query, searchQuery })}
         />
 
-        <List
+        <Grid
           className={classes.SavesList}
           elements={saves.items}
           getKey={(save) => save.gameId}
           renderElement={(save) => (
-            <>
-              <div className={classes.GameInfo}>
-                <img
-                  className={classes.GameIcon}
-                  src={save.gameIconURL}
-                  alt={save.name}
-                />
-
-                <div>
-                  <Link
-                    className={classes.GameSaveLink}
-                    href={paths.mySave({ gameStateId: save.id })}
-                  >
-                    <span>{save.name}</span>
-                  </Link>
-                  <Paragraph>
-                    {t("sync")}: {t(syncMap[save.sync])}
-                  </Paragraph>
-                </div>
-              </div>
-
-              <div className={classes.Buttons}>
-                <ConfirmButton
-                  onClick={() => {
-                    onDelete(save.id);
-                  }}
-                  color="danger"
-                >
-                  {t("delete-save")}{" "}
-                </ConfirmButton>
-              </div>
-            </>
+            <GameStateCard
+              gameState={save}
+              href={paths.mySave({ gameStateId: save.id })}
+              onDelete={onDelete}
+            />
           )}
         />
 

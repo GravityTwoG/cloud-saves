@@ -15,6 +15,8 @@ import sharedSaves from "./en/pages/sharedSaves.json";
 import publicSaves from "./en/pages/publicSaves.json";
 import notFound from "./en/pages/notFound.json";
 
+import GameStateCard from "./en/components/GameStateCard.json";
+
 import common from "./en/common.json";
 
 export const resourcesEN = {
@@ -42,6 +44,9 @@ export const resourcesEN = {
     },
     forms: {
       gameForm,
+    },
+    components: {
+      GameStateCard,
     },
     common: common,
   },

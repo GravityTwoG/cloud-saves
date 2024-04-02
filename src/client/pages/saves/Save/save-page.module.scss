@@ -1,4 +1,4 @@
-.MySavePage {
+.SavePage {
   padding-bottom: 1rem;
   padding-top: 1rem;
 }
@@ -23,22 +23,6 @@
   .GameSaveSettingsLeft {
     flex: 1;
   }
-
-  .GameSaveSettingsRight {
-    width: auto;
-    flex-grow: 0;
-  }
-}
-
-.SyncSettingsPeriods {
-  margin: 0.5rem 0;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.SyncSettingsConfirmButton {
-  width: 100%;
-  font-size: 1rem;
 }
 
 .Buttons {

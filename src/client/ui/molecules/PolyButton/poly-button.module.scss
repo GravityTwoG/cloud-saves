@@ -1,0 +1,147 @@
+.PolyButton {
+  position: relative;
+}
+
+.PolyButtonBlock {
+  display: flex;
+  align-items: stretch;
+}
+
+.PolyButtonButton {
+  display: inline-block;
+  background-color: var(--accent-color);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px 0 0 6px;
+  border: 2px solid transparent;
+  border-right: 2px solid var(--accent-hover-color);
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+  position: relative;
+
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+
+  &:hover:not(:disabled) {
+    background-color: var(--accent-hover-color);
+  }
+  &:active:not(:disabled) {
+    background-color: var(--accent-color);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &:focus-visible {
+    border-color: var(--deco-color);
+  }
+}
+
+.PolyButtonMenuButton {
+  display: inline-block;
+  width: 1.5rem;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--accent-color);
+  border-radius: 0 6px 6px 0;
+  border: 2px solid transparent;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  transition: background-color 0.3s ease;
+  position: relative;
+
+  &:hover:not(:disabled) {
+    background-color: var(--accent-hover-color);
+  }
+  &:active:not(:disabled) {
+    background-color: var(--accent-color);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &:focus-visible {
+    border-color: var(--deco-color);
+  }
+
+  // arrows
+  & > div {
+    position: absolute;
+    width: 10px;
+    height: 3px;
+    background-color: #fff;
+    border-radius: 2px;
+    transition: transform 0.15s ease-in-out;
+    pointer-events: none;
+  }
+  & > div:nth-child(1) {
+    top: 50%;
+    left: calc(50% - 2px);
+    transform: translateY(-50%) rotate(45deg);
+  }
+  & > div:nth-child(2) {
+    top: 50%;
+    right: calc(50% - 2px);
+    transform: translateY(-50%) rotate(-45deg);
+  }
+
+  &[data-is-open="true"] > div:nth-child(1) {
+    transform: translateY(-50%) rotate(-45deg);
+  }
+  &[data-is-open="true"] > div:nth-child(2) {
+    transform: translateY(-50%) rotate(45deg);
+  }
+}
+
+.PolyButtonSubActions {
+  list-style: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  min-width: 100%;
+  background-color: var(--accent-color);
+  border-radius: 6px;
+}
+
+.PolyButtonSubAction {
+  display: block;
+
+  & > button {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 0.5rem;
+    background-color: transparent;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+
+    &:hover {
+      background-color: var(--accent-hover-color);
+    }
+  }
+
+  &:not(:first-child) {
+    border-top: 2px solid var(--accent-hover-color);
+  }
+}

@@ -8,8 +8,9 @@ import { ResetPasswordPage } from "@/client/pages/ResetPassword/ResetPasswordPag
 import { ProfilePage } from "@/client/pages/Profile/ProfilePage";
 import { MySavesPage } from "@/client/pages/MySaves/MySavesPage";
 import { MySavePage } from "@/client/pages/MySaves/MySave/MySavePage";
-import { SharedSavesPage } from "@/client/pages/SharedSaves/SharedSavesPage";
-import { PublicSavesPage } from "@/client/pages/PublicSaves/PublicSavesPage";
+import { SavePage } from "../pages/saves/Save/SavePage";
+import { SharedSavesPage } from "@/client/pages/saves/SharedSaves/SharedSavesPage";
+import { PublicSavesPage } from "@/client/pages/saves/PublicSaves/PublicSavesPage";
 
 import { GamesPage } from "@/client/pages/Games/GamesPage";
 import { GamePage } from "@/client/pages/Games/Game/GamePage";
@@ -113,6 +114,12 @@ export const routes: RouteDescriptor[] = [
   {
     path: paths.mySave.pattern,
     component: MySavePage,
+    access: RouteAccess.AUTHENTICATED,
+    forRoles: [UserRole.USER],
+  },
+  {
+    path: paths.save.pattern,
+    component: SavePage,
     access: RouteAccess.AUTHENTICATED,
     forRoles: [UserRole.USER],
   },

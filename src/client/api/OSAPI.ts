@@ -1,56 +1,65 @@
-import { Game, GamePath, GameState } from "@/types";
+import { GamePath, GameState } from "@/types";
 import { IOSAPI } from "./interfaces/IOSAPI";
 import { ApiError } from "./ApiError";
 
 export class OSAPI implements IOSAPI {
-  getSavePaths = async (
-    paths: GamePath[]
-  ): Promise<ElectronApiResponse<GamePath[]>> => {
-    const response = await window.electronAPI.getSavePaths(paths);
-
-    return response;
-  };
-
   getFolderInfo = async (folderPath: string) => {
     const response = await window.electronAPI.getFolderInfo(folderPath);
-
     if (!response.data) {
       throw response.error;
     }
-
     return response.data;
   };
 
   showFolderDialog = async () => {
     const response = await window.electronAPI.showFolderDialog();
-
     if (!response.data) {
       throw response.error;
     }
-
     return response.data;
   };
 
-  uploadState = async (
-    state: {
-      path: string;
-      name: string;
-    },
-    game: Game
-  ): Promise<{
-    buffer: Buffer;
-    gameStateValues: {
-      gameStateParameterId: string;
-      value: string;
-    }[];
-  }> => {
-    const response = await window.electronAPI.uploadSave(state, game);
+  onDeepLink = (callback: (link: { url: string }) => void): void => {
+    return window.electronAPI.onDeepLink(callback);
+  };
 
+  onGetSyncedSaves = (callback: () => void): void => {
+    return window.electronAPI.onGetSyncedStates(callback);
+  };
+
+  sendSyncedSaves = async (args: GameState[]): Promise<void> => {
+    await window.electronAPI.sendSyncedStates(args);
+  };
+
+  getStatePaths = async (paths: GamePath[]): Promise<GamePath[]> => {
+    const response = await window.electronAPI.getStatePaths(paths);
+    if (!response.data) {
+      throw new ApiError(response.error || "Failed to get state paths");
+    }
+    return response.data;
+  };
+
+  uploadState = async (state: {
+    gameId?: string;
+    localPath: string;
+    name: string;
+    isPublic: boolean;
+  }): Promise<{
+    buffer: Buffer;
+    gameStateValues: { value: string; gameStateParameterId: string }[];
+  }> => {
+    const response = await window.electronAPI.uploadState(state);
     if (!response.data) {
       throw new ApiError(response.error || "Failed to upload state");
     }
-
     return response.data;
+  };
+
+  reuploadState = async (state: GameState): Promise<void> => {
+    const response = await window.electronAPI.reuploadState(state);
+    if (!response.data) {
+      throw new ApiError(response.error || "Failed to reupload state");
+    }
   };
 
   downloadState = async (gameState: GameState): Promise<void> => {

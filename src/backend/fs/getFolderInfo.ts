@@ -1,7 +1,10 @@
 import fs from "fs";
 import path from "path";
 
-export function getFolderInfo(folderPath: string) {
+export function getFolderInfo(folderPath: string): {
+  folder: string;
+  files: FileInfo[];
+} {
   const files = fs
     .readdirSync(folderPath, { withFileTypes: true })
     .map((dirent) => {
@@ -12,7 +15,7 @@ export function getFolderInfo(folderPath: string) {
         path: absolutefilepath,
         size: stats.size,
         mtime: stats.mtime,
-        type: dirent.isDirectory() ? "folder" : "file",
+        type: dirent.isDirectory() ? "folder" : ("file" as "file" | "folder"),
       };
     });
 

@@ -2,7 +2,7 @@ import { Game } from "@/types";
 import { ApiError } from "../ApiError";
 import { AddGameDTO, IGameAPI, UpdateGameDTO } from "../interfaces/IGameAPI";
 import { ResourceRequest, ResourceResponse } from "../interfaces/common";
-import { LocalStorage } from "./LocalStorage";
+import { LocalStorage } from "../LocalStorage";
 
 const ls = new LocalStorage("games_");
 

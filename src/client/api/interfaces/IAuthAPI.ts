@@ -1,38 +1,38 @@
 import { User } from "@/types";
 
-export type LoginCredentials = {
+export type LoginDTO = {
   username: string;
   password: string;
 };
 
-export type RegisterCredentials = {
+export type RegisterDTO = {
   email: string;
   username: string;
   password: string;
 };
 
-export type ChangePasswordCredentials = {
+export type ChangePasswordDTO = {
   oldPassword: string;
   newPassword: string;
 };
 
-export type ResetPasswordCredentials = {
+export type ResetPasswordDTO = {
   token: string;
   newPassword: string;
 };
 
 export interface IAuthAPI {
-  register(credentials: RegisterCredentials): Promise<User>;
+  register(credentials: RegisterDTO): Promise<User>;
 
-  login(credentials: LoginCredentials): Promise<User>;
+  login(credentials: LoginDTO): Promise<User>;
 
   getCurrentUser(): Promise<User>;
 
-  changePassword(credentials: ChangePasswordCredentials): Promise<void>;
+  changePassword(credentials: ChangePasswordDTO): Promise<void>;
 
   requestPasswordReset(email: string): Promise<void>;
 
-  resetPassword(credentials: ResetPasswordCredentials): Promise<void>;
+  resetPassword(credentials: ResetPasswordDTO): Promise<void>;
 
   logout(): Promise<void>;
 }

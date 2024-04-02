@@ -5,10 +5,10 @@ import { User } from "@/types";
 import { paths } from "@/client/config/paths";
 
 import {
-  ChangePasswordCredentials,
-  LoginCredentials,
-  RegisterCredentials,
-  ResetPasswordCredentials,
+  ChangePasswordDTO,
+  LoginDTO,
+  RegisterDTO,
+  ResetPasswordDTO,
 } from "@/client/api/interfaces/IAuthAPI";
 import { useAPIContext } from "../APIContext";
 import { AuthStatus, emptyUser, AuthContext } from "./AuthContext";
@@ -29,37 +29,31 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
       .catch(() => setAuthStatus(AuthStatus.ANONYMOUS));
   }, []);
 
-  const register = useCallback(async (credentials: RegisterCredentials) => {
+  const register = useCallback(async (credentials: RegisterDTO) => {
     const user = await authAPI.register(credentials);
 
     setUser(user);
     setAuthStatus(AuthStatus.AUTHENTICATED);
   }, []);
 
-  const login = useCallback(async (credentials: LoginCredentials) => {
+  const login = useCallback(async (credentials: LoginDTO) => {
     const user = await authAPI.login(credentials);
 
     setUser(user);
     setAuthStatus(AuthStatus.AUTHENTICATED);
   }, []);
 
-  const changePassword = useCallback(
-    async (credentials: ChangePasswordCredentials) => {
-      await authAPI.changePassword(credentials);
-    },
-    []
-  );
+  const changePassword = useCallback(async (credentials: ChangePasswordDTO) => {
+    await authAPI.changePassword(credentials);
+  }, []);
 
   const requestPasswordReset = useCallback(async (email: string) => {
     await authAPI.requestPasswordReset(email);
   }, []);
 
-  const resetPassword = useCallback(
-    async (credentials: ResetPasswordCredentials) => {
-      await authAPI.resetPassword(credentials);
-    },
-    []
-  );
+  const resetPassword = useCallback(async (credentials: ResetPasswordDTO) => {
+    await authAPI.resetPassword(credentials);
+  }, []);
 
   const logout = useCallback(async () => {
     await authAPI.logout();

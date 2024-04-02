@@ -4,7 +4,7 @@ import { useParams } from "wouter";
 
 import classes from "./my-save-page.module.scss";
 
-import { GameState, GameStateSync, GameStateValue } from "@/types";
+import { GameState, GameStateSync } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useAuthContext } from "@/client/contexts/AuthContext";
@@ -19,7 +19,9 @@ import { Button } from "@/client/ui/atoms/Button/Button";
 import { Flex } from "@/client/ui/atoms/Flex";
 import { Modal } from "@/client/ui/molecules/Modal/Modal";
 import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
+import { PolyButton } from "@/client/ui/molecules/PolyButton/PolyButton";
 import { SharesWidget } from "@/client/lib/components/SharesWidget";
+import { ParametersView } from "@/client/lib/components/ParametersView/ParametersView";
 
 export const MySavePage = () => {
   const { gameStateAPI } = useAPIContext();
@@ -74,10 +76,7 @@ export const MySavePage = () => {
   const togglePublicity = async () => {
     try {
       await gameStateAPI.reuploadState({
-        id: gameState.id,
-        gameId: gameState.gameId,
-        path: gameState.localPath,
-        name: gameState.name,
+        ...gameState,
         isPublic: !gameState.isPublic,
       });
       const data = await gameStateAPI.getGameState(gameStateId);
@@ -87,15 +86,9 @@ export const MySavePage = () => {
     }
   };
 
-  const onReuploadSave = async () => {
+  const onReuploadState = async () => {
     try {
-      await gameStateAPI.reuploadState({
-        id: gameState.id,
-        gameId: gameState.gameId,
-        path: gameState.localPath,
-        name: gameState.name,
-        isPublic: gameState.isPublic,
-      });
+      await gameStateAPI.reuploadState(gameState);
     } catch (error) {
       notify.error(error);
     }
@@ -167,7 +160,7 @@ export const MySavePage = () => {
         </div>
 
         <Flex fxdc ais gap="0.5rem" className={classes.GameSaveSettingsRight}>
-          <Button onClick={onReuploadSave}>{t("upload-save")}</Button>
+          <Button onClick={onReuploadState}>{t("upload-save")}</Button>
           <ConfirmButton
             onClick={() => {
               deleteState(gameState.id);
@@ -240,68 +233,20 @@ export const MySavePage = () => {
         </span>
 
         <div className={classes.Buttons}>
-          <Button onClick={downloadStateAs}>{t("download-as")} </Button>
-          <Button onClick={downloadState}>{t("download")} </Button>
+          <PolyButton
+            subActions={[
+              {
+                onClick: downloadStateAs,
+                children: t("download-as"),
+                key: "1",
+              },
+            ]}
+            onClick={downloadState}
+          >
+            {t("download")}
+          </PolyButton>
         </div>
       </div>
     </Container>
-  );
-};
-
-type ParametersViewProps = {
-  gameStateValues: GameStateValue[];
-};
-
-const ParametersView = (props: ParametersViewProps) => {
-  return (
-    <div>
-      {props.gameStateValues.map((field, idx) => (
-        <ParameterViewItem key={idx} {...field} />
-      ))}
-    </div>
-  );
-};
-
-function formatTime(value: number, type: "seconds") {
-  if (type === "seconds") {
-    if (value < 60) {
-      return `${value} seconds`;
-    }
-    const minutes = Math.floor(value / 60);
-
-    if (minutes < 60) {
-      return `${minutes} minutes`;
-    }
-
-    const hours = Math.floor(minutes / 60);
-
-    return `${hours} hours`;
-  }
-
-  return `${value}`;
-}
-
-const ParameterViewItem = (props: {
-  label: string;
-  value: string;
-  type: string;
-  description: string;
-}) => {
-  if (props.type === "seconds") {
-    return (
-      <div>
-        <span>{props.label}</span>:{" "}
-        <span className={classes.ParameterValue}>
-          {formatTime(parseFloat(props.value), props.type)}
-        </span>
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      <span>{props.label}</span>:{" "}
-      <span className={classes.ParameterValue}>{props.value.toString()}</span>
-    </div>
   );
 };

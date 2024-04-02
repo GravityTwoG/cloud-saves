@@ -9,12 +9,13 @@ export const useResource = <
   T,
   Q extends { searchQuery: string; pageNumber: number; pageSize: number }
 >(
-  loadResource: (query: Q) => Promise<{ items: T[]; totalCount: number }>
+  loadResource: (query: Q) => Promise<{ items: T[]; totalCount: number }>,
+  options?: { pageSize: number }
 ) => {
   const [query, setQuery] = useState(() => ({
     searchQuery: "",
     pageNumber: 1,
-    pageSize: 12,
+    pageSize: options?.pageSize || 12,
   }));
 
   const [resource, setResource] = useState<{

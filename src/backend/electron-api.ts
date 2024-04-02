@@ -1,14 +1,17 @@
-import { BrowserWindow, dialog, ipcMain } from "electron";
+import { BrowserWindow, dialog } from "electron";
 import electronDl from "electron-dl";
-import { Game, GamePath, GameState } from "@/types";
 
+import { GamePath, GameState } from "@/types";
 import { getFolderInfo } from "./fs/getFolderInfo";
 import { getStatePaths } from "./fs/getStatePaths";
-import { statesManager } from ".";
 import { downloadToFolder } from "./fs/downloadToFolder";
+import { statesManager } from ".";
 
-export function setupIPC() {
-  ipcMain.handle("showFolderDialog", async () => {
+export const electronAPI: Omit<
+  Window["electronAPI"],
+  "sendSyncedStates" | "onGetSyncedStates" | "onDeepLink"
+> = {
+  showFolderDialog: async () => {
     try {
       const obj = await dialog.showOpenDialog({
         properties: ["openDirectory"],
@@ -22,18 +25,9 @@ export function setupIPC() {
     } catch (error) {
       return { data: null, error: (error as Error).toString() };
     }
-  });
+  },
 
-  ipcMain.handle("getSavePaths", async (_, paths: GamePath[]) => {
-    try {
-      const filteredPaths = await getStatePaths(paths);
-      return { data: filteredPaths };
-    } catch (error) {
-      return { data: null, error: (error as Error).toString() };
-    }
-  });
-
-  ipcMain.handle("getFolderInfo", async (_, folderPath: string) => {
+  getFolderInfo: async (folderPath: string) => {
     try {
       const info = getFolderInfo(folderPath);
 
@@ -41,41 +35,59 @@ export function setupIPC() {
     } catch (error) {
       return { data: null, error: (error as Error).toString() };
     }
-  });
+  },
 
-  ipcMain.handle(
-    "uploadSave",
-    async (
-      _,
-      folder: { gameId: string; path: string; name: string },
-      game: Game
-    ) => {
-      try {
-        const data = await statesManager.uploadState(folder, game);
-        return { data };
-      } catch (error) {
-        return { data: null, error: (error as Error)?.toString() };
-      }
+  getStatePaths: async (paths: GamePath[]) => {
+    try {
+      const filteredPaths = await getStatePaths(paths);
+      return { data: filteredPaths };
+    } catch (error) {
+      return { data: null, error: (error as Error).toString() };
     }
-  );
+  },
 
-  ipcMain.handle("downloadState", async (_, gameState: GameState) => {
+  uploadState: async (state: {
+    gameId?: string;
+    localPath: string;
+    name: string;
+    isPublic: boolean;
+  }) => {
+    try {
+      const data = await statesManager.uploadState(state);
+      return { data };
+    } catch (error) {
+      return { data: null, error: (error as Error)?.toString() };
+    }
+  },
+
+  reuploadState: async (state: GameState) => {
+    try {
+      const data = await statesManager.reuploadState(state);
+      return { data };
+    } catch (error) {
+      return { data: null, error: (error as Error)?.toString() };
+    }
+  },
+
+  downloadState: async (gameState: GameState) => {
     try {
       await statesManager.downloadState(gameState);
+      return { data: null };
     } catch (error) {
       if (error instanceof electronDl.CancelError) {
         console.info("item.cancel() was called");
       } else {
         console.error(error);
       }
+      return { data: null, error: (error as Error)?.toString() };
     }
-  });
+  },
 
-  ipcMain.handle("downloadStateAs", async (_, gameState: GameState) => {
+  downloadStateAs: async (gameState: GameState) => {
     try {
       const win = BrowserWindow.getFocusedWindow();
       if (!win) {
-        return;
+        return { data: null };
       }
 
       const customPath = await dialog.showOpenDialog({
@@ -84,7 +96,7 @@ export function setupIPC() {
         properties: ["openDirectory"],
       });
       if (customPath.canceled || !customPath.filePaths[0]) {
-        return;
+        return { data: null };
       }
 
       await downloadToFolder(
@@ -92,12 +104,16 @@ export function setupIPC() {
         customPath.filePaths[0],
         `${gameState.name}-archive.zip`
       );
+
+      return { data: null };
     } catch (error) {
       if (error instanceof electronDl.CancelError) {
         console.info("item.cancel() was called");
       } else {
         console.error(error);
       }
+
+      return { data: null, error: (error as Error)?.toString() };
     }
-  });
-}
+  },
+};

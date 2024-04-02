@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import { isSystemError } from "./utils";
+import { isSystemError } from "./isSystemError";
 
 async function tryToMkdir(path: string): Promise<void> {
   try {

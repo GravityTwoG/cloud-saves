@@ -11,8 +11,6 @@ export interface IGameStateParameterTypeAPI {
     query: ResourceRequest
   ) => Promise<ResourceResponse<GameStateParameterType>>;
 
-  getType: (typeId: string) => Promise<GameStateParameterType>;
-
   createType: (type: GameStateParameterType) => Promise<GameStateParameterType>;
 
   updateType: (type: GameStateParameterType) => Promise<GameStateParameterType>;

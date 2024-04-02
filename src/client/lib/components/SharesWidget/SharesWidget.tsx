@@ -48,7 +48,7 @@ export const SharesWidget = (props: SharesWidgetProps) => {
         });
         return users.items.map((user) => ({
           label: user.username,
-          value: user.id,
+          value: user.id.toString(),
         }));
       },
     },

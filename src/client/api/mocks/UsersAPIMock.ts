@@ -2,7 +2,7 @@ import { User, UserRole } from "@/types";
 import { IUsersAPI, UserForAdmin } from "../interfaces/IUsersAPI";
 import { ApiError } from "../ApiError";
 import { ResourceRequest, ResourceResponse } from "../interfaces/common";
-import { LocalStorage } from "./LocalStorage";
+import { LocalStorage } from "../LocalStorage";
 
 const ls = new LocalStorage("users_mock_");
 

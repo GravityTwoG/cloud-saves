@@ -1,12 +1,15 @@
 import { useEffect } from "react";
 import { navigate } from "@/client/useHashLocation";
+import { useAPIContext } from "./contexts/APIContext";
 
 export const DeepLinkHandler = () => {
+  const { osAPI } = useAPIContext();
+
   useEffect(() => {
-    window.electronAPI.onDeepLink((link) => {
+    osAPI.onDeepLink((link) => {
       navigate(link.url);
     });
-  }, []);
+  }, [osAPI]);
 
   return null;
 };

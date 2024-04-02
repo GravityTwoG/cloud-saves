@@ -12,7 +12,7 @@ import { GameState } from "@/types";
 function bootstrap() {
   initI18n();
 
-  window.electronAPI.onGetSyncedSaves(async () => {
+  api.osAPI.onGetSyncedSaves(async () => {
     const statesMap = await api.gameStateAPI.getSyncSettings();
     const states: GameState[] = [];
 
@@ -29,7 +29,7 @@ function bootstrap() {
       }
     }
 
-    window.electronAPI.sendSyncedSaves(states);
+    api.osAPI.sendSyncedSaves(states);
   });
 
   const rootElement = document.getElementById("app");

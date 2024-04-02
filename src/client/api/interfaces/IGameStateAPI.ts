@@ -6,27 +6,22 @@ export interface IGameStateAPI {
 
   uploadState(state: {
     gameId?: string;
-    path: string;
-    name: string;
-  }): Promise<void>;
-
-  reuploadState(state: {
-    id: string;
-    gameId?: string;
-    path: string;
+    localPath: string;
     name: string;
     isPublic: boolean;
   }): Promise<void>;
+
+  reuploadState(state: GameState): Promise<void>;
+
+  downloadState(state: GameState): Promise<void>;
+
+  downloadStateAs(state: GameState): Promise<void>;
 
   setupSync(settings: {
     userId: string;
     gameStateId: string;
     sync: GameStateSync;
   }): Promise<void>;
-
-  downloadState(gameState: GameState): Promise<void>;
-
-  downloadStateAs(gameState: GameState): Promise<void>;
 
   deleteState(gameStateId: string): Promise<void>;
 

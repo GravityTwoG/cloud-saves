@@ -2,14 +2,14 @@ import fs from "fs/promises";
 import path from "path";
 import os from "os";
 import AdmZip from "adm-zip";
+import { session } from "electron";
 
 import { Game, GameState } from "@/types";
+import { GameAPI, GameFromServer } from "@/client/api/GameAPI";
 import { ValueExtractor } from "./game-state-parameters/ValueExtractor";
 import { moveFolder } from "./fs/moveFolder";
 import { downloadToFolder } from "./fs/downloadToFolder";
 import { extractZIP } from "./fs/extractZIP";
-import { session } from "electron";
-import { GameFromServer } from "@/client/api/GameAPI";
 
 export class StatesManager {
   private readonly valueExtractor: ValueExtractor;
@@ -152,36 +152,7 @@ export class StatesManager {
 
     const game = (await response.json()) as GameFromServer;
 
-    return {
-      id: game.id.toString(),
-      name: game.name,
-      description: game.description,
-      paths: game.paths,
-      extractionPipeline: game.extractionPipeline,
-      gameStateParameters: {
-        filename: game.schema.filename,
-        parameters: game.schema.gameStateParameters.map((field) => ({
-          id: field.id.toString(),
-          key: field.key,
-          type: {
-            type: field.type,
-            id: field.type,
-          },
-          commonParameter: {
-            id: field.commonParameterId.toString(),
-            type: {
-              type: field.type,
-              id: field.type,
-            },
-            label: "",
-            description: "",
-          },
-          label: field.label,
-          description: field.description,
-        })),
-      },
-      iconURL: game.imageUrl,
-    };
+    return GameAPI.mapGameFromServer(game);
   }
 
   private async buildCookieHeader() {

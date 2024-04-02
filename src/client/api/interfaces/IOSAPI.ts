@@ -9,11 +9,9 @@ export interface IOSAPI {
 
   onGetSyncedSaves: (callback: () => void) => void;
 
-  sendSyncedSaves: (args: GameState[]) => Promise<ElectronApiResponse<void>>;
+  sendSyncedSaves: (args: GameState[]) => Promise<void>;
 
-  getStatePaths: (
-    paths: GamePath[]
-  ) => Promise<ElectronApiResponse<GamePath[]>>;
+  getStatePaths: (paths: GamePath[]) => Promise<GamePath[]>;
 
   uploadState(state: {
     gameId?: string;

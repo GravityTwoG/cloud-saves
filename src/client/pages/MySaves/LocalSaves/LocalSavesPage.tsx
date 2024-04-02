@@ -96,7 +96,7 @@ export const LocalSavesPage = () => {
         gameId: folder.gameId,
         localPath: folder.path,
         name: folder.gameName || folder.name,
-        isPublic: true,
+        isPublic: false,
       });
     } catch (e) {
       notify.error(e);

@@ -7,7 +7,7 @@ import {
   ResetPasswordDTO,
 } from "../interfaces/IAuthAPI";
 import { ApiError } from "../ApiError";
-import { LocalStorage } from "./LocalStorage";
+import { LocalStorage } from "../LocalStorage";
 
 const ls = new LocalStorage("users_mock");
 

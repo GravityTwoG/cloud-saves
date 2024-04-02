@@ -4,7 +4,7 @@ import { IOSAPI } from "../interfaces/IOSAPI";
 import { ApiError } from "../ApiError";
 import { IGameAPI } from "../interfaces/IGameAPI";
 import { ResourceRequest, ResourceResponse } from "../interfaces/common";
-import { LocalStorage } from "./LocalStorage";
+import { LocalStorage } from "../LocalStorage";
 
 const ls = new LocalStorage("game_states_");
 
@@ -37,13 +37,7 @@ export class GameStateAPIMock implements IGameStateAPI {
       }
     }
 
-    const response = await this.osAPI.getStatePaths(paths);
-
-    if (!response.data) {
-      throw new ApiError(response.error || "Failed to get state paths");
-    }
-
-    return response.data;
+    return this.osAPI.getStatePaths(paths);
   };
 
   getGameState = async (gameStateId: string): Promise<GameState> => {

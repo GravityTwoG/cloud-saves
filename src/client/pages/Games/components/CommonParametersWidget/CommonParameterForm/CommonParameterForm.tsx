@@ -98,7 +98,7 @@ export const CommonParameterForm = ({
               });
               return types.items.map((type) => ({
                 label: type.type,
-                value: type.id,
+                value: type.id.toString(),
               }));
             }}
             onBlur={() => field.onBlur()}

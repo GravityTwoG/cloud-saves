@@ -21,7 +21,15 @@ export type GameFromServer = {
       type: string;
       label: string;
       description: string;
-      commonParameterId: number;
+      commonParameterDTO: {
+        id: number;
+        gameStateParameterTypeDTO: {
+          id: number;
+          type: string;
+        };
+        label: string;
+        description: string;
+      };
     }[];
   };
   imageUrl: string;
@@ -37,7 +45,7 @@ export class GameAPI implements IGameAPI {
   getGame = async (gameId: string): Promise<Game> => {
     const game = await this.fetcher.get<GameFromServer>(`/games/${gameId}`);
 
-    return this.mapGameFromServer(game);
+    return GameAPI.mapGameFromServer(game);
   };
 
   getGames = async (
@@ -51,7 +59,7 @@ export class GameAPI implements IGameAPI {
     );
 
     return {
-      items: games.items.map(this.mapGameFromServer),
+      items: games.items.map(GameAPI.mapGameFromServer),
       totalCount: games.totalCount,
     };
   };
@@ -72,8 +80,12 @@ export class GameAPI implements IGameAPI {
           gameStateParameters: game.gameStateParameters.parameters.map(
             (field) => ({
               key: field.key,
-              type: field.type.type || field.type.id,
-              commonParameterId: field.commonParameter.id,
+              type: field.type.type,
+              commonParameterDTO: field.commonParameter.id
+                ? {
+                    id: field.commonParameter.id,
+                  }
+                : undefined,
               label: field.label,
               description: field.description,
             })
@@ -108,8 +120,12 @@ export class GameAPI implements IGameAPI {
             (field) => ({
               id: field.id,
               key: field.key,
-              type: field.type.type || field.type.id,
-              commonParameterId: field.commonParameter.id,
+              type: field.type.type,
+              commonParameterDTO: field.commonParameter.id
+                ? {
+                    id: field.commonParameter.id,
+                  }
+                : undefined,
               label: field.label,
               description: field.description,
             })
@@ -128,7 +144,7 @@ export class GameAPI implements IGameAPI {
     return this.fetcher.delete(`/games/${gameId}`);
   };
 
-  private mapGameFromServer = (game: GameFromServer): Game => {
+  static mapGameFromServer = (game: GameFromServer): Game => {
     return {
       id: game.id.toString(),
       name: game.name,
@@ -144,15 +160,25 @@ export class GameAPI implements IGameAPI {
             type: field.type,
             id: field.type,
           },
-          commonParameter: {
-            id: field.commonParameterId.toString(),
-            type: {
-              type: field.type,
-              id: field.type,
-            },
-            label: "",
-            description: "",
-          },
+          commonParameter: field.commonParameterDTO
+            ? {
+                id: field.commonParameterDTO.id.toString(),
+                type: {
+                  type: field.commonParameterDTO.gameStateParameterTypeDTO.type,
+                  id: field.commonParameterDTO.gameStateParameterTypeDTO.id.toString(),
+                },
+                label: field.commonParameterDTO.label,
+                description: field.commonParameterDTO.description,
+              }
+            : {
+                id: "",
+                type: {
+                  type: "",
+                  id: "",
+                },
+                label: "",
+                description: "",
+              },
           label: field.label,
           description: field.description,
         })),

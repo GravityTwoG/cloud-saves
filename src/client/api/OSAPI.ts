@@ -5,21 +5,17 @@ import { ApiError } from "./ApiError";
 export class OSAPI implements IOSAPI {
   getFolderInfo = async (folderPath: string) => {
     const response = await window.electronAPI.getFolderInfo(folderPath);
-
     if (!response.data) {
       throw response.error;
     }
-
     return response.data;
   };
 
   showFolderDialog = async () => {
     const response = await window.electronAPI.showFolderDialog();
-
     if (!response.data) {
       throw response.error;
     }
-
     return response.data;
   };
 
@@ -31,16 +27,16 @@ export class OSAPI implements IOSAPI {
     return window.electronAPI.onGetSyncedStates(callback);
   };
 
-  sendSyncedSaves = (args: GameState[]): Promise<ElectronApiResponse<void>> => {
-    return window.electronAPI.sendSyncedStates(args);
+  sendSyncedSaves = async (args: GameState[]): Promise<void> => {
+    await window.electronAPI.sendSyncedStates(args);
   };
 
-  getStatePaths = async (
-    paths: GamePath[]
-  ): Promise<ElectronApiResponse<GamePath[]>> => {
+  getStatePaths = async (paths: GamePath[]): Promise<GamePath[]> => {
     const response = await window.electronAPI.getStatePaths(paths);
-
-    return response;
+    if (!response.data) {
+      throw new ApiError(response.error || "Failed to get state paths");
+    }
+    return response.data;
   };
 
   uploadState = async (state: {
@@ -53,16 +49,17 @@ export class OSAPI implements IOSAPI {
     gameStateValues: { value: string; gameStateParameterId: string }[];
   }> => {
     const response = await window.electronAPI.uploadState(state);
-
     if (!response.data) {
       throw new ApiError(response.error || "Failed to upload state");
     }
-
     return response.data;
   };
 
   reuploadState = async (state: GameState): Promise<void> => {
-    await window.electronAPI.reuploadState(state);
+    const response = await window.electronAPI.reuploadState(state);
+    if (!response.data) {
+      throw new ApiError(response.error || "Failed to reupload state");
+    }
   };
 
   downloadState = async (gameState: GameState): Promise<void> => {

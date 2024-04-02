@@ -180,7 +180,7 @@ export const GameForm = (props: GameFormProps) => {
                       pageSize: 25,
                     });
                     return types.items.map((type) => ({
-                      value: type.id,
+                      value: type.id.toString(),
                       label: type.type,
                     }));
                   }}
@@ -199,7 +199,7 @@ export const GameForm = (props: GameFormProps) => {
                       pageSize: 25,
                     });
                     return parameters.items.map((parameter) => ({
-                      value: parameter.id,
+                      value: parameter.id.toString(),
                       label: parameter.label,
                     }));
                   }}

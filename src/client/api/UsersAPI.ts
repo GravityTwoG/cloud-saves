@@ -1,7 +1,15 @@
-import { UserRole } from "@/types";
+import { roleMap } from "./AuthAPI";
 import { Fetcher } from "./Fetcher";
 import { IUsersAPI, UserForAdmin } from "./interfaces/IUsersAPI";
 import { ResourceRequest, ResourceResponse } from "./interfaces/common";
+
+type UserFromServer = {
+  id: number;
+  username: string;
+  email: string;
+  role: "ROLE_ADMIN" | "ROLE_USER";
+  isBlocked: boolean;
+};
 
 export class UsersAPI implements IUsersAPI {
   private readonly fetcher: Fetcher;
@@ -13,10 +21,7 @@ export class UsersAPI implements IUsersAPI {
   getUsers = async (
     query: ResourceRequest
   ): Promise<ResourceResponse<UserForAdmin>> => {
-    const users = await this.fetcher.get<{
-      items: UserForAdmin[];
-      totalCount: number;
-    }>(
+    const users = await this.fetcher.get<ResourceResponse<UserFromServer>>(
       `/users?searchQuery=${query.searchQuery}&pageSize=${query.pageSize}&pageNumber=${query.pageNumber}`
     );
 
@@ -25,7 +30,7 @@ export class UsersAPI implements IUsersAPI {
         id: user.id.toString(),
         username: user.username,
         email: user.email,
-        role: UserRole.USER,
+        role: roleMap[user.role],
         isBlocked: user.isBlocked,
       })),
       totalCount: users.totalCount,

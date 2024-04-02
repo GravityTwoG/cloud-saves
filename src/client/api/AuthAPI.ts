@@ -8,12 +8,12 @@ import {
   ResetPasswordDTO,
 } from "./interfaces/IAuthAPI";
 
-const roleMap = {
+export const roleMap = {
   ROLE_USER: UserRole.USER,
   ROLE_ADMIN: UserRole.ADMIN,
 } as const;
 
-type ServerUser = {
+export type ServerUser = {
   email: string;
   username: string;
   role: keyof typeof roleMap;

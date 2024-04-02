@@ -23,7 +23,7 @@ export const PublicSavesPage = () => {
     onSearch,
     loadResource: loadSaves,
     setQuery,
-  } = useResource(gameStateAPI.getSharedStates);
+  } = useResource(gameStateAPI.getPublicStates);
 
   return (
     <Container>

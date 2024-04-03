@@ -97,6 +97,7 @@ export class GameAPI implements IGameAPI {
           filename: addGameDTO.gameStateParameters.filename,
           gameStateParameters: addGameDTO.gameStateParameters.parameters.map(
             (field) => ({
+              id: field.id,
               key: field.key,
               type: field.type.type,
               commonParameterId: field.commonParameter.id,

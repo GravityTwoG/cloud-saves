@@ -75,7 +75,7 @@ export const GamePage = () => {
         <H1>{game.name}</H1>
       </div>
 
-      <div>
+      <div className={classes.Actions}>
         <ConfirmButton
           onClick={() => {
             onDelete(game.id);

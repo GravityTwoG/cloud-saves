@@ -1,6 +1,7 @@
 import { clsx } from "clsx";
 
 import classes from "./list.module.scss";
+import { Paper } from "../../atoms/Paper";
 
 export type ListProps<E> = {
   elements: E[];
@@ -14,11 +15,10 @@ export function List<E>(props: ListProps<E>) {
   return (
     <ul className={clsx(classes.List, props.className)}>
       {props.elements.map((element) => (
-        <li
-          className={clsx(classes.ListElement, props.elementClassName)}
-          key={props.getKey(element)}
-        >
-          {props.renderElement(element)}
+        <li key={props.getKey(element)}>
+          <Paper className={clsx(classes.ListElement, props.elementClassName)}>
+            {props.renderElement(element)}
+          </Paper>
         </li>
       ))}
     </ul>

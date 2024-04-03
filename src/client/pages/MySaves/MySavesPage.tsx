@@ -1,7 +1,5 @@
 import { useTranslation } from "react-i18next";
 
-import classes from "./my-saves-page.module.scss";
-
 import { paths } from "@/client/config/paths";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
@@ -52,7 +50,7 @@ export const MySavesPage = () => {
         />
 
         <Grid
-          className={classes.SavesList}
+          className="my-4"
           elements={gameStates.items}
           getKey={(gameState) => gameState.id}
           renderElement={(gameState) => (

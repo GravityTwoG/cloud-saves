@@ -1,7 +1,5 @@
 .Paper {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  background-color: #ffffff;
+  padding: 0.75rem 1rem;
+  background-color: var(--paper-color);
+  border-radius: 6px;
 }

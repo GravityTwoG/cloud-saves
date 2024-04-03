@@ -1,7 +1,7 @@
 .List {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
   list-style: none;
 }
 
@@ -9,8 +9,4 @@
   display: flex;
   gap: 0.25rem;
   align-items: center;
-  padding: 1rem;
-  border: 1px solid var(--deco-color);
-  border-radius: 6px;
-  color: var(--text-color);
 }

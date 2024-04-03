@@ -8,6 +8,7 @@ import { useAuthContext } from "@/client/contexts/AuthContext";
 import { Container } from "@/client/ui/atoms/Container";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
+import { Paper } from "@/client/ui/atoms/Paper";
 import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";
 
 export const LoginPage = () => {
@@ -49,21 +50,25 @@ export const LoginPage = () => {
     <Container className={classes.LoginPage}>
       <section>
         <H1 className="tac">{t("form.title")}</H1>
-        <Form
-          config={formConfig}
-          onSubmit={onSubmit}
-          submitText={t("form.submit-button")}
-        />
 
-        <Paragraph>
-          {t("prompt-to-sign-up")}{" "}
-          <CommonLink href={paths.register({})}>
-            {t("link-to-sign-up")}{" "}
-          </CommonLink>
-          <CommonLink href={paths.requestPasswordReset({})}>
-            {t("link-to-forgot-pasword")}
-          </CommonLink>
-        </Paragraph>
+        <Paper>
+          <Form
+            config={formConfig}
+            onSubmit={onSubmit}
+            submitText={t("form.submit-button")}
+            className={classes.Form}
+          />
+
+          <Paragraph>
+            {t("prompt-to-sign-up")}{" "}
+            <CommonLink href={paths.register({})}>
+              {t("link-to-sign-up")}{" "}
+            </CommonLink>
+            <CommonLink href={paths.requestPasswordReset({})}>
+              {t("link-to-forgot-pasword")}
+            </CommonLink>
+          </Paragraph>
+        </Paper>
       </section>
     </Container>
   );

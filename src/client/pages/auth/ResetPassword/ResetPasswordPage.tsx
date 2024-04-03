@@ -9,6 +9,7 @@ import { useAuthContext } from "@/client/contexts/AuthContext";
 import { Container } from "@/client/ui/atoms/Container";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";
+import { Paper } from "@/client/ui/atoms/Paper";
 import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
 
 export const ResetPasswordPage = () => {
@@ -59,12 +60,15 @@ export const ResetPasswordPage = () => {
       <Container className={classes.ResetPasswordPage}>
         <section>
           <H1 className="tac">{t("form.title")}</H1>
-          <Paragraph>
-            {t("password-resetted")}{" "}
-            <CommonLink href={paths.login({})}>
-              {t("link-to-sign-in")}
-            </CommonLink>
-          </Paragraph>
+
+          <Paper>
+            <Paragraph>
+              {t("password-resetted")}{" "}
+              <CommonLink href={paths.login({})}>
+                {t("link-to-sign-in")}
+              </CommonLink>
+            </Paragraph>
+          </Paper>
         </section>
       </Container>
     );
@@ -74,11 +78,15 @@ export const ResetPasswordPage = () => {
     <Container className={classes.ResetPasswordPage}>
       <section>
         <H1 className="tac">{t("form.title")}</H1>
-        <Form
-          config={formConfig}
-          onSubmit={onSubmit}
-          submitText={t("form.submit-button")}
-        />
+
+        <Paper>
+          <Form
+            config={formConfig}
+            onSubmit={onSubmit}
+            submitText={t("form.submit-button")}
+            className={classes.Form}
+          />
+        </Paper>
       </section>
     </Container>
   );

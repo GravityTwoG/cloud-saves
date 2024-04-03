@@ -12,6 +12,7 @@ export const ParametersView = (props: ParametersViewProps) => {
       {props.gameStateValues.map((field, idx) => (
         <ParameterViewItem key={idx} {...field} />
       ))}
+      {props.gameStateValues.length === 0 && "-"}
     </div>
   );
 };

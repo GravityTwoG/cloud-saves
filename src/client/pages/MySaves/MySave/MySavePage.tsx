@@ -16,6 +16,7 @@ import { Bytes } from "@/client/ui/atoms/Bytes";
 import { Container } from "@/client/ui/atoms/Container";
 import { Button, PolyButton, ConfirmButton } from "@/client/ui/atoms/Button";
 import { Flex } from "@/client/ui/atoms/Flex";
+import { Paper } from "@/client/ui/atoms/Paper";
 import { Modal } from "@/client/ui/molecules/Modal";
 import { SharesWidget } from "@/client/lib/components/SharesWidget";
 import { ParametersView } from "@/client/lib/components/ParametersView";
@@ -177,7 +178,7 @@ export const MySavePage = () => {
         )}
       </H1>
 
-      <div className={classes.GameSaveSettings}>
+      <Paper className={classes.GameSaveSettings}>
         <div className={classes.GameSaveSettingsLeft}>
           <Paragraph>
             {t("path")}: {gameState.localPath}
@@ -215,7 +216,7 @@ export const MySavePage = () => {
             {t("delete-save")}{" "}
           </ConfirmButton>
         </Flex>
-      </div>
+      </Paper>
 
       <Modal
         isOpen={syncSettingsAreOpen}
@@ -267,9 +268,11 @@ export const MySavePage = () => {
 
       <H2>{t("about")}</H2>
 
-      <ParametersView gameStateValues={gameState.gameStateValues} />
+      <Paper>
+        <ParametersView gameStateValues={gameState.gameStateValues} />
+      </Paper>
 
-      <div className={classes.GameSaveArchive}>
+      <Paper className={classes.GameSaveArchive}>
         <span>
           {t("size")}: <Bytes bytes={gameState.sizeInBytes} />
         </span>
@@ -291,7 +294,7 @@ export const MySavePage = () => {
             {t("download")}
           </PolyButton>
         </div>
-      </div>
+      </Paper>
     </Container>
   );
 };

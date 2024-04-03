@@ -5,3 +5,12 @@
   align-items: center;
   min-height: 100vh;
 }
+
+.Form {
+  width: 100% !important;
+  max-width: 100%;
+  min-width: 400px;
+  @media (max-width: 500px) {
+    min-width: auto;
+  }
+}

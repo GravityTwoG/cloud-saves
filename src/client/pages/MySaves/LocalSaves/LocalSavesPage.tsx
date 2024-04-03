@@ -138,6 +138,7 @@ export const LocalSavesPage = () => {
       </div>
 
       <List
+        className="my-4"
         elements={files}
         getKey={(file) => file.path}
         renderElement={(file) => (

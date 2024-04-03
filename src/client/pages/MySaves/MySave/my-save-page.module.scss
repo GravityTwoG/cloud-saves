@@ -7,12 +7,39 @@
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  margin-bottom: 0.5rem;
 
   .GameIcon {
     width: 8rem;
     height: 6rem;
 
     object-fit: contain;
+  }
+
+  & > span {
+    width: 100%;
+  }
+}
+
+.GameStateNameForm {
+  flex: 1;
+  height: 100%;
+
+  .GameStateNameInput {
+    display: block;
+    width: 100%;
+    height: 108px;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: 3.75rem;
+    line-height: 1.8;
+    font-weight: 300;
+    color: var(--text-color);
+
+    border: none;
+    border-bottom: 1px solid var(--deco-color);
+    outline: none;
   }
 }
 

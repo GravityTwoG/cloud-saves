@@ -25,6 +25,7 @@ export const MySavePage = () => {
   const { t } = useTranslation(undefined, { keyPrefix: "pages.mySave" });
 
   const [gameState, setGameState] = useState<GameState | null>(null);
+  const [isNameEditing, setIsNameEditing] = useState(false);
   const { notify } = useUIContext();
   const { user } = useAuthContext();
 
@@ -93,8 +94,7 @@ export const MySavePage = () => {
 
   const downloadState = async () => {
     try {
-      const response = await gameStateAPI.downloadState(gameState);
-      console.log(response);
+      await gameStateAPI.downloadState(gameState);
     } catch (error) {
       notify.error(error);
     }
@@ -102,8 +102,7 @@ export const MySavePage = () => {
 
   const downloadStateAs = async () => {
     try {
-      const response = await gameStateAPI.downloadStateAs(gameState);
-      console.log(response);
+      await gameStateAPI.downloadStateAs(gameState);
     } catch (error) {
       notify.error(error);
     }
@@ -118,6 +117,38 @@ export const MySavePage = () => {
     }
   };
 
+  const onNameChange = async (e: React.FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault();
+      const eventTarget = e.target as unknown as {
+        gameStateName: HTMLInputElement;
+      };
+      if (
+        !eventTarget.gameStateName ||
+        typeof eventTarget.gameStateName.value !== "string"
+      )
+        return;
+
+      const newName = eventTarget.gameStateName.value;
+      if (newName === gameState.name || !newName.trim()) {
+        setIsNameEditing(false);
+        return;
+      }
+
+      await gameStateAPI.reuploadState({
+        ...gameState,
+        name: newName,
+      });
+      setGameState({
+        ...gameState,
+        name: newName,
+      });
+      setIsNameEditing(false);
+    } catch (error) {
+      notify.error(error);
+    }
+  };
+
   return (
     <Container className={classes.MySavePage}>
       <H1 className={classes.GameStateName}>
@@ -126,7 +157,24 @@ export const MySavePage = () => {
           alt={gameState.name}
           className={classes.GameIcon}
         />{" "}
-        {gameState.name}
+        {isNameEditing ? (
+          <form
+            onSubmit={onNameChange}
+            className={classes.GameStateNameForm}
+            onBlur={() => setIsNameEditing(false)}
+          >
+            <input
+              type="text"
+              defaultValue={gameState.name}
+              onBlur={() => setIsNameEditing(false)}
+              className={classes.GameStateNameInput}
+              name="gameStateName"
+              autoFocus
+            />
+          </form>
+        ) : (
+          <span onClick={() => setIsNameEditing(true)}>{gameState.name}</span>
+        )}
       </H1>
 
       <div className={classes.GameSaveSettings}>

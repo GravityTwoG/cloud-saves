@@ -102,7 +102,8 @@ export const electronAPI: Omit<
       await downloadToFolder(
         gameState.archiveURL,
         customPath.filePaths[0],
-        `${gameState.name}-archive.zip`
+        `${gameState.name}-archive.zip`,
+        true
       );
 
       return { data: null };

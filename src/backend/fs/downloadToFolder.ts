@@ -4,7 +4,8 @@ import electronDl from "electron-dl";
 export async function downloadToFolder(
   sourceURL: string,
   targetFolder: string,
-  targetFilename: string
+  targetFilename: string,
+  openFolderWhenDone?: boolean
 ): Promise<void> {
   const win = BrowserWindow.getAllWindows();
   if (!win.length) {
@@ -16,5 +17,6 @@ export async function downloadToFolder(
     directory: targetFolder,
     filename: targetFilename,
     overwrite: true,
+    openFolderWhenDone: openFolderWhenDone,
   });
 }

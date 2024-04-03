@@ -5,6 +5,7 @@
   flex-direction: column;
   border-radius: 6px;
   overflow: hidden;
+  background-size: cover;
 }
 
 .GameStateLink {
@@ -33,11 +34,17 @@
 
   &:hover {
     background-position: 0% 60%;
+
+    .GameStateActions {
+      opacity: 1;
+    }
   }
 }
 
 .GameStateActions {
   margin-left: auto;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .GameStateInfo {

@@ -55,7 +55,6 @@ export const SharesWidget = (props: SharesWidgetProps) => {
 
   const onAdd = async (data: FormData<typeof formConfig>) => {
     try {
-      console.log(data);
       if (!data.user.value) return t("select-user");
 
       await gameStateAPI.addShare({

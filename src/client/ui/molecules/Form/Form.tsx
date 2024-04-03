@@ -93,7 +93,6 @@ export function Form<C extends FormConfig>(props: FormProps<C>) {
       reset();
     } catch (error) {
       console.error(error);
-      alert(error);
     } finally {
       setIsLoading(false);
     }

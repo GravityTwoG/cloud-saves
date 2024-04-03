@@ -1,9 +1,9 @@
 import { UserRole } from "@/types";
 
-import { LoginPage } from "@/client/pages/Login/LoginPage";
-import { RegisterPage } from "@/client/pages/Register/RegisterPage";
-import { RequestPasswordResetPage } from "@/client/pages/RequestPasswordReset/RequestPasswordResetPage";
-import { ResetPasswordPage } from "@/client/pages/ResetPassword/ResetPasswordPage";
+import { LoginPage } from "@/client/pages/auth/Login/LoginPage";
+import { RegisterPage } from "@/client/pages/auth/Register/RegisterPage";
+import { RequestPasswordResetPage } from "@/client/pages/auth/RequestPasswordReset/RequestPasswordResetPage";
+import { ResetPasswordPage } from "@/client/pages/auth/ResetPassword/ResetPasswordPage";
 
 import { ProfilePage } from "@/client/pages/Profile/ProfilePage";
 import { MySavesPage } from "@/client/pages/MySaves/MySavesPage";
@@ -117,12 +117,7 @@ export const routes: RouteDescriptor[] = [
     access: RouteAccess.AUTHENTICATED,
     forRoles: [UserRole.USER],
   },
-  {
-    path: paths.save.pattern,
-    component: SavePage,
-    access: RouteAccess.AUTHENTICATED,
-    forRoles: [UserRole.USER],
-  },
+
   {
     path: paths.sharedSaves.pattern,
     component: SharedSavesPage,
@@ -142,6 +137,12 @@ export const routes: RouteDescriptor[] = [
       path: paths.publicSaves({}),
       icon: <SaveIcon />,
     },
+  },
+  {
+    path: paths.save.pattern,
+    component: SavePage,
+    access: RouteAccess.AUTHENTICATED,
+    forRoles: [UserRole.USER],
   },
 
   {

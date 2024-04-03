@@ -1,5 +1,5 @@
-import { Button, ButtonProps } from "@/client/ui/atoms/Button/Button";
-import { useConfirmModal } from "../../hooks/useConfirmModal/useConfirmModal";
+import { Button, ButtonProps } from "@/client/ui/atoms/Button";
+import { useConfirmModal } from "../../../hooks/useConfirmModal/useConfirmModal";
 
 export type ConfirmButtonProps = Omit<
   ButtonProps,

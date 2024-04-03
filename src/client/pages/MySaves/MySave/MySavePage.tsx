@@ -10,18 +10,15 @@ import { useUIContext } from "@/client/contexts/UIContext";
 import { useAuthContext } from "@/client/contexts/AuthContext";
 import { navigate } from "@/client/useHashLocation";
 import { paths } from "@/client/config/paths";
-import { syncMap } from "../utils";
 
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
-import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
-import { Container } from "@/client/ui/atoms/Container/Container";
-import { Button } from "@/client/ui/atoms/Button/Button";
+import { Bytes } from "@/client/ui/atoms/Bytes";
+import { Container } from "@/client/ui/atoms/Container";
+import { Button, PolyButton, ConfirmButton } from "@/client/ui/atoms/Button";
 import { Flex } from "@/client/ui/atoms/Flex";
-import { Modal } from "@/client/ui/molecules/Modal/Modal";
-import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
-import { PolyButton } from "@/client/ui/molecules/PolyButton/PolyButton";
+import { Modal } from "@/client/ui/molecules/Modal";
 import { SharesWidget } from "@/client/lib/components/SharesWidget";
-import { ParametersView } from "@/client/lib/components/ParametersView/ParametersView";
+import { ParametersView } from "@/client/lib/components/ParametersView";
 
 export const MySavePage = () => {
   const { gameStateAPI } = useAPIContext();
@@ -129,16 +126,16 @@ export const MySavePage = () => {
           alt={gameState.name}
           className={classes.GameIcon}
         />{" "}
-        {gameState?.name || t("save")}
+        {gameState.name}
       </H1>
 
       <div className={classes.GameSaveSettings}>
         <div className={classes.GameSaveSettingsLeft}>
           <Paragraph>
-            {t("path")}: {gameState?.localPath}
+            {t("path")}: {gameState.localPath}
           </Paragraph>
           <Paragraph>
-            {t("sync")}: {t(syncMap[gameState?.sync])}{" "}
+            {t("sync")}: {t(gameState.sync)}{" "}
             <Button
               onClick={() => {
                 setSyncSettingsAreOpen(true);

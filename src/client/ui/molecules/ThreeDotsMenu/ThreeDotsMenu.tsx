@@ -43,7 +43,6 @@ export const ThreeDotsMenu = (props: ThreeDotsMenuProps) => {
               className={classes.ThreeDotsMenuItem}
               onClick={item.onClick}
               key={item.key}
-              aria-role="button"
             >
               {item.children}
             </li>

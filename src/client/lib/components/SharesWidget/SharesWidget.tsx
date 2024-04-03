@@ -6,12 +6,11 @@ import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useModal } from "@/client/ui/hooks/useModal";
 
-import { Button } from "@/client/ui/atoms/Button/Button";
-import { List } from "@/client/ui/molecules/List/List";
-import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
-import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";
+import { Button, ConfirmButton } from "@/client/ui/atoms/Button";
 import { H2 } from "@/client/ui/atoms/Typography";
 import { Flex } from "@/client/ui/atoms/Flex";
+import { List } from "@/client/ui/molecules/List/List";
+import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";
 
 export type SharesWidgetProps = {
   gameStateId: string;

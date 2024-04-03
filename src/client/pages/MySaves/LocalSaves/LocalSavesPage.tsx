@@ -8,10 +8,10 @@ import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 
 import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
-import { Button } from "@/client/ui/atoms/Button/Button";
-import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
+import { Button } from "@/client/ui/atoms/Button";
+import { Bytes } from "@/client/ui/atoms/Bytes";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
-import { Container } from "@/client/ui/atoms/Container/Container";
+import { Container } from "@/client/ui/atoms/Container";
 import { List } from "@/client/ui/molecules/List/List";
 
 function last(arr: string[]) {

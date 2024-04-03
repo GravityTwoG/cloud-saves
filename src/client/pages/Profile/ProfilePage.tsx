@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useAuthContext } from "@/client/contexts/AuthContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 
-import { Container } from "@/client/ui/atoms/Container/Container";
+import { Container } from "@/client/ui/atoms/Container";
 import { H1, H2 } from "@/client/ui/atoms/Typography";
 import { Form, FormData } from "@/client/ui/molecules/Form/Form";
 

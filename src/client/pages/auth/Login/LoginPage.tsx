@@ -5,7 +5,7 @@ import classes from "./login-page.module.scss";
 import { paths } from "@/client/config/paths";
 import { useAuthContext } from "@/client/contexts/AuthContext";
 
-import { Container } from "@/client/ui/atoms/Container/Container";
+import { Container } from "@/client/ui/atoms/Container";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
 import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";

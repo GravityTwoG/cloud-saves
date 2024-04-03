@@ -9,10 +9,10 @@ import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
-import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
-import { Container } from "@/client/ui/atoms/Container/Container";
-import { PolyButton } from "@/client/ui/molecules/PolyButton/PolyButton";
-import { ParametersView } from "@/client/lib/components/ParametersView/ParametersView";
+import { Bytes } from "@/client/ui/atoms/Bytes";
+import { Container } from "@/client/ui/atoms/Container";
+import { PolyButton } from "@/client/ui/atoms/Button";
+import { ParametersView } from "@/client/lib/components/ParametersView";
 
 export const SavePage = () => {
   const { gameStateAPI } = useAPIContext();

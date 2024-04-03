@@ -10,8 +10,8 @@ import { useGameForm } from "./useGameForm";
 import { Controller } from "react-hook-form";
 import { CTAButton } from "@/client/ui/atoms/Button/CTAButton";
 import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
-import { Button } from "@/client/ui/atoms/Button/Button";
-import { Input } from "@/client/ui/atoms/Input/Input";
+import { Button } from "@/client/ui/atoms/Button";
+import { Input } from "@/client/ui/atoms/Input";
 import { Select } from "@/client/ui/atoms/Select/Select";
 import { Field, InputField } from "@/client/ui/molecules/Field";
 import { AsyncEntitySelect } from "@/client/ui/atoms/Select/AsyncSelect/AsyncEntitySelect";
@@ -23,7 +23,7 @@ export type GameFormProps = {
 
 export const GameForm = (props: GameFormProps) => {
   const { commonParametersAPI, parameterTypesAPI } = useAPIContext();
-  const { t } = useTranslation(undefined, { keyPrefix: "forms.gameForm" });
+  const { t } = useTranslation(undefined, { keyPrefix: "components.gameForm" });
   const {
     register,
     handleSubmit,

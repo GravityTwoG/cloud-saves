@@ -1,32 +1,21 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import classes from "./reset-password-page.module.scss";
 
-import classes from "./register-page.module.scss";
-
+import { useSearchParams } from "@/client/useHashLocation";
 import { paths } from "@/client/config/paths";
 import { useAuthContext } from "@/client/contexts/AuthContext";
 
+import { Container } from "@/client/ui/atoms/Container";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
-import { Container } from "@/client/ui/atoms/Container/Container";
-import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
 import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";
+import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
 
-export const RegisterPage = () => {
-  const { register } = useAuthContext();
-  const { t } = useTranslation(undefined, { keyPrefix: "pages.register" });
+export const ResetPasswordPage = () => {
+  const { resetPassword } = useAuthContext();
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.resetPassword" });
 
   const formConfig = {
-    username: {
-      type: "string",
-      placeholder: t("form.username-placeholder"),
-      label: t("form.username-label"),
-      required: t("form.username-is-required"),
-    },
-    email: {
-      type: "string",
-      placeholder: t("form.email-placeholder"),
-      label: t("form.email-label"),
-      required: t("form.email-is-required"),
-    },
     password: {
       type: "password",
       placeholder: t("form.password-placeholder"),
@@ -40,6 +29,9 @@ export const RegisterPage = () => {
       required: t("form.confirm-password-is-required"),
     },
   } satisfies FormConfig;
+  const [passwordResetted, setPasswordResetted] = useState(false);
+
+  const params = useSearchParams();
 
   const onSubmit = async (data: FormData<typeof formConfig>) => {
     try {
@@ -47,12 +39,12 @@ export const RegisterPage = () => {
         return t("form.passwords-do-not-match");
       }
 
-      await register({
-        username: data.username,
-        email: data.email,
-        password: data.password,
+      await resetPassword({
+        token: params.token,
+        newPassword: data.password,
       });
 
+      setPasswordResetted(true);
       return null;
     } catch (error) {
       if (error instanceof Error) {
@@ -62,8 +54,24 @@ export const RegisterPage = () => {
     }
   };
 
+  if (passwordResetted) {
+    return (
+      <Container className={classes.ResetPasswordPage}>
+        <section>
+          <H1 className="tac">{t("form.title")}</H1>
+          <Paragraph>
+            {t("password-resetted")}{" "}
+            <CommonLink href={paths.login({})}>
+              {t("link-to-sign-in")}
+            </CommonLink>
+          </Paragraph>
+        </section>
+      </Container>
+    );
+  }
+
   return (
-    <Container className={classes.RegisterPage}>
+    <Container className={classes.ResetPasswordPage}>
       <section>
         <H1 className="tac">{t("form.title")}</H1>
         <Form
@@ -71,11 +79,6 @@ export const RegisterPage = () => {
           onSubmit={onSubmit}
           submitText={t("form.submit-button")}
         />
-
-        <Paragraph>
-          {t("prompt-to-sign-in")}{" "}
-          <CommonLink href={paths.login({})}>{t("link-to-sign-in")}</CommonLink>
-        </Paragraph>
       </section>
     </Container>
   );

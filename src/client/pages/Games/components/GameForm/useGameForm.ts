@@ -39,7 +39,7 @@ type UseGameFormArgs = {
 };
 
 export const useGameForm = (args: UseGameFormArgs) => {
-  const { t } = useTranslation(undefined, { keyPrefix: "forms.gameForm" });
+  const { t } = useTranslation(undefined, { keyPrefix: "components.gameForm" });
   const {
     register,
     handleSubmit,

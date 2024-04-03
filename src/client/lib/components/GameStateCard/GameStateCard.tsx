@@ -1,12 +1,13 @@
+import { useTranslation } from "react-i18next";
+import { clsx } from "clsx";
+
 import { GameState } from "@/types";
+import { useConfirmModal } from "@/client/ui/hooks/useConfirmModal/useConfirmModal";
 
 import classes from "./game-state-card.module.scss";
-import { clsx } from "clsx";
+
 import { Link } from "wouter";
 import { ThreeDotsMenu } from "@/client/ui/molecules/ThreeDotsMenu";
-import { useTranslation } from "react-i18next";
-import { syncMap } from "@/client/pages/MySaves/utils";
-import { useConfirmModal } from "@/client/ui/hooks/useConfirmModal/useConfirmModal";
 
 export type GameStateCardProps = {
   gameState: GameState;
@@ -50,7 +51,7 @@ export const GameStateCard = (props: GameStateCardProps) => {
           <div className={classes.GameStateInfo}>
             <p>{props.gameState.name}</p>
             <p>
-              {t("sync")}: {t(syncMap[props.gameState.sync])}
+              {t("sync")}: {t(props.gameState.sync)}
             </p>
           </div>
         </div>

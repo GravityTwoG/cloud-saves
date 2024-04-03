@@ -13,8 +13,8 @@ import {
   useForm,
 } from "react-hook-form";
 import { CTAButton } from "@/client/ui/atoms/Button/CTAButton";
-import { Button } from "../../atoms/Button/Button";
-import { Input } from "@/client/ui/atoms/Input/Input";
+import { Button } from "../../atoms/Button";
+import { Input } from "@/client/ui/atoms/Input";
 import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
 import { AsyncEntitySelect } from "@/client/ui/atoms/Select/AsyncSelect/AsyncEntitySelect";
 

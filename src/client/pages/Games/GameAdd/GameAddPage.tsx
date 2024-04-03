@@ -8,7 +8,7 @@ import { navigate } from "@/client/useHashLocation";
 import { paths } from "@/client/config/paths";
 
 import { H1 } from "@/client/ui/atoms/Typography";
-import { Container } from "@/client/ui/atoms/Container/Container";
+import { Container } from "@/client/ui/atoms/Container";
 import { GameForm } from "../components/GameForm/GameForm";
 import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
 

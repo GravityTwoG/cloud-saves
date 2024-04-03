@@ -7,9 +7,9 @@ import { useResource } from "@/client/lib/hooks/useResource";
 import { paths } from "@/client/config/paths";
 
 import { H1 } from "@/client/ui/atoms/Typography";
-import { Container } from "@/client/ui/atoms/Container/Container";
+import { Container } from "@/client/ui/atoms/Container";
 import { Paginator } from "@/client/ui/molecules/Paginator";
-import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
+import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { Grid } from "@/client/ui/molecules/Grid";
 import { GameStateCard } from "@/client/lib/components/GameStateCard";
 
@@ -19,7 +19,7 @@ export const PublicSavesPage = () => {
 
   const {
     query,
-    resource: saves,
+    resource: gameStates,
     onSearch,
     loadResource: loadSaves,
     setQuery,
@@ -37,12 +37,12 @@ export const PublicSavesPage = () => {
 
       <Grid
         className={classes.SavesList}
-        elements={saves.items}
-        getKey={(save) => save.gameId}
-        renderElement={(save) => (
+        elements={gameStates.items}
+        getKey={(gameState) => gameState.id}
+        renderElement={(gameState) => (
           <GameStateCard
-            gameState={save}
-            href={paths.save({ gameStateId: save.id })}
+            gameState={gameState}
+            href={paths.save({ gameStateId: gameState.id })}
           />
         )}
       />
@@ -51,7 +51,7 @@ export const PublicSavesPage = () => {
         scope={3}
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
-        count={saves.totalCount}
+        count={gameStates.totalCount}
         onPageSelect={(page) => loadSaves({ ...query, pageNumber: page })}
       />
     </Container>

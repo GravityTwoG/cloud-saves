@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { clsx } from "clsx";
 
 import classes from "./poly-button.module.scss";
-import { useOnClickOutside } from "../../hooks/useOnClickOutside";
+import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
 
 export type PolyButtonProps = {
   className?: string;

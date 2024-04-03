@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 
 import classes from "./form.module.scss";
 
-import { Input } from "@/client/ui/atoms/Input/Input";
-import { Button } from "@/client/ui/atoms/Button/Button";
+import { Input } from "@/client/ui/atoms/Input";
+import { Button } from "@/client/ui/atoms/Button";
 import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
 
 export type ParameterTypeFormProps = {

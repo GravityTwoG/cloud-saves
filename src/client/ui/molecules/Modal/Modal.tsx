@@ -4,7 +4,7 @@ import classes from "./modal.module.scss";
 
 import { ReactTagProps } from "@/client/ui/types";
 
-import { Button } from "@/client/ui/atoms/Button/Button";
+import { Button } from "@/client/ui/atoms/Button";
 import { ModalPortal } from "./Portal";
 
 export type ModalProps = {

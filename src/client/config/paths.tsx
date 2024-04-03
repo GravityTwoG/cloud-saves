@@ -9,9 +9,9 @@ const profile = path("/");
 const mySaves = path("/my-saves");
 const localSaves = mySaves.path("/local");
 const mySave = mySaves.path("/:gameStateId");
+const sharedSaves = path("/saves/shared");
+const publicSaves = path("/saves/public");
 const save = path("/saves/:gameStateId");
-const sharedSaves = path("/shared-saves");
-const publicSaves = path("/public-saves");
 
 const games = path("/games");
 const gameAdd = path("/games-add");
@@ -29,9 +29,9 @@ export const paths = {
   mySaves,
   localSaves,
   mySave,
-  save,
   sharedSaves,
   publicSaves,
+  save,
 
   games,
   game,

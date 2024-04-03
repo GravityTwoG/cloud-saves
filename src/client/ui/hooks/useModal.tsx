@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Modal } from "@/client/ui/molecules/Modal/Modal";
+import { Modal } from "@/client/ui/molecules/Modal";
 import { ReactTagProps } from "@/client/ui/types";
 
 export type UseModalArgs = {

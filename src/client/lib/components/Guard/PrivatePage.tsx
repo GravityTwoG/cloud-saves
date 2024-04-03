@@ -8,7 +8,7 @@ import { AuthStatus, useAuthContext } from "@/client/contexts/AuthContext";
 import { paths } from "@/client/config/paths";
 
 import { H1 } from "@/client/ui/atoms/Typography";
-import { Container } from "@/client/ui/atoms/Container/Container";
+import { Container } from "@/client/ui/atoms/Container";
 import { Spinner } from "@/client/ui/atoms/Spinner";
 
 type PrivatePageProps = {

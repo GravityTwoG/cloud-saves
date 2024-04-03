@@ -9,14 +9,14 @@ import { useUIContext } from "@/client/contexts/UIContext";
 import { useParameterTypesModal } from "./components/ParameterTypesWidget";
 import { useCommonParametersModal } from "./components/CommonParametersWidget";
 
-import { Link } from "wouter";
 import { H1 } from "@/client/ui/atoms/Typography";
-import { Button, ConfirmButton } from "@/client/ui/atoms/Button";
+import { Button } from "@/client/ui/atoms/Button";
 import { Container } from "@/client/ui/atoms/Container";
 import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
-import { List } from "@/client/ui/molecules/List/List";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
+import { Grid } from "@/client/ui/molecules/Grid";
+import { GameCard } from "@/client/lib/components/GameCard";
 
 export const GamesPage = () => {
   const { gameAPI } = useAPIContext();
@@ -70,36 +70,16 @@ export const GamesPage = () => {
         onQueryChange={(searchQuery) => setQuery({ ...query, searchQuery })}
       />
 
-      <List
+      <Grid
         className={classes.GamesList}
         elements={games.items}
         getKey={(game) => game.id}
-        elementClassName={classes.GameItem}
         renderElement={(game) => (
-          <>
-            <Link
-              className={classes.GameLink}
-              href={paths.game({ gameId: game.id })}
-            >
-              <img
-                src={game.iconURL || "https://via.placeholder.com/64"}
-                alt={game.name}
-                className={classes.GameIcon}
-              />
-              <span>{game.name}</span>
-            </Link>
-
-            <div>
-              <ConfirmButton
-                onClick={() => {
-                  onDelete(game.id);
-                }}
-                color="danger"
-              >
-                {t("games-delete-game")}{" "}
-              </ConfirmButton>
-            </div>
-          </>
+          <GameCard
+            game={game}
+            href={paths.game({ gameId: game.id })}
+            onDelete={onDelete}
+          />
         )}
       />
 

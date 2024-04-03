@@ -21,9 +21,9 @@ export type GameFromServer = {
       type: string;
       label: string;
       description: string;
-      commonParameterDTO: {
+      commonParameter: {
         id: number;
-        gameStateParameterTypeDTO: {
+        type: {
           id: number;
           type: string;
         };
@@ -44,7 +44,6 @@ export class GameAPI implements IGameAPI {
 
   getGame = async (gameId: string): Promise<Game> => {
     const game = await this.fetcher.get<GameFromServer>(`/games/${gameId}`);
-
     return GameAPI.mapGameFromServer(game);
   };
 
@@ -65,35 +64,7 @@ export class GameAPI implements IGameAPI {
   };
 
   addGame = (game: AddGameDTO): Promise<Game> => {
-    const formData = new FormData();
-
-    formData.append("image", game.icon || new Blob());
-    formData.append(
-      "gameData",
-      JSON.stringify({
-        name: game.name,
-        description: game.description,
-        paths: game.paths,
-        extractionPipeline: game.extractionPipeline,
-        schema: {
-          filename: game.gameStateParameters.filename,
-          gameStateParameters: game.gameStateParameters.parameters.map(
-            (field) => ({
-              key: field.key,
-              type: field.type.type,
-              commonParameterDTO: field.commonParameter.id
-                ? {
-                    id: field.commonParameter.id,
-                  }
-                : undefined,
-              label: field.label,
-              description: field.description,
-            })
-          ),
-        },
-      })
-    );
-
+    const formData = this.mapToFormData(game);
     return this.fetcher.post("/games", {
       headers: {},
       body: formData,
@@ -101,39 +72,7 @@ export class GameAPI implements IGameAPI {
   };
 
   updateGame = (game: UpdateGameDTO): Promise<Game> => {
-    const formData = new FormData();
-
-    // if (game.icon) {
-    formData.append("image", game.icon || "");
-    // }
-
-    formData.append(
-      "gameData",
-      JSON.stringify({
-        name: game.name,
-        description: game.description,
-        paths: game.paths,
-        extractionPipeline: game.extractionPipeline,
-        schema: {
-          filename: game.gameStateParameters.filename,
-          gameStateParameters: game.gameStateParameters.parameters.map(
-            (field) => ({
-              id: field.id,
-              key: field.key,
-              type: field.type.type,
-              commonParameterDTO: field.commonParameter.id
-                ? {
-                    id: field.commonParameter.id,
-                  }
-                : undefined,
-              label: field.label,
-              description: field.description,
-            })
-          ),
-        },
-      })
-    );
-
+    const formData = this.mapToFormData(game);
     return this.fetcher.patch(`/games/${game.id}`, {
       headers: {},
       body: formData,
@@ -143,6 +82,34 @@ export class GameAPI implements IGameAPI {
   deleteGame = (gameId: string): Promise<void> => {
     return this.fetcher.delete(`/games/${gameId}`);
   };
+
+  private mapToFormData(addGameDTO: AddGameDTO) {
+    const formData = new FormData();
+    formData.append("image", addGameDTO.icon || "");
+    formData.append(
+      "gameData",
+      JSON.stringify({
+        name: addGameDTO.name,
+        description: addGameDTO.description,
+        paths: addGameDTO.paths,
+        extractionPipeline: addGameDTO.extractionPipeline,
+        schema: {
+          filename: addGameDTO.gameStateParameters.filename,
+          gameStateParameters: addGameDTO.gameStateParameters.parameters.map(
+            (field) => ({
+              id: field.id,
+              key: field.key,
+              type: field.type.type,
+              commonParameterId: field.commonParameter.id,
+              label: field.label,
+              description: field.description,
+            })
+          ),
+        },
+      })
+    );
+    return formData;
+  }
 
   static mapGameFromServer = (game: GameFromServer): Game => {
     return {
@@ -160,15 +127,15 @@ export class GameAPI implements IGameAPI {
             type: field.type,
             id: field.type,
           },
-          commonParameter: field.commonParameterDTO
+          commonParameter: field.commonParameter
             ? {
-                id: field.commonParameterDTO.id.toString(),
+                id: field.commonParameter.id.toString(),
                 type: {
-                  type: field.commonParameterDTO.gameStateParameterTypeDTO.type,
-                  id: field.commonParameterDTO.gameStateParameterTypeDTO.id.toString(),
+                  type: field.commonParameter.type.type,
+                  id: field.commonParameter.type.id.toString(),
                 },
-                label: field.commonParameterDTO.label,
-                description: field.commonParameterDTO.description,
+                label: field.commonParameter.label,
+                description: field.commonParameter.description,
               }
             : {
                 id: "",

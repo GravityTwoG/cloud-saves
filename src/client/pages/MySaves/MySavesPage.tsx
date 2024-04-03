@@ -1,17 +1,15 @@
 import { useTranslation } from "react-i18next";
 
-import classes from "./my-saves-page.module.scss";
-
 import { paths } from "@/client/config/paths";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
 
 import { H1, H2 } from "@/client/ui/atoms/Typography";
-import { Container } from "@/client/ui/atoms/Container/Container";
+import { Container } from "@/client/ui/atoms/Container";
 import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
 import { Paginator } from "@/client/ui/molecules/Paginator";
-import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
+import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { Grid } from "@/client/ui/molecules/Grid";
 import { GameStateCard } from "@/client/lib/components/GameStateCard";
 
@@ -22,7 +20,7 @@ export const MySavesPage = () => {
 
   const {
     query,
-    resource: saves,
+    resource: gameStates,
     onSearch,
     loadResource: loadSaves,
     setQuery,
@@ -52,13 +50,13 @@ export const MySavesPage = () => {
         />
 
         <Grid
-          className={classes.SavesList}
-          elements={saves.items}
-          getKey={(save) => save.gameId}
-          renderElement={(save) => (
+          className="my-4"
+          elements={gameStates.items}
+          getKey={(gameState) => gameState.id}
+          renderElement={(gameState) => (
             <GameStateCard
-              gameState={save}
-              href={paths.mySave({ gameStateId: save.id })}
+              gameState={gameState}
+              href={paths.mySave({ gameStateId: gameState.id })}
               onDelete={onDelete}
             />
           )}
@@ -68,7 +66,7 @@ export const MySavesPage = () => {
           scope={3}
           currentPage={query.pageNumber}
           pageSize={query.pageSize}
-          count={saves.totalCount}
+          count={gameStates.totalCount}
           onPageSelect={(page) => loadSaves({ ...query, pageNumber: page })}
         />
       </div>

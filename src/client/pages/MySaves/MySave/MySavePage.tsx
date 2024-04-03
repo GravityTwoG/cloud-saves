@@ -10,24 +10,23 @@ import { useUIContext } from "@/client/contexts/UIContext";
 import { useAuthContext } from "@/client/contexts/AuthContext";
 import { navigate } from "@/client/useHashLocation";
 import { paths } from "@/client/config/paths";
-import { syncMap } from "../utils";
 
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
-import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
-import { Container } from "@/client/ui/atoms/Container/Container";
-import { Button } from "@/client/ui/atoms/Button/Button";
+import { Bytes } from "@/client/ui/atoms/Bytes";
+import { Container } from "@/client/ui/atoms/Container";
+import { Button, PolyButton, ConfirmButton } from "@/client/ui/atoms/Button";
 import { Flex } from "@/client/ui/atoms/Flex";
-import { Modal } from "@/client/ui/molecules/Modal/Modal";
-import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
-import { PolyButton } from "@/client/ui/molecules/PolyButton/PolyButton";
+import { Paper } from "@/client/ui/atoms/Paper";
+import { Modal } from "@/client/ui/molecules/Modal";
 import { SharesWidget } from "@/client/lib/components/SharesWidget";
-import { ParametersView } from "@/client/lib/components/ParametersView/ParametersView";
+import { ParametersView } from "@/client/lib/components/ParametersView";
 
 export const MySavePage = () => {
   const { gameStateAPI } = useAPIContext();
   const { t } = useTranslation(undefined, { keyPrefix: "pages.mySave" });
 
   const [gameState, setGameState] = useState<GameState | null>(null);
+  const [isNameEditing, setIsNameEditing] = useState(false);
   const { notify } = useUIContext();
   const { user } = useAuthContext();
 
@@ -96,8 +95,7 @@ export const MySavePage = () => {
 
   const downloadState = async () => {
     try {
-      const response = await gameStateAPI.downloadState(gameState);
-      console.log(response);
+      await gameStateAPI.downloadState(gameState);
     } catch (error) {
       notify.error(error);
     }
@@ -105,8 +103,7 @@ export const MySavePage = () => {
 
   const downloadStateAs = async () => {
     try {
-      const response = await gameStateAPI.downloadStateAs(gameState);
-      console.log(response);
+      await gameStateAPI.downloadStateAs(gameState);
     } catch (error) {
       notify.error(error);
     }
@@ -121,6 +118,38 @@ export const MySavePage = () => {
     }
   };
 
+  const onNameChange = async (e: React.FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault();
+      const eventTarget = e.target as unknown as {
+        gameStateName: HTMLInputElement;
+      };
+      if (
+        !eventTarget.gameStateName ||
+        typeof eventTarget.gameStateName.value !== "string"
+      )
+        return;
+
+      const newName = eventTarget.gameStateName.value;
+      if (newName === gameState.name || !newName.trim()) {
+        setIsNameEditing(false);
+        return;
+      }
+
+      await gameStateAPI.reuploadState({
+        ...gameState,
+        name: newName,
+      });
+      setGameState({
+        ...gameState,
+        name: newName,
+      });
+      setIsNameEditing(false);
+    } catch (error) {
+      notify.error(error);
+    }
+  };
+
   return (
     <Container className={classes.MySavePage}>
       <H1 className={classes.GameStateName}>
@@ -129,16 +158,33 @@ export const MySavePage = () => {
           alt={gameState.name}
           className={classes.GameIcon}
         />{" "}
-        {gameState?.name || t("save")}
+        {isNameEditing ? (
+          <form
+            onSubmit={onNameChange}
+            className={classes.GameStateNameForm}
+            onBlur={() => setIsNameEditing(false)}
+          >
+            <input
+              type="text"
+              defaultValue={gameState.name}
+              onBlur={() => setIsNameEditing(false)}
+              className={classes.GameStateNameInput}
+              name="gameStateName"
+              autoFocus
+            />
+          </form>
+        ) : (
+          <span onClick={() => setIsNameEditing(true)}>{gameState.name}</span>
+        )}
       </H1>
 
-      <div className={classes.GameSaveSettings}>
+      <Paper className={classes.GameSaveSettings}>
         <div className={classes.GameSaveSettingsLeft}>
           <Paragraph>
-            {t("path")}: {gameState?.localPath}
+            {t("path")}: {gameState.localPath}
           </Paragraph>
           <Paragraph>
-            {t("sync")}: {t(syncMap[gameState?.sync])}{" "}
+            {t("sync")}: {t(gameState.sync)}{" "}
             <Button
               onClick={() => {
                 setSyncSettingsAreOpen(true);
@@ -170,7 +216,7 @@ export const MySavePage = () => {
             {t("delete-save")}{" "}
           </ConfirmButton>
         </Flex>
-      </div>
+      </Paper>
 
       <Modal
         isOpen={syncSettingsAreOpen}
@@ -222,9 +268,11 @@ export const MySavePage = () => {
 
       <H2>{t("about")}</H2>
 
-      <ParametersView gameStateValues={gameState.gameStateValues} />
+      <Paper>
+        <ParametersView gameStateValues={gameState.gameStateValues} />
+      </Paper>
 
-      <div className={classes.GameSaveArchive}>
+      <Paper className={classes.GameSaveArchive}>
         <span>
           {t("size")}: <Bytes bytes={gameState.sizeInBytes} />
         </span>
@@ -246,7 +294,7 @@ export const MySavePage = () => {
             {t("download")}
           </PolyButton>
         </div>
-      </div>
+      </Paper>
     </Container>
   );
 };

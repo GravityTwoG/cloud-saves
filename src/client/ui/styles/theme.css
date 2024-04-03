@@ -1,5 +1,6 @@
 :root {
-  --background-color: #fff;
+  --background-color: #f6f8fa;
+  --paper-color: #fff;
   --text-color: #000;
   --accent-color: #ff770f;
   --accent-hover-color: #f7a76c;
@@ -9,7 +10,8 @@
 }
 
 .dark-theme:root {
-  --background-color: #000000;
+  --background-color: #101010;
+  --paper-color: #000000;
   --text-color: #f0f0f0;
   --accent-color: #ff770f;
   --accent-hover-color: #f7a76c;

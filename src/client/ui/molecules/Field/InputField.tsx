@@ -1,6 +1,6 @@
 import React, { forwardRef, useId } from "react";
 
-import { Input, InputProps } from "@/client/ui/atoms/Input/Input";
+import { Input, InputProps } from "@/client/ui/atoms/Input";
 import { Field } from "./Field";
 
 export type InputFieldProps = {

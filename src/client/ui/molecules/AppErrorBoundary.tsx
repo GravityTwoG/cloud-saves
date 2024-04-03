@@ -2,7 +2,7 @@ import { Component, ErrorInfo } from "react";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { CTAButton } from "@/client/ui/atoms/Button/CTAButton";
-import { Container } from "@/client/ui/atoms/Container/Container";
+import { Container } from "@/client/ui/atoms/Container";
 
 export type AppErrorBoundaryProps = {
   children: React.ReactNode;

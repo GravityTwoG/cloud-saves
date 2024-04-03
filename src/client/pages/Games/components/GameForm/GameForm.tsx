@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { clsx } from "clsx";
 
 import classes from "./game-form.module.scss";
 
@@ -10,11 +11,13 @@ import { useGameForm } from "./useGameForm";
 import { Controller } from "react-hook-form";
 import { CTAButton } from "@/client/ui/atoms/Button/CTAButton";
 import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
-import { Button } from "@/client/ui/atoms/Button/Button";
-import { Input } from "@/client/ui/atoms/Input/Input";
+import { Button } from "@/client/ui/atoms/Button";
+import { Input } from "@/client/ui/atoms/Input";
+import { Paper } from "@/client/ui/atoms/Paper";
 import { Select } from "@/client/ui/atoms/Select/Select";
-import { Field, InputField } from "@/client/ui/molecules/Field";
+import { Paragraph } from "@/client/ui/atoms/Typography";
 import { AsyncEntitySelect } from "@/client/ui/atoms/Select/AsyncSelect/AsyncEntitySelect";
+import { InputField } from "@/client/ui/molecules/Field";
 
 export type GameFormProps = {
   game?: Game;
@@ -23,7 +26,7 @@ export type GameFormProps = {
 
 export const GameForm = (props: GameFormProps) => {
   const { commonParametersAPI, parameterTypesAPI } = useAPIContext();
-  const { t } = useTranslation(undefined, { keyPrefix: "forms.gameForm" });
+  const { t } = useTranslation(undefined, { keyPrefix: "components.gameForm" });
   const {
     register,
     handleSubmit,
@@ -44,59 +47,71 @@ export const GameForm = (props: GameFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(props.onSubmit)}>
-      <InputField
-        label={t("game-name")}
-        type="text"
-        placeholder={t("enter-game-name")}
-        {...register("name", { required: t("game-name-is-required") })}
-      />
-      {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
-
-      <InputField
-        label={t("game-description")}
-        type="text"
-        placeholder={t("enter-game-description")}
-        {...register("description")}
-      />
-      {errors.description && (
-        <ErrorText>{errors.description.message}</ErrorText>
-      )}
-
-      <InputField
-        label={t("game-icon")}
-        type="file"
-        placeholder={t("upload-image")}
-        {...register("icon")}
-      />
-      {iconPreview && (
-        <img
-          src={iconPreview}
-          alt={t("game-icon")}
-          className={classes.ImagePreview}
+      <Paper>
+        <InputField
+          label={t("game-name")}
+          type="text"
+          placeholder={t("enter-game-name")}
+          {...register("name", { required: t("game-name-is-required") })}
         />
-      )}
-      {errors.icon && <ErrorText>{errors.icon.message}</ErrorText>}
+        {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
 
-      <Field label={t("save-paths")}>
+        <InputField
+          label={t("game-description")}
+          type="text"
+          placeholder={t("enter-game-description")}
+          {...register("description")}
+        />
+        {errors.description && (
+          <ErrorText>{errors.description.message}</ErrorText>
+        )}
+
+        <InputField
+          label={t("game-icon")}
+          type="file"
+          placeholder={t("upload-image")}
+          {...register("icon")}
+        />
+        {iconPreview && (
+          <img
+            src={iconPreview}
+            alt={t("game-icon")}
+            className={classes.ImagePreview}
+          />
+        )}
+        {errors.icon && <ErrorText>{errors.icon.message}</ErrorText>}
+      </Paper>
+
+      <Paper className="my-4">
+        <Paragraph className={classes.Label}>{t("save-paths")}</Paragraph>
         {pathFields.map((field, index) => (
-          <div key={field.id} className={classes.PathItem}>
+          <div key={field.id} className={clsx(classes.PathItem, "mb-2")}>
             <Input {...register(`paths.${index}.path`)} />
-            <Button color="danger" onClick={() => removePath(index)}>
+            <Button
+              color="danger"
+              onClick={() => removePath(index)}
+              className="ml-1"
+            >
               {t("remove-path")}{" "}
             </Button>
           </div>
         ))}
-        <Button onClick={() => appendPath({ id: "", path: "" })}>
-          {t("add-path")}
-        </Button>
-      </Field>
-      {errors.paths && errors.paths.root && (
-        <ErrorText>{errors.paths.root.message}</ErrorText>
-      )}
+        <div className={classes.AddGameButtons}>
+          <Button onClick={() => appendPath({ id: "", path: "" })}>
+            {t("add-path")}
+          </Button>
+        </div>
+        {errors.paths && errors.paths.root && (
+          <ErrorText>{errors.paths.root.message}</ErrorText>
+        )}
+      </Paper>
 
-      <Field label={t("extraction-pipeline")}>
+      <Paper className="my-4">
+        <Paragraph className={classes.Label}>
+          {t("extraction-pipeline")}
+        </Paragraph>
         {extractionPipelineFields.map((field, index) => (
-          <div key={field.id} className={classes.PipelineItem}>
+          <div key={field.id} className={clsx(classes.PipelineItem, "mb-2")}>
             <Input
               {...register(`extractionPipeline.${index}.inputFilename`)}
               placeholder={t("input-filename")}
@@ -104,54 +119,64 @@ export const GameForm = (props: GameFormProps) => {
             <Select
               {...register(`extractionPipeline.${index}.type`)}
               options={pipelineItemTypes}
+              className="ml-1"
             />
             <Input
               {...register(`extractionPipeline.${index}.outputFilename`)}
               placeholder={t("output-filename")}
+              className="ml-1"
             />
             <Button
               color="danger"
               onClick={() => removeExtractionPipeline(index)}
+              className="ml-1"
             >
               {t("remove-extraction-pipeline")}
             </Button>
           </div>
         ))}
-        <Button
-          onClick={() =>
-            appendExtractionPipeline({
-              id: "",
-              inputFilename: "",
-              type: "sav-to-json",
-              outputFilename: "",
-            })
-          }
-        >
-          {t("add-pipeline-item")}{" "}
-        </Button>
-      </Field>
-      {errors.extractionPipeline && errors.extractionPipeline.root && (
-        <ErrorText>{errors.extractionPipeline.root.message}</ErrorText>
-      )}
-      {errors.extractionPipeline?.map
-        ? errors.extractionPipeline.map((error, idx) => (
-            <ErrorText key={idx}>{error?.message}</ErrorText>
-          ))
-        : null}
-
-      <InputField
-        label={t("parameters-schema-filename")}
-        {...register("gameStateParameters.filename")}
-        placeholder={t("parameters-schema-filename-0")}
-      />
-      {errors.gameStateParameters?.filename &&
-        errors.gameStateParameters.filename && (
-          <ErrorText>{errors.gameStateParameters.filename.message}</ErrorText>
+        <div className={classes.AddGameButtons}>
+          <Button
+            onClick={() =>
+              appendExtractionPipeline({
+                id: "",
+                inputFilename: "",
+                type: "sav-to-json",
+                outputFilename: "",
+              })
+            }
+          >
+            {t("add-pipeline-item")}{" "}
+          </Button>
+        </div>
+        {errors.extractionPipeline && errors.extractionPipeline.root && (
+          <ErrorText>{errors.extractionPipeline.root.message}</ErrorText>
         )}
+        {errors.extractionPipeline?.map
+          ? errors.extractionPipeline.map((error, idx) => (
+              <ErrorText key={idx}>{error?.message}</ErrorText>
+            ))
+          : null}
+      </Paper>
 
-      <Field label={t("parameters-schema-fields")}>
+      <Paper className="my-4">
+        <InputField
+          label={t("parameters-schema-filename")}
+          {...register("gameStateParameters.filename")}
+          placeholder={t("parameters-schema-filename-0")}
+        />
+        {errors.gameStateParameters?.filename &&
+          errors.gameStateParameters.filename && (
+            <ErrorText>{errors.gameStateParameters.filename.message}</ErrorText>
+          )}
+      </Paper>
+
+      <Paper>
+        <Paragraph className={classes.Label}>
+          {t("parameters-schema-fields")}
+        </Paragraph>
         {gameStateParameters.map((field, index) => (
-          <div key={field.id} className={classes.SchemaField}>
+          <div key={field.id} className={clsx(classes.SchemaField, "mt-4")}>
             <Input
               {...register(`gameStateParameters.parameters.${index}.key`)}
               placeholder={t("parameter-key")}
@@ -192,17 +217,6 @@ export const GameForm = (props: GameFormProps) => {
               control={control}
               render={({ field: selectField }) => (
                 <AsyncEntitySelect
-                  loadOptions={async (query) => {
-                    const parameters = await commonParametersAPI.getParameters({
-                      searchQuery: query,
-                      pageNumber: 1,
-                      pageSize: 25,
-                    });
-                    return parameters.items.map((parameter) => ({
-                      value: parameter.id.toString(),
-                      label: parameter.label,
-                    }));
-                  }}
                   onChange={(value) => {
                     selectField.onChange({
                       label: value.label,
@@ -216,6 +230,17 @@ export const GameForm = (props: GameFormProps) => {
                   }}
                   name={selectField.name}
                   placeholder={t("common-parameter")}
+                  loadOptions={async (query) => {
+                    const parameters = await commonParametersAPI.getParameters({
+                      searchQuery: query,
+                      pageNumber: 1,
+                      pageSize: 25,
+                    });
+                    return parameters.items.map((parameter) => ({
+                      value: parameter.id.toString(),
+                      label: parameter.label,
+                    }));
+                  }}
                 />
               )}
             />
@@ -237,35 +262,37 @@ export const GameForm = (props: GameFormProps) => {
             </Button>
           </div>
         ))}
-        <Button
-          onClick={() =>
-            appendGameStateParameter({
-              id: "",
-              key: "",
-              type: {
+        <div className={clsx(classes.AddGameButtons, "mt-2")}>
+          <Button
+            onClick={() =>
+              appendGameStateParameter({
                 id: "",
-                type: "",
-              },
-              commonParameter: { label: "-", id: "" },
-              label: "",
-              description: "",
-            })
-          }
-        >
-          {t("add-schema-field")}{" "}
-        </Button>
-      </Field>
-      {errors.gameStateParameters && errors.gameStateParameters.root && (
-        <ErrorText>{errors.gameStateParameters.root.message}</ErrorText>
-      )}
+                key: "",
+                type: {
+                  id: "",
+                  type: "",
+                },
+                commonParameter: { label: "-", id: "" },
+                label: "",
+                description: "",
+              })
+            }
+          >
+            {t("add-schema-field")}{" "}
+          </Button>
+        </div>
+        {errors.gameStateParameters && errors.gameStateParameters.root && (
+          <ErrorText>{errors.gameStateParameters.root.message}</ErrorText>
+        )}
 
-      {errors.gameStateParameters?.parameters?.map
-        ? errors.gameStateParameters.parameters.map((error, idx) => (
-            <ErrorText key={idx}>{error?.message}</ErrorText>
-          ))
-        : null}
+        {errors.gameStateParameters?.parameters?.map
+          ? errors.gameStateParameters.parameters.map((error, idx) => (
+              <ErrorText key={idx}>{error?.message}</ErrorText>
+            ))
+          : null}
+      </Paper>
 
-      <div className={classes.AddGameButtons}>
+      <div className={clsx(classes.AddGameButtons, "mt-4")}>
         <CTAButton type="submit">{t("add-game-submit")}</CTAButton>
       </div>
     </form>

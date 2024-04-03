@@ -7,7 +7,7 @@ import { paths } from "@/client/config/paths";
 import { AuthStatus, useAuthContext } from "@/client/contexts/AuthContext";
 
 import { Spinner } from "@/client/ui/atoms/Spinner";
-import { Container } from "@/client/ui/atoms/Container/Container";
+import { Container } from "@/client/ui/atoms/Container";
 import { UserRole } from "@/types";
 
 export const AnonymousPage = ({ children }: { children: ReactNode }) => {

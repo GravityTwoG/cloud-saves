@@ -28,6 +28,7 @@ export type AsyncSelectProps<T> = {
   id?: string;
   name?: string;
   disabled?: boolean;
+  className?: string;
 };
 
 export const AsyncSelect = function <T>(props: AsyncSelectProps<T>) {
@@ -50,6 +51,7 @@ export const AsyncSelect = function <T>(props: AsyncSelectProps<T>) {
         menuPlacement="auto"
         theme={themeFactory}
         isDisabled={props.disabled}
+        className={props.className}
       />
     </div>
   );
@@ -61,8 +63,12 @@ function themeFactory(theme: Theme) {
     borderRadius: 16,
     colors: {
       ...theme.colors,
-      primary: "var(--accent-color)",
+      primary: "var(--accent-color)", // border color on focus
       primary25: "var(--deco-color)",
+      primary50: "var(--accent-hover-color)", // background on press
+      neutral0: "var(--paper-color)", // background
+      neutral20: "var(--deco-color)", // border
+      neutral30: "var(--deco-color)",
     },
   };
 }

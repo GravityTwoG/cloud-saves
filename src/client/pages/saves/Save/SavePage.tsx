@@ -8,11 +8,12 @@ import { GameState } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 
+import { Bytes } from "@/client/ui/atoms/Bytes";
+import { Paper } from "@/client/ui/atoms/Paper";
+import { PolyButton } from "@/client/ui/atoms/Button";
+import { Container } from "@/client/ui/atoms/Container";
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
-import { Bytes } from "@/client/ui/atoms/Bytes/Bytes";
-import { Container } from "@/client/ui/atoms/Container/Container";
-import { PolyButton } from "@/client/ui/molecules/PolyButton/PolyButton";
-import { ParametersView } from "@/client/lib/components/ParametersView/ParametersView";
+import { ParametersView } from "@/client/lib/components/ParametersView";
 
 export const SavePage = () => {
   const { gameStateAPI } = useAPIContext();
@@ -72,19 +73,21 @@ export const SavePage = () => {
         {gameState?.name || t("save")}
       </H1>
 
-      <div className={classes.GameSaveSettings}>
+      <Paper className={classes.GameSaveSettings}>
         <div className={classes.GameSaveSettingsLeft}>
           <Paragraph>
             {t("path")}: {gameState?.localPath}
           </Paragraph>
         </div>
-      </div>
+      </Paper>
 
       <H2>{t("about")}</H2>
 
-      <ParametersView gameStateValues={gameState.gameStateValues} />
+      <Paper>
+        <ParametersView gameStateValues={gameState.gameStateValues} />
+      </Paper>
 
-      <div className={classes.GameSaveArchive}>
+      <Paper className={classes.GameSaveArchive}>
         <span>
           {t("size")}: <Bytes bytes={gameState.sizeInBytes} />
         </span>
@@ -106,7 +109,7 @@ export const SavePage = () => {
             {t("download")}
           </PolyButton>
         </div>
-      </div>
+      </Paper>
     </Container>
   );
 };

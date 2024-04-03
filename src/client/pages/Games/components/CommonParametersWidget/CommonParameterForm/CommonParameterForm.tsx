@@ -6,8 +6,8 @@ import classes from "./form.module.scss";
 import { CommonParameter } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
 
-import { Input } from "@/client/ui/atoms/Input/Input";
-import { Button } from "@/client/ui/atoms/Button/Button";
+import { Input } from "@/client/ui/atoms/Input";
+import { Button } from "@/client/ui/atoms/Button";
 import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
 import { AsyncEntitySelect } from "@/client/ui/atoms/Select/AsyncSelect/AsyncEntitySelect";
 

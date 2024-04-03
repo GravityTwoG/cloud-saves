@@ -14,6 +14,10 @@ type GameStateFromServer = {
   gameStateValues: {
     id: number;
     gameStateParameterId: number;
+    gameStateParameterType: {
+      id: number;
+      type: string;
+    };
     value: string;
     label: string;
     description: string;
@@ -54,7 +58,7 @@ export class GameStateAPI implements IGameStateAPI {
   getStatePaths = async (): Promise<GamePath[]> => {
     const pathsFromServer = await this.fetcher.get<{
       items: GamePathFromServer[];
-    }>(`/game-paths?pageSize=1000&pageNumber=1&searchQuery=""`);
+    }>(`/game-paths?pageSize=1000&pageNumber=1&searchQuery=`);
 
     const paths: GamePath[] = pathsFromServer.items.map((path) => ({
       id: path.id.toString(),
@@ -204,7 +208,7 @@ export class GameStateAPI implements IGameStateAPI {
       gameStateValues: state.gameStateValues.map((value) => ({
         value: value.value,
         gameStateParameterId: value.gameStateParameterId.toString(),
-        type: "type",
+        type: value.gameStateParameterType.type,
         label: value.label,
         description: value.description,
       })),

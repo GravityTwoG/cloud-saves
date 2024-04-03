@@ -2,6 +2,14 @@
   padding-bottom: 1rem;
 }
 
+.Label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 18px;
+  line-height: 32px;
+  text-align: left;
+}
+
 .AddGameButtons {
   display: flex;
   justify-content: flex-end;
@@ -10,21 +18,18 @@
 .PathItem {
   display: flex;
   align-items: stretch;
-  margin-bottom: 8px;
 }
 
 .PipelineItem {
   display: flex;
   align-items: stretch;
-  margin-bottom: 8px;
 }
 
 .SchemaField {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0.25rem;
   align-items: flex-end;
-  margin-bottom: 8px;
 }
 
 .ImagePreview {

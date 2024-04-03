@@ -7,7 +7,7 @@ type CommonParameterFromServer = {
   id: number;
   label: string;
   description: string;
-  gameStateParameterTypeDTO: {
+  type: {
     id: string;
     type: string;
   };
@@ -30,15 +30,7 @@ export class CommonParametersAPI implements ICommonParametersAPI {
     );
 
     return {
-      items: parameters.items.map((parameter) => ({
-        id: parameter.id.toString(),
-        label: parameter.label,
-        description: parameter.description,
-        type: {
-          id: parameter.gameStateParameterTypeDTO.id.toString(),
-          type: parameter.gameStateParameterTypeDTO.type,
-        },
-      })),
+      items: parameters.items.map(this.mapToCommonParameter),
       totalCount: parameters.totalCount,
     };
   };
@@ -48,51 +40,54 @@ export class CommonParametersAPI implements ICommonParametersAPI {
       `/common-parameters/${parameterId}`
     );
 
-    return {
-      id: parameter.id.toString(),
-      label: parameter.label,
-      description: parameter.description,
-      type: {
-        id: parameter.gameStateParameterTypeDTO.id.toString(),
-        type: parameter.gameStateParameterTypeDTO.type,
-      },
-    };
+    return this.mapToCommonParameter(parameter);
   };
+
+  private mapToCommonParameter = (
+    parameter: CommonParameterFromServer
+  ): CommonParameter => ({
+    id: parameter.id.toString(),
+    label: parameter.label,
+    description: parameter.description,
+    type: {
+      id: parameter.type.id.toString(),
+      type: parameter.type.type,
+    },
+  });
 
   createParameter = async (
     parameter: CommonParameter
   ): Promise<CommonParameter> => {
-    const formData = new FormData();
-    formData.append(
-      "commonParameterData",
-      JSON.stringify({
-        label: parameter.label,
-        description: parameter.description,
-        gameStateParameterTypeId: parameter.type.id,
-      })
-    );
-
-    const createdParameter = await this.fetcher.post<CommonParameterFromServer>(
+    const formData = this.mapToFormData(parameter);
+    const created = await this.fetcher.post<CommonParameterFromServer>(
       "/common-parameters",
       {
         headers: {},
         body: formData,
       }
     );
-    return {
-      id: createdParameter.id.toString(),
-      label: createdParameter.label,
-      description: createdParameter.description,
-      type: {
-        id: parameter.type.id.toString(),
-        type: parameter.type.type,
-      },
-    };
+    return this.mapToCommonParameter(created);
   };
 
   updateParameter = async (
     parameter: CommonParameter
   ): Promise<CommonParameter> => {
+    const formData = this.mapToFormData(parameter);
+    const updated = await this.fetcher.patch<CommonParameterFromServer>(
+      `/common-parameters/${parameter.id}`,
+      {
+        headers: {},
+        body: formData,
+      }
+    );
+    return this.mapToCommonParameter(updated);
+  };
+
+  deleteParameter = async (parameterId: string): Promise<void> => {
+    await this.fetcher.delete(`/common-parameters/${parameterId}`);
+  };
+
+  private mapToFormData(parameter: CommonParameter) {
     const formData = new FormData();
     formData.append(
       "commonParameterData",
@@ -102,28 +97,6 @@ export class CommonParametersAPI implements ICommonParametersAPI {
         gameStateParameterTypeId: parameter.type.id,
       })
     );
-
-    const updatedParameter =
-      await this.fetcher.patch<CommonParameterFromServer>(
-        `/common-parameters/${parameter.id}`,
-        {
-          headers: {},
-          body: formData,
-        }
-      );
-
-    return {
-      id: updatedParameter.id.toString(),
-      label: updatedParameter.label,
-      description: updatedParameter.description,
-      type: {
-        id: parameter.type.id.toString(),
-        type: parameter.type.type,
-      },
-    };
-  };
-
-  deleteParameter = async (parameterId: string): Promise<void> => {
-    await this.fetcher.delete(`/common-parameters/${parameterId}`);
-  };
+    return formData;
+  }
 }

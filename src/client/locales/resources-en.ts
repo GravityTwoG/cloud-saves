@@ -3,7 +3,6 @@ import register from "./en/pages/register.json";
 import resetPassword from "./en/pages/resetPassword.json";
 import requestPasswordReset from "./en/pages/requestPasswordReset.json";
 
-import gameForm from "./en/forms/gameForm.json";
 import games from "./en/pages/games.json";
 import addGame from "./en/pages/addGame.json";
 import game from "./en/pages/game.json";
@@ -15,6 +14,7 @@ import sharedSaves from "./en/pages/sharedSaves.json";
 import publicSaves from "./en/pages/publicSaves.json";
 import notFound from "./en/pages/notFound.json";
 
+import gameForm from "./en/components/gameForm.json";
 import GameStateCard from "./en/components/GameStateCard.json";
 
 import common from "./en/common.json";
@@ -42,10 +42,8 @@ export const resourcesEN = {
 
       notFound,
     },
-    forms: {
-      gameForm,
-    },
     components: {
+      gameForm,
       GameStateCard,
     },
     common: common,

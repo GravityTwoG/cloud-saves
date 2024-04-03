@@ -10,8 +10,8 @@ import { CommonParameter } from "@/types";
 import { Paragraph } from "@/client/ui/atoms/Typography";
 import { List } from "@/client/ui/molecules/List/List";
 import { Paginator } from "@/client/ui/molecules/Paginator";
-import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
-import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
+import { SearchForm } from "@/client/ui/molecules/SearchForm";
+import { ConfirmButton } from "@/client/ui/atoms/Button/";
 import { CommonParameterForm } from "./CommonParameterForm";
 
 export const CommonParametersWidget = () => {

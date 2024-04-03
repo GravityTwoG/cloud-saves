@@ -1,14 +1,12 @@
 import { useTranslation } from "react-i18next";
 
-import classes from "./shared-saves-page.module.scss";
-
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
 import { paths } from "@/client/config/paths";
 
 import { H1 } from "@/client/ui/atoms/Typography";
-import { Container } from "@/client/ui/atoms/Container/Container";
-import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
+import { Container } from "@/client/ui/atoms/Container";
+import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { Grid } from "@/client/ui/molecules/Grid";
 import { GameStateCard } from "@/client/lib/components/GameStateCard";
@@ -19,7 +17,7 @@ export const SharedSavesPage = () => {
 
   const {
     query,
-    resource: saves,
+    resource: gameStates,
     onSearch,
     loadResource: loadSaves,
     setQuery,
@@ -36,13 +34,13 @@ export const SharedSavesPage = () => {
       />
 
       <Grid
-        className={classes.SavesList}
-        elements={saves.items}
-        getKey={(save) => save.gameId}
-        renderElement={(save) => (
+        className="my-4"
+        elements={gameStates.items}
+        getKey={(gameState) => gameState.id}
+        renderElement={(gameState) => (
           <GameStateCard
-            gameState={save}
-            href={paths.save({ gameStateId: save.id })}
+            gameState={gameState}
+            href={paths.save({ gameStateId: gameState.id })}
           />
         )}
       />
@@ -51,7 +49,7 @@ export const SharedSavesPage = () => {
         scope={3}
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
-        count={saves.totalCount}
+        count={gameStates.totalCount}
         onPageSelect={(page) => loadSaves({ ...query, pageNumber: page })}
       />
     </Container>

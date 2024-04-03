@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import classes from "./not-found-page.module.scss";
 
-import { Container } from "@/client/ui/atoms/Container/Container";
+import { Container } from "@/client/ui/atoms/Container";
 import { H1 } from "@/client/ui/atoms/Typography";
 
 export const NotFoundPage = () => {

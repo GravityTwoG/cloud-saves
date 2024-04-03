@@ -8,9 +8,9 @@ import { useResource } from "@/client/lib/hooks/useResource";
 
 import { Paragraph } from "@/client/ui/atoms/Typography";
 import { List } from "@/client/ui/molecules/List/List";
-import { SearchForm } from "@/client/ui/molecules/SearchForm/SearchForm";
+import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { Paginator } from "@/client/ui/molecules/Paginator";
-import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
+import { ConfirmButton } from "@/client/ui/atoms/Button/";
 import { ParameterTypeForm } from "./ParameterTypeForm";
 
 export const ParameterTypesWidget = () => {

@@ -12,9 +12,9 @@ import { navigate } from "@/client/useHashLocation";
 import { paths } from "@/client/config/paths";
 
 import { H1 } from "@/client/ui/atoms/Typography";
-import { Container } from "@/client/ui/atoms/Container/Container";
+import { Container } from "@/client/ui/atoms/Container";
 import { GameForm } from "../components/GameForm/GameForm";
-import { ConfirmButton } from "@/client/ui/molecules/ConfirmButton/ConfirmButton";
+import { ConfirmButton } from "@/client/ui/atoms/Button/";
 
 export const GamePage = () => {
   const { gameAPI } = useAPIContext();
@@ -75,7 +75,7 @@ export const GamePage = () => {
         <H1>{game.name}</H1>
       </div>
 
-      <div>
+      <div className={classes.Actions}>
         <ConfirmButton
           onClick={() => {
             onDelete(game.id);

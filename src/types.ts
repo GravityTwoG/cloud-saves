@@ -64,10 +64,10 @@ export type GamePath = {
 
 export enum GameStateSync {
   NO = "no",
-  EVERY_HOUR = "every hour",
-  EVERY_DAY = "every day",
-  EVERY_WEEK = "every week",
-  EVERY_MONTH = "every month",
+  EVERY_HOUR = "every-hour",
+  EVERY_DAY = "every-day",
+  EVERY_WEEK = "every-week",
+  EVERY_MONTH = "every-month",
 }
 
 export type GameStateValue = {

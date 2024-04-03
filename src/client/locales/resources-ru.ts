@@ -3,7 +3,6 @@ import register from "./ru/pages/register.json";
 import resetPassword from "./ru/pages/resetPassword.json";
 import requestPasswordReset from "./ru/pages/requestPasswordReset.json";
 
-import gameForm from "./ru/forms/gameForm.json";
 import games from "./ru/pages/games.json";
 import addGame from "./ru/pages/addGame.json";
 import game from "./ru/pages/game.json";
@@ -15,6 +14,7 @@ import sharedSaves from "./ru/pages/sharedSaves.json";
 import publicSaves from "./ru/pages/publicSaves.json";
 import notFound from "./ru/pages/notFound.json";
 
+import gameForm from "./ru/components/gameForm.json";
 import GameStateCard from "./ru/components/GameStateCard.json";
 
 import common from "./ru/common.json";
@@ -42,10 +42,8 @@ export const resourcesRU = {
 
       notFound,
     },
-    forms: {
-      gameForm,
-    },
     components: {
+      gameForm,
       GameStateCard,
     },
     common: common,

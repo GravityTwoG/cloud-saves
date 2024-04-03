@@ -1,8 +1,8 @@
 import classes from "./search-form.module.scss";
 
 import SearchIcon from "@/client/ui/icons/Search.svg";
-import { Button } from "@/client/ui/atoms/Button/Button";
-import { Input } from "@/client/ui/atoms/Input/Input";
+import { Button } from "@/client/ui/atoms/Button";
+import { Input } from "@/client/ui/atoms/Input";
 
 export type SearchFormProps = {
   searchQuery: string;

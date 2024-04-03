@@ -5,9 +5,10 @@ import classes from "./request-password-reset-page.module.scss";
 import { paths } from "@/client/config/paths";
 import { useAuthContext } from "@/client/contexts/AuthContext";
 
-import { Container } from "@/client/ui/atoms/Container/Container";
+import { Container } from "@/client/ui/atoms/Container";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
+import { Paper } from "@/client/ui/atoms/Paper";
 import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";
 
 export const RequestPasswordResetPage = () => {
@@ -45,8 +46,11 @@ export const RequestPasswordResetPage = () => {
       <Container className={classes.ResetPasswordPage}>
         <section>
           <H1 className="tac">{t("form.title")}</H1>
-          <Paragraph>{t("email-sent")}</Paragraph>
-          <Paragraph>{t("prompt-to-check-email")}</Paragraph>
+
+          <Paper>
+            <Paragraph>{t("email-sent")}</Paragraph>
+            <Paragraph>{t("prompt-to-check-email")}</Paragraph>
+          </Paper>
         </section>
       </Container>
     );
@@ -56,14 +60,21 @@ export const RequestPasswordResetPage = () => {
     <Container className={classes.ResetPasswordPage}>
       <section>
         <H1 className="tac">{t("form.title")}</H1>
-        <Form config={formConfig} onSubmit={onSubmit} />
 
-        <Paragraph>
-          {t("prompt-to-sign-up")}{" "}
-          <CommonLink href={paths.register({})}>
-            {t("link-to-sign-up")}
-          </CommonLink>
-        </Paragraph>
+        <Paper>
+          <Form
+            config={formConfig}
+            onSubmit={onSubmit}
+            className={classes.Form}
+          />
+
+          <Paragraph>
+            {t("prompt-to-sign-up")}{" "}
+            <CommonLink href={paths.register({})}>
+              {t("link-to-sign-up")}
+            </CommonLink>
+          </Paragraph>
+        </Paper>
       </section>
     </Container>
   );

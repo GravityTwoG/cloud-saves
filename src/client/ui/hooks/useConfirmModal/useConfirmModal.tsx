@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import classes from "./confirm-modal.module.scss";
 
-import { Modal } from "../../molecules/Modal";
-import { Button } from "../../atoms/Button";
+import { Button } from "@/client/ui/atoms/Button";
+import { Modal } from "@/client/ui/molecules/Modal";
 
 export type UseConfirmModalArgs = {
   onConfirm?: () => void;

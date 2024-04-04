@@ -63,53 +63,57 @@ export const SavePage = () => {
   };
 
   return (
-    <Container className={classes.SavePage}>
-      <H1 className={classes.GameStateName}>
-        <img
-          src={gameState.gameIconURL || "https://via.placeholder.com/64"}
-          alt={gameState.name}
-          className={classes.GameIcon}
-        />{" "}
-        {gameState?.name || t("save")}
-      </H1>
+    <div className={classes.SavePage}>
+      <div
+        className={classes.GameImage}
+        style={{ backgroundImage: `url(${gameState.gameIconURL})` }}
+      >
+        <div className={classes.GameImageOverlay} />
+      </div>
 
-      <Paper className={classes.GameSaveSettings}>
-        <div className={classes.GameSaveSettingsLeft}>
-          <Paragraph>
-            {t("path")}: {gameState?.localPath}
-          </Paragraph>
-        </div>
-      </Paper>
+      <Container className={classes.PageContent}>
+        <H1 className={classes.GameStateName}>
+          {gameState?.name || t("save")}
+        </H1>
 
-      <H2>{t("about")}</H2>
+        <Paper className={classes.GameSaveSettings}>
+          <div className={classes.GameSaveSettingsLeft}>
+            <Paragraph>
+              {t("path")}: {gameState?.localPath}
+            </Paragraph>
+          </div>
+        </Paper>
 
-      <Paper>
-        <ParametersView gameStateValues={gameState.gameStateValues} />
-      </Paper>
+        <H2>{t("about")}</H2>
 
-      <Paper className={classes.GameSaveArchive}>
-        <span>
-          {t("size")}: <Bytes bytes={gameState.sizeInBytes} />
-        </span>
-        <span>
-          {t("uploaded-at")} {gameState.createdAt}
-        </span>
+        <Paper>
+          <ParametersView gameStateValues={gameState.gameStateValues} />
+        </Paper>
 
-        <div className={classes.Buttons}>
-          <PolyButton
-            subActions={[
-              {
-                onClick: downloadStateAs,
-                children: t("download-as"),
-                key: "1",
-              },
-            ]}
-            onClick={downloadState}
-          >
-            {t("download")}
-          </PolyButton>
-        </div>
-      </Paper>
-    </Container>
+        <Paper className={classes.GameSaveArchive}>
+          <span>
+            {t("size")}: <Bytes bytes={gameState.sizeInBytes} />
+          </span>
+          <span>
+            {t("uploaded-at")} {gameState.createdAt}
+          </span>
+
+          <div className={classes.Buttons}>
+            <PolyButton
+              subActions={[
+                {
+                  onClick: downloadStateAs,
+                  children: t("download-as"),
+                  key: "1",
+                },
+              ]}
+              onClick={downloadState}
+            >
+              {t("download")}
+            </PolyButton>
+          </div>
+        </Paper>
+      </Container>
+    </div>
   );
 };

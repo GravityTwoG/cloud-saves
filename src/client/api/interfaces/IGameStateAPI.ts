@@ -2,7 +2,7 @@ import { GamePath, GameState, GameStateSync, Share } from "@/types";
 import { ResourceRequest, ResourceResponse } from "./common";
 
 export interface IGameStateAPI {
-  getStatePaths(): Promise<GamePath[]>;
+  getStatePaths(query: ResourceRequest): Promise<ResourceResponse<GamePath>>;
 
   uploadState(state: {
     gameId?: string;

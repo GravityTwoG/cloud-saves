@@ -8,5 +8,6 @@
   "upload": "Upload",
   "local-saves": "Local Saves",
   "folder": "Folder",
-  "file": "File"
+  "file": "File",
+  "game-state-uploaded": "Game state uploaded"
 }

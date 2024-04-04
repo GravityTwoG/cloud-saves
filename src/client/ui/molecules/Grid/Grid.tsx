@@ -9,11 +9,19 @@ export type GridProps<E> = {
   getKey: (element: E) => string;
   className?: string;
   elementClassName?: string;
+  elementWidth?: number;
 };
 
 export function Grid<E>(props: GridProps<E>) {
   return (
-    <ul className={clsx(classes.Grid, props.className)}>
+    <ul
+      className={clsx(classes.Grid, props.className)}
+      style={{
+        gridTemplateColumns: `repeat(auto-fill, minmax(${
+          props.elementWidth || 200
+        }px, 1fr))`,
+      }}
+    >
       {props.elements.map((element) => (
         <li key={props.getKey(element)}>
           <Paper className={clsx(classes.GridElement, props.elementClassName)}>

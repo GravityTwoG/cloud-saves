@@ -17,15 +17,12 @@ export class GameStateAPIMock implements IGameStateAPI {
     this.gameAPI = gameAPI;
   }
 
-  getStatePaths = async (): Promise<GamePath[]> => {
+  getStatePaths = async (
+    query: ResourceRequest
+  ): Promise<ResourceResponse<GamePath>> => {
     const paths: GamePath[] = [];
 
-    const games = await this.gameAPI.getGames({
-      pageNumber: 1,
-      pageSize: 1000,
-      searchQuery: "",
-    });
-
+    const games = await this.gameAPI.getGames(query);
     for (const game of games.items) {
       for (const path of game.paths) {
         paths.push({
@@ -36,8 +33,12 @@ export class GameStateAPIMock implements IGameStateAPI {
         });
       }
     }
+    const localPaths = await this.osAPI.getStatePaths(paths);
 
-    return this.osAPI.getStatePaths(paths);
+    return {
+      items: localPaths,
+      totalCount: games.totalCount,
+    };
   };
 
   getGameState = async (gameStateId: string): Promise<GameState> => {

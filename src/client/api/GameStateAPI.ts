@@ -55,10 +55,14 @@ export class GameStateAPI implements IGameStateAPI {
     this.osAPI = osAPI;
   }
 
-  getStatePaths = async (): Promise<GamePath[]> => {
-    const pathsFromServer = await this.fetcher.get<{
-      items: GamePathFromServer[];
-    }>(`/game-paths?pageSize=1000&pageNumber=1&searchQuery=`);
+  getStatePaths = async (
+    query: ResourceRequest
+  ): Promise<ResourceResponse<GamePath>> => {
+    const pathsFromServer = await this.fetcher.get<
+      ResourceResponse<GamePathFromServer>
+    >(
+      `/game-paths?pageSize=${query.pageSize}&pageNumber=${query.pageNumber}&searchQuery=${query.searchQuery}`
+    );
 
     const paths: GamePath[] = pathsFromServer.items.map((path) => ({
       id: path.id.toString(),
@@ -67,8 +71,12 @@ export class GameStateAPI implements IGameStateAPI {
       gameName: path.gameName,
       gameIconURL: path.gameIconUrl,
     }));
+    const localPaths = await this.osAPI.getStatePaths(paths);
 
-    return this.osAPI.getStatePaths(paths);
+    return {
+      items: localPaths,
+      totalCount: pathsFromServer.totalCount,
+    };
   };
 
   getGameState = async (gameStateId: string): Promise<GameState> => {

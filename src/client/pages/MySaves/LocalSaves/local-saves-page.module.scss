@@ -1,12 +1,5 @@
 .FolderExplorer {
   margin: 0.5rem 0;
-  .FileInfo {
-    flex: 1;
-
-    &[data-type="folder"] {
-      cursor: pointer;
-    }
-  }
 
   .FileButton {
     margin-left: auto;
@@ -19,16 +12,65 @@
   margin: 1rem 0;
 }
 
-.GameInfo {
+.FileCard {
+  min-width: 200px;
+  min-height: 250px;
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding-top: 0.5rem;
+  flex-direction: column;
+  border-radius: 6px;
+  overflow: hidden;
+  background-size: cover;
+}
 
-  .GameIcon {
-    width: 20px;
-    height: 20px;
-    object-fit: cover;
-    fill: var(--text-color);
+.FileCardInner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 0.75rem 1rem;
+
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(0, 0, 0, 0.8) 60%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+  background-position: 0% 50%;
+  background-size: 100% 200%;
+  transition: background-position 0.3s ease;
+
+  &[data-type="folder"] {
+    cursor: pointer;
+  }
+
+  & > .FileActions {
+    margin-left: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  & > .FileCardInfo {
+    margin-top: auto;
+    color: white;
+
+    .FileInfo {
+      font-size: 0.875rem;
+      opacity: 0.8;
+    }
+
+    .GameInfo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-top: 0.5rem;
+    }
+  }
+
+  &:hover {
+    background-position: 0% 60%;
+
+    .FileActions {
+      opacity: 1;
+    }
   }
 }

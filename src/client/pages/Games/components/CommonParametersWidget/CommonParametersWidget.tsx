@@ -76,7 +76,7 @@ export const CommonParametersWidget = () => {
 
       <List
         elements={parameters.items}
-        className={classes.ParametersList}
+        className="my-4"
         elementClassName={classes.ParameterItem}
         getKey={(parameter) => parameter.id}
         renderElement={(parameter) => (

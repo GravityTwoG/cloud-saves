@@ -13,7 +13,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
     <div className={classes.MainLayout}>
       <Sidebar links={navLinks} />
 
-      <main>{children}</main>
+      <main className="custom-scrollbar">{children}</main>
     </div>
   );
 };

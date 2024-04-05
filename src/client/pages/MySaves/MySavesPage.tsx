@@ -58,6 +58,7 @@ export const MySavesPage = () => {
               gameState={gameState}
               href={paths.mySave({ gameStateId: gameState.id })}
               onDelete={onDelete}
+              showSyncSettings
             />
           )}
         />

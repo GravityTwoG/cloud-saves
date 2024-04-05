@@ -15,6 +15,7 @@ import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { Grid } from "@/client/ui/molecules/Grid";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
+import { FadedCard } from "@/client/ui/atoms/FadedCard";
 
 function last(arr: string[]) {
   return arr[arr.length - 1];
@@ -215,48 +216,42 @@ const FileCard = ({ file, onFolderOpen }: FileCardProps) => {
   };
 
   return (
-    <div
+    <FadedCard
+      imageURL={file.gameIconURL || ""}
       className={classes.FileCard}
-      style={{
-        backgroundImage: `url(${file.gameIconURL})`,
+      data-type={file.gameId ? "file" : file.type}
+      onClick={() => {
+        if (file.type === "folder" && !file.gameId) {
+          onFolderOpen(file);
+        }
       }}
     >
-      <div
-        className={classes.FileCardInner}
-        data-type={file.gameId ? "file" : file.type}
-        onClick={() => {
-          if (file.type === "folder" && !file.gameId) {
-            onFolderOpen(file);
-          }
-        }}
-      >
-        <div className={classes.FileActions}>
-          <Button onClick={() => uploadState(file)}>{t("upload")}</Button>
-        </div>
-
-        <div className={classes.FileCardInfo}>
-          <div className={classes.FileInfo}>
-            <p>
-              {`${file.type === "folder" ? t("folder") : t("file")}: `}
-              {file.name}
-            </p>
-
-            {!!file.size && (
-              <p>
-                size: <Bytes bytes={file.size} />
-              </p>
-            )}
-
-            {!!file.mtime && <p>modified: {file.mtime.toLocaleDateString()}</p>}
-          </div>
-
-          {!!file.gameId && (
-            <div className={classes.GameInfo}>
-              <span>{file.gameName}</span>
-            </div>
-          )}
-        </div>
+      <div className={classes.FileActions}>
+        <Button onClick={() => uploadState(file)}>{t("upload")}</Button>
       </div>
-    </div>
+
+      <div className={classes.FileCardInfo}>
+        <div className={classes.FileInfo}>
+          <p>
+            {`${file.type === "folder" ? t("folder") : t("file")}: `}
+            {file.name}
+          </p>
+
+          {!!file.size && (
+            <p>
+              size: <Bytes bytes={file.size} />
+            </p>
+          )}
+
+          {!!file.mtime && <p>modified: {file.mtime.toLocaleDateString()}</p>}
+        </div>
+
+        {!!file.gameId && (
+          <div className={classes.GameInfo}>
+            <span>{file.gameName}</span>
+          </div>
+        )}
+      </div>
+    </FadedCard>
   );
 };

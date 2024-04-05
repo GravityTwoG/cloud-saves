@@ -71,7 +71,7 @@ export const GamesPage = () => {
       />
 
       <Grid
-        className={classes.GamesList}
+        className="my-4"
         elements={games.items}
         getKey={(game) => game.id}
         renderElement={(game) => (

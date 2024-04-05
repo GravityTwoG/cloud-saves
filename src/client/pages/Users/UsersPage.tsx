@@ -56,7 +56,7 @@ export const UsersPage = () => {
       />
 
       <List
-        className={classes.UsersList}
+        className="my-4"
         elements={users.items}
         getKey={(user) => user.id}
         elementClassName={classes.UserItem}

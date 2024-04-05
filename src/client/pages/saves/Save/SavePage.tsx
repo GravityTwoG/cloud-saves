@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { clsx } from "clsx";
 import { useTranslation } from "react-i18next";
 import { useParams } from "wouter";
 
@@ -8,12 +9,12 @@ import { GameState } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 
-import { Bytes } from "@/client/ui/atoms/Bytes";
 import { Paper } from "@/client/ui/atoms/Paper";
-import { PolyButton } from "@/client/ui/atoms/Button";
 import { Container } from "@/client/ui/atoms/Container";
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
+import { GameStatePageLayout } from "@/client/layouts/GameStatePageLayout";
 import { ParametersView } from "@/client/lib/components/ParametersView";
+import { GameStateArchive } from "@/client/lib/components/GameStateArchive";
 
 export const SavePage = () => {
   const { gameStateAPI } = useAPIContext();
@@ -44,76 +45,26 @@ export const SavePage = () => {
     );
   }
 
-  const downloadState = async () => {
-    try {
-      const response = await gameStateAPI.downloadState(gameState);
-      console.log(response);
-    } catch (error) {
-      notify.error(error);
-    }
-  };
-
-  const downloadStateAs = async () => {
-    try {
-      const response = await gameStateAPI.downloadStateAs(gameState);
-      console.log(response);
-    } catch (error) {
-      notify.error(error);
-    }
-  };
-
   return (
-    <div className={classes.SavePage}>
-      <div
-        className={classes.GameImage}
-        style={{ backgroundImage: `url(${gameState.gameIconURL})` }}
-      >
-        <div className={classes.GameImageOverlay} />
-      </div>
+    <GameStatePageLayout gameImageURL={gameState.gameIconURL}>
+      <H1 className={classes.GameStateName}>{gameState.name}</H1>
 
-      <Container className={classes.PageContent}>
-        <H1 className={classes.GameStateName}>
-          {gameState?.name || t("save")}
-        </H1>
+      <Paper className={clsx(classes.GameSaveSettings, "mb-4")}>
+        <div className={classes.GameSaveSettingsLeft}>
+          <Paragraph>
+            {t("path")}: {gameState.localPath}
+          </Paragraph>
+        </div>
+      </Paper>
 
-        <Paper className={classes.GameSaveSettings}>
-          <div className={classes.GameSaveSettingsLeft}>
-            <Paragraph>
-              {t("path")}: {gameState?.localPath}
-            </Paragraph>
-          </div>
-        </Paper>
+      <H2>{t("about")}</H2>
 
-        <H2>{t("about")}</H2>
+      <ParametersView
+        className="mb-4"
+        gameStateValues={gameState.gameStateValues}
+      />
 
-        <Paper>
-          <ParametersView gameStateValues={gameState.gameStateValues} />
-        </Paper>
-
-        <Paper className={classes.GameSaveArchive}>
-          <span>
-            {t("size")}: <Bytes bytes={gameState.sizeInBytes} />
-          </span>
-          <span>
-            {t("uploaded-at")} {gameState.createdAt}
-          </span>
-
-          <div className={classes.Buttons}>
-            <PolyButton
-              subActions={[
-                {
-                  onClick: downloadStateAs,
-                  children: t("download-as"),
-                  key: "1",
-                },
-              ]}
-              onClick={downloadState}
-            >
-              {t("download")}
-            </PolyButton>
-          </div>
-        </Paper>
-      </Container>
-    </div>
+      <GameStateArchive className="mb-4" gameState={gameState} />
+    </GameStatePageLayout>
   );
 };

@@ -68,7 +68,7 @@ export const ParameterTypesWidget = () => {
 
       <List
         elements={types.items}
-        className={classes.TypesList}
+        className="my-4"
         elementClassName={classes.TypeItem}
         getKey={(type) => type.id}
         renderElement={(type) => (

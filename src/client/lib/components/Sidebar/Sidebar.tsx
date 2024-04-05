@@ -64,7 +64,7 @@ export const Sidebar = (props: SidebarProps) => {
         </ul>
       </nav>
 
-      <div className={classes.AppButtons}>
+      <div className="mt-auto">
         <button
           className={classes.AppButton}
           type="button"

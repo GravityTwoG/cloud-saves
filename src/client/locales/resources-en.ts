@@ -16,6 +16,7 @@ import notFound from "./en/pages/notFound.json";
 
 import gameForm from "./en/components/gameForm.json";
 import GameStateCard from "./en/components/GameStateCard.json";
+import GameStateArchive from "./en/components/GameStateArchive.json";
 
 import common from "./en/common.json";
 
@@ -45,6 +46,7 @@ export const resourcesEN = {
     components: {
       gameForm,
       GameStateCard,
+      GameStateArchive,
     },
     common: common,
   },

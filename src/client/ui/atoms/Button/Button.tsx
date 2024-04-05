@@ -12,29 +12,40 @@ const colorMap = {
   danger: classes.ColorDanger,
 };
 
+const variantMap = {
+  primary: classes.PrimaryButton,
+  CTA: classes.CTAButton,
+};
+
 export type ButtonProps = {
   isLoading?: boolean;
   color?: "primary" | "secondary" | "danger";
   width?: string;
+  variant?: "primary" | "CTA";
 } & ReactTagProps<"button">;
 
 export const Button: React.FC<ButtonProps> = ({
   isLoading,
   type = "button",
   color = "primary",
+  variant = "primary",
   ...props
 }) => {
   return (
     <button
       {...props}
       type={type}
-      className={clsx(classes.BaseButton, props.className, colorMap[color], {
-        [classes.isLoading]: isLoading,
-      })}
+      className={clsx(
+        classes.BaseButton,
+        props.className,
+        variantMap[variant],
+        colorMap[color],
+        isLoading && classes.isLoading
+      )}
       style={{ width: props.width, ...props.style }}
       disabled={props.disabled || isLoading}
     >
-      <span className={clsx(isLoading ? classes.loading : "")}>
+      <span className={clsx(isLoading && classes.loading)}>
         {props.children}
       </span>
 

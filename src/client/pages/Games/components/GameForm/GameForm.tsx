@@ -9,9 +9,8 @@ import { useAPIContext } from "@/client/contexts/APIContext";
 import { useGameForm } from "./useGameForm";
 
 import { Controller } from "react-hook-form";
-import { CTAButton } from "@/client/ui/atoms/Button/CTAButton";
-import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
 import { Button } from "@/client/ui/atoms/Button";
+import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
 import { Input } from "@/client/ui/atoms/Input";
 import { Paper } from "@/client/ui/atoms/Paper";
 import { Select } from "@/client/ui/atoms/Select/Select";
@@ -293,7 +292,9 @@ export const GameForm = (props: GameFormProps) => {
       </Paper>
 
       <div className={clsx(classes.AddGameButtons, "mt-4")}>
-        <CTAButton type="submit">{t("add-game-submit")}</CTAButton>
+        <Button variant="CTA" type="submit">
+          {t("add-game-submit")}
+        </Button>
       </div>
     </form>
   );

@@ -8,6 +8,7 @@ import { GameStateSync } from "@/types";
 import { Button } from "@/client/ui/atoms/Button";
 import { Paragraph } from "@/client/ui/atoms/Typography";
 import { Modal } from "@/client/ui/molecules/Modal";
+import { ExpandedSelect } from "@/client/ui/atoms/Select/ExpandedSelect";
 
 type SyncSettingsModalProps = {
   isOpen: boolean;
@@ -29,44 +30,25 @@ export const SyncSettingsModal = (props: SyncSettingsModalProps) => {
     >
       <Paragraph>{t("select-period")}</Paragraph>
 
-      <div className={classes.SyncSettingsPeriods}>
-        <Button
-          onClick={() => setSync(GameStateSync.NO)}
-          color={sync === GameStateSync.NO ? "primary" : "secondary"}
-        >
-          {t("no")}{" "}
-        </Button>
-        <Button
-          onClick={() => setSync(GameStateSync.EVERY_HOUR)}
-          color={sync === GameStateSync.EVERY_HOUR ? "primary" : "secondary"}
-        >
-          {t("every-hour")}{" "}
-        </Button>
-        <Button
-          onClick={() => setSync(GameStateSync.EVERY_DAY)}
-          color={sync === GameStateSync.EVERY_DAY ? "primary" : "secondary"}
-        >
-          {t("every-day")}{" "}
-        </Button>
-        <Button
-          onClick={() => setSync(GameStateSync.EVERY_WEEK)}
-          color={sync === GameStateSync.EVERY_WEEK ? "primary" : "secondary"}
-        >
-          {t("every-week")}{" "}
-        </Button>
-        <Button
-          onClick={() => setSync(GameStateSync.EVERY_MONTH)}
-          color={sync === GameStateSync.EVERY_MONTH ? "primary" : "secondary"}
-        >
-          {t("every-month")}{" "}
-        </Button>
+      <div className="mb-2">
+        <ExpandedSelect
+          options={[
+            { value: GameStateSync.NO, label: t("no") },
+            { value: GameStateSync.EVERY_HOUR, label: t("every-hour") },
+            { value: GameStateSync.EVERY_DAY, label: t("every-day") },
+            { value: GameStateSync.EVERY_WEEK, label: t("every-week") },
+            { value: GameStateSync.EVERY_MONTH, label: t("every-month") },
+          ]}
+          value={sync}
+          onChange={(option) => setSync(option)}
+        />
       </div>
 
       <Button
         onClick={() => props.setupSync(sync)}
         className={classes.SyncSettingsConfirmButton}
       >
-        {t("confirm")}{" "}
+        {t("confirm")}
       </Button>
     </Modal>
   );

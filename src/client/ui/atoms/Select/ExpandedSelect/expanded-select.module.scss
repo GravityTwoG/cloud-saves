@@ -1,0 +1,76 @@
+.ExpandedSelect {
+  max-width: 100%;
+  display: inline-block;
+  padding: 3px;
+  background-color: var(--paper-color);
+  border-radius: 6px;
+  overflow: auto;
+  position: relative;
+
+  // hide scrollbar
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.OptionsList {
+  display: flex;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+
+.ExpandedSelectVertical {
+  & > .OptionsList {
+    flex-direction: column;
+
+    & > .Option {
+      flex: 1 0 auto;
+    }
+  }
+}
+
+.Option {
+  min-width: 80px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 60px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--text-color);
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  user-select: none;
+
+  &:hover {
+    background-color: var(--deco-color);
+  }
+
+  &.OptionActive {
+    color: #fff;
+    background-color: var(--accent-color);
+    box-shadow: 3px 3px 5px 0 var(--accent-shadow-color);
+
+    &:hover {
+      background-color: var(--accent-hover-color);
+    }
+  }
+}
+
+.FakeInput {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip: rect(0 0 0 0);
+}

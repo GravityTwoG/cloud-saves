@@ -65,6 +65,7 @@ const FakeInput = forwardRef<
       ref={ref}
       className={classes.FakeInput}
       value={props.value}
+      onChange={() => {}}
     />
   );
 });

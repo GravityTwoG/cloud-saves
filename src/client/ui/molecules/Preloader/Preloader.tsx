@@ -13,10 +13,14 @@ export const Preloader = ({
   ...props
 }: PreloaderProps) => {
   return (
-    <div {...props} className={clsx(props.className, classes.Preloader)}>
+    <div
+      {...props}
+      data-is-visible={isLoading}
+      className={clsx(props.className, classes.Preloader)}
+    >
       {children}
 
-      <div className={classes.Spinner} data-is-visible={isLoading}>
+      <div className={classes.Spinner}>
         <Spinner />
       </div>
     </div>

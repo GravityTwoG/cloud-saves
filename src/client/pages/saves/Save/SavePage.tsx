@@ -10,7 +10,6 @@ import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 
 import { Paper } from "@/client/ui/atoms/Paper";
-import { Container } from "@/client/ui/atoms/Container";
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
 import { GameStatePageLayout } from "@/client/layouts/GameStatePageLayout";
 import { ParametersView } from "@/client/lib/components/ParametersView";
@@ -20,6 +19,7 @@ export const SavePage = () => {
   const { gameStateAPI } = useAPIContext();
   const { t } = useTranslation(undefined, { keyPrefix: "pages.mySave" });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [gameState, setGameState] = useState<GameState | null>(null);
   const { notify } = useUIContext();
 
@@ -28,26 +28,32 @@ export const SavePage = () => {
     (async () => {
       if (!gameStateId) return;
       try {
+        setIsLoading(true);
         const data = await gameStateAPI.getGameState(gameStateId);
         setGameState(data);
       } catch (error) {
         notify.error(error);
         setGameState(null);
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, []);
 
   if (!gameState || !gameStateId) {
     return (
-      <Container>
+      <GameStatePageLayout gameImageURL={""} isLoading={isLoading}>
         <H1>{t("game-save-not-found")}</H1>
-      </Container>
+      </GameStatePageLayout>
     );
   }
 
   return (
-    <GameStatePageLayout gameImageURL={gameState.gameImageURL}>
-      <H1 className={classes.GameStateName}>{gameState.name}</H1>
+    <GameStatePageLayout
+      gameImageURL={gameState.gameImageURL}
+      isLoading={isLoading}
+    >
+      <H1>{gameState.name}</H1>
 
       <Paper className={clsx(classes.GameSaveSettings, "mb-4")}>
         <div className={classes.GameSaveSettingsLeft}>

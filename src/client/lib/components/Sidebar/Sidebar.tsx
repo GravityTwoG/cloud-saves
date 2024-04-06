@@ -15,6 +15,9 @@ import { Link, useRoute } from "wouter";
 import { AuthGuard } from "@/client/lib/components/Guard/AuthGuard";
 import { AnonymousGuard } from "@/client/lib/components/Guard/AnonumousGuard";
 
+import LightThemeIcon from "@/client/ui/icons/LightTheme.svg";
+import DarkThemeIcon from "@/client/ui/icons/DarkTheme.svg";
+import LanguageIcon from "@/client/ui/icons/Language.svg";
 import LogoutIcon from "@/client/ui/icons/Logout.svg";
 import { useEffect } from "react";
 
@@ -72,7 +75,7 @@ export const Sidebar = (props: SidebarProps) => {
           title={t("common.toggle-theme")}
           aria-label={t("common.toggle-theme")}
         >
-          {theme === "light" ? "☀️" : "🌑"}
+          {theme === "light" ? <LightThemeIcon /> : <DarkThemeIcon />}
         </button>
         <button
           className={classes.AppButton}
@@ -87,6 +90,7 @@ export const Sidebar = (props: SidebarProps) => {
           title={t("common.change-language")}
           aria-label={t("common.change-language")}
         >
+          <LanguageIcon />
           {i18n.language === "en" ? "en" : "ru"}
         </button>
 

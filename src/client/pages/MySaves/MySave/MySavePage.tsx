@@ -13,7 +13,6 @@ import { navigate } from "@/client/app/useHashLocation";
 import { paths } from "@/client/config/paths";
 
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
-import { Container } from "@/client/ui/atoms/Container";
 import { Button, ConfirmButton } from "@/client/ui/atoms/Button";
 import { Flex } from "@/client/ui/atoms/Flex";
 import { Paper } from "@/client/ui/atoms/Paper";
@@ -29,6 +28,7 @@ export const MySavePage = () => {
   const { user } = useAuthContext();
   const { t } = useTranslation(undefined, { keyPrefix: "pages.mySave" });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [isNameEditing, setIsNameEditing] = useState(false);
   const [syncSettingsAreOpen, setSyncSettingsAreOpen] = useState(false);
@@ -38,20 +38,23 @@ export const MySavePage = () => {
     (async () => {
       if (!gameStateId) return;
       try {
+        setIsLoading(true);
         const data = await gameStateAPI.getGameState(gameStateId);
         setGameState(data);
       } catch (error) {
         notify.error(error);
         setGameState(null);
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, []);
 
   if (!gameState || !gameStateId) {
     return (
-      <Container>
+      <GameStatePageLayout gameImageURL={""} isLoading={isLoading}>
         <H1>{t("game-save-not-found")}</H1>
-      </Container>
+      </GameStatePageLayout>
     );
   }
 
@@ -72,12 +75,20 @@ export const MySavePage = () => {
     }
   };
 
+  const reuploadState = async (newGameState: GameState) => {
+    await gameStateAPI.reuploadState(newGameState);
+    setGameState(newGameState);
+  };
+
   const onReuploadState = async (newGameState: GameState) => {
     try {
-      await gameStateAPI.reuploadState(newGameState);
-      setGameState(newGameState);
+      await notify.promise(reuploadState(newGameState), {
+        loading: t("updating-state"),
+        success: t("updated-state"),
+        error: t("update-state-error"),
+      });
     } catch (error) {
-      notify.error(error);
+      console.error(error);
     }
   };
 
@@ -126,7 +137,10 @@ export const MySavePage = () => {
   };
 
   return (
-    <GameStatePageLayout gameImageURL={gameState.gameImageURL}>
+    <GameStatePageLayout
+      gameImageURL={gameState.gameImageURL}
+      isLoading={isLoading}
+    >
       <H1 className={classes.GameStateName}>
         {isNameEditing ? (
           <form
@@ -172,7 +186,7 @@ export const MySavePage = () => {
 
         <Flex fxdc ais gap="0.5rem" className={classes.GameSaveSettingsRight}>
           <Button onClick={() => onReuploadState(gameState)}>
-            {t("upload-save")}
+            {t("reupload-state")}
           </Button>
           <ConfirmButton
             onClick={() => {
@@ -180,7 +194,7 @@ export const MySavePage = () => {
             }}
             color="danger"
           >
-            {t("delete-save")}{" "}
+            {t("delete-state")}{" "}
           </ConfirmButton>
         </Flex>
       </Paper>

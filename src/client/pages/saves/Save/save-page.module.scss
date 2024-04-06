@@ -1,16 +1,3 @@
-.GameStateName {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-
-  .GameIcon {
-    width: 8rem;
-    height: 6rem;
-
-    object-fit: contain;
-  }
-}
-
 .GameSaveSettings {
   display: flex;
   gap: 0.5rem;

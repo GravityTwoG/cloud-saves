@@ -6,6 +6,7 @@ import requestPasswordReset from "./ru/pages/requestPasswordReset.json";
 import games from "./ru/pages/games.json";
 import addGame from "./ru/pages/addGame.json";
 import game from "./ru/pages/game.json";
+import localSaves from "./ru/pages/localSaves.json";
 import mySaves from "./ru/pages/mySaves.json";
 import mySave from "./ru/pages/mySave.json";
 import profile from "./ru/pages/profile.json";
@@ -28,6 +29,7 @@ export const resourcesRU = {
       requestPasswordReset,
 
       profile,
+      localSaves,
       mySaves,
       mySave,
 

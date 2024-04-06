@@ -7,10 +7,11 @@ import { useUIContext } from "@/client/contexts/UIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
 
 import { Paragraph } from "@/client/ui/atoms/Typography";
-import { List } from "@/client/ui/molecules/List/List";
-import { SearchForm } from "@/client/ui/molecules/SearchForm";
-import { Paginator } from "@/client/ui/molecules/Paginator";
 import { ConfirmButton } from "@/client/ui/atoms/Button/";
+import { List } from "@/client/ui/molecules/List/List";
+import { Preloader } from "@/client/ui/molecules/Preloader";
+import { Paginator } from "@/client/ui/molecules/Paginator";
+import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { ParameterTypeForm } from "./ParameterTypeForm";
 
 export const ParameterTypesWidget = () => {
@@ -21,9 +22,11 @@ export const ParameterTypesWidget = () => {
   const {
     query,
     resource: types,
+    isLoading,
     onSearch,
-    loadResource: loadTypes,
-    setQuery,
+    onSearchQueryChange,
+    onPageSelect,
+    _loadResource: loadTypes,
   } = useResource(parameterTypesAPI.getTypes);
 
   const onAdd = async (type: string) => {
@@ -63,39 +66,41 @@ export const ParameterTypesWidget = () => {
       <SearchForm
         onSearch={onSearch}
         searchQuery={query.searchQuery}
-        onQueryChange={(searchQuery) => setQuery({ ...query, searchQuery })}
+        onQueryChange={onSearchQueryChange}
       />
 
-      <List
-        elements={types.items}
-        className="my-4"
-        elementClassName={classes.TypeItem}
-        getKey={(type) => type.id}
-        renderElement={(type) => (
-          <>
-            <ParameterTypeForm
-              onSubmit={(newType) => onEdit(type.id, newType)}
-              defaultValue={type.type}
-              resetOnSubmit={false}
-            />
+      <Preloader isLoading={isLoading}>
+        <List
+          elements={types.items}
+          className="my-4"
+          elementClassName={classes.TypeItem}
+          getKey={(type) => type.id}
+          renderElement={(type) => (
+            <>
+              <ParameterTypeForm
+                onSubmit={(newType) => onEdit(type.id, newType)}
+                defaultValue={type.type}
+                resetOnSubmit={false}
+              />
 
-            <ConfirmButton
-              onClick={() => {
-                onDelete(type.id);
-              }}
-              color="danger"
-            >
-              {t("delete-type")}{" "}
-            </ConfirmButton>
-          </>
-        )}
-      />
+              <ConfirmButton
+                onClick={() => {
+                  onDelete(type.id);
+                }}
+                color="danger"
+              >
+                {t("delete-type")}{" "}
+              </ConfirmButton>
+            </>
+          )}
+        />
+      </Preloader>
 
       <Paginator
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
         count={types.totalCount}
-        onPageSelect={(pageNumber) => loadTypes({ ...query, pageNumber })}
+        onPageSelect={onPageSelect}
       />
     </div>
   );

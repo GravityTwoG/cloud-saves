@@ -78,8 +78,13 @@
 .AppButton {
   margin-top: 0.5rem;
   width: 100%;
-  padding-top: 2px;
-  padding-bottom: 2px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
 
   border-color: transparent;
   border-radius: 6px;

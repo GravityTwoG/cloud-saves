@@ -6,6 +6,7 @@ import requestPasswordReset from "./en/pages/requestPasswordReset.json";
 import games from "./en/pages/games.json";
 import addGame from "./en/pages/addGame.json";
 import game from "./en/pages/game.json";
+import localSaves from "./en/pages/localSaves.json";
 import mySaves from "./en/pages/mySaves.json";
 import mySave from "./en/pages/mySave.json";
 import profile from "./en/pages/profile.json";
@@ -29,6 +30,7 @@ export const resourcesEN = {
       requestPasswordReset,
 
       profile,
+      localSaves,
       mySaves,
       mySave,
 

@@ -38,18 +38,8 @@ html[data-theme="dark"] .GameImageOverlay {
 }
 
 .GameStateName {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
   margin-bottom: 0.5rem;
   color: var(--text-color);
-
-  .GameIcon {
-    width: 8rem;
-    height: 6rem;
-
-    object-fit: contain;
-  }
 
   & > span {
     width: 100%;

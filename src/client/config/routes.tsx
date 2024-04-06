@@ -141,8 +141,6 @@ export const routes: RouteDescriptor[] = [
   {
     path: paths.save.pattern,
     component: SavePage,
-    access: RouteAccess.AUTHENTICATED,
-    forRoles: [UserRole.USER],
   },
 
   {

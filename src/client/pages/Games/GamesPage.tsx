@@ -13,9 +13,10 @@ import { H1 } from "@/client/ui/atoms/Typography";
 import { Button } from "@/client/ui/atoms/Button";
 import { Container } from "@/client/ui/atoms/Container";
 import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
+import { Grid } from "@/client/ui/molecules/Grid";
+import { Preloader } from "@/client/ui/molecules/Preloader";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
-import { Grid } from "@/client/ui/molecules/Grid";
 import { GameCard } from "@/client/lib/components/GameCard";
 
 export const GamesPage = () => {
@@ -26,9 +27,11 @@ export const GamesPage = () => {
   const {
     query,
     resource: games,
+    isLoading,
     onSearch,
-    loadResource: loadGames,
-    setQuery,
+    onSearchQueryChange,
+    onPageSelect,
+    _loadResource: loadGames,
   } = useResource(gameAPI.getGames);
 
   const onDelete = async (gameId: string) => {
@@ -67,28 +70,30 @@ export const GamesPage = () => {
       <SearchForm
         searchQuery={query.searchQuery}
         onSearch={onSearch}
-        onQueryChange={(searchQuery) => setQuery({ ...query, searchQuery })}
+        onQueryChange={onSearchQueryChange}
       />
 
-      <Grid
-        className="my-4"
-        elements={games.items}
-        getKey={(game) => game.id}
-        renderElement={(game) => (
-          <GameCard
-            game={game}
-            href={paths.game({ gameId: game.id })}
-            onDelete={onDelete}
-          />
-        )}
-      />
+      <Preloader isLoading={isLoading}>
+        <Grid
+          className="my-4"
+          elements={games.items}
+          getKey={(game) => game.id}
+          renderElement={(game) => (
+            <GameCard
+              game={game}
+              href={paths.game({ gameId: game.id })}
+              onDelete={onDelete}
+            />
+          )}
+        />
+      </Preloader>
 
       <Paginator
         scope={3}
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
         count={games.totalCount}
-        onPageSelect={(pageNumber) => loadGames({ ...query, pageNumber })}
+        onPageSelect={onPageSelect}
       />
     </Container>
   );

@@ -6,9 +6,10 @@ import { paths } from "@/client/config/paths";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
+import { Grid } from "@/client/ui/molecules/Grid";
+import { Preloader } from "@/client/ui/molecules/Preloader";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
-import { Grid } from "@/client/ui/molecules/Grid";
 import { GameStateCard } from "@/client/lib/components/GameStateCard";
 
 export const PublicSavesPage = () => {
@@ -18,9 +19,10 @@ export const PublicSavesPage = () => {
   const {
     query,
     resource: gameStates,
+    isLoading,
     onSearch,
-    loadResource: loadSaves,
-    setQuery,
+    onSearchQueryChange,
+    onPageSelect,
   } = useResource(gameStateAPI.getPublicStates);
 
   return (
@@ -30,27 +32,29 @@ export const PublicSavesPage = () => {
       <SearchForm
         searchQuery={query.searchQuery}
         onSearch={onSearch}
-        onQueryChange={(searchQuery) => setQuery({ ...query, searchQuery })}
+        onQueryChange={onSearchQueryChange}
       />
 
-      <Grid
-        className="my-4"
-        elements={gameStates.items}
-        getKey={(gameState) => gameState.id}
-        renderElement={(gameState) => (
-          <GameStateCard
-            gameState={gameState}
-            href={paths.save({ gameStateId: gameState.id })}
-          />
-        )}
-      />
+      <Preloader isLoading={isLoading}>
+        <Grid
+          className="my-4"
+          elements={gameStates.items}
+          getKey={(gameState) => gameState.id}
+          renderElement={(gameState) => (
+            <GameStateCard
+              gameState={gameState}
+              href={paths.save({ gameStateId: gameState.id })}
+            />
+          )}
+        />
+      </Preloader>
 
       <Paginator
         scope={3}
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
         count={gameStates.totalCount}
-        onPageSelect={(page) => loadSaves({ ...query, pageNumber: page })}
+        onPageSelect={onPageSelect}
       />
     </Container>
   );

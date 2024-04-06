@@ -12,6 +12,7 @@ export const useResource = <
   loadResource: (query: Q) => Promise<{ items: T[]; totalCount: number }>,
   options?: { pageSize: number }
 ) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState(() => ({
     searchQuery: "",
     pageNumber: 1,
@@ -31,6 +32,7 @@ export const useResource = <
   const loadResourceDebounced = useDebouncedCallback(
     async (query: Q) => {
       try {
+        setIsLoading(true);
         const data = await loadResource(query);
         setResource({
           items: data.items,
@@ -39,25 +41,38 @@ export const useResource = <
         setQuery(query);
       } catch (error) {
         notify.error(error);
+      } finally {
+        setIsLoading(false);
       }
     },
     [],
     200
   );
 
-  const onSearch = () => {
-    loadResourceDebounced({ ...query, pageNumber: 1 });
-  };
-
   useEffect(() => {
     loadResourceDebounced(query);
   }, []);
 
+  const onSearch = () => {
+    loadResourceDebounced({ ...query, pageNumber: 1 });
+  };
+
+  const onSearchQueryChange = (searchQuery: string) => {
+    loadResourceDebounced({ ...query, searchQuery, pageNumber: 1 });
+  };
+
+  const onPageSelect = (pageNumber: number) => {
+    loadResourceDebounced({ ...query, pageNumber });
+  };
+
   return {
     query,
     resource,
+    isLoading,
     onSearch,
-    loadResource: loadResourceDebounced,
-    setQuery,
+    onSearchQueryChange,
+    onPageSelect,
+    _loadResource: loadResourceDebounced,
+    _setQuery: setQuery,
   };
 };

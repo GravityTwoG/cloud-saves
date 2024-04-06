@@ -126,7 +126,7 @@ export const MySavePage = () => {
   };
 
   return (
-    <GameStatePageLayout gameImageURL={gameState.gameIconURL}>
+    <GameStatePageLayout gameImageURL={gameState.gameImageURL}>
       <H1 className={classes.GameStateName}>
         {isNameEditing ? (
           <form

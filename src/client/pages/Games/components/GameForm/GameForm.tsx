@@ -30,7 +30,7 @@ export const GameForm = (props: GameFormProps) => {
     register,
     handleSubmit,
     errors,
-    iconPreview,
+    imagePreview,
     pathFields,
     appendPath,
     removePath,
@@ -51,6 +51,7 @@ export const GameForm = (props: GameFormProps) => {
           label={t("game-name")}
           type="text"
           placeholder={t("enter-game-name")}
+          autoFocus
           {...register("name", { required: t("game-name-is-required") })}
         />
         {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
@@ -66,19 +67,19 @@ export const GameForm = (props: GameFormProps) => {
         )}
 
         <InputField
-          label={t("game-icon")}
+          label={t("game-image")}
           type="file"
           placeholder={t("upload-image")}
-          {...register("icon")}
+          {...register("image")}
         />
-        {iconPreview && (
+        {imagePreview && (
           <img
-            src={iconPreview}
-            alt={t("game-icon")}
+            src={imagePreview}
+            alt={t("game-image")}
             className={classes.ImagePreview}
           />
         )}
-        {errors.icon && <ErrorText>{errors.icon.message}</ErrorText>}
+        {errors.image && <ErrorText>{errors.image.message}</ErrorText>}
       </Paper>
 
       <Paper className="my-4">
@@ -91,7 +92,7 @@ export const GameForm = (props: GameFormProps) => {
               onClick={() => removePath(index)}
               className="ml-1"
             >
-              {t("remove-path")}{" "}
+              {t("remove-path")}
             </Button>
           </div>
         ))}
@@ -145,7 +146,7 @@ export const GameForm = (props: GameFormProps) => {
               })
             }
           >
-            {t("add-pipeline-item")}{" "}
+            {t("add-pipeline-item")}
           </Button>
         </div>
         {errors.extractionPipeline && errors.extractionPipeline.root && (
@@ -277,7 +278,7 @@ export const GameForm = (props: GameFormProps) => {
               })
             }
           >
-            {t("add-schema-field")}{" "}
+            {t("add-schema-field")}
           </Button>
         </div>
         {errors.gameStateParameters && errors.gameStateParameters.root && (

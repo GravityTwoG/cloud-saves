@@ -107,7 +107,7 @@ export const LocalSavesPage = () => {
       type: "folder" as "folder" | "file",
       gameId: path.gameId,
       gameName: path.gameName,
-      gameIconURL: path.gameIconURL || "",
+      gameIconURL: path.gameImageURL || "",
     }));
   }, [paths, isManual, files]);
 

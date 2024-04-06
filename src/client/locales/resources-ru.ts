@@ -14,7 +14,7 @@ import sharedSaves from "./ru/pages/sharedSaves.json";
 import publicSaves from "./ru/pages/publicSaves.json";
 import notFound from "./ru/pages/notFound.json";
 
-import gameForm from "./ru/components/gameForm.json";
+import gameForm from "./ru/components/GameForm.json";
 import GameStateCard from "./ru/components/GameStateCard.json";
 
 import common from "./ru/common.json";

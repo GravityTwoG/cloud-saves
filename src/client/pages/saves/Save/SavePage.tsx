@@ -46,7 +46,7 @@ export const SavePage = () => {
   }
 
   return (
-    <GameStatePageLayout gameImageURL={gameState.gameIconURL}>
+    <GameStatePageLayout gameImageURL={gameState.gameImageURL}>
       <H1 className={classes.GameStateName}>{gameState.name}</H1>
 
       <Paper className={clsx(classes.GameSaveSettings, "mb-4")}>

@@ -14,7 +14,7 @@ import sharedSaves from "./en/pages/sharedSaves.json";
 import publicSaves from "./en/pages/publicSaves.json";
 import notFound from "./en/pages/notFound.json";
 
-import gameForm from "./en/components/gameForm.json";
+import gameForm from "./en/components/GameForm.json";
 import GameStateCard from "./en/components/GameStateCard.json";
 import GameStateArchive from "./en/components/GameStateArchive.json";
 

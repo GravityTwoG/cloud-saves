@@ -28,7 +28,7 @@ export const GameStateCard = (props: GameStateCardProps) => {
 
   return (
     <FadedCard
-      imageURL={props.gameState.gameIconURL}
+      imageURL={props.gameState.gameImageURL}
       href={props.href}
       className={clsx(classes.GameStateCard, props.className)}
     >

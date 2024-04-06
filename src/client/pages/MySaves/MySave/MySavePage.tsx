@@ -9,7 +9,7 @@ import { GameState, GameStateSync } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useAuthContext } from "@/client/contexts/AuthContext";
-import { navigate } from "@/client/useHashLocation";
+import { navigate } from "@/client/app/useHashLocation";
 import { paths } from "@/client/config/paths";
 
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";

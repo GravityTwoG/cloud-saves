@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import classes from "./reset-password-page.module.scss";
 
-import { useSearchParams } from "@/client/useHashLocation";
+import { useSearchParams } from "@/client/app/useHashLocation";
 import { paths } from "@/client/config/paths";
 import { useAuthContext } from "@/client/contexts/AuthContext";
 

@@ -1,11 +1,11 @@
-import { APIContextProvider } from "./contexts/APIContext";
-import { AuthContextProvider } from "./contexts/AuthContext";
-import { UIContextProvider } from "./contexts/UIContext";
+import { APIContextProvider } from "@/client/contexts/APIContext";
+import { AuthContextProvider } from "@/client/contexts/AuthContext";
+import { UIContextProvider } from "@/client/contexts/UIContext";
 
-import { AppErrorBoundary } from "./ui/molecules/AppErrorBoundary";
-import { ToastsManager } from "./ui/toast";
+import { ToastsManager } from "@/client/ui/toast";
+import { AppErrorBoundary } from "@/client/ui/molecules/AppErrorBoundary";
+import { ThemeContextProvider } from "@/client/ui/contexts/ThemeContext";
 import { Router } from "./Router";
-import { ThemeContextProvider } from "./ui/contexts/ThemeContext";
 
 export const ReactApplication = () => {
   return (

@@ -8,6 +8,13 @@
   .GameStateInfo {
     margin-top: auto;
     color: white;
+
+    .GameStateName {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
   }
 
   &:hover .GameStateActions {

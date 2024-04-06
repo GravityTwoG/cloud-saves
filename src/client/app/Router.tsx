@@ -1,14 +1,14 @@
-import { Route, Switch, Router as Wouter } from "wouter";
 import { useHashLocation } from "./useHashLocation";
 
-import { RouteAccess, routes } from "./config/routes";
+import { RouteAccess, routes } from "@/client/config/routes";
 
-import { AppErrorBoundary } from "./ui/molecules/AppErrorBoundary";
-import { PrivatePage } from "./lib/components/Guard/PrivatePage";
-import { AnonymousPage } from "./lib/components/Guard/AnonymousPage";
-import { MainLayout } from "./layouts/MainLayout/MainLayout";
+import { Route, Switch, Router as Wouter } from "wouter";
+import { AppErrorBoundary } from "@/client/ui/molecules/AppErrorBoundary";
+import { PrivatePage } from "@/client/lib/components/Guard/PrivatePage";
+import { AnonymousPage } from "@/client/lib/components/Guard/AnonymousPage";
+import { MainLayout } from "@/client/layouts/MainLayout/MainLayout";
+import { NotFoundPage } from "@/client/pages/NotFound/NotFoundPage";
 import { DeepLinkHandler } from "./DeepLinkHandler";
-import { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 
 export const Router = () => {
   return (

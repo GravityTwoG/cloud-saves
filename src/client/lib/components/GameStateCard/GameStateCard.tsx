@@ -47,7 +47,7 @@ export const GameStateCard = (props: GameStateCardProps) => {
       {modal}
 
       <div className={classes.GameStateInfo}>
-        <p>{props.gameState.name}</p>
+        <p className={classes.GameStateName}>{props.gameState.name}</p>
 
         {props.showSyncSettings && (
           <p>

@@ -1,13 +1,13 @@
 import { createRoot } from "react-dom/client";
 
-import "./ui/styles/theme.css";
+import "@/client/ui/styles/theme.css";
 import "./styles/utility.css";
 
-import { api } from "./contexts/APIContext/APIContext";
+import { api } from "@/client/contexts/APIContext/APIContext";
 
-import { ReactApplication } from "./ReactApplication";
-import { initI18n } from "./locales";
+import { initI18n } from "@/client/locales";
 import { GameState } from "@/types";
+import { ReactApplication } from "./ReactApplication";
 
 function bootstrap() {
   initI18n();

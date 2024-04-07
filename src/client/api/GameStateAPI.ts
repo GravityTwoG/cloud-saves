@@ -240,12 +240,12 @@ export class GameStateAPI implements IGameStateAPI {
   };
 
   getShares = async (gameStateId: string): Promise<{ items: Share[] }> => {
-    const shares = await this.fetcher.get<{
-      gameStateShares: ShareFromServer[];
-    }>(`/game-state-shares/${gameStateId}`);
+    const shares = await this.fetcher.get<ResourceResponse<ShareFromServer>>(
+      `/game-state-shares/${gameStateId}`
+    );
 
     return {
-      items: shares.gameStateShares.map((share) => ({
+      items: shares.items.map((share) => ({
         id: share.id.toString(),
         gameStateId,
         userId: "share.userId",

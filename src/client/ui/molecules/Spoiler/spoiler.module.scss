@@ -22,7 +22,7 @@
     overflow: hidden;
     max-height: 0;
     will-change: max-height;
-    transform: translateY(100%);
+    transform: translateY(-100%);
     transform-origin: top;
     transition: max-height 0.15s ease-out, transform 0.1s ease-out;
   }
@@ -30,6 +30,6 @@
   .SpoilerExpanded {
     max-height: 100vh;
     transform: translateY(0%);
-    overflow: auto;
+    overflow: visible;
   }
 }

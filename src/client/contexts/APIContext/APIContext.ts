@@ -7,6 +7,7 @@ import { IGameAPI } from "@/client/api/interfaces/IGameAPI";
 import { IUsersAPI } from "@/client/api/interfaces/IUsersAPI";
 import { IGameStateParameterTypeAPI } from "@/client/api/interfaces/IGameStateParameterTypeAPI";
 import { ICommonParametersAPI } from "@/client/api/interfaces/ICommonParametersAPI";
+import { IGraphicsAPI } from "@/client/api/interfaces/IGraphicsAPI";
 
 import { Fetcher } from "@/client/api/Fetcher";
 
@@ -17,6 +18,7 @@ import { GameAPIMock } from "@/client/api/mocks/GameAPIMock";
 import { UsersAPIMock } from "@/client/api/mocks/UsersAPIMock";
 import { CommonParametersAPIMock } from "@/client/api/mocks/CommonParametersAPIMock";
 import { GameStateParameterTypesAPIMock } from "@/client/api/mocks/GameStateParameterTypesAPIMock";
+import { GraphicsAPIMock } from "@/client/api/mocks/GraphicsAPIMock";
 
 import { AuthAPI } from "@/client/api/AuthAPI";
 import { GameAPI } from "@/client/api/GameAPI";
@@ -33,6 +35,7 @@ interface APIContext {
   usersAPI: IUsersAPI;
   commonParametersAPI: ICommonParametersAPI;
   parameterTypesAPI: IGameStateParameterTypeAPI;
+  graphicsAPI: IGraphicsAPI;
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -55,6 +58,9 @@ const commonParametersAPI = API_BASE_URL
 const parameterTypesAPI = API_BASE_URL
   ? new GameStateParameterTypesAPI(fetcher)
   : new GameStateParameterTypesAPIMock();
+const graphicsAPI = API_BASE_URL
+  ? new GraphicsAPIMock()
+  : new GraphicsAPIMock();
 
 export const api = {
   osAPI,
@@ -64,6 +70,7 @@ export const api = {
   usersAPI,
   commonParametersAPI,
   parameterTypesAPI,
+  graphicsAPI,
 } satisfies APIContext;
 
 export const APIContext = createContext<APIContext>(api);

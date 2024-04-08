@@ -2,6 +2,7 @@
   "toggle-theme": "Переключить тему",
   "change-language": "Изменить язык",
   "logout": "Выйти",
+  "not-found": "Не найдено",
   "navLinks": {
     "login": "Вход",
     "register": "Регистрация",
@@ -11,6 +12,9 @@
     "shared-saves": "Общие сохранения",
     "public-saves": "Публичные сохранения",
     "games": "Игры",
+
+    "dashboard": "Обзор",
+
     "users": "Пользователи"
   }
 }

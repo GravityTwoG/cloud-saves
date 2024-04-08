@@ -102,6 +102,38 @@ export type Share = {
   username: string;
 };
 
+//
+
+export type CommonGraphic = {
+  id: string;
+  visualType: string;
+  commonParameterId: string;
+};
+
+export type Range = {
+  min: number;
+  max: number;
+};
+
+export type HistogramData = {
+  range: Range;
+  height: number;
+}[];
+
+export type PieChartData = {
+  percentage: number;
+  label: string;
+}[];
+
+export type CommonGraphicData = {
+  id: string;
+  visualType: string;
+  commonParameter: CommonParameter;
+  data: HistogramData | PieChartData;
+};
+
+//
+
 export type JSONType = {
   [key: string | number]:
     | string

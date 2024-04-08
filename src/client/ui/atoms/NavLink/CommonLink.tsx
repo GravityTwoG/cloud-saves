@@ -7,7 +7,12 @@ import { NavLinkProps } from "./NavLink";
 import { Link, useRoute } from "wouter";
 
 export const CommonLink = memo(
-  ({ activeClassName = classes.Active, className, ...props }: NavLinkProps) => {
+  ({
+    activeClassName = classes.Active,
+    className,
+    unstyled = false,
+    ...props
+  }: NavLinkProps & { unstyled?: boolean }) => {
     const [isActive] = useRoute(props.href);
 
     const linkProps = {
@@ -15,7 +20,8 @@ export const CommonLink = memo(
       className: clsx(
         classes.CommonLink,
         className,
-        isActive && activeClassName
+        isActive && activeClassName,
+        unstyled && classes.Unstyled
       ),
     };
 

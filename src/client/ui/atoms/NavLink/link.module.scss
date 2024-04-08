@@ -49,3 +49,12 @@
     text-decoration: underline;
   }
 }
+
+.Unstyled {
+  font-weight: normal;
+  color: var(--text-color);
+  &:hover {
+    color: var(--text-color);
+    text-decoration: none;
+  }
+}

@@ -15,7 +15,14 @@ export const ReactApplication = () => {
           <UIContextProvider>
             <ThemeContextProvider>
               <Router />
-              <ToastsManager />
+              <ToastsManager
+                toastOptions={{
+                  style: {
+                    background: "var(--color-paper)",
+                    color: "var(--color-text)",
+                  },
+                }}
+              />
             </ThemeContextProvider>
           </UIContextProvider>
         </AuthContextProvider>

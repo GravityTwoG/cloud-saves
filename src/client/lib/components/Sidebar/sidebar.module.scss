@@ -56,7 +56,9 @@
         height: 100%;
       }
 
-      & path {
+      & path,
+      & circle,
+      & line {
         stroke: var(--text-color);
         transition: stroke 0.3s ease;
       }
@@ -69,7 +71,9 @@
       color: var(--accent-color);
     }
 
-    & > a > .NavIcon path {
+    & > a > .NavIcon path,
+    & > a > .NavIcon circle,
+    & > a > .NavIcon line {
       stroke: var(--accent-color);
     }
   }

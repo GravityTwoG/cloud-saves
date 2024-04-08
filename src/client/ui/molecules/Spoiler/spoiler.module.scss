@@ -4,7 +4,7 @@
   .SpoilerTitle {
     padding: 0.25rem 1rem;
     width: 100%;
-    background-color: var(--accent-color);
+    background-color: var(--color-accent);
     color: #fff;
     font-size: 1rem;
     outline: none;
@@ -17,8 +17,8 @@
 
   .SpoilerContent {
     width: 100%;
-    background-color: var(--paper-color);
-    border: 1px solid var(--deco-color);
+    background-color: var(--color-paper);
+    border: 1px solid var(--color-deco);
     overflow: hidden;
     max-height: 0;
     will-change: max-height;

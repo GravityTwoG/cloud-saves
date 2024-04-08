@@ -2,7 +2,7 @@
   max-width: 100%;
   display: inline-block;
   padding: 3px;
-  background-color: var(--paper-color);
+  background-color: var(--color-paper);
   border-radius: 6px;
   overflow: auto;
   position: relative;
@@ -40,7 +40,7 @@
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
   background-color: transparent;
-  color: var(--text-color);
+  color: var(--color-text);
   cursor: pointer;
   text-align: center;
   white-space: nowrap;
@@ -48,16 +48,16 @@
   user-select: none;
 
   &:hover {
-    background-color: var(--deco-color);
+    background-color: var(--color-deco);
   }
 
   &.OptionActive {
     color: #fff;
-    background-color: var(--accent-color);
-    box-shadow: 3px 3px 5px 0 var(--accent-shadow-color);
+    background-color: var(--color-accent);
+    box-shadow: 3px 3px 5px 0 var(--color-accent-shadow);
 
     &:hover {
-      background-color: var(--accent-hover-color);
+      background-color: var(--color-accent-hover);
     }
   }
 }

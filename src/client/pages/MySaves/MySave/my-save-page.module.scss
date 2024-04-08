@@ -39,7 +39,7 @@ html[data-theme="dark"] .GameImageOverlay {
 
 .GameStateName {
   margin-bottom: 0.5rem;
-  color: var(--text-color);
+  color: var(--color-text);
 
   & > span {
     width: 100%;
@@ -60,11 +60,11 @@ html[data-theme="dark"] .GameImageOverlay {
     font-size: 3.75rem;
     line-height: 1.8;
     font-weight: 300;
-    color: var(--text-color);
+    color: var(--color-text);
     background: transparent;
 
     border: none;
-    border-bottom: 1px solid var(--deco-color);
+    border-bottom: 1px solid var(--color-deco);
     outline: none;
   }
 }

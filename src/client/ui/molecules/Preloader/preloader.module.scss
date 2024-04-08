@@ -5,7 +5,7 @@
   &[data-is-visible="true"] .Spinner {
     min-height: 250px;
     display: flex;
-    background-color: var(--background-color);
+    background-color: var(--color-background);
     opacity: 0.5;
   }
 }
@@ -27,6 +27,6 @@
   opacity: 0;
 
   & > svg {
-    stroke: var(--text-color) !important;
+    stroke: var(--color-text) !important;
   }
 }

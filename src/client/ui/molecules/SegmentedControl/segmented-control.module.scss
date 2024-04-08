@@ -60,11 +60,11 @@
 
   &.SegmentActive {
     color: #fff;
-    background-color: var(--accent-color);
+    background-color: var(--color-accent);
     box-shadow: 3px 3px 5px 0 #1771f130;
 
     &:hover {
-      background-color: var(--accent-hover-color);
+      background-color: var(--color-accent-hover);
     }
   }
 }

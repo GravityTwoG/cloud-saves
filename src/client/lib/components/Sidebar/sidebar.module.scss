@@ -6,7 +6,7 @@
   min-height: 100vh;
   padding: 0.5rem 0.25rem;
   overflow: hidden;
-  background: var(--paper-color);
+  background: var(--color-paper);
 }
 
 .Logo {
@@ -32,7 +32,7 @@
   & > a {
     display: block;
     text-decoration: none;
-    color: var(--text-color);
+    color: var(--color-text);
     transition: color 0.3s ease;
 
     & > span {
@@ -59,7 +59,7 @@
       & path,
       & circle,
       & line {
-        stroke: var(--text-color);
+        stroke: var(--color-text);
         transition: stroke 0.3s ease;
       }
     }
@@ -68,13 +68,13 @@
   &:hover,
   &.NavLinkActive {
     & > a {
-      color: var(--accent-color);
+      color: var(--color-accent);
     }
 
     & > a > .NavIcon path,
     & > a > .NavIcon circle,
     & > a > .NavIcon line {
-      stroke: var(--accent-color);
+      stroke: var(--color-accent);
     }
   }
 }
@@ -97,12 +97,12 @@
 
   font-size: 1.2rem;
   line-height: 1;
-  color: var(--text-color);
+  color: var(--color-text);
   vertical-align: baseline;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background: var(--deco-color);
+    background: var(--color-deco);
   }
 }
 
@@ -112,16 +112,16 @@
     width: 1.5rem;
 
     & > path {
-      stroke: var(--text-color);
+      stroke: var(--color-text);
       transition: stroke 0.3s ease;
     }
   }
 
   &:hover {
-    color: var(--accent-color);
+    color: var(--color-accent);
 
     & > svg path {
-      stroke: var(--accent-color);
+      stroke: var(--color-accent);
     }
   }
 }

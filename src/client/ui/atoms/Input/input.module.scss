@@ -2,15 +2,15 @@
   width: 100%;
   padding: 0.5rem;
   font-size: 1rem;
-  color: var(--text-color);
-  background-color: var(--paper-color);
-  border: 2px solid var(--deco-color);
+  color: var(--color-text);
+  background-color: var(--color-paper);
+  border: 2px solid var(--color-deco);
   border-radius: 6px;
   outline: none;
   transition: border-color 0.1s ease;
-  caret-color: var(--accent-color);
+  caret-color: var(--color-accent);
 
   &:focus {
-    border-color: var(--accent-color);
+    border-color: var(--color-accent);
   }
 }

@@ -1,0 +1,10 @@
+{
+  "local-saves": "Local Saves",
+  "back": "Back",
+  "home": "Home",
+  "choose-folder-to-list-files": "Choose folder to list files",
+  "upload": "Upload",
+  "game-state-uploading": "Uploading",
+  "game-state-uploaded": "Uploaded",
+  "game-state-upload-error": "Failed to upload"
+}

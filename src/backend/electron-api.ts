@@ -1,4 +1,4 @@
-import { BrowserWindow, dialog } from "electron";
+import { BrowserWindow, app, dialog } from "electron";
 import electronDl from "electron-dl";
 
 import { GamePath, GameState } from "@/types";
@@ -116,5 +116,9 @@ export const electronAPI: Omit<
 
       return { data: null, error: (error as Error)?.toString() };
     }
+  },
+
+  getAppVersion: async () => {
+    return { data: app.getVersion() };
   },
 };

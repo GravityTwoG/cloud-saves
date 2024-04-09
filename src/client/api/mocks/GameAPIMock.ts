@@ -46,7 +46,7 @@ export class GameAPIMock implements IGameAPI {
       id: Math.floor(Math.random() * 1000).toString(),
       name: game.name,
       description: game.description,
-      iconURL: "",
+      imageURL: "",
       paths: game.paths,
       extractionPipeline: game.extractionPipeline,
       gameStateParameters: {
@@ -92,7 +92,7 @@ export class GameAPIMock implements IGameAPI {
         id: game.id,
         name: game.name || existingGame.name,
         description: game.description || existingGame.description,
-        iconURL: "",
+        imageURL: "",
         paths: game.paths || existingGame.paths,
         extractionPipeline:
           game.extractionPipeline || existingGame.extractionPipeline,

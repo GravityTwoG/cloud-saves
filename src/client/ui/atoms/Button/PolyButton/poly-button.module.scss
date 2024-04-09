@@ -9,11 +9,11 @@
 
 .PolyButtonButton {
   display: inline-block;
-  background-color: var(--accent-color);
+  background-color: var(--color-accent);
   padding: 0.25rem 0.5rem;
   border-radius: 6px 0 0 6px;
   border: 2px solid transparent;
-  border-right: 2px solid var(--accent-hover-color);
+  border-right: 2px solid var(--color-accent-hover);
   outline: none;
   cursor: pointer;
   text-decoration: none;
@@ -31,10 +31,10 @@
   font-size: 0.75rem;
 
   &:hover:not(:disabled) {
-    background-color: var(--accent-hover-color);
+    background-color: var(--color-accent-hover);
   }
   &:active:not(:disabled) {
-    background-color: var(--accent-color);
+    background-color: var(--color-accent);
   }
 
   &:disabled {
@@ -42,7 +42,7 @@
   }
 
   &:focus-visible {
-    border-color: var(--deco-color);
+    border-color: var(--color-deco);
   }
 }
 
@@ -50,7 +50,7 @@
   display: inline-block;
   width: 1.5rem;
   padding: 0.25rem 0.5rem;
-  background-color: var(--accent-color);
+  background-color: var(--color-accent);
   border-radius: 0 6px 6px 0;
   border: 2px solid transparent;
   outline: none;
@@ -62,10 +62,10 @@
   position: relative;
 
   &:hover:not(:disabled) {
-    background-color: var(--accent-hover-color);
+    background-color: var(--color-accent-hover);
   }
   &:active:not(:disabled) {
-    background-color: var(--accent-color);
+    background-color: var(--color-accent);
   }
 
   &:disabled {
@@ -73,7 +73,7 @@
   }
 
   &:focus-visible {
-    border-color: var(--deco-color);
+    border-color: var(--color-deco);
   }
 
   // arrows
@@ -113,7 +113,7 @@
   transform: translateX(-50%);
   width: max-content;
   min-width: 100%;
-  background-color: var(--accent-color);
+  background-color: var(--color-accent);
   border-radius: 6px;
 }
 
@@ -137,11 +137,11 @@
     text-transform: uppercase;
 
     &:hover {
-      background-color: var(--accent-hover-color);
+      background-color: var(--color-accent-hover);
     }
   }
 
   &:not(:first-child) {
-    border-top: 2px solid var(--accent-hover-color);
+    border-top: 2px solid var(--color-accent-hover);
   }
 }

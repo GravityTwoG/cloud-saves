@@ -122,6 +122,8 @@ export class Application {
     registerHandler("downloadState", electronAPI.downloadState);
 
     registerHandler("downloadStateAs", electronAPI.downloadStateAs);
+
+    registerHandler("getAppVersion", electronAPI.getAppVersion);
   }
 
   private registerProtocolClient() {

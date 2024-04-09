@@ -1,4 +1,4 @@
-import React, { forwardRef, useId } from "react";
+import { forwardRef, useId } from "react";
 
 import { Input, InputProps } from "@/client/ui/atoms/Input";
 import { Field } from "./Field";

@@ -2,12 +2,6 @@
   "my-saves": "My Saves",
   "uploaded-saves": "Uploaded Saves",
   "delete-save": "Delete",
-  "back": "Back",
-  "home": "Home",
-  "choose-folder-to-list-files": "Choose folder to list files",
-  "upload": "Upload",
-  "local-saves": "Local Saves",
-  "folder": "Folder",
-  "file": "File",
-  "game-state-uploaded": "Game state uploaded"
+
+  "local-saves": "Local Saves"
 }

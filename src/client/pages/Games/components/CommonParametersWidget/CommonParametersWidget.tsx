@@ -8,10 +8,11 @@ import { useResource } from "@/client/lib/hooks/useResource";
 import { CommonParameter } from "@/types";
 
 import { Paragraph } from "@/client/ui/atoms/Typography";
+import { ConfirmButton } from "@/client/ui/atoms/Button/";
 import { List } from "@/client/ui/molecules/List/List";
+import { Preloader } from "@/client/ui/molecules/Preloader";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
-import { ConfirmButton } from "@/client/ui/atoms/Button/";
 import { CommonParameterForm } from "./CommonParameterForm";
 
 export const CommonParametersWidget = () => {
@@ -22,9 +23,11 @@ export const CommonParametersWidget = () => {
   const {
     query,
     resource: parameters,
+    isLoading,
     onSearch,
-    loadResource: loadParameters,
-    setQuery,
+    onSearchQueryChange,
+    onPageSelect,
+    _loadResource: loadParameters,
   } = useResource(commonParametersAPI.getParameters);
 
   const onAdd = async (parameter: {
@@ -71,42 +74,44 @@ export const CommonParametersWidget = () => {
       <SearchForm
         onSearch={onSearch}
         searchQuery={query.searchQuery}
-        onQueryChange={(searchQuery) => setQuery({ ...query, searchQuery })}
+        onQueryChange={onSearchQueryChange}
       />
 
-      <List
-        elements={parameters.items}
-        className={classes.ParametersList}
-        elementClassName={classes.ParameterItem}
-        getKey={(parameter) => parameter.id}
-        renderElement={(parameter) => (
-          <>
-            <CommonParameterForm
-              onSubmit={(data: {
-                type: { id: string; type: string };
-                label: string;
-                description: string;
-              }) => onEdit({ id: parameter.id, ...data })}
-              defaultValue={parameter}
-              resetOnSubmit={false}
-            />
-            <ConfirmButton
-              onClick={() => {
-                onDelete(parameter.id);
-              }}
-              color="danger"
-            >
-              {t("delete-type")}{" "}
-            </ConfirmButton>
-          </>
-        )}
-      />
+      <Preloader isLoading={isLoading}>
+        <List
+          elements={parameters.items}
+          className="my-4"
+          elementClassName={classes.ParameterItem}
+          getKey={(parameter) => parameter.id}
+          renderElement={(parameter) => (
+            <>
+              <CommonParameterForm
+                onSubmit={(data: {
+                  type: { id: string; type: string };
+                  label: string;
+                  description: string;
+                }) => onEdit({ id: parameter.id, ...data })}
+                defaultValue={parameter}
+                resetOnSubmit={false}
+              />
+              <ConfirmButton
+                onClick={() => {
+                  onDelete(parameter.id);
+                }}
+                color="danger"
+              >
+                {t("delete-type")}{" "}
+              </ConfirmButton>
+            </>
+          )}
+        />
+      </Preloader>
 
       <Paginator
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
         count={parameters.totalCount}
-        onPageSelect={(pageNumber) => loadParameters({ ...query, pageNumber })}
+        onPageSelect={onPageSelect}
       />
     </div>
   );

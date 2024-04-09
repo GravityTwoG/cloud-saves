@@ -8,7 +8,7 @@ import { Game } from "@/types";
 import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
-import { navigate } from "@/client/useHashLocation";
+import { navigate } from "@/client/app/useHashLocation";
 import { paths } from "@/client/config/paths";
 
 import { H1 } from "@/client/ui/atoms/Typography";
@@ -68,7 +68,7 @@ export const GamePage = () => {
     <Container className={classes.GamePage}>
       <div className={classes.Header}>
         <img
-          src={game.iconURL || "https://via.placeholder.com/64"}
+          src={game.imageURL || "https://via.placeholder.com/64"}
           alt={game.name}
           className={classes.GameIcon}
         />{" "}

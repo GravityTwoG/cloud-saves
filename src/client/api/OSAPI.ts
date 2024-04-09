@@ -69,4 +69,12 @@ export class OSAPI implements IOSAPI {
   downloadStateAs = async (gameState: GameState): Promise<void> => {
     await window.electronAPI.downloadStateAs(gameState);
   };
+
+  getAppVersion = async (): Promise<string> => {
+    const response = await window.electronAPI.getAppVersion();
+    if (!response.data) {
+      throw new ApiError(response.error || "Failed to get app version");
+    }
+    return response.data;
+  };
 }

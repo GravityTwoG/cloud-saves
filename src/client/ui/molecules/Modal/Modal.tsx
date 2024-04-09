@@ -58,6 +58,7 @@ export const Modal: React.FC<ModalProps> = ({
         <div
           className={clsx(
             classes.Modal,
+            "custom-scrollbar",
             isOpen && delayedIsOpen && classes.ModalOpen
           )}
           onClick={closeModal}

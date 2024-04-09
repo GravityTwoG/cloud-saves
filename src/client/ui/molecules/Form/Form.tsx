@@ -12,8 +12,7 @@ import {
   UseFormRegister,
   useForm,
 } from "react-hook-form";
-import { CTAButton } from "@/client/ui/atoms/Button/CTAButton";
-import { Button } from "../../atoms/Button";
+import { Button } from "@/client/ui/atoms/Button";
 import { Input } from "@/client/ui/atoms/Input";
 import { ErrorText } from "@/client/ui/atoms/ErrorText/ErrorText";
 import { AsyncEntitySelect } from "@/client/ui/atoms/Select/AsyncSelect/AsyncEntitySelect";
@@ -56,7 +55,7 @@ export type FormProps<C = FormConfig> = {
   submitText?: string;
   actions?: React.ReactNode;
   className?: string;
-  submitButtonType?: "CTA" | "common";
+  submitButtonVariant?: "CTA" | "primary";
 };
 
 export function Form<C extends FormConfig>(props: FormProps<C>) {
@@ -121,23 +120,14 @@ export function Form<C extends FormConfig>(props: FormProps<C>) {
       {root.error && <ErrorText>{root.error.message}</ErrorText>}
 
       <div className={classes.FormActions}>
-        {props.submitButtonType === "common" ? (
-          <Button
-            type="submit"
-            className={classes.SubmitButton}
-            isLoading={isLoading}
-          >
-            {props.submitText || "Submit"}
-          </Button>
-        ) : (
-          <CTAButton
-            type="submit"
-            className={classes.SubmitButton}
-            isLoading={isLoading}
-          >
-            {props.submitText || "Submit"}
-          </CTAButton>
-        )}
+        <Button
+          type="submit"
+          className={classes.SubmitButton}
+          isLoading={isLoading}
+          variant={props.submitButtonVariant || "CTA"}
+        >
+          {props.submitText || "Submit"}
+        </Button>
         {props.actions}
       </div>
     </form>

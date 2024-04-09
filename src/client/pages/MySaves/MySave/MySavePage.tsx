@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { clsx } from "clsx";
 import { useTranslation } from "react-i18next";
 import { useParams } from "wouter";
 
@@ -8,18 +9,18 @@ import { GameState, GameStateSync } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useAuthContext } from "@/client/contexts/AuthContext";
-import { navigate } from "@/client/useHashLocation";
+import { navigate } from "@/client/app/useHashLocation";
 import { paths } from "@/client/config/paths";
 
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
-import { Bytes } from "@/client/ui/atoms/Bytes";
-import { Container } from "@/client/ui/atoms/Container";
-import { Button, PolyButton, ConfirmButton } from "@/client/ui/atoms/Button";
+import { Button, ConfirmButton } from "@/client/ui/atoms/Button";
 import { Flex } from "@/client/ui/atoms/Flex";
 import { Paper } from "@/client/ui/atoms/Paper";
-import { Modal } from "@/client/ui/molecules/Modal";
+import { GameStatePageLayout } from "@/client/layouts/GameStatePageLayout";
 import { SharesWidget } from "@/client/lib/components/SharesWidget";
 import { ParametersView } from "@/client/lib/components/ParametersView";
+import { GameStateArchive } from "@/client/lib/components/GameStateArchive";
+import { SyncSettingsModal } from "./SyncSettingsModal";
 
 export const MySavePage = () => {
   const { gameStateAPI } = useAPIContext();
@@ -27,6 +28,7 @@ export const MySavePage = () => {
   const { user } = useAuthContext();
   const { t } = useTranslation(undefined, { keyPrefix: "pages.mySave" });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [isNameEditing, setIsNameEditing] = useState(false);
   const [syncSettingsAreOpen, setSyncSettingsAreOpen] = useState(false);
@@ -36,20 +38,23 @@ export const MySavePage = () => {
     (async () => {
       if (!gameStateId) return;
       try {
+        setIsLoading(true);
         const data = await gameStateAPI.getGameState(gameStateId);
         setGameState(data);
       } catch (error) {
         notify.error(error);
         setGameState(null);
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, []);
 
   if (!gameState || !gameStateId) {
     return (
-      <Container>
+      <GameStatePageLayout gameImageURL={""} isLoading={isLoading}>
         <H1>{t("game-save-not-found")}</H1>
-      </Container>
+      </GameStatePageLayout>
     );
   }
 
@@ -70,12 +75,20 @@ export const MySavePage = () => {
     }
   };
 
+  const reuploadState = async (newGameState: GameState) => {
+    await gameStateAPI.reuploadState(newGameState);
+    setGameState(newGameState);
+  };
+
   const onReuploadState = async (newGameState: GameState) => {
     try {
-      await gameStateAPI.reuploadState(newGameState);
-      setGameState(newGameState);
+      await notify.promise(reuploadState(newGameState), {
+        loading: t("updating-state"),
+        success: t("updated-state"),
+        error: t("update-state-error"),
+      });
     } catch (error) {
-      notify.error(error);
+      console.error(error);
     }
   };
 
@@ -123,185 +136,84 @@ export const MySavePage = () => {
     }
   };
 
-  const downloadState = async () => {
-    try {
-      await gameStateAPI.downloadState(gameState);
-    } catch (error) {
-      notify.error(error);
-    }
-  };
-
-  const downloadStateAs = async () => {
-    try {
-      await gameStateAPI.downloadStateAs(gameState);
-    } catch (error) {
-      notify.error(error);
-    }
-  };
-
   return (
-    <div className={classes.MySavePage}>
-      <div
-        className={classes.GameImage}
-        style={{ backgroundImage: `url(${gameState.gameIconURL})` }}
-      >
-        <div className={classes.GameImageOverlay} />
-      </div>
-
-      <Container className={classes.PageContent}>
-        <H1 className={classes.GameStateName}>
-          {isNameEditing ? (
-            <form
-              onSubmit={onNameChange}
-              className={classes.GameStateNameForm}
-              onBlur={() => setIsNameEditing(false)}
-            >
-              <input
-                type="text"
-                defaultValue={gameState.name}
-                onBlur={() => setIsNameEditing(false)}
-                className={classes.GameStateNameInput}
-                name="gameStateName"
-                autoFocus
-              />
-            </form>
-          ) : (
-            <span onClick={() => setIsNameEditing(true)}>{gameState.name}</span>
-          )}
-        </H1>
-        <Paper className={classes.GameSaveSettings}>
-          <div className={classes.GameSaveSettingsLeft}>
-            <Paragraph>
-              {t("path")}: {gameState.localPath}
-            </Paragraph>
-            <Paragraph>
-              {t("sync")}: {t(gameState.sync)}{" "}
-              <Button onClick={() => setSyncSettingsAreOpen(true)}>
-                {t("setup-sync")}{" "}
-              </Button>
-            </Paragraph>
-            <Paragraph>
-              {t("is-public")}: {gameState.isPublic ? t("yes") : t("no")}{" "}
-              <Button onClick={togglePublicity}>
-                {gameState.isPublic ? t("make-private") : t("make-public")}
-              </Button>
-            </Paragraph>
-            <Paragraph>
-              {t("shared-with")}: <SharesWidget gameStateId={gameState.id} />
-            </Paragraph>
-          </div>
-
-          <Flex fxdc ais gap="0.5rem" className={classes.GameSaveSettingsRight}>
-            <Button onClick={() => onReuploadState(gameState)}>
-              {t("upload-save")}
-            </Button>
-            <ConfirmButton
-              onClick={() => {
-                deleteState(gameState.id);
-              }}
-              color="danger"
-            >
-              {t("delete-save")}{" "}
-            </ConfirmButton>
-          </Flex>
-        </Paper>
-        <SyncSettingsModal
-          isOpen={syncSettingsAreOpen}
-          closeModal={() => setSyncSettingsAreOpen(false)}
-          defaultValue={gameState.sync}
-          setupSync={setupSync}
-        />
-        <H2>{t("about")}</H2>
-        <Paper>
-          <ParametersView gameStateValues={gameState.gameStateValues} />
-        </Paper>
-        <Paper className={classes.GameSaveArchive}>
-          <span>
-            {t("size")}: <Bytes bytes={gameState.sizeInBytes} />
-          </span>
-          <span>
-            {t("uploaded-at")} {gameState.createdAt}
-          </span>
-
-          <div className={classes.Buttons}>
-            <PolyButton
-              subActions={[
-                {
-                  onClick: downloadStateAs,
-                  children: t("download-as"),
-                  key: "1",
-                },
-              ]}
-              onClick={downloadState}
-            >
-              {t("download")}
-            </PolyButton>
-          </div>
-        </Paper>
-      </Container>
-    </div>
-  );
-};
-
-type SyncSettingsModalProps = {
-  isOpen: boolean;
-  closeModal: () => void;
-  defaultValue: GameStateSync;
-  setupSync: (sync: GameStateSync) => void;
-};
-
-const SyncSettingsModal = (props: SyncSettingsModalProps) => {
-  const { t } = useTranslation(undefined, { keyPrefix: "pages.mySave" });
-
-  const [sync, setSync] = useState<GameStateSync>(props.defaultValue);
-
-  return (
-    <Modal
-      isOpen={props.isOpen}
-      closeModal={props.closeModal}
-      title={t("sync-settings")}
+    <GameStatePageLayout
+      gameImageURL={gameState.gameImageURL}
+      isLoading={isLoading}
     >
-      <Paragraph>{t("select-period")}</Paragraph>
+      <H1 className={classes.GameStateName}>
+        {isNameEditing ? (
+          <form
+            onSubmit={onNameChange}
+            className={classes.GameStateNameForm}
+            onBlur={() => setIsNameEditing(false)}
+          >
+            <input
+              type="text"
+              defaultValue={gameState.name}
+              onBlur={() => setIsNameEditing(false)}
+              className={classes.GameStateNameInput}
+              name="gameStateName"
+              autoFocus
+            />
+          </form>
+        ) : (
+          <span onClick={() => setIsNameEditing(true)}>{gameState.name}</span>
+        )}
+      </H1>
 
-      <div className={classes.SyncSettingsPeriods}>
-        <Button
-          onClick={() => setSync(GameStateSync.NO)}
-          color={sync === GameStateSync.NO ? "primary" : "secondary"}
-        >
-          {t("no")}{" "}
-        </Button>
-        <Button
-          onClick={() => setSync(GameStateSync.EVERY_HOUR)}
-          color={sync === GameStateSync.EVERY_HOUR ? "primary" : "secondary"}
-        >
-          {t("every-hour")}{" "}
-        </Button>
-        <Button
-          onClick={() => setSync(GameStateSync.EVERY_DAY)}
-          color={sync === GameStateSync.EVERY_DAY ? "primary" : "secondary"}
-        >
-          {t("every-day")}{" "}
-        </Button>
-        <Button
-          onClick={() => setSync(GameStateSync.EVERY_WEEK)}
-          color={sync === GameStateSync.EVERY_WEEK ? "primary" : "secondary"}
-        >
-          {t("every-week")}{" "}
-        </Button>
-        <Button
-          onClick={() => setSync(GameStateSync.EVERY_MONTH)}
-          color={sync === GameStateSync.EVERY_MONTH ? "primary" : "secondary"}
-        >
-          {t("every-month")}{" "}
-        </Button>
-      </div>
+      <Paper className={clsx(classes.GameSaveSettings, "mb-4")}>
+        <div className={classes.GameSaveSettingsLeft}>
+          <Paragraph>
+            {t("path")}: {gameState.localPath}
+          </Paragraph>
+          <Paragraph>
+            {t("sync")}: {t(gameState.sync)}{" "}
+            <Button onClick={() => setSyncSettingsAreOpen(true)}>
+              {t("setup-sync")}{" "}
+            </Button>
+          </Paragraph>
+          <Paragraph>
+            {t("is-public")}: {gameState.isPublic ? t("yes") : t("no")}{" "}
+            <Button onClick={togglePublicity}>
+              {gameState.isPublic ? t("make-private") : t("make-public")}
+            </Button>
+          </Paragraph>
+          <Paragraph>
+            {t("shared-with")}: <SharesWidget gameStateId={gameState.id} />
+          </Paragraph>
+        </div>
 
-      <Button
-        onClick={() => props.setupSync(sync)}
-        className={classes.SyncSettingsConfirmButton}
-      >
-        {t("confirm")}{" "}
-      </Button>
-    </Modal>
+        <Flex fxdc ais gap="0.5rem" className={classes.GameSaveSettingsRight}>
+          <Button onClick={() => onReuploadState(gameState)}>
+            {t("reupload-state")}
+          </Button>
+          <ConfirmButton
+            onClick={() => {
+              deleteState(gameState.id);
+            }}
+            color="danger"
+          >
+            {t("delete-state")}{" "}
+          </ConfirmButton>
+        </Flex>
+      </Paper>
+
+      <SyncSettingsModal
+        isOpen={syncSettingsAreOpen}
+        closeModal={() => setSyncSettingsAreOpen(false)}
+        defaultValue={gameState.sync}
+        setupSync={setupSync}
+      />
+
+      <H2>{t("about")}</H2>
+
+      <ParametersView
+        className="mb-4"
+        gameStateValues={gameState.gameStateValues}
+      />
+
+      <GameStateArchive className="mb-4" gameState={gameState} />
+    </GameStatePageLayout>
   );
 };

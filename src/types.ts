@@ -42,7 +42,7 @@ export type Game = {
   id: string;
   name: string;
   description: string;
-  iconURL: string;
+  imageURL: string;
   paths: { id: string; path: string }[];
   // schema
   extractionPipeline: {
@@ -57,7 +57,7 @@ export type GamePath = {
   path: string;
   gameId: string | undefined;
   gameName: string | undefined;
-  gameIconURL: string | undefined;
+  gameImageURL: string | undefined;
 };
 
 // Game State
@@ -80,7 +80,7 @@ export type GameStateValue = {
 export type GameState = {
   id: string;
   gameId: string;
-  gameIconURL: string;
+  gameImageURL: string;
   name: string;
   localPath: string;
   sync: GameStateSync;
@@ -101,6 +101,38 @@ export type Share = {
   userId: string;
   username: string;
 };
+
+//
+
+export type CommonGraphic = {
+  id: string;
+  visualType: string;
+  commonParameterId: string;
+};
+
+export type Range = {
+  min: number;
+  max: number;
+};
+
+export type HistogramData = {
+  range: Range;
+  height: number;
+}[];
+
+export type PieChartData = {
+  percentage: number;
+  label: string;
+}[];
+
+export type CommonGraphicData = {
+  id: string;
+  visualType: string;
+  commonParameter: CommonParameter;
+  data: HistogramData | PieChartData;
+};
+
+//
 
 export type JSONType = {
   [key: string | number]:

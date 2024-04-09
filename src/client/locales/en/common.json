@@ -2,6 +2,7 @@
   "toggle-theme": "Toggle theme",
   "change-language": "Change language",
   "logout": "Logout",
+  "not-found": "Not found",
   "navLinks": {
     "login": "Login",
     "register": "Register",
@@ -11,6 +12,9 @@
     "shared-saves": "Shared saves",
     "public-saves": "Public saves",
     "games": "Games",
+
+    "dashboard": "Overview",
+
     "users": "Users"
   }
 }

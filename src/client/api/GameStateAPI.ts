@@ -69,7 +69,7 @@ export class GameStateAPI implements IGameStateAPI {
       path: path.path,
       gameId: path.gameId.toString(),
       gameName: path.gameName,
-      gameIconURL: path.gameIconUrl,
+      gameImageURL: path.gameIconUrl,
     }));
     const localPaths = await this.osAPI.getStatePaths(paths);
 
@@ -204,7 +204,7 @@ export class GameStateAPI implements IGameStateAPI {
     return {
       id: state.id.toString(),
       gameId: state.gameId.toString(),
-      gameIconURL: state.gameIconUrl,
+      gameImageURL: state.gameIconUrl,
       name: state.name,
       sync: syncSettings[state.id]
         ? syncSettings[state.id].sync
@@ -240,12 +240,12 @@ export class GameStateAPI implements IGameStateAPI {
   };
 
   getShares = async (gameStateId: string): Promise<{ items: Share[] }> => {
-    const shares = await this.fetcher.get<{
-      gameStateShares: ShareFromServer[];
-    }>(`/game-state-shares/${gameStateId}`);
+    const shares = await this.fetcher.get<ResourceResponse<ShareFromServer>>(
+      `/game-state-shares/${gameStateId}`
+    );
 
     return {
-      items: shares.gameStateShares.map((share) => ({
+      items: shares.items.map((share) => ({
         id: share.id.toString(),
         gameStateId,
         userId: "share.userId",

@@ -15,7 +15,7 @@
   "parameters-schema-filename-0": "Название файла с параметрами",
   "parameters-schema-fields": "Параметры",
   "add-schema-field": "Добавить параметр",
-  "game-icon": "Иконка",
+  "game-image": "Изображение",
   "remove-path": "Удалить",
   "remove-extraction-pipeline": "Удалить",
   "parameter-key": "Ключ",

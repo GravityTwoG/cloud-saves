@@ -1,0 +1,10 @@
+{
+  "local-saves": "Локальные сохранения",
+  "back": "Назад",
+  "home": "Главная",
+  "choose-folder-to-list-files": "Выберите папку для отображения списка файлов",
+  "upload": "Загрузить",
+  "game-state-uploading": "Загрузка",
+  "game-state-uploaded": "Загружено",
+  "game-state-upload-error": "Не удалось загрузить"
+}

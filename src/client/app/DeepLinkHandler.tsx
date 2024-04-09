@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { navigate } from "@/client/useHashLocation";
-import { useAPIContext } from "./contexts/APIContext";
+import { navigate } from "@/client/app/useHashLocation";
+import { useAPIContext } from "../contexts/APIContext";
 
 export const DeepLinkHandler = () => {
   const { osAPI } = useAPIContext();

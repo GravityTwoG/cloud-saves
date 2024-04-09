@@ -4,7 +4,7 @@ import classes from "./game-add-page.module.scss";
 
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
-import { navigate } from "@/client/useHashLocation";
+import { navigate } from "@/client/app/useHashLocation";
 import { paths } from "@/client/config/paths";
 
 import { H1 } from "@/client/ui/atoms/Typography";

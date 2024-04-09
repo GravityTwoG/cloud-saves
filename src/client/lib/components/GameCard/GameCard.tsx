@@ -5,7 +5,7 @@ import { useConfirmModal } from "@/client/ui/hooks/useConfirmModal/useConfirmMod
 
 import classes from "./game-card.module.scss";
 
-import { Link } from "wouter";
+import { FadedCard } from "@/client/ui/atoms/FadedCard";
 import { ThreeDotsMenu } from "@/client/ui/molecules/ThreeDotsMenu";
 
 export type GameCardProps = {
@@ -21,33 +21,28 @@ export const GameCard = (props: GameCardProps) => {
   });
 
   return (
-    <div
+    <FadedCard
+      imageURL={props.game.imageURL}
+      href={props.href}
       className={clsx(classes.GameCard, props.className)}
-      style={{
-        backgroundImage: `url(${props.game.iconURL})`,
-      }}
     >
-      <Link href={props.href} className={classes.GameLink}>
-        <div className={classes.GameCardInner}>
-          {props.onDelete && (
-            <ThreeDotsMenu
-              className={classes.GameActions}
-              menuItems={[
-                {
-                  onClick: () => onDelete(),
-                  children: "Delete",
-                  key: "delete",
-                },
-              ]}
-            />
-          )}
-          {modal}
+      {props.onDelete && (
+        <ThreeDotsMenu
+          className={classes.GameActions}
+          menuItems={[
+            {
+              onClick: () => onDelete(),
+              children: "Delete",
+              key: "delete",
+            },
+          ]}
+        />
+      )}
+      {modal}
 
-          <div className={classes.GameInfo}>
-            <p>{props.game.name}</p>
-          </div>
-        </div>
-      </Link>
-    </div>
+      <div className={classes.GameInfo}>
+        <p>{props.game.name}</p>
+      </div>
+    </FadedCard>
   );
 };

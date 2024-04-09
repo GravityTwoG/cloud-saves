@@ -150,7 +150,7 @@ export class GameAPI implements IGameAPI {
           description: field.description,
         })),
       },
-      iconURL: game.imageUrl,
+      imageURL: game.imageUrl,
     };
   };
 }

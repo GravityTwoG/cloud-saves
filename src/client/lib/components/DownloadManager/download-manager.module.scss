@@ -38,7 +38,7 @@
   background: radial-gradient(closest-side, white 85%, transparent 85% 100%),
     conic-gradient(
       var(--progress-bar-color) var(--progress),
-      var(--deco-color) 0
+      var(--color-deco) 0
     );
 
   &:after {

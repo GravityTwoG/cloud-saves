@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -13,7 +12,7 @@ const pipelineItemTypes: { name: string; value: string }[] = [
 type GameFormData = {
   name: string;
   description: string;
-  icon: FileList;
+  image: FileList;
   paths: { id: string; path: string }[];
   extractionPipeline: {
     id: string;
@@ -50,16 +49,35 @@ export const useGameForm = (args: UseGameFormArgs) => {
     defaultValues: {
       name: args.defaultValue?.name,
       description: args.defaultValue?.description,
-      paths: args.defaultValue?.paths || [],
-      extractionPipeline: args.defaultValue?.extractionPipeline || [],
+      paths: args.defaultValue?.paths || [{ id: "", path: "" }],
+      extractionPipeline: args.defaultValue?.extractionPipeline || [
+        {
+          id: "",
+          inputFilename: "",
+          type: "sav-to-json",
+          outputFilename: "",
+        },
+      ],
       gameStateParameters: args.defaultValue?.gameStateParameters || {
-        parameters: [],
+        parameters: [
+          {
+            id: "",
+            key: "",
+            type: {
+              id: "",
+              type: "",
+            },
+            commonParameter: { label: "-", id: "" },
+            description: "",
+            label: "",
+          },
+        ],
       },
     },
   });
 
-  const [icon] = watch(["icon"]);
-  const [iconPreview] = useFilePreview(icon);
+  const [image] = watch(["image"]);
+  const [imagePreview] = useFilePreview(image);
 
   const {
     fields: pathFields,
@@ -135,36 +153,13 @@ export const useGameForm = (args: UseGameFormArgs) => {
     },
   });
 
-  useEffect(() => {
-    if (args.defaultValue) return;
-
-    appendPath({ id: "", path: "" });
-    appendExtractionPipeline({
-      id: "",
-      inputFilename: "",
-      type: "sav-to-json",
-      outputFilename: "",
-    });
-    appendGameStateParameter({
-      id: "",
-      key: "",
-      type: {
-        id: "",
-        type: "",
-      },
-      commonParameter: { label: "-", id: "" },
-      description: "",
-      label: "",
-    });
-  }, []);
-
   return {
     register,
     handleSubmit: (cb: (data: AddGameDTO) => void) =>
       handleSubmit((fields) =>
         cb({
           ...fields,
-          icon: fields.icon ? fields.icon[0] : undefined,
+          icon: fields.image ? fields.image[0] : undefined,
           paths: fields.paths.map((path) => ({
             ...path,
             path: path.path.replaceAll(/\//g, "\\"),
@@ -172,7 +167,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
         })
       ),
     errors,
-    iconPreview,
+    imagePreview,
     pathFields,
     appendPath,
     removePath,

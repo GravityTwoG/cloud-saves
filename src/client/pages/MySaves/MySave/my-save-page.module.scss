@@ -38,18 +38,8 @@ html[data-theme="dark"] .GameImageOverlay {
 }
 
 .GameStateName {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
   margin-bottom: 0.5rem;
-  color: var(--text-color);
-
-  .GameIcon {
-    width: 8rem;
-    height: 6rem;
-
-    object-fit: contain;
-  }
+  color: var(--color-text);
 
   & > span {
     width: 100%;
@@ -70,11 +60,11 @@ html[data-theme="dark"] .GameImageOverlay {
     font-size: 3.75rem;
     line-height: 1.8;
     font-weight: 300;
-    color: var(--text-color);
+    color: var(--color-text);
     background: transparent;
 
     border: none;
-    border-bottom: 1px solid var(--deco-color);
+    border-bottom: 1px solid var(--color-deco);
     outline: none;
   }
 }
@@ -93,28 +83,7 @@ html[data-theme="dark"] .GameImageOverlay {
   }
 }
 
-.SyncSettingsPeriods {
-  margin: 0.5rem 0;
-  display: flex;
-  gap: 0.5rem;
-}
-
 .SyncSettingsConfirmButton {
   width: 100%;
   font-size: 1rem;
-}
-
-.Buttons {
-  margin-left: auto;
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
-.GameSaveArchive {
-  margin-top: 2rem;
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  padding: 1rem 1rem;
 }

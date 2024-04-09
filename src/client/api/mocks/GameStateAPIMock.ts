@@ -29,7 +29,7 @@ export class GameStateAPIMock implements IGameStateAPI {
           path: path.path,
           gameId: game.id,
           gameName: game.name,
-          gameIconURL: game.iconURL,
+          gameImageURL: game.imageURL,
         });
       }
     }
@@ -131,7 +131,7 @@ export class GameStateAPIMock implements IGameStateAPI {
     const gameState: GameState = {
       id: gameStateId,
       gameId: state.localPath,
-      gameIconURL: "",
+      gameImageURL: "",
       localPath: state.localPath,
       name: game ? game.name : state.name,
       sync: GameStateSync.NO,
@@ -176,7 +176,7 @@ export class GameStateAPIMock implements IGameStateAPI {
     const gameState: GameState = {
       id: gameStateId,
       gameId: game ? game.id : Math.random().toString(),
-      gameIconURL: "",
+      gameImageURL: "",
       localPath: state.localPath,
       name: game ? game.name : state.name,
       sync: GameStateSync.NO,

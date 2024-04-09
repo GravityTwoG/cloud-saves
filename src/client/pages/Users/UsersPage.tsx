@@ -7,11 +7,12 @@ import { useUIContext } from "@/client/contexts/UIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
 
 import { H1 } from "@/client/ui/atoms/Typography";
+import { ConfirmButton } from "@/client/ui/atoms/Button/";
 import { Container } from "@/client/ui/atoms/Container";
 import { List } from "@/client/ui/molecules/List/List";
+import { Preloader } from "@/client/ui/molecules/Preloader";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
-import { ConfirmButton } from "@/client/ui/atoms/Button/";
 
 export const UsersPage = () => {
   const { usersAPI } = useAPIContext();
@@ -20,9 +21,10 @@ export const UsersPage = () => {
   const {
     query,
     resource: users,
+    isLoading,
     onSearch,
-    loadResource: loadUsers,
-    setQuery,
+    onSearchQueryChange,
+    _loadResource: loadUsers,
   } = useResource(usersAPI.getUsers);
 
   const { notify } = useUIContext();
@@ -52,39 +54,41 @@ export const UsersPage = () => {
       <SearchForm
         searchQuery={query.searchQuery}
         onSearch={onSearch}
-        onQueryChange={(searchQuery) => setQuery({ ...query, searchQuery })}
+        onQueryChange={(searchQuery) => onSearchQueryChange(searchQuery)}
       />
 
-      <List
-        className={classes.UsersList}
-        elements={users.items}
-        getKey={(user) => user.id}
-        elementClassName={classes.UserItem}
-        renderElement={(user) => (
-          <>
-            <div className={classes.UserInfo}>
-              <span>{user.username}</span>
-              <span>{user.email}</span>
-            </div>
+      <Preloader isLoading={isLoading}>
+        <List
+          className="my-4"
+          elements={users.items}
+          getKey={(user) => user.id}
+          elementClassName={classes.UserItem}
+          renderElement={(user) => (
+            <>
+              <div className={classes.UserInfo}>
+                <span>{user.username}</span>
+                <span>{user.email}</span>
+              </div>
 
-            <div>
-              <ConfirmButton
-                onClick={() => {
-                  if (user.isBlocked) {
-                    onUnBlock(user.id);
-                  } else {
-                    onBlock(user.id);
-                  }
-                }}
-                color={user.isBlocked ? "primary" : "danger"}
-                prompt={user.isBlocked ? t("unblock-user") : t("block-user")}
-              >
-                {user.isBlocked ? t("unblock") : t("block")}
-              </ConfirmButton>
-            </div>
-          </>
-        )}
-      />
+              <div>
+                <ConfirmButton
+                  onClick={() => {
+                    if (user.isBlocked) {
+                      onUnBlock(user.id);
+                    } else {
+                      onBlock(user.id);
+                    }
+                  }}
+                  color={user.isBlocked ? "primary" : "danger"}
+                  prompt={user.isBlocked ? t("unblock-user") : t("block-user")}
+                >
+                  {user.isBlocked ? t("unblock") : t("block")}
+                </ConfirmButton>
+              </div>
+            </>
+          )}
+        />
+      </Preloader>
 
       <Paginator
         scope={3}

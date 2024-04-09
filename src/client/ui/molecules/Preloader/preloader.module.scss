@@ -1,6 +1,13 @@
 .Preloader {
   min-height: 100px;
   position: relative;
+
+  &[data-is-visible="true"] .Spinner {
+    min-height: 250px;
+    display: flex;
+    background-color: var(--color-background);
+    opacity: 0.5;
+  }
 }
 
 .Spinner {
@@ -15,10 +22,11 @@
   align-items: center;
   justify-content: center;
   background-color: transparent;
-  transition: background-color 0.3s ease;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
 
-  &[data-is-visible='true'] {
-    display: flex;
-    background-color: #ffffffae;
+  & > svg {
+    stroke: var(--color-text) !important;
   }
 }

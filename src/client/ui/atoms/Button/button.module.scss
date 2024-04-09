@@ -1,29 +1,31 @@
 .BaseButton {
   display: inline-block;
-  background-color: var(--accent-color);
-  padding: 0.25rem 0.5rem;
+  background-color: var(--color-accent);
+
   border-radius: 6px;
   border: 2px solid transparent;
   outline: none;
   cursor: pointer;
-  text-decoration: none;
-  text-transform: uppercase;
+
   font-size: 0.75rem;
   font-family: inherit;
   font-weight: 700;
   line-height: 1;
   color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
   white-space: nowrap;
   transition: background-color 0.3s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
   position: relative;
 
   &:hover:not(:disabled) {
-    background-color: var(--accent-hover-color);
+    background-color: var(--color-accent-hover);
   }
   &:active:not(:disabled) {
-    background-color: var(--accent-color);
+    background-color: var(--color-accent);
   }
 
   &:disabled {
@@ -31,44 +33,54 @@
   }
 
   &:focus-visible {
-    border-color: var(--deco-color);
+    border-color: var(--color-deco);
   }
 
   &.isLoading {
-    background-color: var(--accent-hover-color);
+    background-color: var(--color-accent-hover);
   }
 
   &.ColorSecondary {
-    background-color: var(--secondary-color);
+    background-color: var(--color-secondary);
 
     &:hover:not(:disabled) {
-      background-color: var(--secondary-hover-color);
+      background-color: var(--color-secondary-hover);
     }
 
     &:active:not(:disabled) {
-      background-color: var(--secondary-color);
+      background-color: var(--color-secondary);
     }
 
     &.isLoading {
-      background-color: var(--secondary-hover-color);
+      background-color: var(--color-secondary-hover);
     }
   }
 
   &.ColorDanger {
-    background-color: #b91c1c;
+    background-color: var(--color-danger);
 
     &:hover:not(:disabled) {
-      background-color: #7f1d1d;
+      background-color: var(--color-danger-hover);
     }
 
     &:active:not(:disabled) {
-      background-color: #b91c1c;
+      background-color: var(--color-danger-active);
     }
 
     &.isLoading {
-      background-color: #7f1d1d;
+      background-color: var(--color-danger-hover);
     }
   }
+}
+
+.PrimaryButton {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.CTAButton {
+  padding: 9px 12px 9px;
+  font-size: 1rem;
 }
 
 .loading {

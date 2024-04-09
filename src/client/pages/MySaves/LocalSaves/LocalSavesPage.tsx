@@ -8,11 +8,15 @@ import { useUIContext } from "@/client/contexts/UIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
 import { ResourceRequest } from "@/client/api/interfaces/common";
 
+import FolderIcon from "@/client/ui/icons/Folder.svg";
+import FileIcon from "@/client/ui/icons/File.svg";
 import { Bytes } from "@/client/ui/atoms/Bytes";
 import { Button } from "@/client/ui/atoms/Button";
 import { Container } from "@/client/ui/atoms/Container";
+import { FadedCard } from "@/client/ui/atoms/FadedCard";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { Grid } from "@/client/ui/molecules/Grid";
+import { Preloader } from "@/client/ui/molecules/Preloader";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
 
@@ -28,7 +32,7 @@ function getParentPath(path: string) {
 export const LocalSavesPage = () => {
   const { gameStateAPI, osAPI } = useAPIContext();
   const { notify } = useUIContext();
-  const { t } = useTranslation(undefined, { keyPrefix: "pages.mySaves" });
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.localSaves" });
 
   const [isManual, setIsManual] = useState(false);
   const [selectedFolder, setSelectedFolder] = useState<{
@@ -42,10 +46,11 @@ export const LocalSavesPage = () => {
 
   const {
     query,
-    setQuery,
-    onSearch,
     resource: paths,
-    loadResource,
+    isLoading,
+    onSearch,
+    onSearchQueryChange,
+    _loadResource,
   } = useResource(gameStateAPI.getStatePaths);
 
   const onFolderOpen = async (folderToOpen: FileInfo) => {
@@ -90,7 +95,7 @@ export const LocalSavesPage = () => {
       path: "",
       parentPath: "",
     });
-    loadResource(query);
+    _loadResource(query);
   };
 
   const items = useMemo(() => {
@@ -106,7 +111,7 @@ export const LocalSavesPage = () => {
       type: "folder" as "folder" | "file",
       gameId: path.gameId,
       gameName: path.gameName,
-      gameIconURL: path.gameIconURL || "",
+      gameIconURL: path.gameImageURL || "",
     }));
   }, [paths, isManual, files]);
 
@@ -125,12 +130,14 @@ export const LocalSavesPage = () => {
           onSearch();
         }}
         searchQuery={query.searchQuery}
-        onQueryChange={(searchQuery) => setQuery({ ...query, searchQuery })}
+        onQueryChange={onSearchQueryChange}
       />
 
-      <Paragraph>
-        {t("folder")}: {selectedFolder.path}
-      </Paragraph>
+      {selectedFolder.path && (
+        <Paragraph className={classes.SelectedFolder}>
+          <FolderIcon className={classes.Icon} /> {selectedFolder.path}
+        </Paragraph>
+      )}
 
       <div className={classes.FolderActions}>
         <Button
@@ -165,15 +172,17 @@ export const LocalSavesPage = () => {
         </Button>
       </div>
 
-      <Grid
-        className="my-4"
-        elements={items}
-        getKey={(file) => file.path}
-        renderElement={(file) => (
-          <FileCard file={file} onFolderOpen={onFolderOpen} />
-        )}
-        elementWidth={350}
-      />
+      <Preloader isLoading={isLoading}>
+        <Grid
+          className="my-4"
+          elements={items}
+          getKey={(file) => file.path}
+          renderElement={(file) => (
+            <FileCard file={file} onFolderOpen={onFolderOpen} />
+          )}
+          elementWidth={350}
+        />
+      </Preloader>
 
       <Paginator
         count={paths.totalCount}
@@ -193,7 +202,7 @@ type FileCardProps = {
 const FileCard = ({ file, onFolderOpen }: FileCardProps) => {
   const { gameStateAPI } = useAPIContext();
   const { notify } = useUIContext();
-  const { t } = useTranslation(undefined, { keyPrefix: "pages.mySaves" });
+  const { t } = useTranslation(undefined, { keyPrefix: "pages.localSaves" });
 
   const uploadState = async (folder: {
     gameId?: string;
@@ -201,62 +210,72 @@ const FileCard = ({ file, onFolderOpen }: FileCardProps) => {
     path: string;
     name: string;
   }) => {
+    await gameStateAPI.uploadState({
+      gameId: folder.gameId,
+      localPath: folder.path,
+      name: folder.gameName || folder.name,
+      isPublic: false,
+    });
+  };
+
+  const onUpload = async (folder: {
+    gameId?: string;
+    gameName?: string;
+    path: string;
+    name: string;
+  }) => {
     try {
-      await gameStateAPI.uploadState({
-        gameId: folder.gameId,
-        localPath: folder.path,
-        name: folder.gameName || folder.name,
-        isPublic: false,
+      notify.promise(uploadState(folder), {
+        loading: t("game-state-uploading"),
+        success: t("game-state-uploaded"),
+        error: t("game-state-upload-error"),
       });
-      notify.success(t("game-state-uploaded"));
     } catch (e) {
-      notify.error(e);
+      console.error(e);
     }
   };
 
   return (
-    <div
+    <FadedCard
+      imageURL={file.gameIconURL || ""}
       className={classes.FileCard}
-      style={{
-        backgroundImage: `url(${file.gameIconURL})`,
+      data-type={file.gameId ? "file" : file.type}
+      onClick={() => {
+        if (file.type === "folder" && !file.gameId) {
+          onFolderOpen(file);
+        }
       }}
     >
-      <div
-        className={classes.FileCardInner}
-        data-type={file.gameId ? "file" : file.type}
-        onClick={() => {
-          if (file.type === "folder" && !file.gameId) {
-            onFolderOpen(file);
-          }
-        }}
-      >
-        <div className={classes.FileActions}>
-          <Button onClick={() => uploadState(file)}>{t("upload")}</Button>
-        </div>
-
-        <div className={classes.FileCardInfo}>
-          <div className={classes.FileInfo}>
-            <p>
-              {`${file.type === "folder" ? t("folder") : t("file")}: `}
-              {file.name}
-            </p>
-
-            {!!file.size && (
-              <p>
-                size: <Bytes bytes={file.size} />
-              </p>
-            )}
-
-            {!!file.mtime && <p>modified: {file.mtime.toLocaleDateString()}</p>}
-          </div>
-
-          {!!file.gameId && (
-            <div className={classes.GameInfo}>
-              <span>{file.gameName}</span>
-            </div>
-          )}
-        </div>
+      <div className={classes.FileActions}>
+        <Button onClick={() => onUpload(file)}>{t("upload")}</Button>
       </div>
-    </div>
+
+      <div className={classes.FileCardInfo}>
+        <div className={classes.FileInfo}>
+          <p className={classes.FileName}>
+            {file.type === "folder" ? (
+              <FolderIcon className={classes.Icon} />
+            ) : (
+              <FileIcon className={classes.Icon} />
+            )}{" "}
+            <span>{file.name}</span>
+          </p>
+
+          {!!file.size && (
+            <p>
+              size: <Bytes bytes={file.size} />
+            </p>
+          )}
+
+          {!!file.mtime && <p>modified: {file.mtime.toLocaleDateString()}</p>}
+        </div>
+
+        {!!file.gameId && (
+          <div className={classes.GameInfo}>
+            <span>{file.gameName}</span>
+          </div>
+        )}
+      </div>
+    </FadedCard>
   );
 };

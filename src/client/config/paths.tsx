@@ -17,6 +17,9 @@ const games = path("/games");
 const gameAdd = path("/games-add");
 const game = games.path("/:gameId");
 
+const dashboard = path("/dashboard");
+const graphic = dashboard.path("/graphic/:graphicId");
+
 const users = path("/users");
 
 export const paths = {
@@ -36,6 +39,9 @@ export const paths = {
   games,
   game,
   gameAdd,
+
+  dashboard,
+  graphic,
 
   users,
 };

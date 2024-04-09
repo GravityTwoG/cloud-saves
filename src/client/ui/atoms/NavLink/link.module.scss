@@ -1,6 +1,6 @@
 .BaseButton {
   display: inline-block;
-  background-color: var(--accent-color);
+  background-color: var(--color-accent);
   padding: 15px 44px 13px;
   border-radius: 1.5em;
   border: none;
@@ -23,29 +23,38 @@
   }
 
   &:hover:not(:disabled) {
-    background-color: var(--accent-hover-color);
+    background-color: var(--color-accent-hover);
   }
 
   &.Active {
-    background-color: var(--accent-hover-color);
+    background-color: var(--color-accent-hover);
   }
 }
 
 .CommonLink {
   font-weight: bold;
-  color: var(--accent-color);
+  color: var(--color-accent);
   text-decoration: none;
 
   &:hover {
-    color: var(--accent-hover-color);
+    color: var(--color-accent-hover);
     text-decoration: underline;
   }
 
   &:active {
-    color: var(--text-color);
+    color: var(--color-text);
   }
 
   &.Active {
     text-decoration: underline;
+  }
+}
+
+.Unstyled {
+  font-weight: normal;
+  color: var(--color-text);
+  &:hover {
+    color: var(--color-text);
+    text-decoration: none;
   }
 }

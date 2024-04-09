@@ -6,7 +6,7 @@
   min-height: 100vh;
   padding: 0.5rem 0.25rem;
   overflow: hidden;
-  background: var(--paper-color);
+  background: var(--color-paper);
 }
 
 .Logo {
@@ -32,7 +32,7 @@
   & > a {
     display: block;
     text-decoration: none;
-    color: var(--text-color);
+    color: var(--color-text);
     transition: color 0.3s ease;
 
     & > span {
@@ -56,8 +56,10 @@
         height: 100%;
       }
 
-      & path {
-        stroke: var(--text-color);
+      & path,
+      & circle,
+      & line {
+        stroke: var(--color-text);
         transition: stroke 0.3s ease;
       }
     }
@@ -66,24 +68,27 @@
   &:hover,
   &.NavLinkActive {
     & > a {
-      color: var(--accent-color);
+      color: var(--color-accent);
     }
 
-    & > a > .NavIcon path {
-      stroke: var(--accent-color);
+    & > a > .NavIcon path,
+    & > a > .NavIcon circle,
+    & > a > .NavIcon line {
+      stroke: var(--color-accent);
     }
   }
-}
-
-.AppButtons {
-  margin-top: auto;
 }
 
 .AppButton {
   margin-top: 0.5rem;
   width: 100%;
-  padding-top: 2px;
-  padding-bottom: 2px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
 
   border-color: transparent;
   border-radius: 6px;
@@ -92,12 +97,12 @@
 
   font-size: 1.2rem;
   line-height: 1;
-  color: var(--text-color);
+  color: var(--color-text);
   vertical-align: baseline;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background: var(--deco-color);
+    background: var(--color-deco);
   }
 }
 
@@ -107,16 +112,16 @@
     width: 1.5rem;
 
     & > path {
-      stroke: var(--text-color);
+      stroke: var(--color-text);
       transition: stroke 0.3s ease;
     }
   }
 
   &:hover {
-    color: var(--accent-color);
+    color: var(--color-accent);
 
     & > svg path {
-      stroke: var(--accent-color);
+      stroke: var(--color-accent);
     }
   }
 }

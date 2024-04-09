@@ -30,4 +30,6 @@ export interface IOSAPI {
 
   // Just download to selected folder
   downloadStateAs(gameState: GameState): Promise<void>;
+
+  getAppVersion(): Promise<string>;
 }

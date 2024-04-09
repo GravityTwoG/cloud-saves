@@ -30,6 +30,8 @@ const electronApi: Window["electronAPI"] = {
 
   downloadStateAs: (gameState) =>
     ipcRenderer.invoke("downloadStateAs", gameState),
+
+  getAppVersion: () => ipcRenderer.invoke("getAppVersion"),
 };
 
 contextBridge.exposeInMainWorld("electronAPI", electronApi);

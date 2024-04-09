@@ -66,5 +66,7 @@ interface Window {
     downloadStateAs: (
       gameState: import("../types").GameState
     ) => Promise<ElectronApiResponse<void>>;
+
+    getAppVersion: () => Promise<ElectronApiResponse<string>>;
   };
 }

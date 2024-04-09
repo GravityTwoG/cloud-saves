@@ -77,4 +77,11 @@ export class OSAPI implements IOSAPI {
     }
     return response.data;
   };
+
+  setTitleBarSettings = async (settings: {
+    backgroundColor: string;
+    symbolColor: string;
+  }): Promise<void> => {
+    await window.electronAPI.setTitleBarSettings(settings);
+  };
 }

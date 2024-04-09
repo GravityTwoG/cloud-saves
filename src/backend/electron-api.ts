@@ -9,7 +9,10 @@ import { statesManager } from ".";
 
 export const electronAPI: Omit<
   Window["electronAPI"],
-  "sendSyncedStates" | "onGetSyncedStates" | "onDeepLink"
+  | "sendSyncedStates"
+  | "onGetSyncedStates"
+  | "onDeepLink"
+  | "setTitleBarSettings"
 > = {
   showFolderDialog: async () => {
     try {

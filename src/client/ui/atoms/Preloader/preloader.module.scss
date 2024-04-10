@@ -2,11 +2,14 @@
   min-height: 100px;
   position: relative;
 
-  &[data-is-visible="true"] .Spinner {
+  &[data-is-visible="true"] {
     min-height: 250px;
-    display: flex;
-    background-color: var(--color-background);
-    opacity: 0.5;
+    & .Spinner {
+      min-height: 250px;
+      display: flex;
+      background-color: var(--color-background);
+      opacity: 0.5;
+    }
   }
 }
 
@@ -25,8 +28,4 @@
   border-radius: 6px;
   transition: background-color 0.3s ease, opacity 0.3s ease;
   opacity: 0;
-
-  & > svg {
-    stroke: var(--color-text) !important;
-  }
 }

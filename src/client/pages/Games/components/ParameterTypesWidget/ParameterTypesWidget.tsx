@@ -9,7 +9,6 @@ import { useResource } from "@/client/lib/hooks/useResource";
 import { Paragraph } from "@/client/ui/atoms/Typography";
 import { ConfirmButton } from "@/client/ui/atoms/Button/";
 import { List } from "@/client/ui/molecules/List/List";
-import { Preloader } from "@/client/ui/molecules/Preloader";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { ParameterTypeForm } from "./ParameterTypeForm";
@@ -69,32 +68,31 @@ export const ParameterTypesWidget = () => {
         onQueryChange={onSearchQueryChange}
       />
 
-      <Preloader isLoading={isLoading}>
-        <List
-          elements={types.items}
-          className="my-4"
-          elementClassName={classes.TypeItem}
-          getKey={(type) => type.id}
-          renderElement={(type) => (
-            <>
-              <ParameterTypeForm
-                onSubmit={(newType) => onEdit(type.id, newType)}
-                defaultValue={type.type}
-                resetOnSubmit={false}
-              />
+      <List
+        isLoading={isLoading}
+        elements={types.items}
+        className="my-4"
+        elementClassName={classes.TypeItem}
+        getKey={(type) => type.id}
+        renderElement={(type) => (
+          <>
+            <ParameterTypeForm
+              onSubmit={(newType) => onEdit(type.id, newType)}
+              defaultValue={type.type}
+              resetOnSubmit={false}
+            />
 
-              <ConfirmButton
-                onClick={() => {
-                  onDelete(type.id);
-                }}
-                color="danger"
-              >
-                {t("delete-type")}{" "}
-              </ConfirmButton>
-            </>
-          )}
-        />
-      </Preloader>
+            <ConfirmButton
+              onClick={() => {
+                onDelete(type.id);
+              }}
+              color="danger"
+            >
+              {t("delete-type")}{" "}
+            </ConfirmButton>
+          </>
+        )}
+      />
 
       <Paginator
         currentPage={query.pageNumber}

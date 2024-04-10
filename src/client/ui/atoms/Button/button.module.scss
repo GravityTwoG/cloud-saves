@@ -87,6 +87,13 @@
   opacity: 0;
 }
 
+.ButtonContent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+}
+
 .Spinner {
   position: absolute;
   top: 50%;

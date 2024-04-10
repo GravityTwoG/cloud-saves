@@ -5,7 +5,7 @@ import { useAPIContext } from "@/client/contexts/APIContext";
 
 import { Input } from "@/client/ui/atoms/Input";
 import { ExpandedSelect } from "@/client/ui/atoms/Select/ExpandedSelect";
-import { Preloader } from "@/client/ui/molecules/Preloader";
+import { Preloader } from "@/client/ui/atoms/Preloader";
 
 export type FilterByGameProps = {
   onGameSelect: (gameId: string) => void;

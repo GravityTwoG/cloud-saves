@@ -8,7 +8,6 @@ import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
 import { Flex } from "@/client/ui/atoms/Flex";
 import { Grid } from "@/client/ui/molecules/Grid";
-import { Preloader } from "@/client/ui/molecules/Preloader";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { GameStateCard } from "@/client/lib/components/GameStateCard";
@@ -53,19 +52,18 @@ export const PublicSavesPage = () => {
         />
 
         <div className="w-full">
-          <Preloader isLoading={isLoading}>
-            <Grid
-              className="my-4"
-              elements={gameStates.items}
-              getKey={(gameState) => gameState.id}
-              renderElement={(gameState) => (
-                <GameStateCard
-                  gameState={gameState}
-                  href={paths.save({ gameStateId: gameState.id })}
-                />
-              )}
-            />
-          </Preloader>
+          <Grid
+            isLoading={isLoading}
+            className="my-4"
+            elements={gameStates.items}
+            getKey={(gameState) => gameState.id}
+            renderElement={(gameState) => (
+              <GameStateCard
+                gameState={gameState}
+                href={paths.save({ gameStateId: gameState.id })}
+              />
+            )}
+          />
 
           <Paginator
             scope={3}

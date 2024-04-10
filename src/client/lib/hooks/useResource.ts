@@ -22,7 +22,7 @@ export const useResource = <T, Q extends DefaultQuery>(
   loadResource: (query: Q) => Promise<{ items: T[]; totalCount: number }>,
   options?: Q
 ) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [query, setQuery] = useState<DefaultQuery & Partial<Q>>(() => ({
     ...defaultQuery,
     ...(options as Partial<Q>),

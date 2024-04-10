@@ -36,6 +36,8 @@ export const ExpandedSelect = forwardRef(
         <FakeInput value={props.value} name={props.name} ref={ref} />
 
         <ul className={classes.OptionsList}>
+          {props.options.length === 0 && <li className={classes.Option}>-</li>}
+
           {props.options.map((option) => (
             <li
               key={option.value}

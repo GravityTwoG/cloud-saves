@@ -7,11 +7,10 @@ import { useResource } from "@/client/lib/hooks/useResource";
 
 import { H1, H2 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
-import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
+import { CommonLink } from "@/client/ui/atoms/Link/CommonLink";
 import { Grid } from "@/client/ui/molecules/Grid";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
-import { Preloader } from "@/client/ui/molecules/Preloader";
 import { GameStateCard } from "@/client/lib/components/GameStateCard";
 
 export const MySavesPage = () => {
@@ -52,21 +51,20 @@ export const MySavesPage = () => {
           onQueryChange={onSearchQueryChange}
         />
 
-        <Preloader isLoading={isLoading}>
-          <Grid
-            className="my-4"
-            elements={gameStates.items}
-            getKey={(gameState) => gameState.id}
-            renderElement={(gameState) => (
-              <GameStateCard
-                gameState={gameState}
-                href={paths.mySave({ gameStateId: gameState.id })}
-                onDelete={onDelete}
-                showSyncSettings
-              />
-            )}
-          />
-        </Preloader>
+        <Grid
+          isLoading={isLoading}
+          className="my-4"
+          elements={gameStates.items}
+          getKey={(gameState) => gameState.id}
+          renderElement={(gameState) => (
+            <GameStateCard
+              gameState={gameState}
+              href={paths.mySave({ gameStateId: gameState.id })}
+              onDelete={onDelete}
+              showSyncSettings
+            />
+          )}
+        />
 
         <Paginator
           scope={3}

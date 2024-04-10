@@ -45,7 +45,9 @@ export const Button: React.FC<ButtonProps> = ({
       style={{ width: props.width, ...props.style }}
       disabled={props.disabled || isLoading}
     >
-      <span className={clsx(isLoading && classes.loading)}>
+      <span
+        className={clsx(classes.ButtonContent, isLoading && classes.loading)}
+      >
         {props.children}
       </span>
 

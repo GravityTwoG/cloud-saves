@@ -10,7 +10,6 @@ import { H1 } from "@/client/ui/atoms/Typography";
 import { ConfirmButton } from "@/client/ui/atoms/Button/";
 import { Container } from "@/client/ui/atoms/Container";
 import { List } from "@/client/ui/molecules/List/List";
-import { Preloader } from "@/client/ui/molecules/Preloader";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
 
@@ -57,38 +56,37 @@ export const UsersPage = () => {
         onQueryChange={(searchQuery) => onSearchQueryChange(searchQuery)}
       />
 
-      <Preloader isLoading={isLoading}>
-        <List
-          className="my-4"
-          elements={users.items}
-          getKey={(user) => user.id}
-          elementClassName={classes.UserItem}
-          renderElement={(user) => (
-            <>
-              <div className={classes.UserInfo}>
-                <span>{user.username}</span>
-                <span>{user.email}</span>
-              </div>
+      <List
+        isLoading={isLoading}
+        className="my-4"
+        elements={users.items}
+        getKey={(user) => user.id}
+        elementClassName={classes.UserItem}
+        renderElement={(user) => (
+          <>
+            <div className={classes.UserInfo}>
+              <span>{user.username}</span>
+              <span>{user.email}</span>
+            </div>
 
-              <div>
-                <ConfirmButton
-                  onClick={() => {
-                    if (user.isBlocked) {
-                      onUnBlock(user.id);
-                    } else {
-                      onBlock(user.id);
-                    }
-                  }}
-                  color={user.isBlocked ? "primary" : "danger"}
-                  prompt={user.isBlocked ? t("unblock-user") : t("block-user")}
-                >
-                  {user.isBlocked ? t("unblock") : t("block")}
-                </ConfirmButton>
-              </div>
-            </>
-          )}
-        />
-      </Preloader>
+            <div>
+              <ConfirmButton
+                onClick={() => {
+                  if (user.isBlocked) {
+                    onUnBlock(user.id);
+                  } else {
+                    onBlock(user.id);
+                  }
+                }}
+                color={user.isBlocked ? "primary" : "danger"}
+                prompt={user.isBlocked ? t("unblock-user") : t("block-user")}
+              >
+                {user.isBlocked ? t("unblock") : t("block")}
+              </ConfirmButton>
+            </div>
+          </>
+        )}
+      />
 
       <Paginator
         scope={3}

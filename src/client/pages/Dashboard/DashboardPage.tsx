@@ -9,11 +9,10 @@ import { Container } from "@/client/ui/atoms/Container";
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Flex } from "@/client/ui/atoms/Flex";
 import { ConfirmButton } from "@/client/ui/atoms/Button";
-import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
+import { CommonLink } from "@/client/ui/atoms/Link/CommonLink";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { List } from "@/client/ui/molecules/List/List";
 import { Paginator } from "@/client/ui/molecules/Paginator";
-import { Preloader } from "@/client/ui/molecules/Preloader";
 import { Spoiler } from "@/client/ui/molecules/Spoiler/Spoiler";
 import { GraphicForm } from "./components/GraphicForm";
 
@@ -55,24 +54,23 @@ export const DashboardPage = () => {
         onQueryChange={onSearchQueryChange}
       />
 
-      <Preloader isLoading={isLoading}>
-        <List
-          elements={graphics.items}
-          getKey={(g) => g.id}
-          renderElement={(g) => (
-            <Flex jcsb>
-              <CommonLink unstyled href={paths.graphic({ graphicId: g.id })}>
-                {g.visualType}
-              </CommonLink>
+      <List
+        isLoading={isLoading}
+        elements={graphics.items}
+        getKey={(g) => g.id}
+        renderElement={(g) => (
+          <Flex jcsb>
+            <CommonLink unstyled href={paths.graphic({ graphicId: g.id })}>
+              {g.visualType}
+            </CommonLink>
 
-              <ConfirmButton color="danger" onClick={() => onDelete(g.id)}>
-                delete
-              </ConfirmButton>
-            </Flex>
-          )}
-          className="my-4"
-        />
-      </Preloader>
+            <ConfirmButton color="danger" onClick={() => onDelete(g.id)}>
+              delete
+            </ConfirmButton>
+          </Flex>
+        )}
+        className="my-4"
+      />
 
       <Paginator
         count={graphics.totalCount}

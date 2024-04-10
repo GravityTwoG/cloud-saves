@@ -55,7 +55,7 @@ export const GameStateArchive = (props: GameStateArchiveProps) => {
           subActions={[
             {
               onClick: downloadStateAs,
-              children: t("download-as"),
+              children: t("download-to"),
               key: "1",
             },
           ]}

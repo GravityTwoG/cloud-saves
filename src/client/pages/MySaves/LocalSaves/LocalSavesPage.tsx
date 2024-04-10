@@ -8,6 +8,7 @@ import { useUIContext } from "@/client/contexts/UIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
 import { ResourceRequest } from "@/client/api/interfaces/common";
 
+import UploadIcon from "@/client/ui/icons/Upload.svg";
 import FolderIcon from "@/client/ui/icons/Folder.svg";
 import FileIcon from "@/client/ui/icons/File.svg";
 import { Bytes } from "@/client/ui/atoms/Bytes";
@@ -16,7 +17,6 @@ import { Container } from "@/client/ui/atoms/Container";
 import { FadedCard } from "@/client/ui/atoms/FadedCard";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { Grid } from "@/client/ui/molecules/Grid";
-import { Preloader } from "@/client/ui/molecules/Preloader";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
 
@@ -172,17 +172,16 @@ export const LocalSavesPage = () => {
         </Button>
       </div>
 
-      <Preloader isLoading={isLoading}>
-        <Grid
-          className="my-4"
-          elements={items}
-          getKey={(file) => file.path}
-          renderElement={(file) => (
-            <FileCard file={file} onFolderOpen={onFolderOpen} />
-          )}
-          elementWidth={350}
-        />
-      </Preloader>
+      <Grid
+        isLoading={isLoading}
+        className="my-4"
+        elements={items}
+        getKey={(file) => file.path}
+        renderElement={(file) => (
+          <FileCard file={file} onFolderOpen={onFolderOpen} />
+        )}
+        elementWidth={350}
+      />
 
       <Paginator
         count={paths.totalCount}
@@ -247,7 +246,10 @@ const FileCard = ({ file, onFolderOpen }: FileCardProps) => {
       }}
     >
       <div className={classes.FileActions}>
-        <Button onClick={() => onUpload(file)}>{t("upload")}</Button>
+        <Button onClick={() => onUpload(file)}>
+          <UploadIcon />
+          {t("upload")}
+        </Button>
       </div>
 
       <div className={classes.FileCardInfo}>

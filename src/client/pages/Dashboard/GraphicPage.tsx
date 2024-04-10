@@ -16,7 +16,7 @@ import {
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
-import { Preloader } from "@/client/ui/molecules/Preloader";
+import { Preloader } from "@/client/ui/atoms/Preloader";
 import { GraphicForm } from "./components/GraphicForm";
 import { Flex } from "@/client/ui/atoms/Flex";
 

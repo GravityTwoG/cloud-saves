@@ -9,10 +9,15 @@ export type MyRequestInit =
 export class Fetcher {
   private readonly baseURL: string;
   private readonly credentials?: RequestCredentials;
+  private onError?: (error: ApiError) => void;
 
   constructor(args: { baseURL: string; credentials?: RequestCredentials }) {
     this.baseURL = args.baseURL;
     this.credentials = args.credentials;
+  }
+
+  setOnError(callback: (error: ApiError) => void) {
+    this.onError = callback;
   }
 
   async get<R>(
@@ -116,7 +121,13 @@ export class Fetcher {
 
   private handleError(response: Response) {
     if (!response.ok) {
-      throw new ApiError(`${response.status}:${response.statusText}`);
+      const error = new ApiError(`${response.status}:${response.statusText}`);
+
+      if (this.onError) {
+        this.onError(error);
+      }
+
+      throw error;
     }
   }
 }

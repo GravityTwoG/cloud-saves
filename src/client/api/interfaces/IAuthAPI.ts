@@ -22,6 +22,8 @@ export type ResetPasswordDTO = {
 };
 
 export interface IAuthAPI {
+  onUnauthorized: (callback: () => void) => void;
+
   register(credentials: RegisterDTO): Promise<User>;
 
   login(credentials: LoginDTO): Promise<User>;

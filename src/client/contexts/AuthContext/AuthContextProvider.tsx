@@ -27,6 +27,11 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
         setAuthStatus(AuthStatus.AUTHENTICATED);
       })
       .catch(() => setAuthStatus(AuthStatus.ANONYMOUS));
+
+    authAPI.onUnauthorized(() => {
+      setAuthStatus(AuthStatus.ANONYMOUS);
+      setUser(emptyUser);
+    });
   }, []);
 
   const register = useCallback(async (credentials: RegisterDTO) => {

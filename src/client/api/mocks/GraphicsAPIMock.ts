@@ -49,6 +49,36 @@ export class GraphicsAPIMock implements IGraphicsAPI {
   };
 
   getCommonGraphicData = async (id: string): Promise<CommonGraphicData> => {
+    if (id == "2") {
+      return {
+        id,
+        visualType: "piechart",
+        commonParameter: {
+          id: "2",
+          label: "test",
+          description: "test",
+          type: {
+            id: "2",
+            type: "number",
+          },
+        },
+        data: [
+          {
+            percentage: 20,
+            label: "test1",
+          },
+          {
+            percentage: 47,
+            label: "test2",
+          },
+          {
+            percentage: 33,
+            label: "test3",
+          },
+        ],
+      };
+    }
+
     return {
       id,
       visualType: "histogram",
@@ -64,7 +94,7 @@ export class GraphicsAPIMock implements IGraphicsAPI {
       data: [
         {
           range: {
-            min: 0,
+            min: 50,
             max: 100,
           },
           height: 100,
@@ -80,6 +110,20 @@ export class GraphicsAPIMock implements IGraphicsAPI {
           range: {
             min: 150,
             max: 200,
+          },
+          height: 70,
+        },
+        {
+          range: {
+            min: 200,
+            max: 250,
+          },
+          height: 149,
+        },
+        {
+          range: {
+            min: 250,
+            max: 300,
           },
           height: 70,
         },

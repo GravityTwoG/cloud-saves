@@ -2,22 +2,35 @@ import { useEffect, useState } from "react";
 
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useDebouncedCallback } from "@/client/ui/hooks/useDebouncedCallback";
+import { useDebouncedValue } from "@/client/ui/hooks/useDebouncedValue";
+
+type DefaultQuery = {
+  searchQuery: string;
+  pageNumber: number;
+  pageSize: number;
+};
+
+const defaultQuery = {
+  searchQuery: "",
+  pageNumber: 1,
+  pageSize: 12,
+};
 
 // Hook that loads a resource with pagination and search query
 // parameter loadResource must be memoized or should use useCallback
-export const useResource = <
-  T,
-  Q extends { searchQuery: string; pageNumber: number; pageSize: number }
->(
+export const useResource = <T, Q extends DefaultQuery>(
   loadResource: (query: Q) => Promise<{ items: T[]; totalCount: number }>,
-  options?: { pageSize: number }
+  options?: Q
 ) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [query, setQuery] = useState(() => ({
-    searchQuery: "",
-    pageNumber: 1,
-    pageSize: options?.pageSize || 12,
+  const [query, setQuery] = useState<DefaultQuery & Partial<Q>>(() => ({
+    ...defaultQuery,
+    ...(options as Partial<Q>),
   }));
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useDebouncedValue(
+    options?.searchQuery || defaultQuery.searchQuery,
+    500
+  );
 
   const [resource, setResource] = useState<{
     items: T[];
@@ -50,15 +63,20 @@ export const useResource = <
   );
 
   useEffect(() => {
-    loadResourceDebounced(query);
-  }, []);
+    loadResourceDebounced({
+      ...query,
+      pageNumber: 1,
+      searchQuery: debouncedSearchQuery,
+    });
+  }, [debouncedSearchQuery]);
 
   const onSearch = () => {
     loadResourceDebounced({ ...query, pageNumber: 1 });
   };
 
   const onSearchQueryChange = (searchQuery: string) => {
-    loadResourceDebounced({ ...query, searchQuery, pageNumber: 1 });
+    setDebouncedSearchQuery(searchQuery);
+    setQuery({ ...query, searchQuery });
   };
 
   const onPageSelect = (pageNumber: number) => {
@@ -73,6 +91,5 @@ export const useResource = <
     onSearchQueryChange,
     onPageSelect,
     _loadResource: loadResourceDebounced,
-    _setQuery: setQuery,
   };
 };

@@ -6,17 +6,18 @@ import classes from "./flex.module.scss";
 import { ReactTagProps } from "@/client/ui/types";
 
 const shorthands = {
-  fxww: true,
-  fxdc: true,
-  jcsb: true,
-  jcsa: true,
-  jcc: true,
-  jcfe: true,
-  jcfs: true,
-  aic: true,
-  ais: true,
-  aifs: true,
-  aife: true,
+  fxww: true, // flex-wrap: wrap
+  fxdc: true, // flex-direction: column
+  jcsb: true, // justify-content: space-between
+  jcsa: true, // justify-content: space-around
+  jcc: true, // justify-content: center
+  jcs: true, // justify-content: stretch
+  jcfs: true, // justify-content: flex-start
+  jcfe: true, // justify-content: flex-end
+  aic: true, // align-items: center
+  ais: true, // align-items: stretch
+  aifs: true, // align-items: flex-start
+  aife: true, // align-items: flex-end
 } as const;
 
 export type Shorthands = typeof shorthands;

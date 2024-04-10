@@ -8,6 +8,7 @@ export type SearchFormProps = {
   searchQuery: string;
   onSearch: () => void;
   onQueryChange: (searchQuery: string) => void;
+  placeholder?: string;
 };
 
 export const SearchForm = (props: SearchFormProps) => {
@@ -19,7 +20,7 @@ export const SearchForm = (props: SearchFormProps) => {
   return (
     <form className={classes.SearchForm} onSubmit={onSearch}>
       <Input
-        placeholder="Search"
+        placeholder={props.placeholder || "Search"}
         className={classes.SearchInput}
         value={props.searchQuery}
         onChange={(e) => props.onQueryChange(e.target.value)}

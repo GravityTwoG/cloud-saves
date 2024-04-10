@@ -31,7 +31,9 @@ export interface IGameStateAPI {
 
   getSharedStates(query: ResourceRequest): Promise<ResourceResponse<GameState>>;
 
-  getPublicStates(query: ResourceRequest): Promise<ResourceResponse<GameState>>;
+  getPublicStates(
+    query: ResourceRequest & { gameId?: string }
+  ): Promise<ResourceResponse<GameState>>;
 
   addShare(share: { gameStateId: string; userId: string }): Promise<void>;
 

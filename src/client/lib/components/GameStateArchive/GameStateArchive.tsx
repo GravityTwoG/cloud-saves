@@ -7,6 +7,7 @@ import { GameState } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 
+import DownloadIcon from "@/client/ui/icons/Download.svg";
 import { Bytes } from "@/client/ui/atoms/Bytes";
 import { Paper } from "@/client/ui/atoms/Paper";
 import { PolyButton } from "@/client/ui/atoms/Button";
@@ -55,12 +56,18 @@ export const GameStateArchive = (props: GameStateArchiveProps) => {
           subActions={[
             {
               onClick: downloadStateAs,
-              children: t("download-to"),
+              children: (
+                <>
+                  <DownloadIcon />
+                  {t("download-to")}
+                </>
+              ),
               key: "1",
             },
           ]}
           onClick={downloadState}
         >
+          <DownloadIcon />
           {t("download")}
         </PolyButton>
       </div>

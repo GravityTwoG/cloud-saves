@@ -57,7 +57,7 @@ export const AsyncSelect = function <T>(props: AsyncSelectProps<T>) {
   );
 };
 
-function themeFactory(theme: Theme) {
+function themeFactory(theme: Theme): Theme {
   return {
     ...theme,
     borderRadius: 16,
@@ -66,9 +66,14 @@ function themeFactory(theme: Theme) {
       primary: "var(--color-accent)", // border color on focus
       primary25: "var(--color-deco)",
       primary50: "var(--color-accent-hover)", // background on press
+      primary75: "var(--color-deco)",
+      danger: "var(--color-danger",
+      dangerLight: "var(--color-danger-hover)",
+
       neutral0: "var(--color-paper)", // background
       neutral20: "var(--color-deco)", // border
       neutral30: "var(--color-deco)",
+      neutral80: "var(--color-text)", // input text
     },
   };
 }

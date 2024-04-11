@@ -8,14 +8,14 @@ import { useAPIContext } from "@/client/contexts/APIContext";
 import { Container } from "@/client/ui/atoms/Container";
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Flex } from "@/client/ui/atoms/Flex";
-import { ConfirmButton } from "@/client/ui/atoms/Button";
+import { Button, ConfirmButton } from "@/client/ui/atoms/Button";
 import { CommonLink } from "@/client/ui/atoms/Link/CommonLink";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { List } from "@/client/ui/molecules/List/List";
 import { Paginator } from "@/client/ui/molecules/Paginator";
-import { Spoiler } from "@/client/ui/molecules/Spoiler/Spoiler";
 import { GraphicForm } from "./components/GraphicForm";
 import { CommonGraphic } from "@/types";
+import { useModal } from "@/client/ui/hooks/useModal";
 
 export const DashboardPage = () => {
   const { t } = useTranslation(undefined, { keyPrefix: "pages.dashboard" });
@@ -36,12 +36,23 @@ export const DashboardPage = () => {
     try {
       await graphicsAPI.addCommonGraphic(graphic);
       loadGraphics({ ...query, pageNumber: 1 });
+      closeAddGraphicModal();
       return null;
     } catch (error) {
       notify.error(error);
       return "";
     }
   };
+
+  const [addGraphicModal, openAddGraphicModal, closeAddGraphicModal] = useModal(
+    {
+      title: t("add-graphic"),
+      children: <GraphicForm onSubmit={onAdd} />,
+      bodyStyle: {
+        width: "30rem",
+      },
+    }
+  );
 
   const onDelete = async (graphicId: string) => {
     try {
@@ -54,11 +65,13 @@ export const DashboardPage = () => {
 
   return (
     <Container className="my-4">
-      <H1>{t("dashboard")}</H1>
+      <Flex jcsb aic fxww>
+        <H1>{t("dashboard")}</H1>
 
-      <Spoiler title={t("add-graphic")} closeOnClickOutside className="my-4">
-        <GraphicForm onSubmit={onAdd} />
-      </Spoiler>
+        <Button onClick={openAddGraphicModal}>{t("add-graphic")}</Button>
+      </Flex>
+
+      {addGraphicModal}
 
       <SearchForm
         searchQuery={query.searchQuery}

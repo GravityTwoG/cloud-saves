@@ -8,7 +8,10 @@
 }
 
 .PolyButtonButton {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
   background-color: var(--color-accent);
   padding: 0.25rem 0.5rem;
   border-radius: 6px 0 0 6px;
@@ -121,7 +124,10 @@
   display: block;
 
   & > button {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.1rem;
     width: 100%;
     padding: 0.25rem 0.5rem;
     background-color: transparent;

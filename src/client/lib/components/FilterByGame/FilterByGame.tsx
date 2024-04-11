@@ -1,11 +1,14 @@
 import { useMemo } from "react";
 
+import classes from "./filter-by-game.module.scss";
+
 import { useResource } from "@/client/lib/hooks/useResource";
 import { useAPIContext } from "@/client/contexts/APIContext";
 
 import { Input } from "@/client/ui/atoms/Input";
 import { ExpandedSelect } from "@/client/ui/atoms/Select/ExpandedSelect";
 import { Preloader } from "@/client/ui/atoms/Preloader";
+import { clsx } from "clsx";
 
 export type FilterByGameProps = {
   onGameSelect: (gameId: string) => void;
@@ -43,6 +46,7 @@ export const FilterByGame = (props: FilterByGameProps) => {
           value={gameQuery.searchQuery}
           onChange={(e) => onSearchQueryChange(e.target.value)}
           placeholder="Filter by game"
+          className={classes.SearchInput}
         />
       </form>
 
@@ -55,7 +59,7 @@ export const FilterByGame = (props: FilterByGameProps) => {
           }}
           canUnselect
           variant="vertical"
-          className="mt-4 w-full"
+          className={clsx(classes.GamesList, "mt-4 w-full")}
         />
       </Preloader>
     </div>

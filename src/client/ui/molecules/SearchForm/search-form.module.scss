@@ -1,5 +1,6 @@
 .SearchForm {
   display: flex;
+  box-shadow: var(--shadow-paper);
 
   & > .SearchInput {
     flex: 1;

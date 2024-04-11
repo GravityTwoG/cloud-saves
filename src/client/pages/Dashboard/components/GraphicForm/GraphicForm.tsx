@@ -4,17 +4,16 @@ import classes from "./graphic-form.module.scss";
 
 import { CommonGraphic } from "@/types";
 import { useAPIContext } from "@/client/contexts/APIContext";
-import { useUIContext } from "@/client/contexts/UIContext";
 
-import { Form, FormData } from "@/client/ui/molecules/Form/Form";
+import { Form } from "@/client/ui/molecules/Form/Form";
 
 export type GraphicFormProps = {
   defaultValue?: CommonGraphic;
+  onSubmit: (graphic: CommonGraphic) => Promise<null | string>;
 };
 
 export const GraphicForm = (props: GraphicFormProps) => {
-  const { graphicsAPI, commonParametersAPI } = useAPIContext();
-  const { notify } = useUIContext();
+  const { commonParametersAPI } = useAPIContext();
 
   const formConfig = {
     visualType: {
@@ -53,20 +52,6 @@ export const GraphicForm = (props: GraphicFormProps) => {
     },
   } as const;
 
-  const onSubmit = async (data: FormData<typeof formConfig>) => {
-    try {
-      await graphicsAPI.addCommonGraphic({
-        id: "",
-        visualType: data.visualType.value,
-        commonParameterId: "",
-      });
-      return null;
-    } catch (e) {
-      notify.error(e);
-      return "";
-    }
-  };
-
   const defaultValue = props.defaultValue
     ? {
         visualType: {
@@ -83,7 +68,13 @@ export const GraphicForm = (props: GraphicFormProps) => {
   return (
     <Form
       config={formConfig}
-      onSubmit={onSubmit}
+      onSubmit={(data) =>
+        props.onSubmit({
+          id: "",
+          visualType: data.visualType.value,
+          commonParameterId: data.commonParameter.value,
+        })
+      }
       defaultValues={defaultValue}
       className={clsx(classes.Form)}
     />

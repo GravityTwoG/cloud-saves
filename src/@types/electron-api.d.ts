@@ -68,5 +68,10 @@ interface Window {
     ) => Promise<ElectronApiResponse<void>>;
 
     getAppVersion: () => Promise<ElectronApiResponse<string>>;
+
+    setTitleBarSettings: (settings: {
+      backgroundColor: string;
+      symbolColor: string;
+    }) => Promise<ElectronApiResponse<void>>;
   };
 }

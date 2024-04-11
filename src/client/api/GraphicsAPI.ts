@@ -15,6 +15,7 @@ export class GraphicsAPI implements IGraphicsAPI {
   ): Promise<CommonGraphic> => {
     const response = await this.fetcher.post<CommonGraphic>("/graphic/common", {
       body: {
+        visualType: commonGraphic.visualType,
         commonParameterId: commonGraphic.commonParameterId,
       },
     });
@@ -28,6 +29,7 @@ export class GraphicsAPI implements IGraphicsAPI {
       `/graphic/common/${commonGraphic.id}`,
       {
         body: {
+          visualType: commonGraphic.visualType,
           commonParameterId: commonGraphic.commonParameterId,
         },
       }
@@ -43,7 +45,10 @@ export class GraphicsAPI implements IGraphicsAPI {
     const response = await this.fetcher.get<CommonGraphic>(
       `/graphic/common/${id}`
     );
-    return response;
+    return {
+      ...response,
+      id: response.id.toString(),
+    };
   };
 
   getCommonGraphics = async (
@@ -52,13 +57,22 @@ export class GraphicsAPI implements IGraphicsAPI {
     const response = await this.fetcher.get<ResourceResponse<CommonGraphic>>(
       `/graphic/common?pageSize=${query.pageSize}&pageNumber=${query.pageNumber}&searchQuery=${query.searchQuery}`
     );
-    return response;
+    return {
+      items: response.items.map((i) => ({
+        ...i,
+        id: i.id.toString(),
+      })),
+      totalCount: response.totalCount,
+    };
   };
 
   getCommonGraphicData = async (id: string): Promise<CommonGraphicData> => {
     const response = await this.fetcher.get<CommonGraphicData>(
       `/graphic/common/data/${id}`
     );
-    return response;
+    return {
+      ...response,
+      id: response.id.toString(),
+    };
   };
 }

@@ -1,18 +1,31 @@
 .MainLayout {
+  position: relative;
   display: flex;
   height: 100vh;
 
   & > main {
-    flex: 1;
-    overflow: auto;
     display: flex;
+    flex: 1;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    overflow: auto;
 
     & > .Content {
-      width: 100%;
       flex: 1;
+      width: 100%;
     }
   }
+}
+
+.DragBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 32px;
+  background-color: transparent;
+  user-select: none;
+  -webkit-app-region: drag;
 }

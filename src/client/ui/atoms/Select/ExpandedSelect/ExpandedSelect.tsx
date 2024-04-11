@@ -8,7 +8,7 @@ export type ExpandedSelectProps<T> = {
   options: SelectOption<T>[];
   onChange: (optionName: T) => void;
   value: T;
-
+  canUnselect?: boolean;
   className?: string;
   name?: string;
   variant?: "vertical" | "horizontal";
@@ -18,8 +18,11 @@ export type ExpandedSelectComponent = <T extends string>(
   props: ExpandedSelectProps<T> & { ref?: ForwardedRef<HTMLInputElement> }
 ) => ReactElement | null;
 
-export const ExpandedSelect: ExpandedSelectComponent = forwardRef(
-  (props, ref): ReactElement => {
+export const ExpandedSelect = forwardRef(
+  <T extends string>(
+    props: ExpandedSelectProps<T>,
+    ref: ForwardedRef<HTMLInputElement>
+  ): ReactElement => {
     const variant = props.variant || "horizontal";
 
     return (
@@ -33,6 +36,8 @@ export const ExpandedSelect: ExpandedSelectComponent = forwardRef(
         <FakeInput value={props.value} name={props.name} ref={ref} />
 
         <ul className={classes.OptionsList}>
+          {props.options.length === 0 && <li className={classes.Option}>-</li>}
+
           {props.options.map((option) => (
             <li
               key={option.value}
@@ -43,6 +48,9 @@ export const ExpandedSelect: ExpandedSelectComponent = forwardRef(
               onClick={() => {
                 if (option.value !== props.value) {
                   props.onChange(option.value);
+                }
+                if (props.canUnselect && option.value === props.value) {
+                  props.onChange("" as T);
                 }
               }}
             >

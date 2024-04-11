@@ -16,6 +16,8 @@ export class AuthAPIMock implements IAuthAPI {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
 
+  onUnauthorized = () => {};
+
   register = async (credentials: RegisterDTO): Promise<User> => {
     await this.sleep(500);
     const user = {

@@ -12,9 +12,8 @@ import { useCommonParametersModal } from "./components/CommonParametersWidget";
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Button } from "@/client/ui/atoms/Button";
 import { Container } from "@/client/ui/atoms/Container";
-import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
+import { CommonLink } from "@/client/ui/atoms/Link/CommonLink";
 import { Grid } from "@/client/ui/molecules/Grid";
-import { Preloader } from "@/client/ui/molecules/Preloader";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { GameCard } from "@/client/lib/components/GameCard";
@@ -73,20 +72,19 @@ export const GamesPage = () => {
         onQueryChange={onSearchQueryChange}
       />
 
-      <Preloader isLoading={isLoading}>
-        <Grid
-          className="my-4"
-          elements={games.items}
-          getKey={(game) => game.id}
-          renderElement={(game) => (
-            <GameCard
-              game={game}
-              href={paths.game({ gameId: game.id })}
-              onDelete={onDelete}
-            />
-          )}
-        />
-      </Preloader>
+      <Grid
+        isLoading={isLoading}
+        className="my-4"
+        elements={games.items}
+        getKey={(game) => game.id}
+        renderElement={(game) => (
+          <GameCard
+            game={game}
+            href={paths.game({ gameId: game.id })}
+            onDelete={onDelete}
+          />
+        )}
+      />
 
       <Paginator
         scope={3}

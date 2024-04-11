@@ -32,6 +32,9 @@ const electronApi: Window["electronAPI"] = {
     ipcRenderer.invoke("downloadStateAs", gameState),
 
   getAppVersion: () => ipcRenderer.invoke("getAppVersion"),
+
+  setTitleBarSettings: (settings) =>
+    ipcRenderer.invoke("setTitleBarSettings", settings),
 };
 
 contextBridge.exposeInMainWorld("electronAPI", electronApi);

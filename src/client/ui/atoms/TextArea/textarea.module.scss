@@ -1,14 +1,14 @@
 .TextArea {
   width: 100%;
   padding: 0.5rem;
-  font-size: 1rem;
   color: #000;
+  font-size: 1rem;
   background-color: #fff;
   border: 2px solid var(--color-deco);
   border-radius: 1rem;
   outline: none;
-  resize: none;
   transition: border-color 0.1s ease;
+  resize: none;
   caret-color: var(--color-accent);
 
   &:focus {

@@ -124,13 +124,15 @@ export class GameStateAPI implements IGameStateAPI {
   };
 
   getPublicStates = async (
-    query: ResourceRequest
+    query: ResourceRequest & { gameId?: string }
   ): Promise<ResourceResponse<GameState>> => {
     const states = await this.fetcher.get<{
       items: GameStateFromServer[];
       totalCount: number;
     }>(
-      `${apiPrefix}/public?searchQuery=${query.searchQuery}&pageSize=${query.pageSize}&pageNumber=${query.pageNumber}`
+      `${apiPrefix}/public?searchQuery=${query.searchQuery}&pageSize=${
+        query.pageSize
+      }&pageNumber=${query.pageNumber}&searchGameId=${query.gameId || "0"}&`
     );
 
     return {

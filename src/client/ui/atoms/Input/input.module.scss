@@ -1,10 +1,10 @@
 .Input {
   width: 100%;
   padding: 0.5rem;
-  font-size: 1rem;
   color: var(--color-text);
+  font-size: 1rem;
   background-color: var(--color-paper);
-  border: 2px solid var(--color-deco);
+  border: 1px solid var(--color-deco);
   border-radius: 6px;
   outline: none;
   transition: border-color 0.1s ease;

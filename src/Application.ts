@@ -20,6 +20,8 @@ export class Application {
   private mainWindow: BrowserWindow | null = null;
   private isAppQuitting = false;
   private syncManager: SyncManager = syncManager;
+  private titleBarBackgroundColor: string = "#00000000";
+  private titleBarSymbolColor: string = "#000";
 
   constructor() {}
 
@@ -33,33 +35,11 @@ export class Application {
     });
 
     const gotTheLock = app.requestSingleInstanceLock();
-
     if (!gotTheLock) {
       this.quitApp();
       return;
     } else {
-      app.on("second-instance", (_, commandLine) => {
-        // Someone tried to run a second instance, we should focus our window.
-        if (!this.mainWindow) {
-          return;
-        }
-
-        if (this.mainWindow.isMinimized()) {
-          this.mainWindow.restore();
-        }
-        this.mainWindow.show();
-
-        const url = commandLine.pop();
-        if (!url?.startsWith(clientProtocol)) {
-          return;
-        }
-
-        const path = url.replace(clientProtocol, "/").replace("/?", "?");
-
-        this.mainWindow.webContents.send("deepLink", {
-          url: path,
-        });
-      });
+      this.onDeepLink();
     }
 
     // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -101,6 +81,30 @@ export class Application {
     });
   }
 
+  private onDeepLink() {
+    app.on("second-instance", (_, commandLine) => {
+      // Someone tried to run a second instance, we should focus our window.
+      if (!this.mainWindow) {
+        return;
+      }
+
+      if (this.mainWindow.isMinimized()) {
+        this.mainWindow.restore();
+      }
+      this.mainWindow.show();
+
+      const url = commandLine.pop();
+      if (!url?.startsWith(clientProtocol)) {
+        return;
+      }
+
+      const path = url.replace(clientProtocol, "/").replace("/?", "?");
+      this.mainWindow.webContents.send("deepLink", {
+        url: path,
+      });
+    });
+  }
+
   private setupIPC() {
     function registerHandler<T extends unknown[], R>(
       name: string,
@@ -124,6 +128,16 @@ export class Application {
     registerHandler("downloadStateAs", electronAPI.downloadStateAs);
 
     registerHandler("getAppVersion", electronAPI.getAppVersion);
+
+    registerHandler<
+      Parameters<Window["electronAPI"]["setTitleBarSettings"]>,
+      void
+    >("setTitleBarSettings", (settings) =>
+      this.mainWindow?.setTitleBarOverlay({
+        color: settings.backgroundColor,
+        symbolColor: settings.symbolColor,
+      })
+    );
   }
 
   private registerProtocolClient() {
@@ -149,7 +163,12 @@ export class Application {
       show: false,
       minWidth: 600,
       minHeight: 400,
-      // frame: false, // remove title bar
+      titleBarStyle: "hidden",
+      titleBarOverlay: {
+        color: this.titleBarBackgroundColor,
+        symbolColor: this.titleBarSymbolColor,
+        height: 32,
+      },
     });
     mainWindow.removeMenu();
 

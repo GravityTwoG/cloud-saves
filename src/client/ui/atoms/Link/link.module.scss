@@ -1,19 +1,19 @@
 .BaseButton {
   display: inline-block;
-  background-color: var(--color-accent);
   padding: 15px 44px 13px;
-  border-radius: 1.5em;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: inherit;
+  line-height: 1;
+  white-space: nowrap;
+  text-transform: uppercase;
+  text-decoration: none;
+  background-color: var(--color-accent);
   border: none;
+  border-radius: 1.5em;
   outline: none;
   cursor: pointer;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1;
-  color: #fff;
-  white-space: nowrap;
   transition: background-color 0.3s ease;
 
   & > a {
@@ -32,8 +32,8 @@
 }
 
 .CommonLink {
-  font-weight: bold;
   color: var(--color-accent);
+  font-weight: bold;
   text-decoration: none;
 
   &:hover {
@@ -51,8 +51,9 @@
 }
 
 .Unstyled {
-  font-weight: normal;
   color: var(--color-text);
+  font-weight: normal;
+
   &:hover {
     color: var(--color-text);
     text-decoration: none;

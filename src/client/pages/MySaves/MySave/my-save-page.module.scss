@@ -1,7 +1,6 @@
 .MySavePage {
-  padding-bottom: 1rem;
-
   position: relative;
+  padding-bottom: 1rem;
 }
 
 .GameImage {
@@ -13,21 +12,22 @@
   height: 500px;
   background-size: cover;
 }
+
 .GameImageOverlay {
   width: 100%;
   height: 100%;
-
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0) 0%,
+    rgb(255 255 255 / 0%) 0%,
     rgba(#f6f8fa, 0.3) 50%,
     rgba(#f6f8fa, 1) 100%
   );
 }
+
 html[data-theme="dark"] .GameImageOverlay {
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0) 0%,
+    rgb(255 255 255 / 0%) 0%,
     rgba(#101010, 0.3) 50%,
     rgba(#101010, 1) 100%
   );
@@ -54,15 +54,14 @@ html[data-theme="dark"] .GameImageOverlay {
     display: block;
     width: 100%;
     height: 108px;
-    padding: 0;
     margin: 0;
-    font-family: inherit;
-    font-size: 3.75rem;
-    line-height: 1.8;
-    font-weight: 300;
+    padding: 0;
     color: var(--color-text);
+    font-weight: 300;
+    font-size: 3.75rem;
+    font-family: inherit;
+    line-height: 1.8;
     background: transparent;
-
     border: none;
     border-bottom: 1px solid var(--color-deco);
     outline: none;
@@ -78,8 +77,8 @@ html[data-theme="dark"] .GameImageOverlay {
   }
 
   .GameSaveSettingsRight {
-    width: auto;
     flex-grow: 0;
+    width: auto;
   }
 }
 

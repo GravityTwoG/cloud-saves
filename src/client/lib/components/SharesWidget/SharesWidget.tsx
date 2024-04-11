@@ -6,6 +6,7 @@ import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useModal } from "@/client/ui/hooks/useModal";
 
+import ShareIcon from "@/client/ui/icons/Share.svg";
 import { Button, ConfirmButton } from "@/client/ui/atoms/Button";
 import { H2 } from "@/client/ui/atoms/Typography";
 import { Flex } from "@/client/ui/atoms/Flex";
@@ -81,7 +82,16 @@ export const SharesWidget = (props: SharesWidgetProps) => {
   const [modal, openModal] = useModal({
     children: (
       <div>
-        <Form config={formConfig} onSubmit={onAdd} submitText={t("share")} />
+        <Form
+          config={formConfig}
+          onSubmit={onAdd}
+          submitText={
+            <>
+              <ShareIcon />
+              {t("share")}
+            </>
+          }
+        />
 
         <H2>{t("shared-with")}</H2>
 
@@ -105,7 +115,9 @@ export const SharesWidget = (props: SharesWidgetProps) => {
   return (
     <span>
       {shares.length} {t("users")}{" "}
-      <Button onClick={openModal}>{t("share")}</Button>
+      <Button onClick={openModal}>
+        <ShareIcon /> {t("share")}
+      </Button>
       {modal}
     </span>
   );

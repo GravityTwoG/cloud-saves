@@ -1,9 +1,9 @@
-import { Preloader } from "@/client/ui/molecules/Preloader";
 import classes from "./game-state-page-layout.module.scss";
 
 import { Container } from "@/client/ui/atoms/Container";
 import { H1, H2 } from "@/client/ui/atoms/Typography";
 import { Paper } from "@/client/ui/atoms/Paper";
+import { Preloader } from "@/client/ui/atoms/Preloader";
 
 export type GameStatePageLayoutProps = {
   gameImageURL: string;

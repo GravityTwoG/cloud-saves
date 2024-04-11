@@ -18,7 +18,7 @@ export class GameStateAPIMock implements IGameStateAPI {
   }
 
   getStatePaths = async (
-    query: ResourceRequest
+    query: ResourceRequest & { gameId?: string }
   ): Promise<ResourceResponse<GamePath>> => {
     const paths: GamePath[] = [];
 

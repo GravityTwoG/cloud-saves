@@ -12,6 +12,8 @@ import { useAuthContext } from "@/client/contexts/AuthContext";
 import { navigate } from "@/client/app/useHashLocation";
 import { paths } from "@/client/config/paths";
 
+import UploadIcon from "@/client/ui/icons/Upload.svg";
+import SyncIcon from "@/client/ui/icons/Sync.svg";
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
 import { Button, ConfirmButton } from "@/client/ui/atoms/Button";
 import { Flex } from "@/client/ui/atoms/Flex";
@@ -170,6 +172,7 @@ export const MySavePage = () => {
           <Paragraph>
             {t("sync")}: {t(gameState.sync)}{" "}
             <Button onClick={() => setSyncSettingsAreOpen(true)}>
+              <SyncIcon />
               {t("setup-sync")}{" "}
             </Button>
           </Paragraph>
@@ -186,7 +189,7 @@ export const MySavePage = () => {
 
         <Flex fxdc ais gap="0.5rem" className={classes.GameSaveSettingsRight}>
           <Button onClick={() => onReuploadState(gameState)}>
-            {t("reupload-state")}
+            <UploadIcon /> {t("reupload-state")}
           </Button>
           <ConfirmButton
             onClick={() => {

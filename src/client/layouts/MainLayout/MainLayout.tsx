@@ -12,6 +12,7 @@ export type MainLayoutProps = {
 export const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <div className={classes.MainLayout}>
+      <div className={classes.DragBar} />
       <Sidebar links={navLinks} />
 
       <main className="custom-scrollbar">

@@ -1,42 +1,42 @@
 .H1 {
+  color: var(--color-text);
+  font-weight: 300;
   font-size: 3.75rem;
   line-height: 1.8;
-  font-weight: 300;
-  color: var(--color-text);
 }
 
 .H2 {
-  font-size: 1.75rem;
-  font-weight: 300;
-  line-height: 2;
   color: var(--color-text);
+  font-weight: 300;
+  font-size: 1.75rem;
+  line-height: 2;
 }
 
 .H3 {
-  font-weight: 700;
   color: var(--color-text);
+  font-weight: 700;
 }
 
 .H4 {
+  color: var(--color-text);
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--color-text);
 }
 
 .H5 {
+  color: var(--color-text);
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-text);
 }
 
 .H6 {
+  color: var(--color-text);
   font-size: 0.75rem;
   line-height: 1rem;
-  color: var(--color-text);
 }
 
 .Paragraph {
-  font-size: 1rem;
   margin: 0.25rem 0;
   color: var(--color-text);
+  font-size: 1rem;
 }

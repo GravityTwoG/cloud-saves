@@ -5,6 +5,7 @@
 .ParameterItem {
   align-items: flex-start;
   justify-content: space-between;
+  box-shadow: none;
 
   & > form {
     flex: 1;

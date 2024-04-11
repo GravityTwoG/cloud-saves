@@ -1,7 +1,7 @@
 .DownloadManager {
   position: fixed;
-  bottom: 0;
   right: 2rem;
+  bottom: 0;
   z-index: 500;
   width: 20rem;
 
@@ -14,52 +14,36 @@
   padding: 0.25rem;
 }
 
-.DownloadItem {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  .ProgressCircle {
-    margin-left: auto;
-  }
-}
-
 .ProgressCircle {
+  position: relative;
   width: 3rem;
   height: 3rem;
-
   font-size: 14px;
-  background-color: #fff;
-  border-radius: 50%;
-  position: relative;
-  --progress-bar-color: #9cff2e;
-
   background: radial-gradient(closest-side, white 85%, transparent 85% 100%),
     conic-gradient(
       var(--progress-bar-color) var(--progress),
       var(--color-deco) 0
     );
+  border-radius: 50%;
 
-  &:after {
-    content: attr(data-progress) "%";
+  --progress-bar-color: #9cff2e;
+
+  &::after {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-
     display: flex;
-    justify-content: center;
     flex-direction: column;
-
-    font-size: 14px;
-    line-height: 14px;
+    justify-content: center;
     width: 85%;
     height: 85%;
-    border-radius: 50%;
-    background: white;
-
+    font-size: 14px;
+    line-height: 14px;
     text-align: center;
+    background: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    content: attr(data-progress) "%";
   }
 
   &.Error {
@@ -68,5 +52,16 @@
 
   &.Complete {
     --progress-bar-color: #71be18;
+  }
+}
+
+.DownloadItem {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+
+  .ProgressCircle {
+    margin-left: auto;
   }
 }

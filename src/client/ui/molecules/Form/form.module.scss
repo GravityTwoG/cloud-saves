@@ -3,23 +3,21 @@
   flex-direction: column;
   width: 24rem;
   max-width: 100%;
-  gap: 0.5rem;
 }
 
 .Field {
   width: 100%;
 }
 
-.Label {
+.FieldError {
   display: block;
-  padding: 4px 0;
-  font-size: 1.25rem;
-  line-height: 2rem;
-  color: var(--color-text);
+  min-height: 0.75rem;
+  margin-top: 0.25rem;
+}
 
-  & > p {
-    margin: 0 0 0.25rem;
-  }
+.FormError {
+  display: block;
+  margin-bottom: 0.25rem;
 }
 
 .FormActions {

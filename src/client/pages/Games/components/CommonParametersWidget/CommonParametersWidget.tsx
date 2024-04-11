@@ -10,7 +10,6 @@ import { CommonParameter } from "@/types";
 import { Paragraph } from "@/client/ui/atoms/Typography";
 import { ConfirmButton } from "@/client/ui/atoms/Button/";
 import { List } from "@/client/ui/molecules/List/List";
-import { Preloader } from "@/client/ui/molecules/Preloader";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { CommonParameterForm } from "./CommonParameterForm";
@@ -77,35 +76,34 @@ export const CommonParametersWidget = () => {
         onQueryChange={onSearchQueryChange}
       />
 
-      <Preloader isLoading={isLoading}>
-        <List
-          elements={parameters.items}
-          className="my-4"
-          elementClassName={classes.ParameterItem}
-          getKey={(parameter) => parameter.id}
-          renderElement={(parameter) => (
-            <>
-              <CommonParameterForm
-                onSubmit={(data: {
-                  type: { id: string; type: string };
-                  label: string;
-                  description: string;
-                }) => onEdit({ id: parameter.id, ...data })}
-                defaultValue={parameter}
-                resetOnSubmit={false}
-              />
-              <ConfirmButton
-                onClick={() => {
-                  onDelete(parameter.id);
-                }}
-                color="danger"
-              >
-                {t("delete-type")}{" "}
-              </ConfirmButton>
-            </>
-          )}
-        />
-      </Preloader>
+      <List
+        isLoading={isLoading}
+        elements={parameters.items}
+        className="my-4"
+        elementClassName={classes.ParameterItem}
+        getKey={(parameter) => parameter.id}
+        renderElement={(parameter) => (
+          <>
+            <CommonParameterForm
+              onSubmit={(data: {
+                type: { id: string; type: string };
+                label: string;
+                description: string;
+              }) => onEdit({ id: parameter.id, ...data })}
+              defaultValue={parameter}
+              resetOnSubmit={false}
+            />
+            <ConfirmButton
+              onClick={() => {
+                onDelete(parameter.id);
+              }}
+              color="danger"
+            >
+              {t("delete-type")}{" "}
+            </ConfirmButton>
+          </>
+        )}
+      />
 
       <Paginator
         currentPage={query.pageNumber}

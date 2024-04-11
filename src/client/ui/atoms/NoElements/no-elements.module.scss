@@ -1,0 +1,15 @@
+.NoElements {
+  padding: 4rem 1.25rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  text-align: center;
+
+  & > svg {
+    width: 10rem;
+
+    path {
+      fill: var(--color-deco);
+    }
+  }
+}

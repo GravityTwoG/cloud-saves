@@ -26,6 +26,7 @@ import { GameStateAPI } from "@/client/api/GameStateAPI";
 import { CommonParametersAPI } from "@/client/api/CommonParametersAPI";
 import { UsersAPI } from "@/client/api/UsersAPI";
 import { GameStateParameterTypesAPI } from "@/client/api/GameStateParameterTypesAPI";
+import { GraphicsAPI } from "@/client/api/GraphicsAPI";
 
 interface APIContext {
   osAPI: IOSAPI;
@@ -59,7 +60,7 @@ const parameterTypesAPI = API_BASE_URL
   ? new GameStateParameterTypesAPI(fetcher)
   : new GameStateParameterTypesAPIMock();
 const graphicsAPI = API_BASE_URL
-  ? new GraphicsAPIMock()
+  ? new GraphicsAPI(fetcher)
   : new GraphicsAPIMock();
 
 export const api = {

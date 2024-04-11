@@ -32,4 +32,9 @@ export interface IOSAPI {
   downloadStateAs(gameState: GameState): Promise<void>;
 
   getAppVersion(): Promise<string>;
+
+  setTitleBarSettings(settings: {
+    backgroundColor: string;
+    symbolColor: string;
+  }): Promise<void>;
 }

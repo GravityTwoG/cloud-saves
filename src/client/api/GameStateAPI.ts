@@ -132,7 +132,7 @@ export class GameStateAPI implements IGameStateAPI {
     }>(
       `${apiPrefix}/public?searchQuery=${query.searchQuery}&pageSize=${
         query.pageSize
-      }&pageNumber=${query.pageNumber}&gameId=${query.gameId || ""}`
+      }&pageNumber=${query.pageNumber}&searchGameId=${query.gameId || "0"}&`
     );
 
     return {

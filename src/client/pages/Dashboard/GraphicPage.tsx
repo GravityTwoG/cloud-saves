@@ -54,12 +54,26 @@ export const GraphicPage = () => {
     );
   }
 
+  const onUpdate = async (newGraphic: CommonGraphic) => {
+    try {
+      if (!graphic) return "";
+      await graphicsAPI.updateCommonGraphic({
+        ...newGraphic,
+        id: graphic.id,
+      });
+      return null;
+    } catch (error) {
+      notify.error(error);
+      return "";
+    }
+  };
+
   return (
     <Container className="my-4">
       <H1>{t("graphic")}</H1>
 
       <Preloader isLoading={isLoading}>
-        {graphic && <GraphicForm defaultValue={graphic} />}
+        {graphic && <GraphicForm onSubmit={onUpdate} defaultValue={graphic} />}
       </Preloader>
 
       <Flex jcc className="my-4">

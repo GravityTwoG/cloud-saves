@@ -15,6 +15,7 @@ import { List } from "@/client/ui/molecules/List/List";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { Spoiler } from "@/client/ui/molecules/Spoiler/Spoiler";
 import { GraphicForm } from "./components/GraphicForm";
+import { CommonGraphic } from "@/types";
 
 export const DashboardPage = () => {
   const { t } = useTranslation(undefined, { keyPrefix: "pages.dashboard" });
@@ -31,6 +32,17 @@ export const DashboardPage = () => {
     _loadResource: loadGraphics,
   } = useResource(graphicsAPI.getCommonGraphics);
 
+  const onAdd = async (graphic: CommonGraphic) => {
+    try {
+      await graphicsAPI.addCommonGraphic(graphic);
+      loadGraphics({ ...query, pageNumber: 1 });
+      return null;
+    } catch (error) {
+      notify.error(error);
+      return "";
+    }
+  };
+
   const onDelete = async (graphicId: string) => {
     try {
       await graphicsAPI.deleteCommonGraphic(graphicId);
@@ -45,7 +57,7 @@ export const DashboardPage = () => {
       <H1>{t("dashboard")}</H1>
 
       <Spoiler title={t("add-graphic")} closeOnClickOutside className="my-4">
-        <GraphicForm />
+        <GraphicForm onSubmit={onAdd} />
       </Spoiler>
 
       <SearchForm

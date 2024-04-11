@@ -4,9 +4,9 @@
 
   & > .SearchInput {
     flex: 1;
+    border-right: none;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-    border-right: none;
   }
 
   & > .SearchButton {

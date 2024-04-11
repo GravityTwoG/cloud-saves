@@ -1,26 +1,26 @@
 .Paginator {
-  width: 100%;
-  padding: 12px 6px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
   gap: 0.5rem 0.7rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 6px;
 }
 
 .PageButton {
+  position: relative;
   min-width: 1.5rem;
   padding: 3px 2px;
-  position: relative;
-  background-color: transparent;
   color: var(--color-text);
-  transition: background-color 0.3s ease;
-  cursor: pointer;
-  border-radius: 3px;
+  background-color: transparent;
   border: 1px solid var(--color-deco);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: rgba(39, 39, 42, 0.08);
+    background-color: rgb(39 39 42 / 8%);
   }
 }
 
@@ -28,12 +28,12 @@
   font-weight: bold;
 
   &::after {
-    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 3px;
     background-color: var(--color-accent);
+    content: "";
   }
 }

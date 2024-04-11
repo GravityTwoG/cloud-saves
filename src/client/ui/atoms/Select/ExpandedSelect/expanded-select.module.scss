@@ -1,13 +1,13 @@
 .ExpandedSelect {
-  max-width: 100%;
+  position: relative;
   display: inline-block;
+  max-width: 100%;
   padding: 3px;
+  overflow: auto;
   background-color: var(--color-paper);
   border-radius: 6px;
-  overflow: auto;
-  position: relative;
 
-  // hide scrollbar
+  /* hide scrollbar */
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   &::-webkit-scrollbar {
@@ -21,30 +21,22 @@
   white-space: nowrap;
 }
 
-.ExpandedSelectVertical {
-  & > .OptionsList {
-    flex-direction: column;
-
-    & > .Option {
-      flex: 1 0 auto;
-    }
-  }
-}
-
 .Option {
-  min-width: 80px;
   display: inline-flex;
-  justify-content: center;
-  align-items: center;
   flex: 1 0 60px;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
   padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  background-color: transparent;
   color: var(--color-text);
-  cursor: pointer;
-  text-align: center;
   white-space: nowrap;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  text-align: center;
+  background-color: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
   user-select: none;
 
   &:hover {
@@ -58,6 +50,16 @@
 
     &:hover {
       background-color: var(--color-accent-hover);
+    }
+  }
+}
+
+.ExpandedSelectVertical {
+  & > .OptionsList {
+    flex-direction: column;
+
+    & > .Option {
+      flex: 1 0 auto;
     }
   }
 }

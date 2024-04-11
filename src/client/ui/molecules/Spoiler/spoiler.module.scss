@@ -2,34 +2,36 @@
   width: 100%;
 
   .SpoilerTitle {
-    padding: 0.25rem 1rem;
     width: 100%;
-    background-color: var(--color-accent);
+    padding: 0.25rem 1rem;
     color: #fff;
     font-size: 1rem;
-    outline: none;
+    background-color: var(--color-accent);
     border: none;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
+    outline: none;
     cursor: pointer;
     user-select: none;
   }
 
   .SpoilerContent {
     width: 100%;
+    max-height: 0;
+    overflow: hidden;
     background-color: var(--color-paper);
     border: 1px solid var(--color-deco);
-    overflow: hidden;
-    max-height: 0;
-    will-change: max-height;
     transform: translateY(-100%);
     transform-origin: top;
-    transition: max-height 0.15s ease-out, transform 0.1s ease-out;
+    transition:
+      max-height 0.15s ease-out,
+      transform 0.1s ease-out;
+    will-change: max-height;
   }
 
   .SpoilerExpanded {
     max-height: 100vh;
-    transform: translateY(0%);
     overflow: visible;
+    transform: translateY(0%);
   }
 }

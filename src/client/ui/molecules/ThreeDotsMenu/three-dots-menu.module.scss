@@ -3,16 +3,16 @@
 }
 
 .ThreeDotsMenuButton {
-  width: 2.5rem;
-  height: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  width: 2.5rem;
+  height: 1rem;
   background-color: transparent;
-  border-radius: 6px;
   border: none;
-  cursor: pointer;
+  border-radius: 6px;
   outline: none;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 
   & > div {
@@ -24,7 +24,7 @@
   }
 
   &:hover {
-    background-color: rgba(170, 170, 173, 0.6);
+    background-color: rgb(170 170 173 / 60%);
   }
 }
 
@@ -33,14 +33,14 @@
   top: 100%;
   right: 0;
   margin-top: 0.25rem;
-  background-color: black;
+  overflow: hidden;
   color: white;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   font-size: 0.875rem;
   line-height: 1.25rem;
-  overflow: hidden;
+  background-color: black;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgb(0 0 0 / 10%);
 
   .ThreeDotsMenuItem {
     padding: 0.25rem 0.5rem;
@@ -52,7 +52,7 @@
     }
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgb(255 255 255 / 20%);
     }
   }
 }

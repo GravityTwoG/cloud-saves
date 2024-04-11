@@ -4,9 +4,9 @@
 
 .Header {
   display: flex;
+  gap: 1rem;
   align-items: center;
   justify-content: flex-start;
-  gap: 1rem;
 
   .GameIcon {
     width: 64px;
@@ -16,7 +16,7 @@
 
 .Actions {
   display: flex;
-  justify-content: flex-end;
   gap: 0.5rem;
+  justify-content: flex-end;
   margin-bottom: 1rem;
 }

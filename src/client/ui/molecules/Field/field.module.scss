@@ -1,6 +1,6 @@
 .Field {
-  width: 100%;
   display: block;
+  width: 100%;
 }
 
 .Label {
@@ -8,10 +8,10 @@
   padding: 4px 0;
 
   & > .LabelText {
-    line-height: 2rem;
+    margin: 0 0 0.5rem;
     color: var(--color-text);
     font-size: 1.25rem;
-    margin: 0 0 0.5rem;
+    line-height: 2rem;
     cursor: pointer;
   }
 }

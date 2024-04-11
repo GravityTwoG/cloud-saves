@@ -8,48 +8,61 @@
 
 /* Margins. Exported from Tailwind.CSS */
 .m-0 {
-  margin: 0px;
+  margin: 0;
 }
+
 .mx-0 {
-  margin-left: 0px;
-  margin-right: 0px;
+  margin-right: 0;
+  margin-left: 0;
 }
+
 .my-0 {
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
+
 .mt-0 {
-  margin-top: 0px;
+  margin-top: 0;
 }
+
 .mr-0 {
-  margin-right: 0px;
+  margin-right: 0;
 }
+
 .mb-0 {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
+
 .ml-0 {
-  margin-left: 0px;
+  margin-left: 0;
 }
+
 .m-px {
   margin: 1px;
 }
+
 .mx-px {
-  margin-left: 1px;
   margin-right: 1px;
+  margin-left: 1px;
 }
+
 .my-px {
   margin-top: 1px;
   margin-bottom: 1px;
 }
+
 .mt-px {
   margin-top: 1px;
 }
+
 .mr-px {
   margin-right: 1px;
 }
+
 .mb-px {
   margin-bottom: 1px;
 }
+
 .ml-px {
   margin-left: 1px;
 }
@@ -58,8 +71,8 @@
   margin: 0.25rem;
 } /* 4px */
 .mx-1 {
-  margin-left: 0.25rem;
   margin-right: 0.25rem;
+  margin-left: 0.25rem;
 } /* 4px */
 .my-1 {
   margin-top: 0.25rem;
@@ -82,8 +95,8 @@
   margin: 0.5rem;
 } /* 8px */
 .mx-2 {
-  margin-left: 0.5rem;
   margin-right: 0.5rem;
+  margin-left: 0.5rem;
 } /* 8px */
 .my-2 {
   margin-top: 0.5rem;
@@ -106,8 +119,8 @@
   margin: 0.75rem;
 } /* 12px */
 .mx-3 {
-  margin-left: 0.75rem;
   margin-right: 0.75rem;
+  margin-left: 0.75rem;
 } /* 12px */
 .my-3 {
   margin-top: 0.75rem;
@@ -130,8 +143,8 @@
   margin: 1rem;
 } /* 16px */
 .mx-4 {
-  margin-left: 1rem;
   margin-right: 1rem;
+  margin-left: 1rem;
 } /* 16px */
 .my-4 {
   margin-top: 1rem;
@@ -153,8 +166,8 @@
   margin: 1.25rem;
 } /* 20px */
 .mx-5 {
-  margin-left: 1.25rem;
   margin-right: 1.25rem;
+  margin-left: 1.25rem;
 } /* 20px */
 .my-5 {
   margin-top: 1.25rem;
@@ -176,8 +189,8 @@
   margin: 1.5rem;
 } /* 24px */
 .mx-6 {
-  margin-left: 1.5rem;
   margin-right: 1.5rem;
+  margin-left: 1.5rem;
 } /* 24px */
 .my-6 {
   margin-top: 1.5rem;
@@ -199,8 +212,8 @@
   margin: 1.75rem;
 } /* 28px */
 .mx-7 {
-  margin-left: 1.75rem;
   margin-right: 1.75rem;
+  margin-left: 1.75rem;
 } /* 28px */
 .my-7 {
   margin-top: 1.75rem;
@@ -222,8 +235,8 @@
   margin: 2rem;
 } /* 32px */
 .mx-8 {
-  margin-left: 2rem;
   margin-right: 2rem;
+  margin-left: 2rem;
 } /* 32px */
 .my-8 {
   margin-top: 2rem;
@@ -244,29 +257,37 @@
 .m-auto {
   margin: auto;
 }
+
 .mx-auto {
-  margin-left: auto;
   margin-right: auto;
+  margin-left: auto;
 }
+
 .my-auto {
   margin-top: auto;
   margin-bottom: auto;
 }
+
 .ms-auto {
   margin-inline-start: auto;
 }
+
 .me-auto {
   margin-inline-end: auto;
 }
+
 .mt-auto {
   margin-top: auto;
 }
+
 .mr-auto {
   margin-right: auto;
 }
+
 .mb-auto {
   margin-bottom: auto;
 }
+
 .ml-auto {
   margin-left: auto;
 }

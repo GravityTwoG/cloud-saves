@@ -17,6 +17,27 @@
   text-align: center;
 }
 
+.LogoutButton {
+  padding: 2px 0 0;
+
+  & > svg {
+    width: 1.5rem;
+
+    & > path {
+      transition: stroke 0.3s ease;
+      stroke: var(--color-text);
+    }
+  }
+
+  &:hover {
+    color: var(--color-accent);
+
+    & > svg path {
+      stroke: var(--color-accent);
+    }
+  }
+}
+
 .Nav {
   width: 100%;
 
@@ -26,33 +47,33 @@
 }
 
 .NavLink {
-  margin-bottom: 1rem;
   display: block;
   width: 100%;
+  margin-bottom: 1rem;
   font-size: 12px;
   text-align: center;
 
   & > a {
     display: block;
-    text-decoration: none;
     color: var(--color-text);
+    text-decoration: none;
     transition: color 0.3s ease;
 
     & > span {
-      max-width: 100%;
       display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
+      max-width: 100%;
+      overflow: hidden;
       text-overflow: ellipsis;
       word-wrap: none;
-      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
 
     & > .NavIcon {
-      margin: auto;
       width: 100%;
       max-width: 3rem;
-      padding: 8px 8px 0 8px;
+      margin: auto;
+      padding: 8px 8px 0;
 
       & > svg {
         width: 100%;
@@ -62,8 +83,8 @@
       & path,
       & circle,
       & line {
-        stroke: var(--color-text);
         transition: stroke 0.3s ease;
+        stroke: var(--color-text);
       }
     }
   }
@@ -83,53 +104,30 @@
 }
 
 .AppButtons {
-  margin-top: auto;
   width: 100%;
+  margin-top: auto;
 }
 
 .AppButton {
-  margin-top: 0.5rem;
-  width: 100%;
-  padding-top: 3px;
-  padding-bottom: 3px;
-
   display: flex;
+  gap: 0.2rem;
   align-items: center;
   justify-content: center;
-  gap: 0.2rem;
-
-  border-color: transparent;
-  border-radius: 6px;
-  background-color: transparent;
-  cursor: pointer;
-
+  width: 100%;
+  margin-top: 0.5rem;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  color: var(--color-text);
   font-size: 1.2rem;
   line-height: 1;
-  color: var(--color-text);
   vertical-align: baseline;
+  background-color: transparent;
+  border-color: transparent;
+  border-radius: 6px;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 
   &:hover {
     background: var(--color-deco);
-  }
-}
-
-.LogoutButton {
-  padding: 2px 0 0 0;
-  & > svg {
-    width: 1.5rem;
-
-    & > path {
-      stroke: var(--color-text);
-      transition: stroke 0.3s ease;
-    }
-  }
-
-  &:hover {
-    color: var(--color-accent);
-
-    & > svg path {
-      stroke: var(--color-accent);
-    }
   }
 }

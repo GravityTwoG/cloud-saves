@@ -20,24 +20,28 @@ type ElectronApiResponse<D> = {
   error?: string;
 };
 
+type UnsubscribeFunction = () => void;
+
 interface Window {
   electronAPI: {
-    onDeepLink: (callback: (link: { url: string }) => void) => void;
-
     showFolderDialog: () => Promise<ElectronApiResponse<FolderInfo>>;
 
     getStatePaths: (
-      paths: import("../types").GamePath[]
+      paths: import("../types").GamePath[],
     ) => Promise<ElectronApiResponse<import("../types").GamePath[]>>;
 
     getFolderInfo: (
-      folderPath: string
+      folderPath: string,
     ) => Promise<ElectronApiResponse<FolderInfo>>;
 
-    onGetSyncedStates: (callback: () => void) => void;
+    onDeepLink: (
+      callback: (link: { url: string }) => void,
+    ) => UnsubscribeFunction;
+
+    onGetSyncedStates: (callback: () => void) => UnsubscribeFunction;
 
     sendSyncedStates: (
-      args: import("../types").GameState[]
+      args: import("../types").GameState[],
     ) => Promise<ElectronApiResponse<void>>;
 
     uploadState: (folder: {
@@ -60,11 +64,11 @@ interface Window {
     >;
 
     downloadState: (
-      gameState: import("../types").GameState
+      gameState: import("../types").GameState,
     ) => Promise<ElectronApiResponse<void>>;
 
     downloadStateAs: (
-      gameState: import("../types").GameState
+      gameState: import("../types").GameState,
     ) => Promise<ElectronApiResponse<void>>;
 
     getAppVersion: () => Promise<ElectronApiResponse<string>>;

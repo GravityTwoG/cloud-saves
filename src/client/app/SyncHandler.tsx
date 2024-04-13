@@ -10,7 +10,7 @@ export const SyncHandler = () => {
   const { user, authStatus } = useAuthContext();
 
   useEffect(() => {
-    osAPI.onGetSyncedSaves(async () => {
+    return osAPI.onGetSyncedSaves(async () => {
       if (authStatus !== AuthStatus.AUTHENTICATED) {
         return;
       }

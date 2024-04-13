@@ -5,9 +5,11 @@ export interface IOSAPI {
 
   showFolderDialog(): Promise<FolderInfo>;
 
-  onDeepLink: (callback: (link: { url: string }) => void) => void;
+  onDeepLink: (
+    callback: (link: { url: string }) => void,
+  ) => UnsubscribeFunction;
 
-  onGetSyncedSaves: (callback: () => void) => void;
+  onGetSyncedSaves: (callback: () => void) => UnsubscribeFunction;
 
   sendSyncedSaves: (args: GameState[]) => Promise<void>;
 

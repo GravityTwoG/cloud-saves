@@ -19,11 +19,13 @@ export class OSAPI implements IOSAPI {
     return response.data;
   };
 
-  onDeepLink = (callback: (link: { url: string }) => void): void => {
+  onDeepLink = (
+    callback: (link: { url: string }) => void,
+  ): UnsubscribeFunction => {
     return window.electronAPI.onDeepLink(callback);
   };
 
-  onGetSyncedSaves = (callback: () => void): void => {
+  onGetSyncedSaves = (callback: () => void): UnsubscribeFunction => {
     return window.electronAPI.onGetSyncedStates(callback);
   };
 

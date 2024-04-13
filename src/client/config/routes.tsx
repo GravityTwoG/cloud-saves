@@ -136,6 +136,8 @@ export const routes: RouteDescriptor[] = [
   {
     path: paths.publicSaves.pattern,
     component: PublicSavesPage,
+    access: RouteAccess.AUTHENTICATED,
+    forRoles: [UserRole.USER, UserRole.ADMIN],
     link: {
       label: "public-saves",
       path: paths.publicSaves({}),

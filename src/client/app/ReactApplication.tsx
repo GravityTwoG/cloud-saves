@@ -6,6 +6,8 @@ import { ToastsManager } from "@/client/ui/toast";
 import { AppErrorBoundary } from "@/client/ui/molecules/AppErrorBoundary";
 import { ThemeContextProvider } from "@/client/ui/contexts/ThemeContext";
 import { Router } from "./Router";
+import { DeepLinkHandler } from "./DeepLinkHandler";
+import { SyncHandler } from "./SyncHandler";
 
 export const ReactApplication = () => {
   return (
@@ -23,6 +25,8 @@ export const ReactApplication = () => {
                   },
                 }}
               />
+              <DeepLinkHandler />
+              <SyncHandler />
             </ThemeContextProvider>
           </UIContextProvider>
         </AuthContextProvider>

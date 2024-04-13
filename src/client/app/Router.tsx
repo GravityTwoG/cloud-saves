@@ -8,13 +8,10 @@ import { PrivatePage } from "@/client/lib/components/Guard/PrivatePage";
 import { AnonymousPage } from "@/client/lib/components/Guard/AnonymousPage";
 import { MainLayout } from "@/client/layouts/MainLayout/MainLayout";
 import { NotFoundPage } from "@/client/pages/NotFound/NotFoundPage";
-import { DeepLinkHandler } from "./DeepLinkHandler";
 
 export const Router = () => {
   return (
     <Wouter hook={useHashLocation}>
-      <DeepLinkHandler />
-
       <MainLayout>
         <AppErrorBoundary>
           <Switch>

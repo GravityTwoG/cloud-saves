@@ -18,7 +18,7 @@ export class GameStateAPIMock implements IGameStateAPI {
   }
 
   getStatePaths = async (
-    query: ResourceRequest & { gameId?: string }
+    query: ResourceRequest & { gameId?: string },
   ): Promise<ResourceResponse<GamePath>> => {
     const paths: GamePath[] = [];
 
@@ -60,7 +60,7 @@ export class GameStateAPIMock implements IGameStateAPI {
   };
 
   getUserStates = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<GameState>> => {
     console.log("getUserStates", query);
     try {
@@ -92,7 +92,7 @@ export class GameStateAPIMock implements IGameStateAPI {
   };
 
   getSharedStates = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<GameState>> => {
     console.log("getSharedStates", query);
     return {
@@ -102,7 +102,7 @@ export class GameStateAPIMock implements IGameStateAPI {
   };
 
   getPublicStates = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<GameState>> => {
     console.log("getGlobalStates", query);
     return {
@@ -215,7 +215,7 @@ export class GameStateAPIMock implements IGameStateAPI {
   };
 
   setupSync = async (settings: {
-    userId: string;
+    username: string;
     gameStateId: string;
     sync: GameStateSync;
   }) => {
@@ -223,6 +223,7 @@ export class GameStateAPIMock implements IGameStateAPI {
       const states = ls.getItem<Record<string, GameState>>("sync_settings");
       states[settings.gameStateId] = {
         ...states[settings.gameStateId],
+        ...settings,
         sync: settings.sync,
       };
       ls.setItem("sync_settings", states);
@@ -236,11 +237,11 @@ export class GameStateAPIMock implements IGameStateAPI {
     }
   };
 
-  getSyncSettings(): Record<string, { sync: GameStateSync; userId: string }> {
+  getSyncSettings(): Record<string, { sync: GameStateSync; username: string }> {
     try {
       const syncSetting =
-        ls.getItem<Record<string, { sync: GameStateSync; userId: string }>>(
-          "sync_settings"
+        ls.getItem<Record<string, { sync: GameStateSync; username: string }>>(
+          "sync_settings",
         );
       return syncSetting;
     } catch (e) {

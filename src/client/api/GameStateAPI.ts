@@ -1,5 +1,5 @@
 import { GamePath, GameState, GameStateSync, Share } from "@/types";
-import { IGameStateAPI } from "./interfaces/IGameStateAPI";
+import { IGameStateAPI, SyncSettings } from "./interfaces/IGameStateAPI";
 import { IOSAPI } from "./interfaces/IOSAPI";
 import { Fetcher } from "./Fetcher";
 import { ResourceRequest, ResourceResponse } from "./interfaces/common";
@@ -42,8 +42,6 @@ type GamePathFromServer = {
   gameIconUrl: string;
 };
 
-type SyncSettings = Record<string, { sync: GameStateSync; userId: string }>;
-
 const apiPrefix = "/game-saves";
 
 export class GameStateAPI implements IGameStateAPI {
@@ -56,12 +54,12 @@ export class GameStateAPI implements IGameStateAPI {
   }
 
   getStatePaths = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<GamePath>> => {
     const pathsFromServer = await this.fetcher.get<
       ResourceResponse<GamePathFromServer>
     >(
-      `/game-paths?pageSize=${query.pageSize}&pageNumber=${query.pageNumber}&searchQuery=${query.searchQuery}`
+      `/game-paths?pageSize=${query.pageSize}&pageNumber=${query.pageNumber}&searchQuery=${query.searchQuery}`,
     );
 
     const paths: GamePath[] = pathsFromServer.items.map((path) => ({
@@ -81,50 +79,50 @@ export class GameStateAPI implements IGameStateAPI {
 
   getGameState = async (gameStateId: string): Promise<GameState> => {
     const state = await this.fetcher.get<GameStateFromServer>(
-      `${apiPrefix}/${gameStateId}`
+      `${apiPrefix}/${gameStateId}`,
     );
 
     return this.mapGameStateFromServer(state, this.getSyncSettings());
   };
 
   getUserStates = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<GameState>> => {
     const states = await this.fetcher.get<{
       items: GameStateFromServer[];
       totalCount: number;
     }>(
-      `${apiPrefix}?searchQuery=${query.searchQuery}&pageSize=${query.pageSize}&pageNumber=${query.pageNumber}`
+      `${apiPrefix}?searchQuery=${query.searchQuery}&pageSize=${query.pageSize}&pageNumber=${query.pageNumber}`,
     );
 
     return {
       items: states.items.map((i) =>
-        this.mapGameStateFromServer(i, this.getSyncSettings())
+        this.mapGameStateFromServer(i, this.getSyncSettings()),
       ),
       totalCount: states.totalCount,
     };
   };
 
   getSharedStates = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<GameState>> => {
     const states = await this.fetcher.get<{
       items: GameStateFromServer[];
       totalCount: number;
     }>(
-      `${apiPrefix}/received-game-state-shares?searchQuery=${query.searchQuery}&pageSize=${query.pageSize}&pageNumber=${query.pageNumber}`
+      `${apiPrefix}/received-game-state-shares?searchQuery=${query.searchQuery}&pageSize=${query.pageSize}&pageNumber=${query.pageNumber}`,
     );
 
     return {
       items: states.items.map((i) =>
-        this.mapGameStateFromServer(i, this.getSyncSettings())
+        this.mapGameStateFromServer(i, this.getSyncSettings()),
       ),
       totalCount: states.totalCount,
     };
   };
 
   getPublicStates = async (
-    query: ResourceRequest & { gameId?: string }
+    query: ResourceRequest & { gameId?: string },
   ): Promise<ResourceResponse<GameState>> => {
     const states = await this.fetcher.get<{
       items: GameStateFromServer[];
@@ -132,12 +130,12 @@ export class GameStateAPI implements IGameStateAPI {
     }>(
       `${apiPrefix}/public?searchQuery=${query.searchQuery}&pageSize=${
         query.pageSize
-      }&pageNumber=${query.pageNumber}&searchGameId=${query.gameId || "0"}&`
+      }&pageNumber=${query.pageNumber}&searchGameId=${query.gameId || "0"}&`,
     );
 
     return {
       items: states.items.map((i) =>
-        this.mapGameStateFromServer(i, this.getSyncSettings())
+        this.mapGameStateFromServer(i, this.getSyncSettings()),
       ),
       totalCount: states.totalCount,
     };
@@ -165,7 +163,7 @@ export class GameStateAPI implements IGameStateAPI {
   };
 
   setupSync = async (settings: {
-    userId: string;
+    username: string;
     gameStateId: string;
     sync: GameStateSync;
   }) => {
@@ -173,6 +171,7 @@ export class GameStateAPI implements IGameStateAPI {
       const states = ls.getItem<SyncSettings>("sync_settings");
       states[settings.gameStateId] = {
         ...states[settings.gameStateId],
+        ...settings,
         sync: settings.sync,
       };
       ls.setItem("sync_settings", states);
@@ -201,7 +200,7 @@ export class GameStateAPI implements IGameStateAPI {
 
   private mapGameStateFromServer = (
     state: GameStateFromServer,
-    syncSettings: SyncSettings
+    syncSettings: SyncSettings,
   ): GameState => {
     return {
       id: state.id.toString(),
@@ -243,7 +242,7 @@ export class GameStateAPI implements IGameStateAPI {
 
   getShares = async (gameStateId: string): Promise<{ items: Share[] }> => {
     const shares = await this.fetcher.get<ResourceResponse<ShareFromServer>>(
-      `/game-state-shares/${gameStateId}`
+      `/game-state-shares/${gameStateId}`,
     );
 
     return {

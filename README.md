@@ -12,7 +12,10 @@ Features:
 
 ## Development
 
-Install dependencies
+Install Git.
+Install Node.js from official website or using volta.sh, nvm, fnm.
+
+Install dependencies using command:
 
 ```sh
 npm install

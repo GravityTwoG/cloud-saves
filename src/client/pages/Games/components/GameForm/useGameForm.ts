@@ -12,7 +12,7 @@ const pipelineItemTypes: { name: string; value: string }[] = [
 type GameFormData = {
   name: string;
   description: string;
-  image: FileList;
+  image: File;
   paths: { id: string; path: string }[];
   extractionPipeline: {
     id: string;
@@ -123,7 +123,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
           return fields.every(
             (field) =>
               (field.inputFilename && field.outputFilename && field.type) ||
-              t("field-must-not-be-empty")
+              t("field-must-not-be-empty"),
           );
         },
       },
@@ -145,7 +145,7 @@ export const useGameForm = (args: UseGameFormArgs) => {
               (field) =>
                 field.key.length > 0 &&
                 field.type.id.length > 0 &&
-                field.label.length > 0
+                field.label.length > 0,
             ) || t("field-must-not-be-empty")
           );
         },
@@ -159,12 +159,12 @@ export const useGameForm = (args: UseGameFormArgs) => {
       handleSubmit((fields) =>
         cb({
           ...fields,
-          icon: fields.image ? fields.image[0] : undefined,
+          icon: fields.image ? fields.image : undefined,
           paths: fields.paths.map((path) => ({
             ...path,
             path: path.path.replaceAll(/\//g, "\\"),
           })),
-        })
+        }),
       ),
     errors,
     imagePreview,

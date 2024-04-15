@@ -1,3 +1,4 @@
-export * from './Field';
-export * from './InputField';
-export * from './TextAreaField';
+export * from "./Field";
+export * from "./InputField";
+export * from "./ImageInputField";
+export * from "./TextAreaField";

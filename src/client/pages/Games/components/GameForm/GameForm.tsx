@@ -16,7 +16,7 @@ import { Paper } from "@/client/ui/atoms/Paper";
 import { Select } from "@/client/ui/atoms/Select/Select";
 import { Paragraph } from "@/client/ui/atoms/Typography";
 import { AsyncEntitySelect } from "@/client/ui/atoms/Select/AsyncSelect/AsyncEntitySelect";
-import { InputField } from "@/client/ui/molecules/Field";
+import { ImageInputField, InputField } from "@/client/ui/molecules/Field";
 
 export type GameFormProps = {
   game?: Game;
@@ -66,19 +66,18 @@ export const GameForm = (props: GameFormProps) => {
           <ErrorText>{errors.description.message}</ErrorText>
         )}
 
-        <InputField
-          label={t("game-image")}
-          type="file"
-          placeholder={t("upload-image")}
-          {...register("image")}
+        <Controller
+          name={`image`}
+          control={control}
+          render={({ field: imageField }) => (
+            <ImageInputField
+              label={t("game-image")}
+              placeholder={t("upload-image")}
+              onFileChange={(image) => imageField.onChange(image)}
+              src={imagePreview || props.game?.imageURL || undefined}
+            />
+          )}
         />
-        {imagePreview && (
-          <img
-            src={imagePreview}
-            alt={t("game-image")}
-            className={classes.ImagePreview}
-          />
-        )}
         {errors.image && <ErrorText>{errors.image.message}</ErrorText>}
       </Paper>
 
@@ -250,7 +249,7 @@ export const GameForm = (props: GameFormProps) => {
             />
             <Input
               {...register(
-                `gameStateParameters.parameters.${index}.description`
+                `gameStateParameters.parameters.${index}.description`,
               )}
               placeholder={t("parameter-description")}
             />

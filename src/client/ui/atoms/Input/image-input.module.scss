@@ -1,0 +1,108 @@
+.ImageInput {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 1rem;
+  text-align: center;
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-deco);
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+  caret-color: var(--color-accent);
+
+  & > p {
+    padding: 1rem 0.5rem;
+    transition: color 0.15s ease;
+  }
+
+  &:has(input:focus-visible, input:active, input:focus) {
+    border-color: var(--color-accent);
+  }
+}
+
+.Drop {
+  &::before {
+    background-color: rgb(128 128 128 / 10%);
+  }
+
+  &::after {
+    border-color: var(--color-accent);
+  }
+
+  & > p {
+    color: var(--color-accent);
+    opacity: 1;
+  }
+}
+
+.ImageInput.HasPreview {
+  font-size: 1.5rem;
+
+  & > p {
+    position: absolute;
+    top: 50%;
+    z-index: 4;
+    width: 100%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition:
+      color 0.15s ease,
+      opacity 0.15s ease;
+  }
+
+  &:has(input:hover) {
+    &::before {
+      background-color: rgb(128 128 128 / 20%);
+    }
+
+    &::after {
+      border-color: var(--color-deco);
+    }
+
+    & > p {
+      color: var(--color-accent);
+      text-shadow: 1px 1px 2px rgb(64 64 64 / 60%);
+      opacity: 1;
+    }
+  }
+}
+
+.ImageInput::before {
+  position: absolute;
+  z-index: 2;
+  display: inline-block;
+  box-sizing: border-box;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+  content: "";
+  inset: 0;
+}
+
+.ImageInput::after {
+  position: absolute;
+  z-index: 3;
+  display: inline-block;
+  box-sizing: border-box;
+  background-color: transparent;
+  border: 2px dashed transparent;
+  border-radius: 6px;
+  transition: border-color 0.15s ease;
+  content: "";
+  inset: 2rem;
+}
+
+.ImagePreview {
+  width: 100%;
+  height: 100%;
+  max-height: 50vh;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.Input {
+  display: none;
+}

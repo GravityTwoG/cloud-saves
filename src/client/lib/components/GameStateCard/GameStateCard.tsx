@@ -6,6 +6,7 @@ import { useConfirmModal } from "@/client/ui/hooks/useConfirmModal/useConfirmMod
 
 import classes from "./game-state-card.module.scss";
 
+import SyncIcon from "@/client/ui/icons/Sync.svg";
 import { FadedCard } from "@/client/ui/atoms/FadedCard";
 import { ThreeDotsMenu } from "@/client/ui/molecules/ThreeDotsMenu";
 
@@ -50,8 +51,9 @@ export const GameStateCard = (props: GameStateCardProps) => {
         <p className={classes.GameStateName}>{props.gameState.name}</p>
 
         {props.showSyncSettings && (
-          <p>
-            {t("sync")}: {t(props.gameState.sync)}
+          <p className={classes.SyncSettings}>
+            <SyncIcon />
+            {t(props.gameState.sync)}
           </p>
         )}
       </div>

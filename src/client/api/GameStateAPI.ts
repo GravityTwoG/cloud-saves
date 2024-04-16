@@ -27,6 +27,8 @@ type GameStateFromServer = {
   name: string;
   isPublic: boolean;
   sizeInBytes: number;
+  updatedAt: string;
+  uploadedAt: string;
 };
 
 type ShareFromServer = {
@@ -221,9 +223,9 @@ export class GameStateAPI implements IGameStateAPI {
         label: value.label,
         description: value.description,
       })),
-      uploadedAt: new Date().toLocaleString(),
       createdAt: new Date().toLocaleString(),
-      updatedAt: new Date().toLocaleString(),
+      uploadedAt: new Date(state.uploadedAt).toLocaleString(),
+      updatedAt: new Date(state.updatedAt).toLocaleString(),
     };
   };
 

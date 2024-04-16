@@ -48,7 +48,7 @@ export const GameStateArchive = (props: GameStateArchiveProps) => {
         {t("size")}: <Bytes bytes={props.gameState.sizeInBytes} />
       </span>
       <span>
-        {t("uploaded-at")} {props.gameState.createdAt}
+        {t("uploaded-at")} {props.gameState.uploadedAt}
       </span>
 
       <div className={classes.Buttons}>

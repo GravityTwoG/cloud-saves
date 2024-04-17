@@ -67,11 +67,6 @@ export const GamePage = () => {
   return (
     <Container className={classes.GamePage}>
       <div className={classes.Header}>
-        <img
-          src={game.imageURL || "https://via.placeholder.com/64"}
-          alt={game.name}
-          className={classes.GameIcon}
-        />{" "}
         <H1>{game.name}</H1>
       </div>
 

@@ -6,7 +6,7 @@ export const DeepLinkHandler = () => {
   const { osAPI } = useAPIContext();
 
   useEffect(() => {
-    osAPI.onDeepLink((link) => {
+    return osAPI.onDeepLink((link) => {
       navigate(link.url);
     });
   }, [osAPI]);

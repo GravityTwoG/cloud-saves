@@ -63,7 +63,7 @@ export const MySavePage = () => {
   const setupSync = async (sync: GameStateSync) => {
     try {
       await gameStateAPI.setupSync({
-        userId: user.id,
+        username: user.username,
         gameStateId: gameState.id,
         sync: sync,
       });

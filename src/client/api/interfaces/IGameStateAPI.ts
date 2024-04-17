@@ -1,6 +1,11 @@
 import { GamePath, GameState, GameStateSync, Share } from "@/types";
 import { ResourceRequest, ResourceResponse } from "./common";
 
+export type SyncSettings = Record<
+  string,
+  { sync: GameStateSync; username: string }
+>;
+
 export interface IGameStateAPI {
   getStatePaths(query: ResourceRequest): Promise<ResourceResponse<GamePath>>;
 
@@ -18,10 +23,12 @@ export interface IGameStateAPI {
   downloadStateAs(state: GameState): Promise<void>;
 
   setupSync(settings: {
-    userId: string;
+    username: string;
     gameStateId: string;
     sync: GameStateSync;
   }): Promise<void>;
+
+  getSyncSettings(): SyncSettings;
 
   deleteState(gameStateId: string): Promise<void>;
 
@@ -32,7 +39,7 @@ export interface IGameStateAPI {
   getSharedStates(query: ResourceRequest): Promise<ResourceResponse<GameState>>;
 
   getPublicStates(
-    query: ResourceRequest & { gameId?: string }
+    query: ResourceRequest & { gameId?: string },
   ): Promise<ResourceResponse<GameState>>;
 
   addShare(share: { gameStateId: string; userId: string }): Promise<void>;

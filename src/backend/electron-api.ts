@@ -1,5 +1,4 @@
 import { BrowserWindow, app, dialog } from "electron";
-import electronDl from "electron-dl";
 
 import { GamePath, GameState } from "@/types";
 import { getFolderInfo } from "./fs/getFolderInfo";
@@ -15,38 +14,26 @@ export const electronAPI: Omit<
   | "setTitleBarSettings"
 > = {
   showFolderDialog: async () => {
-    try {
-      const obj = await dialog.showOpenDialog({
-        properties: ["openDirectory"],
-      });
+    const obj = await dialog.showOpenDialog({
+      properties: ["openDirectory"],
+    });
 
-      if (obj.canceled) {
-        return { data: null, error: "cancelled" };
-      }
-
-      return { data: getFolderInfo(obj.filePaths[0]) };
-    } catch (error) {
-      return { data: null, error: (error as Error).toString() };
+    if (obj.canceled) {
+      return { data: null, error: "cancelled" };
     }
+
+    return { data: getFolderInfo(obj.filePaths[0]) };
   },
 
   getFolderInfo: async (folderPath: string) => {
-    try {
-      const info = getFolderInfo(folderPath);
+    const info = getFolderInfo(folderPath);
 
-      return { data: info };
-    } catch (error) {
-      return { data: null, error: (error as Error).toString() };
-    }
+    return { data: info };
   },
 
   getStatePaths: async (paths: GamePath[]) => {
-    try {
-      const filteredPaths = await getStatePaths(paths);
-      return { data: filteredPaths };
-    } catch (error) {
-      return { data: null, error: (error as Error).toString() };
-    }
+    const filteredPaths = await getStatePaths(paths);
+    return { data: filteredPaths };
   },
 
   uploadState: async (state: {
@@ -55,70 +42,43 @@ export const electronAPI: Omit<
     name: string;
     isPublic: boolean;
   }) => {
-    try {
-      const data = await statesManager.uploadState(state);
-      return { data };
-    } catch (error) {
-      return { data: null, error: (error as Error)?.toString() };
-    }
+    const data = await statesManager.uploadState(state);
+    return { data };
   },
 
   reuploadState: async (state: GameState) => {
-    try {
-      const data = await statesManager.reuploadState(state);
-      return { data };
-    } catch (error) {
-      return { data: null, error: (error as Error)?.toString() };
-    }
+    const data = await statesManager.reuploadState(state);
+    return { data };
   },
 
   downloadState: async (gameState: GameState) => {
-    try {
-      await statesManager.downloadState(gameState);
-      return { data: null };
-    } catch (error) {
-      if (error instanceof electronDl.CancelError) {
-        console.info("item.cancel() was called");
-      } else {
-        console.error(error);
-      }
-      return { data: null, error: (error as Error)?.toString() };
-    }
+    await statesManager.downloadState(gameState);
+    return { data: null };
   },
 
   downloadStateAs: async (gameState: GameState) => {
-    try {
-      const win = BrowserWindow.getFocusedWindow();
-      if (!win) {
-        return { data: null };
-      }
-
-      const customPath = await dialog.showOpenDialog({
-        title: "Download",
-        defaultPath: gameState.localPath,
-        properties: ["openDirectory"],
-      });
-      if (customPath.canceled || !customPath.filePaths[0]) {
-        return { data: null };
-      }
-
-      await downloadToFolder(
-        gameState.archiveURL,
-        customPath.filePaths[0],
-        `${gameState.name}-archive.zip`,
-        true
-      );
-
+    const win = BrowserWindow.getFocusedWindow();
+    if (!win) {
       return { data: null };
-    } catch (error) {
-      if (error instanceof electronDl.CancelError) {
-        console.info("item.cancel() was called");
-      } else {
-        console.error(error);
-      }
-
-      return { data: null, error: (error as Error)?.toString() };
     }
+
+    const customPath = await dialog.showOpenDialog({
+      title: "Download",
+      defaultPath: gameState.localPath,
+      properties: ["openDirectory"],
+    });
+    if (customPath.canceled || !customPath.filePaths[0]) {
+      return { data: null };
+    }
+
+    await downloadToFolder(
+      gameState.archiveURL,
+      customPath.filePaths[0],
+      `${gameState.name}-archive.zip`,
+      true,
+    );
+
+    return { data: null };
   },
 
   getAppVersion: async () => {

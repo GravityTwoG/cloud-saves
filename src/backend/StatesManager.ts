@@ -30,16 +30,20 @@ export class StatesManager {
         ...folder,
         gameId: folder.gameId || "",
       },
-      gameStateData
+      gameStateData,
     );
 
-    await fetch(`${import.meta.env.VITE_API_BASE_URL}/game-saves`, {
-      method: "POST",
-      headers: {
-        Cookie: await this.buildCookieHeader(),
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/game-saves`,
+      {
+        method: "POST",
+        headers: {
+          Cookie: await this.buildCookieHeader(),
+        },
+        body: formData,
       },
-      body: formData,
-    });
+    );
+    await this.handleError(response);
 
     return gameStateData;
   }
@@ -48,7 +52,7 @@ export class StatesManager {
     const gameStateData = await this.getState(gameState);
     const formData = this.mapToGameStateData(gameState, gameStateData);
 
-    const response2 = await fetch(
+    const response = await fetch(
       `${import.meta.env.VITE_API_BASE_URL}/game-saves/${gameState.id}`,
       {
         method: "PATCH",
@@ -56,11 +60,11 @@ export class StatesManager {
           Cookie: await this.buildCookieHeader(),
         },
         body: formData,
-      }
+      },
     );
 
-    console.log(response2.status);
-    console.log(response2.statusText);
+    await this.handleError(response);
+
     return gameStateData;
   }
 
@@ -88,7 +92,7 @@ export class StatesManager {
     response: {
       buffer: Buffer;
       gameStateValues: { value: string; gameStateParameterId: string }[];
-    }
+    },
   ) => {
     const formData = new FormData();
     formData.append("archive", new Blob([response.buffer]));
@@ -103,7 +107,7 @@ export class StatesManager {
           value: value.value,
           gameStateParameterId: value.gameStateParameterId,
         })),
-      })
+      }),
     );
 
     return formData;
@@ -143,12 +147,10 @@ export class StatesManager {
         headers: {
           Cookie: await this.buildCookieHeader(),
         },
-      }
+      },
     );
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
+    await this.handleError(response);
 
     const game = (await response.json()) as GameFromServer;
 
@@ -158,5 +160,21 @@ export class StatesManager {
   private async buildCookieHeader() {
     const cookies = await session.defaultSession.cookies.get({});
     return cookies.map((cookie) => `${cookie.name}=${cookie.value}`).join(";");
+  }
+
+  private async handleError(response: Response) {
+    if (!response.ok) {
+      const error = new Error(`${response.status}:${response.statusText}`);
+
+      try {
+        const json = await response.json();
+        error.message = json.message;
+        error.cause = json;
+      } catch (error) {
+        console.log("response.json() error", error);
+      }
+
+      throw error;
+    }
   }
 }

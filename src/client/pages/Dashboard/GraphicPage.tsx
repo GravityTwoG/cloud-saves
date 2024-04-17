@@ -77,7 +77,9 @@ export const GraphicPage = () => {
       </Preloader>
 
       <Flex jcc className="my-4">
-        {graphicId && <GraphicView graphicId={graphicId} />}
+        {graphic && (
+          <GraphicView graphicId={graphic.id} visualType={graphic.visualType} />
+        )}
       </Flex>
     </Container>
   );
@@ -85,19 +87,33 @@ export const GraphicPage = () => {
 
 type GraphicViewProps = {
   graphicId: string;
+  visualType: string;
 };
 
 const GraphicView = (props: GraphicViewProps) => {
   const [graphic, setGraphic] = useState<CommonGraphicData | null>(null);
   const { graphicsAPI } = useAPIContext();
+  const { notify } = useUIContext();
 
   useEffect(() => {
-    graphicsAPI
-      .getCommonGraphicData(props.graphicId)
-      .then((graphic) => {
-        setGraphic(graphic);
-      })
-      .catch(console.error);
+    async function loadData() {
+      try {
+        if (props.visualType === "piechart") {
+          const data = await graphicsAPI.getCommonPieChartGraphicData(
+            props.graphicId,
+          );
+          setGraphic(data);
+        } else if (props.visualType === "histogram") {
+          const data = await graphicsAPI.getCommonHistogramGraphicData(
+            props.graphicId,
+          );
+          setGraphic(data);
+        }
+      } catch (error) {
+        notify.error(error);
+      }
+    }
+    loadData();
   }, [props.graphicId]);
 
   if (!graphic) return null;
@@ -114,13 +130,13 @@ const GraphicView = (props: GraphicViewProps) => {
 };
 
 function isHistogramGraphic(
-  graphic: CommonGraphicData
+  graphic: CommonGraphicData,
 ): graphic is CommonGraphicData & { data: HistogramData } {
   return graphic.visualType === "histogram";
 }
 
 function isPieChartGraphic(
-  graphic: CommonGraphicData
+  graphic: CommonGraphicData,
 ): graphic is CommonGraphicData & { data: PieChartData } {
   return graphic.visualType === "piechart";
 }
@@ -135,11 +151,7 @@ const HistogramGraphic = (props: HistogramGraphicProps) => {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const data = props.graphic.data.map((d) => ({
-      min: d.range.min,
-      max: d.range.max,
-      height: d.height,
-    }));
+    const data = props.graphic.data;
 
     const plot = Plot.plot({
       marks: [
@@ -151,7 +163,7 @@ const HistogramGraphic = (props: HistogramGraphicProps) => {
           inset: 5,
         }),
       ],
-      title: `Histogram of ${props.graphic.commonParameter.label}`,
+      title: `Histogram of ${props.graphic.commonParameter.label} (${props.graphic.commonParameter.type.type})`,
       caption: props.graphic.commonParameter.description,
     });
 
@@ -188,7 +200,7 @@ const PieChartGraphic = (props: PieChartGraphicProps) => {
           title: (d) => `${d.label} (${d.percentage}%)`,
         }),
       ],
-      title: `Pie chart of ${props.graphic.commonParameter.label}`,
+      title: `Pie chart of ${props.graphic.commonParameter.label} (${props.graphic.commonParameter.type.type})`,
       caption: props.graphic.commonParameter.description,
     });
 
@@ -202,7 +214,7 @@ const PieChartGraphic = (props: PieChartGraphicProps) => {
 
 const pie = <T extends Record<string, number | string>>(
   data: T[],
-  { value, ...options }: { value: keyof T } & Plot.GeoOptions
+  { value, ...options }: { value: keyof T } & Plot.GeoOptions,
 ) => {
   const coordinates = toPieCoordinates(data, value);
 
@@ -215,13 +227,13 @@ const pie = <T extends Record<string, number | string>>(
         coordinates: coordinates[i],
       })),
     },
-    options
+    options,
   );
 };
 
 const toPieCoordinates = <T extends Record<string, number | string>>(
   data: T[],
-  value: keyof T
+  value: keyof T,
 ) => {
   const cs = d3.cumsum(data, (d) => d[value] as number);
 

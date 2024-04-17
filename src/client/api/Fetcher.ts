@@ -22,7 +22,7 @@ export class Fetcher {
 
   async get<R>(
     url: string,
-    init?: Omit<RequestInit, "method" | "body"> | undefined
+    init?: Omit<RequestInit, "method" | "body"> | undefined,
   ) {
     const response = await fetch(`${this.baseURL}${url}`, {
       credentials: this.credentials,
@@ -30,7 +30,7 @@ export class Fetcher {
       ...init,
     });
 
-    this.handleError(response);
+    await this.handleError(response);
 
     return response.json() as R;
   }
@@ -49,7 +49,7 @@ export class Fetcher {
       ...restInit,
     });
 
-    this.handleError(response);
+    await this.handleError(response);
 
     return response.json() as R;
   }
@@ -68,7 +68,7 @@ export class Fetcher {
       ...restInit,
     });
 
-    this.handleError(response);
+    await this.handleError(response);
 
     return response.json() as R;
   }
@@ -87,7 +87,7 @@ export class Fetcher {
       ...restInit,
     });
 
-    this.handleError(response);
+    await this.handleError(response);
 
     return response.json() as R;
   }
@@ -98,7 +98,7 @@ export class Fetcher {
       credentials: this.credentials,
     });
 
-    this.handleError(response);
+    await this.handleError(response);
 
     return response.json() as R;
   }
@@ -119,9 +119,17 @@ export class Fetcher {
     return JSON.stringify(body);
   }
 
-  private handleError(response: Response) {
+  private async handleError(response: Response) {
     if (!response.ok) {
       const error = new ApiError(`${response.status}:${response.statusText}`);
+
+      try {
+        const json = await response.json();
+        error.message = json.message;
+        error.cause = json;
+      } catch (error) {
+        console.log("response.json() error", error);
+      }
 
       if (this.onError) {
         this.onError(error);

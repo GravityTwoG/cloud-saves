@@ -110,13 +110,9 @@ export type CommonGraphic = {
   commonParameterId: string;
 };
 
-export type Range = {
+export type HistogramData = {
   min: number;
   max: number;
-};
-
-export type HistogramData = {
-  range: Range;
   height: number;
 }[];
 

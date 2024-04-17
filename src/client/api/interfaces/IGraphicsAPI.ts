@@ -5,7 +5,7 @@ export interface IGraphicsAPI {
   getCommonGraphic(id: string): Promise<CommonGraphic>;
 
   getCommonGraphics(
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<CommonGraphic>>;
 
   addCommonGraphic(commonGraphic: CommonGraphic): Promise<CommonGraphic>;
@@ -15,4 +15,8 @@ export interface IGraphicsAPI {
   deleteCommonGraphic(id: string): Promise<void>;
 
   getCommonGraphicData(id: string): Promise<CommonGraphicData>;
+
+  getCommonHistogramGraphicData(id: string): Promise<CommonGraphicData>;
+
+  getCommonPieChartGraphicData(id: string): Promise<CommonGraphicData>;
 }

@@ -11,7 +11,7 @@ export class GraphicsAPI implements IGraphicsAPI {
   }
 
   addCommonGraphic = async (
-    commonGraphic: CommonGraphic
+    commonGraphic: CommonGraphic,
   ): Promise<CommonGraphic> => {
     const response = await this.fetcher.post<CommonGraphic>("/graphic/common", {
       body: {
@@ -23,7 +23,7 @@ export class GraphicsAPI implements IGraphicsAPI {
   };
 
   updateCommonGraphic = async (
-    commonGraphic: CommonGraphic
+    commonGraphic: CommonGraphic,
   ): Promise<CommonGraphic> => {
     const response = await this.fetcher.put<CommonGraphic>(
       `/graphic/common/${commonGraphic.id}`,
@@ -32,7 +32,7 @@ export class GraphicsAPI implements IGraphicsAPI {
           visualType: commonGraphic.visualType,
           commonParameterId: commonGraphic.commonParameterId,
         },
-      }
+      },
     );
     return response;
   };
@@ -43,7 +43,7 @@ export class GraphicsAPI implements IGraphicsAPI {
 
   getCommonGraphic = async (id: string): Promise<CommonGraphic> => {
     const response = await this.fetcher.get<CommonGraphic>(
-      `/graphic/common/${id}`
+      `/graphic/common/${id}`,
     );
     return {
       ...response,
@@ -52,10 +52,10 @@ export class GraphicsAPI implements IGraphicsAPI {
   };
 
   getCommonGraphics = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<CommonGraphic>> => {
     const response = await this.fetcher.get<ResourceResponse<CommonGraphic>>(
-      `/graphic/common?pageSize=${query.pageSize}&pageNumber=${query.pageNumber}&searchQuery=${query.searchQuery}`
+      `/graphic/common?pageSize=${query.pageSize}&pageNumber=${query.pageNumber}&searchQuery=${query.searchQuery}`,
     );
     return {
       items: response.items.map((i) => ({
@@ -68,7 +68,31 @@ export class GraphicsAPI implements IGraphicsAPI {
 
   getCommonGraphicData = async (id: string): Promise<CommonGraphicData> => {
     const response = await this.fetcher.get<CommonGraphicData>(
-      `/graphic/common/data/${id}`
+      `/graphic/common/data/${id}`,
+    );
+    return {
+      ...response,
+      id: response.id.toString(),
+    };
+  };
+
+  getCommonHistogramGraphicData = async (
+    id: string,
+  ): Promise<CommonGraphicData> => {
+    const response = await this.fetcher.get<CommonGraphicData>(
+      `/graphic-data/histogram/common/${id}`,
+    );
+    return {
+      ...response,
+      id: response.id.toString(),
+    };
+  };
+
+  getCommonPieChartGraphicData = async (
+    id: string,
+  ): Promise<CommonGraphicData> => {
+    const response = await this.fetcher.get<CommonGraphicData>(
+      `/graphic-data/pie_chart/common/${id}`,
     );
     return {
       ...response,

@@ -20,8 +20,8 @@ export const ParametersView = (props: ParametersViewProps) => {
   );
 };
 
-function formatTime(value: number, type: "seconds") {
-  if (type === "seconds") {
+function formatTime(value: number, type: "time_seconds") {
+  if (type === "time_seconds") {
     if (value < 60) {
       return `${value} seconds`;
     }
@@ -45,7 +45,7 @@ const ParameterViewItem = (props: {
   type: string;
   description: string;
 }) => {
-  if (props.type === "seconds") {
+  if (props.type === "time_seconds") {
     return (
       <div>
         <span>{props.label}</span>:{" "}

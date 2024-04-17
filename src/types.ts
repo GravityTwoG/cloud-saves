@@ -139,6 +139,9 @@ export type JSONType = {
     | string
     | number
     | boolean
+    | string[]
+    | number[]
+    | boolean[]
     | null
     | JSONType
     | JSONType[];

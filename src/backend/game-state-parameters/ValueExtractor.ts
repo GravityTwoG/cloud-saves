@@ -45,7 +45,7 @@ export class ValueExtractor {
     return gameStateValues;
   }
 
-  private extractValues(
+  public extractValues(
     input: JSONType,
     schema: GameStateParameters,
   ): {
@@ -80,15 +80,15 @@ export class ValueExtractor {
     return gameStateValues;
   }
 
-  private readByKey(key: string, input: JSONType): string | string[] | null {
+  public readByKey(key: string, input: JSONType): string | string[] | null {
     const keys = key.split(".");
-    let currentValue = input;
+    let currentValue: JSONType | JSONType[number | string] = input;
 
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
       const isLastKey = i === keys.length - 1;
 
-      let value = currentValue[key];
+      let value = null;
       if (this.isArrayIndex(key) && Array.isArray(currentValue)) {
         if (key === "[*]") {
           const values: string[] = [];
@@ -96,7 +96,7 @@ export class ValueExtractor {
           for (let j = 0; j < currentValue.length; j++) {
             const elem = isLastKey
               ? currentValue[j]
-              : this.readByKey(restKey, currentValue[j]);
+              : this.readByKey(restKey, currentValue[j] as JSONType);
 
             if (this.isPrimitiveType(elem) && isLastKey) {
               values.push(elem.toString());
@@ -109,18 +109,18 @@ export class ValueExtractor {
         }
       } else if (this.isArrayIndex(key) && !Array.isArray(currentValue)) {
         return null;
+      } else {
+        value = (currentValue as JSONType)[key];
       }
 
       if (this.isPrimitiveType(value) && isLastKey) {
         return value.toString();
       }
 
-      if (
-        value === null ||
-        value === undefined ||
-        !isObject(value) ||
-        !Array.isArray(value)
-      ) {
+      if (value === null || value === undefined) {
+        return null;
+      }
+      if (!isObject(value) && !Array.isArray(value)) {
         return null;
       }
 
@@ -130,8 +130,8 @@ export class ValueExtractor {
     return null;
   }
 
-  private isArrayIndex(key: string): boolean {
-    return /^\[(\d+)|(\*)\]$/.test(key);
+  public isArrayIndex(key: string): boolean {
+    return /^(\[[0-9]+\])|(\[\*\])$/.test(key);
   }
 
   private isPrimitiveType(value: unknown): value is number | boolean | string {

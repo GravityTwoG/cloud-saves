@@ -51,7 +51,7 @@
     "sass": "^1.69.7",
     "semantic-release": "^23.0.2",
     "stylelint": "^16.3.1",
-    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-config-rational-order": "^0.0.4",
     "stylelint-config-standard": "^36.0.0",
     "stylelint-config-standard-scss": "^13.1.0",
     "stylelint-order": "^6.0.4",

@@ -6,7 +6,6 @@ import { paths } from "@/client/config/paths";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
 import { useUIContext } from "@/client/contexts/UIContext";
-import { useParameterTypesModal } from "./components/ParameterTypesWidget";
 import { useCommonParametersModal } from "./components/CommonParametersWidget";
 
 import { H1 } from "@/client/ui/atoms/Typography";
@@ -42,8 +41,6 @@ export const GamesPage = () => {
     }
   };
 
-  const [parameterTypesModal, openParameterTypesModal] =
-    useParameterTypesModal();
   const [commonParametersModal, openCommonParametersModal] =
     useCommonParametersModal();
 
@@ -55,15 +52,11 @@ export const GamesPage = () => {
       </div>
 
       <div className={classes.GameActions}>
-        <Button onClick={openParameterTypesModal}>
-          {t("parameter-types")}
-        </Button>
         <Button onClick={openCommonParametersModal}>
           {t("common-parameters")}
         </Button>
       </div>
 
-      {parameterTypesModal}
       {commonParametersModal}
 
       <SearchForm

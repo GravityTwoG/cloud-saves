@@ -5,6 +5,7 @@ import classes from "./users-page.module.scss";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
+import { scrollToTop } from "@/client/lib/scrollToTop";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { ConfirmButton } from "@/client/ui/atoms/Button/";
@@ -23,6 +24,7 @@ export const UsersPage = () => {
     isLoading,
     onSearch,
     onSearchQueryChange,
+    onPageSelect,
     _loadResource: loadUsers,
   } = useResource(usersAPI.getUsers);
 
@@ -93,7 +95,10 @@ export const UsersPage = () => {
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
         count={users.totalCount}
-        onPageSelect={(page) => loadUsers({ ...query, pageNumber: page })}
+        onPageSelect={(pageNumber) => {
+          onPageSelect(pageNumber);
+          scrollToTop();
+        }}
       />
     </Container>
   );

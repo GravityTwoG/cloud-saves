@@ -7,6 +7,7 @@ import { useAPIContext } from "@/client/contexts/APIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useCommonParametersModal } from "./components/CommonParametersWidget";
+import { scrollToTop } from "@/client/lib/scrollToTop";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Button } from "@/client/ui/atoms/Button";
@@ -84,7 +85,10 @@ export const GamesPage = () => {
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
         count={games.totalCount}
-        onPageSelect={onPageSelect}
+        onPageSelect={(pageNumber) => {
+          onPageSelect(pageNumber);
+          scrollToTop();
+        }}
       />
     </Container>
   );

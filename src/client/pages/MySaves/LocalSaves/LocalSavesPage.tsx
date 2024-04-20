@@ -3,10 +3,11 @@ import { useTranslation } from "react-i18next";
 
 import classes from "./local-saves-page.module.scss";
 
+import { ResourceRequest } from "@/client/api/interfaces/common";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
-import { ResourceRequest } from "@/client/api/interfaces/common";
+import { scrollToTop } from "@/client/lib/scrollToTop";
 
 import UploadIcon from "@/client/ui/icons/Upload.svg";
 import FolderIcon from "@/client/ui/icons/Folder.svg";
@@ -187,7 +188,10 @@ export const LocalSavesPage = () => {
         count={paths.totalCount}
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
-        onPageSelect={(pageNumber) => loadPaths({ ...query, pageNumber })}
+        onPageSelect={(pageNumber) => {
+          loadPaths({ ...query, pageNumber });
+          scrollToTop();
+        }}
       />
     </Container>
   );

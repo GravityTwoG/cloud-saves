@@ -46,6 +46,7 @@ body {
 .custom-scrollbar {
   scrollbar-width: auto;
   scrollbar-color: var(--color-accent) transparent;
+  scroll-behavior: smooth;
 }
 
 .custom-scrollbar::-webkit-scrollbar {

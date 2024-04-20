@@ -4,6 +4,8 @@ import { paths } from "@/client/config/paths";
 import { useResource } from "@/client/lib/hooks/useResource";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useAPIContext } from "@/client/contexts/APIContext";
+import { useModal } from "@/client/ui/hooks/useModal";
+import { scrollToTop } from "@/client/lib/scrollToTop";
 
 import { Container } from "@/client/ui/atoms/Container";
 import { H1 } from "@/client/ui/atoms/Typography";
@@ -15,7 +17,6 @@ import { List } from "@/client/ui/molecules/List/List";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { GraphicForm } from "./components/GraphicForm";
 import { CommonGraphic } from "@/types";
-import { useModal } from "@/client/ui/hooks/useModal";
 
 export const DashboardPage = () => {
   const { t } = useTranslation(undefined, { keyPrefix: "pages.dashboard" });
@@ -51,7 +52,7 @@ export const DashboardPage = () => {
       bodyStyle: {
         width: "30rem",
       },
-    }
+    },
   );
 
   const onDelete = async (graphicId: string) => {
@@ -101,7 +102,10 @@ export const DashboardPage = () => {
         count={graphics.totalCount}
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
-        onPageSelect={onPageSelect}
+        onPageSelect={(pageNumber) => {
+          onPageSelect(pageNumber);
+          scrollToTop();
+        }}
       />
     </Container>
   );

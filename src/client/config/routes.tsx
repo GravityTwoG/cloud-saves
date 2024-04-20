@@ -28,6 +28,7 @@ import SaveIcon from "@/client/ui/icons/Save.svg";
 import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
 import UsersIcon from "@/client/ui/icons/Users.svg";
 import { paths } from "./paths";
+import { SavesPage } from "../pages/saves/SavesPage";
 
 export enum RouteAccess {
   "ANONYMOUS" = "ANONYMOUS",
@@ -141,6 +142,17 @@ export const routes: RouteDescriptor[] = [
     link: {
       label: "public-saves",
       path: paths.publicSaves({}),
+      icon: <SaveIcon />,
+    },
+  },
+  {
+    path: paths.saves.pattern,
+    component: SavesPage,
+    access: RouteAccess.AUTHENTICATED,
+    forRoles: [UserRole.ADMIN],
+    link: {
+      label: "saves",
+      path: paths.saves({}),
       icon: <SaveIcon />,
     },
   },

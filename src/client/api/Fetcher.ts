@@ -1,10 +1,9 @@
 import { ApiError } from "./ApiError";
 
-export type MyRequestInit =
-  | (Omit<RequestInit, "method" | "body"> & {
-      body?: Record<string, unknown> | FormData;
-    })
-  | undefined;
+export type MyRequestInit = Omit<RequestInit, "method" | "body"> & {
+  body?: Record<string, unknown> | FormData;
+  queryParams?: Record<string, string | number>;
+};
 
 export class Fetcher {
   private readonly baseURL: string;
@@ -20,15 +19,17 @@ export class Fetcher {
     this.onError = callback;
   }
 
-  async get<R>(
-    url: string,
-    init?: Omit<RequestInit, "method" | "body"> | undefined,
-  ) {
-    const response = await fetch(`${this.baseURL}${url}`, {
-      credentials: this.credentials,
+  async get<R>(url: string, init?: Omit<MyRequestInit, "body">) {
+    const { queryParams, ...restInit } = init || {};
 
-      ...init,
-    });
+    const response = await fetch(
+      `${this.baseURL}${url}${this.toQueryParams(queryParams)}`,
+      {
+        credentials: this.credentials,
+
+        ...restInit,
+      },
+    );
 
     await this.handleError(response);
 
@@ -36,18 +37,21 @@ export class Fetcher {
   }
 
   async post<R>(url: string, init?: MyRequestInit) {
-    const { body, ...restInit } = init || {};
+    const { body, queryParams, ...restInit } = init || {};
 
-    const response = await fetch(`${this.baseURL}${url}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `${this.baseURL}${url}${this.toQueryParams(queryParams)}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: this.toFetchBody(body),
+        credentials: this.credentials,
+        ...restInit,
       },
-
-      body: this.toFetchBody(body),
-      credentials: this.credentials,
-      ...restInit,
-    });
+    );
 
     await this.handleError(response);
 
@@ -55,18 +59,21 @@ export class Fetcher {
   }
 
   async put<R>(url: string, init?: MyRequestInit) {
-    const { body, ...restInit } = init || {};
+    const { body, queryParams, ...restInit } = init || {};
 
-    const response = await fetch(`${this.baseURL}${url}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `${this.baseURL}${url}${this.toQueryParams(queryParams)}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: this.toFetchBody(body),
+        credentials: this.credentials,
+
+        ...restInit,
       },
-      body: this.toFetchBody(body),
-      credentials: this.credentials,
-
-      ...restInit,
-    });
+    );
 
     await this.handleError(response);
 
@@ -74,18 +81,21 @@ export class Fetcher {
   }
 
   async patch<R>(url: string, init?: MyRequestInit) {
-    const { body, ...restInit } = init || {};
+    const { body, queryParams, ...restInit } = init || {};
 
-    const response = await fetch(`${this.baseURL}${url}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `${this.baseURL}${url}${this.toQueryParams(queryParams)}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: this.toFetchBody(body),
+        credentials: this.credentials,
+
+        ...restInit,
       },
-      body: this.toFetchBody(body),
-      credentials: this.credentials,
-
-      ...restInit,
-    });
+    );
 
     await this.handleError(response);
 
@@ -119,13 +129,34 @@ export class Fetcher {
     return JSON.stringify(body);
   }
 
+  private toQueryParams(queryParams?: MyRequestInit["queryParams"]) {
+    if (queryParams === undefined) {
+      return "";
+    }
+
+    let query = "?";
+
+    const keys = Object.keys(queryParams);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const encodedValue = encodeURIComponent(queryParams[key]);
+      query += `${key}=${encodedValue}`;
+
+      if (i < keys.length - 1) {
+        query += "&";
+      }
+    }
+
+    return query;
+  }
+
   private async handleError(response: Response) {
     if (!response.ok) {
       const error = new ApiError(`${response.status}:${response.statusText}`);
 
       try {
         const json = await response.json();
-        error.message = json.message;
+        error.message = json.message || json.error || "Unknown error";
         error.cause = json;
       } catch (error) {
         console.log("response.json() error", error);

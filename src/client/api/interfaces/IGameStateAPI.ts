@@ -34,6 +34,8 @@ export interface IGameStateAPI {
 
   getGameState(gameStateId: string): Promise<GameState>;
 
+  getStates(query: ResourceRequest): Promise<ResourceResponse<GameState>>;
+
   getUserStates(query: ResourceRequest): Promise<ResourceResponse<GameState>>;
 
   getSharedStates(query: ResourceRequest): Promise<ResourceResponse<GameState>>;

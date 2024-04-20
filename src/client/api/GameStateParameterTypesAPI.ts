@@ -11,26 +11,26 @@ export class GameStateParameterTypesAPI implements IGameStateParameterTypeAPI {
   }
 
   getTypes = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<GameStateParameterType>> => {
     const types = await this.fetcher.get<
       ResourceResponse<GameStateParameterType>
-    >(
-      `/game-state-parameter-types?pageNumber=${query.pageNumber}&pageSize=${query.pageSize}&searchQuery=${query.searchQuery}`
-    );
+    >(`/game-state-parameter-types`, {
+      queryParams: query,
+    });
 
     return types;
   };
 
   createType = async (
-    type: GameStateParameterType
+    type: GameStateParameterType,
   ): Promise<GameStateParameterType> => {
     console.log("create type", type);
     throw new Error("Method not implemented.");
   };
 
   updateType = async (
-    type: GameStateParameterType
+    type: GameStateParameterType,
   ): Promise<GameStateParameterType> => {
     console.log("update type", type);
     throw new Error("Method not implemented.");

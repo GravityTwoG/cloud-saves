@@ -55,7 +55,8 @@ export class GraphicsAPI implements IGraphicsAPI {
     query: ResourceRequest,
   ): Promise<ResourceResponse<CommonGraphic>> => {
     const response = await this.fetcher.get<ResourceResponse<CommonGraphic>>(
-      `/graphic/common?pageSize=${query.pageSize}&pageNumber=${query.pageNumber}&searchQuery=${query.searchQuery}`,
+      `/graphic/common`,
+      { queryParams: query },
     );
     return {
       items: response.items.map((i) => ({

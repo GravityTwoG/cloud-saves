@@ -21,13 +21,13 @@ export class CommonParametersAPI implements ICommonParametersAPI {
   }
 
   getParameters = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<CommonParameter>> => {
     const parameters = await this.fetcher.get<
       ResourceResponse<CommonParameterFromServer>
-    >(
-      `/common-parameters?pageNumber=${query.pageNumber}&pageSize=${query.pageSize}&searchQuery=${query.searchQuery}`
-    );
+    >(`/common-parameters`, {
+      queryParams: query,
+    });
 
     return {
       items: parameters.items.map(this.mapToCommonParameter),
@@ -37,14 +37,14 @@ export class CommonParametersAPI implements ICommonParametersAPI {
 
   getParameter = async (parameterId: string): Promise<CommonParameter> => {
     const parameter = await this.fetcher.get<CommonParameterFromServer>(
-      `/common-parameters/${parameterId}`
+      `/common-parameters/${parameterId}`,
     );
 
     return this.mapToCommonParameter(parameter);
   };
 
   private mapToCommonParameter = (
-    parameter: CommonParameterFromServer
+    parameter: CommonParameterFromServer,
   ): CommonParameter => ({
     id: parameter.id.toString(),
     label: parameter.label,
@@ -56,7 +56,7 @@ export class CommonParametersAPI implements ICommonParametersAPI {
   });
 
   createParameter = async (
-    parameter: CommonParameter
+    parameter: CommonParameter,
   ): Promise<CommonParameter> => {
     const formData = this.mapToFormData(parameter);
     const created = await this.fetcher.post<CommonParameterFromServer>(
@@ -64,13 +64,13 @@ export class CommonParametersAPI implements ICommonParametersAPI {
       {
         headers: {},
         body: formData,
-      }
+      },
     );
     return this.mapToCommonParameter(created);
   };
 
   updateParameter = async (
-    parameter: CommonParameter
+    parameter: CommonParameter,
   ): Promise<CommonParameter> => {
     const formData = this.mapToFormData(parameter);
     const updated = await this.fetcher.patch<CommonParameterFromServer>(
@@ -78,7 +78,7 @@ export class CommonParametersAPI implements ICommonParametersAPI {
       {
         headers: {},
         body: formData,
-      }
+      },
     );
     return this.mapToCommonParameter(updated);
   };
@@ -95,7 +95,7 @@ export class CommonParametersAPI implements ICommonParametersAPI {
         label: parameter.label,
         description: parameter.description,
         gameStateParameterTypeId: parameter.type.id,
-      })
+      }),
     );
     return formData;
   }

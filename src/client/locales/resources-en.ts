@@ -10,6 +10,7 @@ import mySaves from "./en/pages/mySaves.json";
 import mySave from "./en/pages/mySave.json";
 import sharedSaves from "./en/pages/sharedSaves.json";
 import publicSaves from "./en/pages/publicSaves.json";
+import saves from "./en/pages/saves.json";
 
 import games from "./en/pages/games.json";
 import addGame from "./en/pages/addGame.json";
@@ -43,6 +44,7 @@ export const resourcesEN = {
 
       sharedSaves,
       publicSaves,
+      saves,
 
       games,
       addGame,

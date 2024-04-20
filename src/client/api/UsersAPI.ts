@@ -19,10 +19,11 @@ export class UsersAPI implements IUsersAPI {
   }
 
   getUsers = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<UserForAdmin>> => {
     const users = await this.fetcher.get<ResourceResponse<UserFromServer>>(
-      `/users?searchQuery=${query.searchQuery}&pageSize=${query.pageSize}&pageNumber=${query.pageNumber}`
+      `/users`,
+      { queryParams: query },
     );
 
     return {

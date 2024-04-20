@@ -11,6 +11,7 @@ import DownloadIcon from "@/client/ui/icons/Download.svg";
 import { Bytes } from "@/client/ui/atoms/Bytes";
 import { Paper } from "@/client/ui/atoms/Paper";
 import { PolyButton } from "@/client/ui/atoms/Button";
+import { Paragraph } from "@/client/ui/atoms/Typography";
 
 export type GameStateArchiveProps = {
   gameState: GameState;
@@ -44,12 +45,14 @@ export const GameStateArchive = (props: GameStateArchiveProps) => {
 
   return (
     <Paper className={clsx(classes.GameStateArchive, props.className)}>
-      <span>
-        {t("size")}: <Bytes bytes={props.gameState.sizeInBytes} />
-      </span>
-      <span>
-        {t("uploaded-at")} {props.gameState.uploadedAt}
-      </span>
+      <Paragraph className={classes.Info}>
+        <span>
+          {t("size")}: <Bytes bytes={props.gameState.sizeInBytes} />
+        </span>
+        <span>
+          {t("uploaded-at")} {props.gameState.uploadedAt}
+        </span>
+      </Paragraph>
 
       <div className={classes.Buttons}>
         <PolyButton

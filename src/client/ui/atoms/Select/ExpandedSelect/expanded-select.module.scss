@@ -32,15 +32,21 @@
   white-space: nowrap;
   text-align: center;
   background-color: transparent;
+  background-color: rgb(128 128 128 / 4%);
   border-radius: 6px;
   cursor: pointer;
   transition:
     background-color 0.3s ease,
-    color 0.3s ease;
+    color 0.3s ease,
+    scale 0.3s ease;
   user-select: none;
 
   &:hover {
     background-color: var(--color-deco);
+  }
+
+  &:active {
+    scale: 0.9;
   }
 
   &.OptionActive {

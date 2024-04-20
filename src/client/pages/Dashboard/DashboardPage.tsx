@@ -15,7 +15,7 @@ import { CommonLink } from "@/client/ui/atoms/Link/CommonLink";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { List } from "@/client/ui/molecules/List/List";
 import { Paginator } from "@/client/ui/molecules/Paginator";
-import { GraphicForm } from "./components/GraphicForm";
+import { GraphicForm } from "../../lib/components/GraphicForm";
 import { CommonGraphic } from "@/types";
 
 export const DashboardPage = () => {

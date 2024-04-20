@@ -68,12 +68,14 @@ export const RequestPasswordResetPage = () => {
             className={classes.Form}
           />
 
-          <Paragraph>
-            {t("prompt-to-sign-up")}{" "}
-            <CommonLink href={paths.register({})}>
-              {t("link-to-sign-up")}
-            </CommonLink>
-          </Paragraph>
+          <div className="mt-4">
+            <Paragraph>
+              {t("prompt-to-sign-up")}{" "}
+              <CommonLink href={paths.register({})}>
+                {t("link-to-sign-up")}
+              </CommonLink>
+            </Paragraph>
+          </div>
         </Paper>
       </section>
     </Container>

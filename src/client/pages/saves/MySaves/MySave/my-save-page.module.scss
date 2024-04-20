@@ -73,7 +73,10 @@ html[data-theme="dark"] .GameImageOverlay {
   gap: 0.5rem;
 
   .GameSaveSettingsLeft {
+    display: grid;
     flex: 1;
+    grid-template-columns: max-content 1fr;
+    gap: 0 0.5rem;
   }
 
   .GameSaveSettingsRight {

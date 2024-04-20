@@ -13,8 +13,8 @@ import { paths } from "@/client/config/paths";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
-import { GameForm } from "../components/GameForm/GameForm";
 import { ConfirmButton } from "@/client/ui/atoms/Button/";
+import { GameForm } from "@/client/lib/components/GameForm/GameForm";
 
 export const GamePage = () => {
   const { gameAPI } = useAPIContext();

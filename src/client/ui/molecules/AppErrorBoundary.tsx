@@ -1,6 +1,6 @@
 import { Component, ErrorInfo } from "react";
 
-import { H1 } from "@/client/ui/atoms/Typography";
+import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { Button } from "@/client/ui/atoms/Button";
 import { Container } from "@/client/ui/atoms/Container";
 
@@ -50,8 +50,8 @@ export class AppErrorBoundary extends Component<
               Reload page
             </Button>
 
-            <p className="mt-4">Error: {this.state.error}</p>
-            <p className="mt-4">{this.state.stack}</p>
+            <Paragraph className="mt-4">Error: {this.state.error}</Paragraph>
+            <Paragraph className="mt-4">{this.state.stack}</Paragraph>
           </div>
         </Container>
       );

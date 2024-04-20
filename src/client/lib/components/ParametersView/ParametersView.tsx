@@ -3,6 +3,7 @@ import classes from "./parameters-view.module.scss";
 import { GameStateValue } from "@/types";
 
 import { Paper } from "@/client/ui/atoms/Paper";
+import { NoElements } from "@/client/ui/atoms/NoElements";
 
 type ParametersViewProps = {
   gameStateValues: GameStateValue[];
@@ -15,7 +16,9 @@ export const ParametersView = (props: ParametersViewProps) => {
       {props.gameStateValues.map((field, idx) => (
         <ParameterViewItem key={idx} {...field} />
       ))}
-      {props.gameStateValues.length === 0 && "-"}
+      {props.gameStateValues.length === 0 && (
+        <NoElements className={classes.Empty} />
+      )}
     </Paper>
   );
 };

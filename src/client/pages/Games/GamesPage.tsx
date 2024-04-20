@@ -6,7 +6,6 @@ import { paths } from "@/client/config/paths";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useResource } from "@/client/lib/hooks/useResource";
 import { useUIContext } from "@/client/contexts/UIContext";
-import { useCommonParametersModal } from "./components/CommonParametersWidget";
 import { scrollToTop } from "@/client/lib/scrollToTop";
 
 import { H1 } from "@/client/ui/atoms/Typography";
@@ -17,6 +16,7 @@ import { Grid } from "@/client/ui/molecules/Grid";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { GameCard } from "@/client/lib/components/GameCard";
+import { useCommonParametersModal } from "@/client/lib/components/CommonParametersWidget";
 
 export const GamesPage = () => {
   const { gameAPI } = useAPIContext();

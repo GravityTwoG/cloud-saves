@@ -141,10 +141,16 @@
     border-radius: 6px;
     outline: none;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      scale 0.3s ease;
 
     &:hover {
       background-color: var(--color-accent-hover);
+    }
+
+    &:active {
+      scale: 0.9;
     }
   }
 

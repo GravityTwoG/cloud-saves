@@ -13,6 +13,7 @@ import { Grid } from "@/client/ui/molecules/Grid";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { GameStateCard } from "@/client/lib/components/GameStateCard";
+import { Flex } from "@/client/ui/atoms/Flex";
 
 export const MySavesPage = () => {
   const { gameStateAPI } = useAPIContext();
@@ -42,10 +43,15 @@ export const MySavesPage = () => {
     <Container>
       <H1>{t("my-saves")}</H1>
 
-      <CommonLink href={paths.localSaves({})}>{t("local-saves")}</CommonLink>
-
       <div>
-        <H2>{t("uploaded-saves")}</H2>
+        <Flex fxww jcsb aic>
+          <H2>{t("uploaded-saves")}</H2>
+
+          <CommonLink href={paths.localSaves({})}>
+            {t("local-saves")}
+          </CommonLink>
+        </Flex>
+
         <SearchForm
           searchQuery={query.searchQuery}
           onSearch={onSearch}

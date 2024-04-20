@@ -166,24 +166,29 @@ export const MySavePage = () => {
 
       <Paper className={clsx(classes.GameSaveSettings, "mb-4")}>
         <div className={classes.GameSaveSettingsLeft}>
+          <Paragraph>{t("path")}:</Paragraph>
+          <Paragraph>{gameState.localPath}</Paragraph>
+
+          <Paragraph>{t("sync")}:</Paragraph>
           <Paragraph>
-            {t("path")}: {gameState.localPath}
-          </Paragraph>
-          <Paragraph>
-            {t("sync")}: {t(gameState.sync)}{" "}
+            {t(gameState.sync)}{" "}
             <Button onClick={() => setSyncSettingsAreOpen(true)}>
               <SyncIcon />
               {t("setup-sync")}{" "}
             </Button>
           </Paragraph>
+
+          <Paragraph>{t("is-public")}:</Paragraph>
           <Paragraph>
-            {t("is-public")}: {gameState.isPublic ? t("yes") : t("no")}{" "}
+            {gameState.isPublic ? t("yes") : t("no")}{" "}
             <Button onClick={togglePublicity}>
               {gameState.isPublic ? t("make-private") : t("make-public")}
             </Button>
           </Paragraph>
+
+          <Paragraph>{t("shared-with")}:</Paragraph>
           <Paragraph>
-            {t("shared-with")}: <SharesWidget gameStateId={gameState.id} />
+            <SharesWidget gameStateId={gameState.id} />
           </Paragraph>
         </div>
 

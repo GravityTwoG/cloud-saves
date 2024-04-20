@@ -3,6 +3,7 @@ import { clsx } from "clsx";
 import classes from "./modal.module.scss";
 
 import { ReactTagProps } from "@/client/ui/types";
+import { useOnKeyDown } from "@/client/ui/hooks/useOnKeyDown";
 
 import { Button } from "@/client/ui/atoms/Button";
 import { ModalPortal } from "./Portal";
@@ -28,20 +29,14 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   const [delayedIsOpen, setDelayedIsOpen] = useState(isOpen);
 
-  useEffect(() => {
-    function onEsc(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        e.stopPropagation();
-        closeModal();
-      }
-    }
-
-    if (isOpen) {
-      document.addEventListener("keydown", onEsc, { capture: false });
-    }
-
-    return () => document.removeEventListener("keydown", onEsc);
-  }, [closeModal, isOpen]);
+  useOnKeyDown(
+    "Escape",
+    (e) => {
+      e.stopPropagation();
+      closeModal();
+    },
+    [closeModal, isOpen],
+  );
 
   useEffect(() => {
     if (isOpen && !delayedIsOpen) {
@@ -59,7 +54,7 @@ export const Modal: React.FC<ModalProps> = ({
           className={clsx(
             classes.Modal,
             "custom-scrollbar",
-            isOpen && delayedIsOpen && classes.ModalOpen
+            isOpen && delayedIsOpen && classes.ModalOpen,
           )}
           onClick={closeModal}
         >
@@ -70,7 +65,7 @@ export const Modal: React.FC<ModalProps> = ({
             className={clsx(
               classes.ModalBody,
               props.bodyClassName,
-              isOpen && delayedIsOpen && classes.ModalOpen
+              isOpen && delayedIsOpen && classes.ModalOpen,
             )}
             style={bodyStyle}
           >

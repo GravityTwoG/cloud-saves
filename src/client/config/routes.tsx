@@ -7,12 +7,13 @@ import { ResetPasswordPage } from "@/client/pages/auth/ResetPassword/ResetPasswo
 
 import { ProfilePage } from "@/client/pages/Profile/ProfilePage";
 
-import { LocalSavesPage } from "../pages/MySaves/LocalSaves/LocalSavesPage";
-import { MySavesPage } from "@/client/pages/MySaves/MySavesPage";
-import { MySavePage } from "@/client/pages/MySaves/MySave/MySavePage";
+import { LocalSavesPage } from "../pages/saves/MySaves/LocalSaves/LocalSavesPage";
+import { MySavesPage } from "@/client/pages/saves/MySaves/MySavesPage";
+import { MySavePage } from "@/client/pages/saves/MySaves/MySave/MySavePage";
 import { SavePage } from "../pages/saves/Save/SavePage";
 import { SharedSavesPage } from "@/client/pages/saves/SharedSaves/SharedSavesPage";
 import { PublicSavesPage } from "@/client/pages/saves/PublicSaves/PublicSavesPage";
+import { SavesPage } from "../pages/saves/SavesPage";
 
 import { GamesPage } from "@/client/pages/Games/GamesPage";
 import { GamePage } from "@/client/pages/Games/Game/GamePage";
@@ -27,8 +28,8 @@ import ProfileIcon from "@/client/ui/icons/Profile.svg";
 import SaveIcon from "@/client/ui/icons/Save.svg";
 import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
 import UsersIcon from "@/client/ui/icons/Users.svg";
+
 import { paths } from "./paths";
-import { SavesPage } from "../pages/saves/SavesPage";
 
 export enum RouteAccess {
   "ANONYMOUS" = "ANONYMOUS",
@@ -138,7 +139,7 @@ export const routes: RouteDescriptor[] = [
     path: paths.publicSaves.pattern,
     component: PublicSavesPage,
     access: RouteAccess.AUTHENTICATED,
-    forRoles: [UserRole.USER, UserRole.ADMIN],
+    forRoles: [UserRole.USER],
     link: {
       label: "public-saves",
       path: paths.publicSaves({}),

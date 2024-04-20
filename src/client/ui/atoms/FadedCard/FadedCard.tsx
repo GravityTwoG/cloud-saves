@@ -24,7 +24,7 @@ export const FadedCard = ({
         backgroundImage: `url(${imageURL})`,
       }}
     >
-      <FadedCardLink href={props.href || ""} className={classes.FadedCardLink}>
+      <FadedCardLink href={props.href} className={classes.FadedCardLink}>
         <div className={classes.FadedCardInner}>{children}</div>
       </FadedCardLink>
     </div>

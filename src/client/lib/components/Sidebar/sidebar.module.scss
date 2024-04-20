@@ -4,14 +4,13 @@
   align-items: center;
   width: 5rem;
   min-height: 100vh;
-  padding: 0.5rem 0.25rem;
+  padding: 0.75rem 0.25rem;
   overflow: hidden;
   background: var(--color-paper);
   box-shadow: var(--shadow-paper);
 }
 
 .Logo {
-  margin-top: 0.5rem;
   margin-bottom: 4rem;
   font-weight: bold;
   text-align: center;
@@ -57,7 +56,9 @@
     display: block;
     color: var(--color-text);
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition:
+      color 0.3s ease,
+      scale 0.3s ease;
 
     & > span {
       display: -webkit-box;
@@ -101,6 +102,10 @@
       stroke: var(--color-accent);
     }
   }
+
+  &:active a {
+    scale: 0.95;
+  }
 }
 
 .AppButtons {
@@ -125,9 +130,15 @@
   border-color: transparent;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    scale 0.3s ease;
 
   &:hover {
     background: var(--color-deco);
+  }
+
+  &:active {
+    scale: 0.9;
   }
 }

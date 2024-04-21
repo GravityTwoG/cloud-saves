@@ -15,8 +15,4 @@ export interface IGraphicsAPI {
   deleteCommonGraphic(id: string): Promise<void>;
 
   getCommonGraphicData(id: string): Promise<CommonGraphicData>;
-
-  getCommonHistogramGraphicData(id: string): Promise<CommonGraphicData>;
-
-  getCommonPieChartGraphicData(id: string): Promise<CommonGraphicData>;
 }

@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
-import { useResource } from "@/client/lib/hooks/useResource";
+import { useResourceWithSync } from "@/client/lib/hooks/useResource";
 import { paths } from "@/client/config/paths";
 import { scrollToTop } from "@/client/lib/scrollToTop";
 
@@ -26,7 +26,7 @@ export const SavesPage = () => {
     onSearchQueryChange,
     onPageSelect,
     _loadResource: loadSaves,
-  } = useResource(gameStateAPI.getStates, {
+  } = useResourceWithSync(gameStateAPI.getStates, {
     searchQuery: "",
     pageNumber: 1,
     pageSize: 12,

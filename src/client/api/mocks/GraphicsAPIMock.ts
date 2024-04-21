@@ -23,7 +23,12 @@ export class GraphicsAPIMock implements IGraphicsAPI {
     return {
       id,
       visualType: "histogram",
-      commonParameterId: "3",
+      commonParameter: {
+        id: "1",
+        label: "test",
+        description: "test",
+        type: { id: "1", type: "number" },
+      },
     };
   };
 
@@ -36,12 +41,22 @@ export class GraphicsAPIMock implements IGraphicsAPI {
         {
           id: "1",
           visualType: "histogram",
-          commonParameterId: "1",
+          commonParameter: {
+            id: "1",
+            label: "test",
+            description: "test",
+            type: { id: "1", type: "number" },
+          },
         },
         {
           id: "2",
           visualType: "piechart",
-          commonParameterId: "2",
+          commonParameter: {
+            id: "2",
+            label: "test2",
+            description: "test",
+            type: { id: "1", type: "number" },
+          },
         },
       ],
       totalCount: 12,
@@ -120,7 +135,4 @@ export class GraphicsAPIMock implements IGraphicsAPI {
       ],
     };
   };
-
-  getCommonHistogramGraphicData = this.getCommonGraphicData;
-  getCommonPieChartGraphicData = this.getCommonGraphicData;
 }

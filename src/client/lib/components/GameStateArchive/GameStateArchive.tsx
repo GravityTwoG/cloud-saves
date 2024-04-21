@@ -50,7 +50,7 @@ export const GameStateArchive = (props: GameStateArchiveProps) => {
           {t("size")}: <Bytes bytes={props.gameState.sizeInBytes} />
         </span>
         <span>
-          {t("uploaded-at")} {props.gameState.uploadedAt}
+          {t("uploaded-at")} {formatDate(props.gameState.uploadedAt)}
         </span>
       </Paragraph>
 
@@ -77,3 +77,15 @@ export const GameStateArchive = (props: GameStateArchiveProps) => {
     </Paper>
   );
 };
+
+function formatDate(dateString: string) {
+  const data = new Date(dateString);
+  const day = data.getDate().toString();
+  const month = (data.getMonth() + 1).toString();
+  const year = data.getFullYear();
+
+  const hours = data.getHours().toString();
+  const minutes = data.getMinutes().toString();
+
+  return `${day.padStart(2, "0")}.${month.padStart(2, "0")}.${year} ${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
+}

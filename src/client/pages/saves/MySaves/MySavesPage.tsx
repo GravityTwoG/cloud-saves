@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { paths } from "@/client/config/paths";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
-import { useResource } from "@/client/lib/hooks/useResource";
+import { useResourceWithSync } from "@/client/lib/hooks/useResource";
 import { scrollToTop } from "@/client/lib/scrollToTop";
 
 import { H1, H2 } from "@/client/ui/atoms/Typography";
@@ -28,7 +28,7 @@ export const MySavesPage = () => {
     onSearchQueryChange,
     onPageSelect,
     _loadResource: loadSaves,
-  } = useResource(gameStateAPI.getUserStates);
+  } = useResourceWithSync(gameStateAPI.getUserStates);
 
   const onDelete = async (path: string) => {
     try {

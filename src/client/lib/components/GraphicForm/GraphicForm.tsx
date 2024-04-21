@@ -28,7 +28,7 @@ export const GraphicForm = (props: GraphicFormProps) => {
           },
           {
             label: "Pie chart",
-            value: "piechart",
+            value: "pie_chart",
           },
         ];
       },
@@ -59,8 +59,8 @@ export const GraphicForm = (props: GraphicFormProps) => {
           label: props.defaultValue.visualType,
         },
         commonParameter: {
-          value: props.defaultValue.commonParameterId,
-          label: props.defaultValue.commonParameterId,
+          value: props.defaultValue.commonParameter.id,
+          label: props.defaultValue.commonParameter.label,
         },
       }
     : undefined;
@@ -72,7 +72,15 @@ export const GraphicForm = (props: GraphicFormProps) => {
         props.onSubmit({
           id: "",
           visualType: data.visualType.value,
-          commonParameterId: data.commonParameter.value,
+          commonParameter: {
+            id: data.commonParameter.value,
+            description: "",
+            label: "",
+            type: {
+              id: "",
+              type: "",
+            },
+          },
         })
       }
       defaultValues={defaultValue}

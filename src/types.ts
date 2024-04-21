@@ -107,7 +107,15 @@ export type Share = {
 export type CommonGraphic = {
   id: string;
   visualType: string;
-  commonParameterId: string;
+  commonParameter: {
+    id: string;
+    type: {
+      id: string;
+      type: string;
+    };
+    label: string;
+    description: string;
+  };
 };
 
 export type HistogramData = {

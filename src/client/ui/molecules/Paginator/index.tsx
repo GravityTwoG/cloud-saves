@@ -70,15 +70,16 @@ export const Paginator = (props: PaginatorProps) => {
         />
       )}
 
-      {showPrevPage && (
-        <PageButton
-          pageNumber={"<"}
-          isCurrentPage={false}
-          onClick={() => props.onPageSelect(props.currentPage - 1)}
-          title="Previous page"
-          aria-label="Previous page"
-        />
-      )}
+      <PageButton
+        pageNumber={"<"}
+        isCurrentPage={false}
+        onClick={() =>
+          showPrevPage && props.onPageSelect(props.currentPage - 1)
+        }
+        title="Previous page"
+        aria-label="Previous page"
+        className={clsx(!showPrevPage && classes.PageButtonHidden)}
+      />
 
       {pages.map((page) => (
         <PageButton
@@ -91,15 +92,16 @@ export const Paginator = (props: PaginatorProps) => {
         />
       ))}
 
-      {showNextPage && (
-        <PageButton
-          pageNumber={">"}
-          isCurrentPage={false}
-          onClick={() => props.onPageSelect(props.currentPage + 1)}
-          title="Next page"
-          aria-label="Next page"
-        />
-      )}
+      <PageButton
+        pageNumber={">"}
+        isCurrentPage={false}
+        onClick={() =>
+          showNextPage && props.onPageSelect(props.currentPage + 1)
+        }
+        title="Next page"
+        aria-label="Next page"
+        className={clsx(!showNextPage && classes.PageButtonHidden)}
+      />
 
       {showLastPage && (
         <PageButton
@@ -129,7 +131,8 @@ const PageButton = ({
       {...props}
       className={clsx(
         classes.PageButton,
-        isCurrentPage && classes.PageButtonCurrent
+        props.className,
+        isCurrentPage && classes.PageButtonCurrent,
       )}
     >
       {pageNumber}

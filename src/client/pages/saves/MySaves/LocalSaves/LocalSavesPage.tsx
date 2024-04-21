@@ -6,7 +6,7 @@ import classes from "./local-saves-page.module.scss";
 import { ResourceRequest } from "@/client/api/interfaces/common";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
-import { useResource } from "@/client/lib/hooks/useResource";
+import { useResourceWithSync } from "@/client/lib/hooks/useResource";
 import { scrollToTop } from "@/client/lib/scrollToTop";
 
 import UploadIcon from "@/client/ui/icons/Upload.svg";
@@ -52,7 +52,7 @@ export const LocalSavesPage = () => {
     onSearch,
     onSearchQueryChange,
     _loadResource,
-  } = useResource(gameStateAPI.getStatePaths);
+  } = useResourceWithSync(gameStateAPI.getStatePaths);
 
   const onFolderOpen = async (folderToOpen: FileInfo) => {
     try {

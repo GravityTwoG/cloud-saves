@@ -98,17 +98,8 @@ const GraphicView = (props: GraphicViewProps) => {
   useEffect(() => {
     async function loadData() {
       try {
-        if (props.visualType === "piechart") {
-          const data = await graphicsAPI.getCommonPieChartGraphicData(
-            props.graphicId,
-          );
-          setGraphic(data);
-        } else if (props.visualType === "histogram") {
-          const data = await graphicsAPI.getCommonHistogramGraphicData(
-            props.graphicId,
-          );
-          setGraphic(data);
-        }
+        const data = await graphicsAPI.getCommonGraphicData(props.graphicId);
+        setGraphic(data);
       } catch (error) {
         notify.error(error);
       }
@@ -138,7 +129,7 @@ function isHistogramGraphic(
 function isPieChartGraphic(
   graphic: CommonGraphicData,
 ): graphic is CommonGraphicData & { data: PieChartData } {
-  return graphic.visualType === "piechart";
+  return graphic.visualType === "pie_chart";
 }
 
 type HistogramGraphicProps = {

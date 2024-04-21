@@ -4,7 +4,7 @@ import classes from "./games-page.module.scss";
 
 import { paths } from "@/client/config/paths";
 import { useAPIContext } from "@/client/contexts/APIContext";
-import { useResource } from "@/client/lib/hooks/useResource";
+import { useResourceWithSync } from "@/client/lib/hooks/useResource";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { scrollToTop } from "@/client/lib/scrollToTop";
 
@@ -31,7 +31,7 @@ export const GamesPage = () => {
     onSearchQueryChange,
     onPageSelect,
     _loadResource: loadGames,
-  } = useResource(gameAPI.getGames);
+  } = useResourceWithSync(gameAPI.getGames);
 
   const onDelete = async (gameId: string) => {
     try {

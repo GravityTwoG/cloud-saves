@@ -4,7 +4,7 @@ import classes from "./users-page.module.scss";
 
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
-import { useResource } from "@/client/lib/hooks/useResource";
+import { useResourceWithSync } from "@/client/lib/hooks/useResource";
 import { scrollToTop } from "@/client/lib/scrollToTop";
 
 import { H1 } from "@/client/ui/atoms/Typography";
@@ -26,7 +26,7 @@ export const UsersPage = () => {
     onSearchQueryChange,
     onPageSelect,
     _loadResource: loadUsers,
-  } = useResource(usersAPI.getUsers);
+  } = useResourceWithSync(usersAPI.getUsers);
 
   const { notify } = useUIContext();
 

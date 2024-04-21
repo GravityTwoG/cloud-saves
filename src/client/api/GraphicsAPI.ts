@@ -16,7 +16,7 @@ export class GraphicsAPI implements IGraphicsAPI {
     const response = await this.fetcher.post<CommonGraphic>("/graphic/common", {
       body: {
         visualType: commonGraphic.visualType,
-        commonParameterId: commonGraphic.commonParameterId,
+        commonParameterId: commonGraphic.commonParameter.id,
       },
     });
     return response;
@@ -30,7 +30,7 @@ export class GraphicsAPI implements IGraphicsAPI {
       {
         body: {
           visualType: commonGraphic.visualType,
-          commonParameterId: commonGraphic.commonParameterId,
+          commonParameterId: commonGraphic.commonParameter.id,
         },
       },
     );
@@ -69,31 +69,7 @@ export class GraphicsAPI implements IGraphicsAPI {
 
   getCommonGraphicData = async (id: string): Promise<CommonGraphicData> => {
     const response = await this.fetcher.get<CommonGraphicData>(
-      `/graphic/common/data/${id}`,
-    );
-    return {
-      ...response,
-      id: response.id.toString(),
-    };
-  };
-
-  getCommonHistogramGraphicData = async (
-    id: string,
-  ): Promise<CommonGraphicData> => {
-    const response = await this.fetcher.get<CommonGraphicData>(
-      `/graphic-data/histogram/common/${id}`,
-    );
-    return {
-      ...response,
-      id: response.id.toString(),
-    };
-  };
-
-  getCommonPieChartGraphicData = async (
-    id: string,
-  ): Promise<CommonGraphicData> => {
-    const response = await this.fetcher.get<CommonGraphicData>(
-      `/graphic-data/pie_chart/common/${id}`,
+      `/graphic-data/common/${id}`,
     );
     return {
       ...response,

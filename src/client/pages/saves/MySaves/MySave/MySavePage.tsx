@@ -89,6 +89,8 @@ export const MySavePage = () => {
         success: t("updated-state"),
         error: t("update-state-error"),
       });
+      const data = await gameStateAPI.getGameState(gameStateId);
+      setGameState(data);
     } catch (error) {
       console.error(error);
     }

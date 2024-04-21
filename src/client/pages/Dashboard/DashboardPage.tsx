@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { paths } from "@/client/config/paths";
-import { useResource } from "@/client/lib/hooks/useResource";
+import { useResourceWithSync } from "@/client/lib/hooks/useResource";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useModal } from "@/client/ui/hooks/useModal";
@@ -31,7 +31,7 @@ export const DashboardPage = () => {
     onSearchQueryChange,
     onPageSelect,
     _loadResource: loadGraphics,
-  } = useResource(graphicsAPI.getCommonGraphics);
+  } = useResourceWithSync(graphicsAPI.getCommonGraphics);
 
   const onAdd = async (graphic: CommonGraphic) => {
     try {

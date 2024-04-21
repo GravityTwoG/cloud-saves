@@ -87,7 +87,7 @@ export const DashboardPage = () => {
         renderElement={(g) => (
           <Flex jcsb>
             <CommonLink unstyled href={paths.graphic({ graphicId: g.id })}>
-              {g.visualType}
+              {g.visualType} - {g.commonParameter.label}
             </CommonLink>
 
             <ConfirmButton color="danger" onClick={() => onDelete(g.id)}>

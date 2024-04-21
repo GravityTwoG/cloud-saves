@@ -3,11 +3,14 @@ import classes from "./faded-card.module.scss";
 
 import { Link } from "wouter";
 import { ReactTagProps } from "../../types";
+import { useEffect, useState } from "react";
 
 export type FadedCardProps = {
   imageURL: string;
   href?: string;
 } & ReactTagProps<"div">;
+
+const placeholderSrc = "/public/placeholder.jpg";
 
 export const FadedCard = ({
   imageURL,
@@ -15,13 +18,35 @@ export const FadedCard = ({
   className,
   ...props
 }: FadedCardProps) => {
+  const [imgSrc, setImgSrc] = useState(placeholderSrc || imageURL);
+
+  const customClass =
+    placeholderSrc && imgSrc === placeholderSrc
+      ? classes.Loading
+      : classes.Loaded;
+
+  useEffect(() => {
+    let mounted = true;
+    const img = new Image();
+    img.src = imageURL;
+    img.onload = () => {
+      if (mounted) {
+        setImgSrc(imageURL);
+      }
+    };
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <div
       {...props}
-      className={clsx(classes.FadedCard, className)}
+      className={clsx(classes.FadedCard, className, customClass)}
       style={{
         ...props.style,
-        backgroundImage: `url(${imageURL})`,
+        backgroundImage: `url(${imgSrc})`,
       }}
     >
       <FadedCardLink href={props.href} className={classes.FadedCardLink}>

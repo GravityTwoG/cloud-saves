@@ -42,6 +42,7 @@ html[data-theme="dark"] .GameImageOverlay {
   color: var(--color-text);
 
   & > span {
+    display: block;
     width: 100%;
   }
 }

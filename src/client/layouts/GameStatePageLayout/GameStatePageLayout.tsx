@@ -13,7 +13,7 @@ export type GameStatePageLayoutProps = {
   children?: React.ReactNode;
 };
 
-const placeholderSrc = "/public/placeholder.jpg";
+const placeholderSrc = "/placeholder.jpg";
 
 export const GameStatePageLayout = (props: GameStatePageLayoutProps) => {
   const [imgSrc, setImgSrc] = useState(placeholderSrc || props.gameImageURL);

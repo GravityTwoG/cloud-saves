@@ -10,7 +10,7 @@ export type FadedCardProps = {
   href?: string;
 } & ReactTagProps<"div">;
 
-const placeholderSrc = "/public/placeholder.jpg";
+const placeholderSrc = "/placeholder.jpg";
 
 export const FadedCard = ({
   imageURL,

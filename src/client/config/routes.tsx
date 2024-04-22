@@ -25,6 +25,7 @@ import { GraphicPage } from "../pages/Dashboard/GraphicPage";
 import { UsersPage } from "../pages/Users/UsersPage";
 
 import ProfileIcon from "@/client/ui/icons/Profile.svg";
+import RegisterIcon from "@/client/ui/icons/Register.svg";
 import SaveIcon from "@/client/ui/icons/Save.svg";
 import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
 import UsersIcon from "@/client/ui/icons/Users.svg";
@@ -67,6 +68,7 @@ export const routes: RouteDescriptor[] = [
     link: {
       label: "login",
       path: paths.login({}),
+      icon: <ProfileIcon />,
     },
   },
   {
@@ -76,6 +78,7 @@ export const routes: RouteDescriptor[] = [
     link: {
       label: "register",
       path: paths.register({}),
+      icon: <RegisterIcon />,
     },
   },
   {

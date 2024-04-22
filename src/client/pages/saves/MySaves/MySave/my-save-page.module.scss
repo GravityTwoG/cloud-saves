@@ -48,6 +48,7 @@ html[data-theme="dark"] .GameImageOverlay {
 }
 
 .GameStateNameForm {
+  position: relative;
   flex: 1;
   height: 100%;
 
@@ -64,8 +65,16 @@ html[data-theme="dark"] .GameImageOverlay {
     line-height: 1.8;
     background: transparent;
     border: none;
-    border-bottom: 1px solid var(--color-deco);
     outline: none;
+  }
+
+  &::after {
+    position: absolute;
+    bottom: 0;
+    display: block;
+    width: 100%;
+    border-bottom: 3px solid var(--color-deco);
+    content: "";
   }
 }
 

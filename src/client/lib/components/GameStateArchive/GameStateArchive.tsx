@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { clsx } from "clsx";
 
@@ -25,21 +26,35 @@ export const GameStateArchive = (props: GameStateArchiveProps) => {
     keyPrefix: "components.GameStateArchive",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const downloadState = async () => {
     try {
-      const response = await gameStateAPI.downloadState(props.gameState);
-      console.log(response);
+      setIsLoading(true);
+      await notify.promise(gameStateAPI.downloadState(props.gameState), {
+        loading: t("downloading"),
+        success: t("downloaded"),
+        error: t("download-error"),
+      });
     } catch (error) {
       notify.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const downloadStateAs = async () => {
     try {
-      const response = await gameStateAPI.downloadStateAs(props.gameState);
-      console.log(response);
+      setIsLoading(true);
+      await notify.promise(gameStateAPI.downloadStateAs(props.gameState), {
+        loading: t("downloading"),
+        success: t("downloaded"),
+        error: t("download-error"),
+      });
     } catch (error) {
       notify.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -69,6 +84,7 @@ export const GameStateArchive = (props: GameStateArchiveProps) => {
             },
           ]}
           onClick={downloadState}
+          isLoading={isLoading}
         >
           <DownloadIcon />
           {t("download")}

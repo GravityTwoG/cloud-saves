@@ -3,10 +3,12 @@ import { clsx } from "clsx";
 
 import classes from "./poly-button.module.scss";
 import { useOnClickOutside } from "../../../hooks/useOnClickOutside";
+import { Spinner } from "../../Spinner";
 
 export type PolyButtonProps = {
   className?: string;
   onClick: () => void;
+  isLoading?: boolean;
   children: React.ReactNode;
   subActions: {
     onClick: () => void;
@@ -31,13 +33,21 @@ export const PolyButton = (props: PolyButtonProps) => {
             setIsOpen(false);
             props.onClick();
           }}
+          disabled={props.isLoading}
         >
-          {props.children}
+          <span className={props.isLoading ? classes.Loading : undefined}>
+            {props.children}
+          </span>
+
+          {props.isLoading && <Spinner className={classes.Spinner} />}
         </button>
 
         <button
           className={classes.PolyButtonMenuButton}
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => {
+            if (props.isLoading) return;
+            setIsOpen(!isOpen);
+          }}
           data-is-open={isOpen ? "true" : "false"}
         >
           <div />
@@ -54,6 +64,7 @@ export const PolyButton = (props: PolyButtonProps) => {
                   setIsOpen(false);
                   subAction.onClick();
                 }}
+                disabled={props.isLoading}
               >
                 {subAction.children}
               </button>

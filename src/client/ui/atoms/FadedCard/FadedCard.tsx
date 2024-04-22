@@ -18,12 +18,10 @@ export const FadedCard = ({
   className,
   ...props
 }: FadedCardProps) => {
-  const [imgSrc, setImgSrc] = useState(placeholderSrc || imageURL);
+  const [imgSrc, setImgSrc] = useState(placeholderSrc);
 
   const customClass =
-    placeholderSrc && imgSrc === placeholderSrc
-      ? classes.Loading
-      : classes.Loaded;
+    imgSrc === placeholderSrc ? classes.Loading : classes.Loaded;
 
   useEffect(() => {
     let mounted = true;

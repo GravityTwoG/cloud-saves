@@ -2,5 +2,8 @@
   "uploaded-at": "Загружено:",
   "download": "Скачать",
   "download-to": "Скачать в",
+  "downloading": "Загрузка",
+  "downloaded": "Загружено",
+  "download-error": "Не удалось загрузить",
   "size": "Размер"
 }

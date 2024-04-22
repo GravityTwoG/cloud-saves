@@ -7,6 +7,7 @@ import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
 
 const pipelineItemTypes: { name: string; value: string }[] = [
   { name: "sav-to-json", value: "sav-to-json" },
+  { name: "colon-text-to-json", value: "colon-text-to-json" },
 ];
 
 type GameFormData = {

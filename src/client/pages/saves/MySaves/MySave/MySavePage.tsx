@@ -52,12 +52,15 @@ export const MySavePage = () => {
     })();
   }, []);
 
-  if (!gameState || !gameStateId) {
+  if ((!gameState || !gameStateId) && !isLoading) {
     return (
       <GameStatePageLayout gameImageURL={""} isLoading={isLoading}>
         <H1>{t("game-save-not-found")}</H1>
       </GameStatePageLayout>
     );
+  }
+  if (!gameState) {
+    return null;
   }
 
   const setupSync = async (sync: GameStateSync) => {
@@ -89,7 +92,7 @@ export const MySavePage = () => {
         success: t("updated-state"),
         error: t("update-state-error"),
       });
-      const data = await gameStateAPI.getGameState(gameStateId);
+      const data = await gameStateAPI.getGameState(gameState.id);
       setGameState(data);
     } catch (error) {
       console.error(error);

@@ -16,12 +16,10 @@ export type GameStatePageLayoutProps = {
 const placeholderSrc = "/placeholder.jpg";
 
 export const GameStatePageLayout = (props: GameStatePageLayoutProps) => {
-  const [imgSrc, setImgSrc] = useState(placeholderSrc || props.gameImageURL);
+  const [imgSrc, setImgSrc] = useState(placeholderSrc);
 
   const customClass =
-    placeholderSrc && imgSrc === placeholderSrc
-      ? classes.ImageLoading
-      : classes.ImageLoaded;
+    imgSrc === placeholderSrc ? classes.ImageLoading : classes.ImageLoaded;
 
   useEffect(() => {
     if (!props.gameImageURL) return;
@@ -46,6 +44,10 @@ export const GameStatePageLayout = (props: GameStatePageLayoutProps) => {
           className={clsx(classes.GameImage, customClass)}
           style={{ backgroundImage: `url(${imgSrc})` }}
         >
+          <div
+            className={clsx(classes.GameImageEffect, customClass)}
+            style={{ backgroundImage: `url(${imgSrc})` }}
+          />
           <div className={classes.GameImageOverlay} />
         </div>
 
@@ -69,9 +71,13 @@ export const GameStatePageLayout = (props: GameStatePageLayoutProps) => {
   return (
     <div className={classes.GameStatePage}>
       <div
-        className={classes.GameImage}
+        className={clsx(classes.GameImage, customClass)}
         style={{ backgroundImage: `url(${imgSrc})` }}
       >
+        <div
+          className={clsx(classes.GameImageEffect, customClass)}
+          style={{ backgroundImage: `url(${imgSrc})` }}
+        />
         <div className={classes.GameImageOverlay} />
       </div>
 

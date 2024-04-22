@@ -38,11 +38,10 @@
 
 .Loading {
   opacity: 0.7;
-  transition: opacity 0.3s ease;
 }
 
 .Loaded {
-  animation: fade-in 0.5s linear;
+  animation: fade-in 0.1s linear forwards;
 }
 
 @keyframes fade-in {

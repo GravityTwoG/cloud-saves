@@ -9,7 +9,7 @@ export class ColonTextConverter implements FileConverter {
   async convert(
     folderPath: string,
     inputFilename: string,
-    outputFilename: string
+    outputFilename: string,
   ) {
     const inputFilePath = path.join(folderPath, inputFilename);
     const outputFilePath = path.join(folderPath, outputFilename);

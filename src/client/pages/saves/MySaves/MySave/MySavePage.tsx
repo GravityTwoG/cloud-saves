@@ -15,7 +15,7 @@ import { paths } from "@/client/config/paths";
 import UploadIcon from "@/client/ui/icons/Upload.svg";
 import SyncIcon from "@/client/ui/icons/Sync.svg";
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
-import { Button, ConfirmButton } from "@/client/ui/atoms/Button";
+import { Button, ConfirmButton, CopyButton } from "@/client/ui/atoms/Button";
 import { Flex } from "@/client/ui/atoms/Flex";
 import { Paper } from "@/client/ui/atoms/Paper";
 import { GameStatePageLayout } from "@/client/layouts/GameStatePageLayout";
@@ -172,7 +172,10 @@ export const MySavePage = () => {
       <Paper className={clsx(classes.GameSaveSettings, "mb-4")}>
         <div className={classes.GameSaveSettingsLeft}>
           <Paragraph>{t("path")}:</Paragraph>
-          <Paragraph>{gameState.localPath}</Paragraph>
+          <Paragraph className={classes.LocalPath}>
+            <span>{gameState.localPath}</span>
+            <CopyButton copyContent={gameState.localPath} />
+          </Paragraph>
 
           <Paragraph>{t("sync")}:</Paragraph>
           <Paragraph>

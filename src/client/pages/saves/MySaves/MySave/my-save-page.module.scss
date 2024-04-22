@@ -95,6 +95,20 @@ html[data-theme="dark"] .GameImageOverlay {
   }
 }
 
+.LocalPath {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: start;
+  align-items: center;
+
+  & > span {
+    display: -webkit-inline-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+}
+
 .SyncSettingsConfirmButton {
   width: 100%;
   font-size: 1rem;

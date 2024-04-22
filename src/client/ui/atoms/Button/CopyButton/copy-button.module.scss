@@ -1,0 +1,29 @@
+.CopyButton {
+  margin: 0;
+  padding: 1px;
+  color: var(--text-color);
+  font-size: 1rem;
+  vertical-align: middle;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: scale 0.3s ease;
+  scale: 1.5;
+
+  & svg {
+    transition: fill 0.1s linear;
+    fill: var(--text-color);
+  }
+
+  &:active {
+    scale: 1.25;
+  }
+}
+
+.Copied {
+  color: var(--color-success);
+
+  & svg {
+    fill: var(--color-success);
+  }
+}

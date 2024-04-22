@@ -167,7 +167,7 @@ export class Application {
         preload: path.join(__dirname, "preload.js"),
       },
       show: false,
-      minWidth: 600,
+      minWidth: 640,
       minHeight: 400,
       titleBarStyle: "hidden",
       titleBarOverlay: {

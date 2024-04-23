@@ -5,7 +5,7 @@ export async function downloadToFolder(
   sourceURL: string,
   targetFolder: string,
   targetFilename: string,
-  openFolderWhenDone?: boolean
+  openFolderWhenDone?: boolean,
 ): Promise<void> {
   const win = BrowserWindow.getAllWindows();
   if (!win.length) {

@@ -11,11 +11,15 @@ const localSaves = mySaves.path("/local");
 const mySave = mySaves.path("/:gameStateId");
 const sharedSaves = path("/saves/shared");
 const publicSaves = path("/saves/public");
-const save = path("/saves/:gameStateId");
+const saves = path("/saves");
+const save = saves.path("/:gameStateId");
 
 const games = path("/games");
 const gameAdd = path("/games-add");
 const game = games.path("/:gameId");
+
+const dashboard = path("/dashboard");
+const graphic = dashboard.path("/graphic/:graphicId");
 
 const users = path("/users");
 
@@ -31,11 +35,15 @@ export const paths = {
   mySave,
   sharedSaves,
   publicSaves,
+  saves,
   save,
 
   games,
   game,
   gameAdd,
+
+  dashboard,
+  graphic,
 
   users,
 };

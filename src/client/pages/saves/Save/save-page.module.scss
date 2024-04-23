@@ -1,21 +1,3 @@
-.SavePage {
-  padding-bottom: 1rem;
-  padding-top: 1rem;
-}
-
-.GameStateName {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-
-  .GameIcon {
-    width: 8rem;
-    height: 6rem;
-
-    object-fit: contain;
-  }
-}
-
 .GameSaveSettings {
   display: flex;
   gap: 0.5rem;
@@ -23,19 +5,4 @@
   .GameSaveSettingsLeft {
     flex: 1;
   }
-}
-
-.Buttons {
-  margin-left: auto;
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
-.GameSaveArchive {
-  margin-top: 2rem;
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  padding: 1rem 1rem;
 }

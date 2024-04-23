@@ -4,14 +4,15 @@ import classes from "./users-page.module.scss";
 
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
-import { useResource } from "@/client/lib/hooks/useResource";
+import { useResourceWithSync } from "@/client/lib/hooks/useResource";
+import { scrollToTop } from "@/client/lib/scrollToTop";
 
 import { H1 } from "@/client/ui/atoms/Typography";
+import { ConfirmButton } from "@/client/ui/atoms/Button/";
 import { Container } from "@/client/ui/atoms/Container";
 import { List } from "@/client/ui/molecules/List/List";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
-import { ConfirmButton } from "@/client/ui/atoms/Button/";
 
 export const UsersPage = () => {
   const { usersAPI } = useAPIContext();
@@ -20,10 +21,12 @@ export const UsersPage = () => {
   const {
     query,
     resource: users,
+    isLoading,
     onSearch,
-    loadResource: loadUsers,
-    setQuery,
-  } = useResource(usersAPI.getUsers);
+    onSearchQueryChange,
+    onPageSelect,
+    _loadResource: loadUsers,
+  } = useResourceWithSync(usersAPI.getUsers);
 
   const { notify } = useUIContext();
 
@@ -52,11 +55,12 @@ export const UsersPage = () => {
       <SearchForm
         searchQuery={query.searchQuery}
         onSearch={onSearch}
-        onQueryChange={(searchQuery) => setQuery({ ...query, searchQuery })}
+        onQueryChange={(searchQuery) => onSearchQueryChange(searchQuery)}
       />
 
       <List
-        className={classes.UsersList}
+        isLoading={isLoading}
+        className="my-4"
         elements={users.items}
         getKey={(user) => user.id}
         elementClassName={classes.UserItem}
@@ -91,7 +95,10 @@ export const UsersPage = () => {
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
         count={users.totalCount}
-        onPageSelect={(page) => loadUsers({ ...query, pageNumber: page })}
+        onPageSelect={(pageNumber) => {
+          onPageSelect(pageNumber);
+          scrollToTop();
+        }}
       />
     </Container>
   );

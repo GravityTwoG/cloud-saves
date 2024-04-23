@@ -1,0 +1,33 @@
+.Spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  border-radius: 6px;
+  opacity: 0;
+  transition:
+    background-color 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.Preloader {
+  position: relative;
+  min-height: 100px;
+
+  &[data-is-visible="true"] {
+    min-height: 250px;
+
+    & .Spinner {
+      display: flex;
+      min-height: 250px;
+      background-color: var(--color-background);
+      opacity: 0.5;
+    }
+  }
+}

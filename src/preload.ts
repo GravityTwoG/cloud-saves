@@ -3,12 +3,6 @@
 import { contextBridge, ipcRenderer } from "electron";
 
 const electronApi: Window["electronAPI"] = {
-  onDeepLink: (callback) => {
-    ipcRenderer.on("deepLink", (_, link) => {
-      callback(link);
-    });
-  },
-
   showFolderDialog: () => ipcRenderer.invoke("showFolderDialog"),
 
   getStatePaths: (paths) => ipcRenderer.invoke("getStatePaths", paths),
@@ -16,8 +10,16 @@ const electronApi: Window["electronAPI"] = {
   getFolderInfo: (folderPath) =>
     ipcRenderer.invoke("getFolderInfo", folderPath),
 
+  onDeepLink: (callback) => {
+    ipcRenderer.on("deepLink", (_, link) => {
+      callback(link);
+    });
+    return () => ipcRenderer.removeListener("deepLink", callback);
+  },
+
   onGetSyncedStates: (callback) => {
     ipcRenderer.on("getSyncedStates", callback);
+    return () => ipcRenderer.removeListener("getSyncedStates", callback);
   },
 
   sendSyncedStates: (args) => ipcRenderer.invoke("sendSyncedStates", args),
@@ -30,6 +32,11 @@ const electronApi: Window["electronAPI"] = {
 
   downloadStateAs: (gameState) =>
     ipcRenderer.invoke("downloadStateAs", gameState),
+
+  getAppVersion: () => ipcRenderer.invoke("getAppVersion"),
+
+  setTitleBarSettings: (settings) =>
+    ipcRenderer.invoke("setTitleBarSettings", settings),
 };
 
 contextBridge.exposeInMainWorld("electronAPI", electronApi);

@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useEffect, useState } from "react";
 
-import { navigate } from "@/client/useHashLocation";
+import { navigate } from "@/client/app/useHashLocation";
 import { User } from "@/types";
 import { paths } from "@/client/config/paths";
 
@@ -27,6 +27,11 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
         setAuthStatus(AuthStatus.AUTHENTICATED);
       })
       .catch(() => setAuthStatus(AuthStatus.ANONYMOUS));
+
+    authAPI.onUnauthorized(() => {
+      setAuthStatus(AuthStatus.ANONYMOUS);
+      setUser(emptyUser);
+    });
   }, []);
 
   const register = useCallback(async (credentials: RegisterDTO) => {

@@ -7,7 +7,7 @@ import { useAuthContext } from "@/client/contexts/AuthContext";
 
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
-import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
+import { CommonLink } from "@/client/ui/atoms/Link/CommonLink";
 import { Paper } from "@/client/ui/atoms/Paper";
 import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";
 
@@ -68,6 +68,15 @@ export const RegisterPage = () => {
       <section>
         <H1 className="tac">{t("form.title")}</H1>
 
+        <div className="tac mb-4">
+          <Paragraph>
+            {t("prompt-to-sign-in")}{" "}
+            <CommonLink href={paths.login({})}>
+              {t("link-to-sign-in")}
+            </CommonLink>
+          </Paragraph>
+        </div>
+
         <Paper>
           <Form
             config={formConfig}
@@ -75,13 +84,6 @@ export const RegisterPage = () => {
             submitText={t("form.submit-button")}
             className={classes.Form}
           />
-
-          <Paragraph>
-            {t("prompt-to-sign-in")}{" "}
-            <CommonLink href={paths.login({})}>
-              {t("link-to-sign-in")}
-            </CommonLink>
-          </Paragraph>
         </Paper>
       </section>
     </Container>

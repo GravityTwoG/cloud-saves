@@ -4,12 +4,12 @@ import classes from "./game-add-page.module.scss";
 
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
-import { navigate } from "@/client/useHashLocation";
+import { navigate } from "@/client/app/useHashLocation";
 import { paths } from "@/client/config/paths";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
-import { GameForm } from "../components/GameForm/GameForm";
+import { GameForm } from "../../../lib/components/GameForm/GameForm";
 import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
 
 export const GameAddPage = () => {

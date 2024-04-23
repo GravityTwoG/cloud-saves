@@ -6,33 +6,47 @@
 .fxww {
   flex-wrap: wrap;
 }
+
 .fxdc {
   flex-direction: column;
 }
+
 .jcsb {
   justify-content: space-between;
 }
+
 .jcsa {
   justify-content: space-around;
 }
+
 .jcc {
   justify-content: center;
 }
+
+.jcs {
+  justify-content: stretch;
+}
+
 .jcfe {
   justify-content: flex-end;
 }
+
 .jcfs {
   justify-content: flex-start;
 }
+
 .aic {
   align-items: center;
 }
+
 .ais {
   align-items: stretch;
 }
+
 .aifs {
   align-items: flex-start;
 }
+
 .aife {
   align-items: flex-end;
 }

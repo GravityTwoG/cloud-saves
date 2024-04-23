@@ -4,19 +4,14 @@
 
 .Header {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
   gap: 1rem;
-
-  .GameIcon {
-    width: 64px;
-    height: 64px;
-  }
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .Actions {
   display: flex;
-  justify-content: flex-end;
   gap: 0.5rem;
+  justify-content: flex-end;
   margin-bottom: 1rem;
 }

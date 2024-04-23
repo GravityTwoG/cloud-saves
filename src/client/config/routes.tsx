@@ -6,24 +6,31 @@ import { RequestPasswordResetPage } from "@/client/pages/auth/RequestPasswordRes
 import { ResetPasswordPage } from "@/client/pages/auth/ResetPassword/ResetPasswordPage";
 
 import { ProfilePage } from "@/client/pages/Profile/ProfilePage";
-import { MySavesPage } from "@/client/pages/MySaves/MySavesPage";
-import { MySavePage } from "@/client/pages/MySaves/MySave/MySavePage";
+
+import { LocalSavesPage } from "../pages/saves/MySaves/LocalSaves/LocalSavesPage";
+import { MySavesPage } from "@/client/pages/saves/MySaves/MySavesPage";
+import { MySavePage } from "@/client/pages/saves/MySaves/MySave/MySavePage";
 import { SavePage } from "../pages/saves/Save/SavePage";
 import { SharedSavesPage } from "@/client/pages/saves/SharedSaves/SharedSavesPage";
 import { PublicSavesPage } from "@/client/pages/saves/PublicSaves/PublicSavesPage";
+import { SavesPage } from "../pages/saves/SavesPage";
 
 import { GamesPage } from "@/client/pages/Games/GamesPage";
 import { GamePage } from "@/client/pages/Games/Game/GamePage";
 import { GameAddPage } from "@/client/pages/Games/GameAdd/GameAddPage";
 
+import { DashboardPage } from "../pages/Dashboard/DashboardPage";
+import { GraphicPage } from "../pages/Dashboard/GraphicPage";
+
 import { UsersPage } from "../pages/Users/UsersPage";
 
 import ProfileIcon from "@/client/ui/icons/Profile.svg";
+import RegisterIcon from "@/client/ui/icons/Register.svg";
 import SaveIcon from "@/client/ui/icons/Save.svg";
 import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
 import UsersIcon from "@/client/ui/icons/Users.svg";
+
 import { paths } from "./paths";
-import { LocalSavesPage } from "../pages/MySaves/LocalSaves/LocalSavesPage";
 
 export enum RouteAccess {
   "ANONYMOUS" = "ANONYMOUS",
@@ -61,6 +68,7 @@ export const routes: RouteDescriptor[] = [
     link: {
       label: "login",
       path: paths.login({}),
+      icon: <ProfileIcon />,
     },
   },
   {
@@ -70,6 +78,7 @@ export const routes: RouteDescriptor[] = [
     link: {
       label: "register",
       path: paths.register({}),
+      icon: <RegisterIcon />,
     },
   },
   {
@@ -132,6 +141,8 @@ export const routes: RouteDescriptor[] = [
   {
     path: paths.publicSaves.pattern,
     component: PublicSavesPage,
+    access: RouteAccess.AUTHENTICATED,
+    forRoles: [UserRole.USER],
     link: {
       label: "public-saves",
       path: paths.publicSaves({}),
@@ -139,10 +150,19 @@ export const routes: RouteDescriptor[] = [
     },
   },
   {
+    path: paths.saves.pattern,
+    component: SavesPage,
+    access: RouteAccess.AUTHENTICATED,
+    forRoles: [UserRole.ADMIN],
+    link: {
+      label: "saves",
+      path: paths.saves({}),
+      icon: <SaveIcon />,
+    },
+  },
+  {
     path: paths.save.pattern,
     component: SavePage,
-    access: RouteAccess.AUTHENTICATED,
-    forRoles: [UserRole.USER],
   },
 
   {
@@ -165,6 +185,24 @@ export const routes: RouteDescriptor[] = [
   {
     path: paths.gameAdd.pattern,
     component: GameAddPage,
+    access: RouteAccess.AUTHENTICATED,
+    forRoles: [UserRole.ADMIN],
+  },
+
+  {
+    path: paths.dashboard.pattern,
+    component: DashboardPage,
+    access: RouteAccess.AUTHENTICATED,
+    forRoles: [UserRole.ADMIN],
+    link: {
+      label: "dashboard",
+      path: paths.dashboard({}),
+      icon: <GamepadIcon />,
+    },
+  },
+  {
+    path: paths.graphic.pattern,
+    component: GraphicPage,
     access: RouteAccess.AUTHENTICATED,
     forRoles: [UserRole.ADMIN],
   },

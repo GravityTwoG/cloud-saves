@@ -18,9 +18,9 @@ export const ThemeContextProvider = (props: { children: ReactNode }) => {
 
   useEffect(() => {
     if (theme === "dark") {
-      document.documentElement.classList.add("dark-theme");
+      document.documentElement.dataset.theme = "dark";
     } else {
-      document.documentElement.classList.remove("dark-theme");
+      document.documentElement.dataset.theme = "light";
     }
   }, [theme]);
 

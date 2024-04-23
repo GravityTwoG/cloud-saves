@@ -7,7 +7,7 @@ import { useAuthContext } from "@/client/contexts/AuthContext";
 
 import { Container } from "@/client/ui/atoms/Container";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
-import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
+import { CommonLink } from "@/client/ui/atoms/Link/CommonLink";
 import { Paper } from "@/client/ui/atoms/Paper";
 import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";
 
@@ -51,14 +51,7 @@ export const LoginPage = () => {
       <section>
         <H1 className="tac">{t("form.title")}</H1>
 
-        <Paper>
-          <Form
-            config={formConfig}
-            onSubmit={onSubmit}
-            submitText={t("form.submit-button")}
-            className={classes.Form}
-          />
-
+        <div className="tac mb-4">
           <Paragraph>
             {t("prompt-to-sign-up")}{" "}
             <CommonLink href={paths.register({})}>
@@ -68,6 +61,15 @@ export const LoginPage = () => {
               {t("link-to-forgot-pasword")}
             </CommonLink>
           </Paragraph>
+        </div>
+
+        <Paper>
+          <Form
+            config={formConfig}
+            onSubmit={onSubmit}
+            submitText={t("form.submit-button")}
+            className={classes.Form}
+          />
         </Paper>
       </section>
     </Container>

@@ -4,19 +4,19 @@ import classes from "./games-page.module.scss";
 
 import { paths } from "@/client/config/paths";
 import { useAPIContext } from "@/client/contexts/APIContext";
-import { useResource } from "@/client/lib/hooks/useResource";
+import { useResourceWithSync } from "@/client/lib/hooks/useResource";
 import { useUIContext } from "@/client/contexts/UIContext";
-import { useParameterTypesModal } from "./components/ParameterTypesWidget";
-import { useCommonParametersModal } from "./components/CommonParametersWidget";
+import { scrollToTop } from "@/client/lib/scrollToTop";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Button } from "@/client/ui/atoms/Button";
 import { Container } from "@/client/ui/atoms/Container";
-import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
+import { CommonLink } from "@/client/ui/atoms/Link/CommonLink";
+import { Grid } from "@/client/ui/molecules/Grid";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
-import { Grid } from "@/client/ui/molecules/Grid";
 import { GameCard } from "@/client/lib/components/GameCard";
+import { useCommonParametersModal } from "@/client/lib/components/CommonParametersWidget";
 
 export const GamesPage = () => {
   const { gameAPI } = useAPIContext();
@@ -26,10 +26,12 @@ export const GamesPage = () => {
   const {
     query,
     resource: games,
+    isLoading,
     onSearch,
-    loadResource: loadGames,
-    setQuery,
-  } = useResource(gameAPI.getGames);
+    onSearchQueryChange,
+    onPageSelect,
+    _loadResource: loadGames,
+  } = useResourceWithSync(gameAPI.getGames);
 
   const onDelete = async (gameId: string) => {
     try {
@@ -40,8 +42,6 @@ export const GamesPage = () => {
     }
   };
 
-  const [parameterTypesModal, openParameterTypesModal] =
-    useParameterTypesModal();
   const [commonParametersModal, openCommonParametersModal] =
     useCommonParametersModal();
 
@@ -53,25 +53,22 @@ export const GamesPage = () => {
       </div>
 
       <div className={classes.GameActions}>
-        <Button onClick={openParameterTypesModal}>
-          {t("parameter-types")}
-        </Button>
         <Button onClick={openCommonParametersModal}>
           {t("common-parameters")}
         </Button>
       </div>
 
-      {parameterTypesModal}
       {commonParametersModal}
 
       <SearchForm
         searchQuery={query.searchQuery}
         onSearch={onSearch}
-        onQueryChange={(searchQuery) => setQuery({ ...query, searchQuery })}
+        onQueryChange={onSearchQueryChange}
       />
 
       <Grid
-        className={classes.GamesList}
+        isLoading={isLoading}
+        className="my-4"
         elements={games.items}
         getKey={(game) => game.id}
         renderElement={(game) => (
@@ -88,7 +85,10 @@ export const GamesPage = () => {
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
         count={games.totalCount}
-        onPageSelect={(pageNumber) => loadGames({ ...query, pageNumber })}
+        onPageSelect={(pageNumber) => {
+          onPageSelect(pageNumber);
+          scrollToTop();
+        }}
       />
     </Container>
   );

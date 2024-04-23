@@ -1,14 +1,15 @@
 import { useTranslation } from "react-i18next";
 
 import { useAPIContext } from "@/client/contexts/APIContext";
-import { useResource } from "@/client/lib/hooks/useResource";
+import { useResourceWithSync } from "@/client/lib/hooks/useResource";
 import { paths } from "@/client/config/paths";
+import { scrollToTop } from "@/client/lib/scrollToTop";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
-import { SearchForm } from "@/client/ui/molecules/SearchForm";
-import { Paginator } from "@/client/ui/molecules/Paginator";
 import { Grid } from "@/client/ui/molecules/Grid";
+import { Paginator } from "@/client/ui/molecules/Paginator";
+import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { GameStateCard } from "@/client/lib/components/GameStateCard";
 
 export const SharedSavesPage = () => {
@@ -18,10 +19,11 @@ export const SharedSavesPage = () => {
   const {
     query,
     resource: gameStates,
+    isLoading,
     onSearch,
-    loadResource: loadSaves,
-    setQuery,
-  } = useResource(gameStateAPI.getSharedStates);
+    onSearchQueryChange,
+    onPageSelect,
+  } = useResourceWithSync(gameStateAPI.getSharedStates);
 
   return (
     <Container>
@@ -30,10 +32,11 @@ export const SharedSavesPage = () => {
       <SearchForm
         searchQuery={query.searchQuery}
         onSearch={onSearch}
-        onQueryChange={(searchQuery) => setQuery({ ...query, searchQuery })}
+        onQueryChange={onSearchQueryChange}
       />
 
       <Grid
+        isLoading={isLoading}
         className="my-4"
         elements={gameStates.items}
         getKey={(gameState) => gameState.id}
@@ -50,7 +53,10 @@ export const SharedSavesPage = () => {
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
         count={gameStates.totalCount}
-        onPageSelect={(page) => loadSaves({ ...query, pageNumber: page })}
+        onPageSelect={(pageNumber) => {
+          onPageSelect(pageNumber);
+          scrollToTop();
+        }}
       />
     </Container>
   );

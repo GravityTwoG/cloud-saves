@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { clsx } from "clsx";
 import { useTranslation } from "react-i18next";
 
 import classes from "./sidebar.module.scss";
 
 import { NavLinkType } from "@/client/config/navLinks";
+import { useAPIContext } from "@/client/contexts/APIContext";
 import { useAuthContext } from "@/client/contexts/AuthContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 import { useThemeContext } from "@/client/ui/contexts/ThemeContext";
@@ -15,8 +17,10 @@ import { Link, useRoute } from "wouter";
 import { AuthGuard } from "@/client/lib/components/Guard/AuthGuard";
 import { AnonymousGuard } from "@/client/lib/components/Guard/AnonumousGuard";
 
+import LightThemeIcon from "@/client/ui/icons/LightTheme.svg";
+import DarkThemeIcon from "@/client/ui/icons/DarkTheme.svg";
+import LanguageIcon from "@/client/ui/icons/Language.svg";
 import LogoutIcon from "@/client/ui/icons/Logout.svg";
-import { useEffect } from "react";
 
 export type SidebarProps = {
   links: NavLinkType[];
@@ -24,17 +28,37 @@ export type SidebarProps = {
 
 export const Sidebar = (props: SidebarProps) => {
   const { logout } = useAuthContext();
+  const { osAPI } = useAPIContext();
   const { notify } = useUIContext();
   const { theme, toggleTheme } = useThemeContext();
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = usePersistedState<string>(
     "language",
-    i18n.language
+    i18n.language,
   );
 
   useEffect(() => {
     i18n.changeLanguage(language);
   }, [language]);
+
+  useEffect(() => {
+    // run after changes in DOM
+    Promise.resolve().then(() => {
+      const bodyStyle = getComputedStyle(document.body);
+      const backgroundColor = bodyStyle.getPropertyValue("--color-background");
+      const textColor = bodyStyle.getPropertyValue("--color-text");
+      osAPI.setTitleBarSettings({
+        backgroundColor: `${backgroundColor}20`,
+        symbolColor: textColor,
+      });
+    });
+  }, [theme, osAPI]);
+
+  const toggleLanguage = () => {
+    const newLanguage = language === "en" ? "ru" : "en";
+    i18n.changeLanguage(newLanguage);
+    setLanguage(newLanguage);
+  };
 
   const onLogout = async () => {
     try {
@@ -56,7 +80,7 @@ export const Sidebar = (props: SidebarProps) => {
               link={{
                 ...link,
                 label: t(
-                  `common.navLinks.${link.label}` as "common.navLinks.profile"
+                  `common.navLinks.${link.label}` as "common.navLinks.profile",
                 ),
               }}
             />
@@ -72,21 +96,17 @@ export const Sidebar = (props: SidebarProps) => {
           title={t("common.toggle-theme")}
           aria-label={t("common.toggle-theme")}
         >
-          {theme === "light" ? "☀️" : "🌑"}
+          {theme === "light" ? <LightThemeIcon /> : <DarkThemeIcon />}
         </button>
+
         <button
           className={classes.AppButton}
           type="button"
-          onClick={() => {
-            {
-              const newLanguage = language === "en" ? "ru" : "en";
-              i18n.changeLanguage(newLanguage);
-              setLanguage(newLanguage);
-            }
-          }}
+          onClick={toggleLanguage}
           title={t("common.change-language")}
           aria-label={t("common.change-language")}
         >
+          <LanguageIcon />
           {i18n.language === "en" ? "en" : "ru"}
         </button>
 

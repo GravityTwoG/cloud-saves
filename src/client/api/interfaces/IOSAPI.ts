@@ -5,9 +5,11 @@ export interface IOSAPI {
 
   showFolderDialog(): Promise<FolderInfo>;
 
-  onDeepLink: (callback: (link: { url: string }) => void) => void;
+  onDeepLink: (
+    callback: (link: { url: string }) => void,
+  ) => UnsubscribeFunction;
 
-  onGetSyncedSaves: (callback: () => void) => void;
+  onGetSyncedSaves: (callback: () => void) => UnsubscribeFunction;
 
   sendSyncedSaves: (args: GameState[]) => Promise<void>;
 
@@ -30,4 +32,11 @@ export interface IOSAPI {
 
   // Just download to selected folder
   downloadStateAs(gameState: GameState): Promise<void>;
+
+  getAppVersion(): Promise<string>;
+
+  setTitleBarSettings(settings: {
+    backgroundColor: string;
+    symbolColor: string;
+  }): Promise<void>;
 }

@@ -2,3 +2,4 @@
 
 npx tsc --noEmit
 npx lint-staged
+npm run test run

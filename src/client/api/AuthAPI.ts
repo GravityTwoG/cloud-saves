@@ -26,6 +26,14 @@ export class AuthAPI implements IAuthAPI {
     this.fetcher = fetcher;
   }
 
+  onUnauthorized = (callback: () => void) => {
+    this.fetcher.setOnError((error) => {
+      if (error.message?.includes("401")) {
+        callback();
+      }
+    });
+  };
+
   register = async (credentials: RegisterDTO): Promise<User> => {
     await this.fetcher.post<ServerUser>("/auth/registration", {
       body: credentials,

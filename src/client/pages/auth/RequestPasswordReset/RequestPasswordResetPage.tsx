@@ -7,7 +7,7 @@ import { useAuthContext } from "@/client/contexts/AuthContext";
 
 import { Container } from "@/client/ui/atoms/Container";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
-import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
+import { CommonLink } from "@/client/ui/atoms/Link/CommonLink";
 import { Paper } from "@/client/ui/atoms/Paper";
 import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";
 
@@ -68,12 +68,14 @@ export const RequestPasswordResetPage = () => {
             className={classes.Form}
           />
 
-          <Paragraph>
-            {t("prompt-to-sign-up")}{" "}
-            <CommonLink href={paths.register({})}>
-              {t("link-to-sign-up")}
-            </CommonLink>
-          </Paragraph>
+          <div className="mt-4">
+            <Paragraph>
+              {t("prompt-to-sign-up")}{" "}
+              <CommonLink href={paths.register({})}>
+                {t("link-to-sign-up")}
+              </CommonLink>
+            </Paragraph>
+          </div>
         </Paper>
       </section>
     </Container>

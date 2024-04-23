@@ -48,14 +48,14 @@ export class GameAPI implements IGameAPI {
   };
 
   getGames = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<Game>> => {
     const games = await this.fetcher.get<{
       items: GameFromServer[];
       totalCount: number;
-    }>(
-      `/games?searchQuery=${query.searchQuery}&pageSize=${query.pageSize}&pageNumber=${query.pageNumber}`
-    );
+    }>(`/games`, {
+      queryParams: query,
+    });
 
     return {
       items: games.items.map(GameAPI.mapGameFromServer),
@@ -103,10 +103,10 @@ export class GameAPI implements IGameAPI {
               commonParameterId: field.commonParameter.id,
               label: field.label,
               description: field.description,
-            })
+            }),
           ),
         },
-      })
+      }),
     );
     return formData;
   }
@@ -150,7 +150,7 @@ export class GameAPI implements IGameAPI {
           description: field.description,
         })),
       },
-      iconURL: game.imageUrl,
+      imageURL: game.imageUrl,
     };
   };
 }

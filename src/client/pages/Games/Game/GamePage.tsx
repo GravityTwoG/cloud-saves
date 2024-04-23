@@ -8,13 +8,13 @@ import { Game } from "@/types";
 import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
 import { useAPIContext } from "@/client/contexts/APIContext";
 import { useUIContext } from "@/client/contexts/UIContext";
-import { navigate } from "@/client/useHashLocation";
+import { navigate } from "@/client/app/useHashLocation";
 import { paths } from "@/client/config/paths";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
-import { GameForm } from "../components/GameForm/GameForm";
 import { ConfirmButton } from "@/client/ui/atoms/Button/";
+import { GameForm } from "@/client/lib/components/GameForm/GameForm";
 
 export const GamePage = () => {
   const { gameAPI } = useAPIContext();
@@ -67,11 +67,6 @@ export const GamePage = () => {
   return (
     <Container className={classes.GamePage}>
       <div className={classes.Header}>
-        <img
-          src={game.iconURL || "https://via.placeholder.com/64"}
-          alt={game.name}
-          className={classes.GameIcon}
-        />{" "}
         <H1>{game.name}</H1>
       </div>
 

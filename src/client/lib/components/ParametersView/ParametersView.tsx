@@ -2,23 +2,29 @@ import classes from "./parameters-view.module.scss";
 
 import { GameStateValue } from "@/types";
 
+import { Paper } from "@/client/ui/atoms/Paper";
+import { NoElements } from "@/client/ui/atoms/NoElements";
+
 type ParametersViewProps = {
   gameStateValues: GameStateValue[];
+  className?: string;
 };
 
 export const ParametersView = (props: ParametersViewProps) => {
   return (
-    <div>
+    <Paper className={props.className}>
       {props.gameStateValues.map((field, idx) => (
         <ParameterViewItem key={idx} {...field} />
       ))}
-      {props.gameStateValues.length === 0 && "-"}
-    </div>
+      {props.gameStateValues.length === 0 && (
+        <NoElements className={classes.Empty} />
+      )}
+    </Paper>
   );
 };
 
-function formatTime(value: number, type: "seconds") {
-  if (type === "seconds") {
+function formatTime(value: number, type: "time_seconds") {
+  if (type === "time_seconds") {
     if (value < 60) {
       return `${value} seconds`;
     }
@@ -42,7 +48,7 @@ const ParameterViewItem = (props: {
   type: string;
   description: string;
 }) => {
-  if (props.type === "seconds") {
+  if (props.type === "time_seconds") {
     return (
       <div>
         <span>{props.label}</span>:{" "}

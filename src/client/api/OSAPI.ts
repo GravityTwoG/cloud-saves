@@ -19,11 +19,13 @@ export class OSAPI implements IOSAPI {
     return response.data;
   };
 
-  onDeepLink = (callback: (link: { url: string }) => void): void => {
+  onDeepLink = (
+    callback: (link: { url: string }) => void,
+  ): UnsubscribeFunction => {
     return window.electronAPI.onDeepLink(callback);
   };
 
-  onGetSyncedSaves = (callback: () => void): void => {
+  onGetSyncedSaves = (callback: () => void): UnsubscribeFunction => {
     return window.electronAPI.onGetSyncedStates(callback);
   };
 
@@ -68,5 +70,20 @@ export class OSAPI implements IOSAPI {
 
   downloadStateAs = async (gameState: GameState): Promise<void> => {
     await window.electronAPI.downloadStateAs(gameState);
+  };
+
+  getAppVersion = async (): Promise<string> => {
+    const response = await window.electronAPI.getAppVersion();
+    if (!response.data) {
+      throw new ApiError(response.error || "Failed to get app version");
+    }
+    return response.data;
+  };
+
+  setTitleBarSettings = async (settings: {
+    backgroundColor: string;
+    symbolColor: string;
+  }): Promise<void> => {
+    await window.electronAPI.setTitleBarSettings(settings);
   };
 }

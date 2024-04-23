@@ -1,39 +1,44 @@
 .Paginator {
-  width: 100%;
-  padding: 12px 6px;
   display: flex;
   flex-wrap: wrap;
+  gap: 0.5rem 0.7rem;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem 0.7rem;
+  width: 100%;
+  padding: 0.75rem 0.375rem;
 }
 
 .PageButton {
-  min-width: 1.5rem;
-  padding: 3px 2px;
   position: relative;
+  flex-shrink: 0;
+  min-width: 1.75em;
+  padding: 0.25em 0.5em;
+  color: var(--color-text);
+  font-size: 1rem;
   background-color: transparent;
-  color: var(--text-color);
-  transition: background-color 0.3s ease;
-  cursor: pointer;
+  border: 2px solid var(--color-deco);
   border-radius: 3px;
-  border: 1px solid var(--deco-color);
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    scale 0.3s ease;
+  user-select: none;
 
   &:hover {
-    background-color: rgba(39, 39, 42, 0.08);
+    background-color: var(--color-deco);
+  }
+
+  &:active {
+    scale: 0.9;
   }
 }
 
 .PageButtonCurrent {
   font-weight: bold;
+  border-color: var(--color-accent);
+}
 
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: var(--accent-color);
-  }
+.PageButtonHidden {
+  cursor: default;
+  opacity: 0;
 }

@@ -1,5 +1,13 @@
 {
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "i18n-ally.localesPaths": ["src/client/locales"],
-  "i18n-ally.keystyle": "nested"
+  "i18n-ally.keystyle": "nested",
+  "stylelint.validate": ["css", "scss"],
+  "scss.validate": false,
+  "css.validate": false,
+  "less.validate": false,
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": "always"
+  }
 }

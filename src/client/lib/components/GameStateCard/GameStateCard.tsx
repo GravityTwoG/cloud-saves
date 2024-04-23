@@ -6,13 +6,15 @@ import { useConfirmModal } from "@/client/ui/hooks/useConfirmModal/useConfirmMod
 
 import classes from "./game-state-card.module.scss";
 
-import { Link } from "wouter";
+import SyncIcon from "@/client/ui/icons/Sync.svg";
+import { FadedCard } from "@/client/ui/atoms/FadedCard";
 import { ThreeDotsMenu } from "@/client/ui/molecules/ThreeDotsMenu";
 
 export type GameStateCardProps = {
   gameState: GameState;
   className?: string;
   onDelete?: (gameStateId: string) => void;
+  showSyncSettings?: boolean;
   href: string;
 };
 
@@ -26,36 +28,35 @@ export const GameStateCard = (props: GameStateCardProps) => {
   });
 
   return (
-    <div
+    <FadedCard
+      imageURL={props.gameState.gameImageURL}
+      href={props.href}
       className={clsx(classes.GameStateCard, props.className)}
-      style={{
-        backgroundImage: `url(${props.gameState.gameIconURL})`,
-      }}
     >
-      <Link href={props.href} className={classes.GameStateLink}>
-        <div className={classes.GameStateCardInner}>
-          {props.onDelete && (
-            <ThreeDotsMenu
-              className={classes.GameStateActions}
-              menuItems={[
-                {
-                  onClick: () => onDelete(),
-                  children: "Delete",
-                  key: "delete",
-                },
-              ]}
-            />
-          )}
-          {modal}
+      {props.onDelete && (
+        <ThreeDotsMenu
+          className={classes.GameStateActions}
+          menuItems={[
+            {
+              onClick: () => onDelete(),
+              children: "Delete",
+              key: "delete",
+            },
+          ]}
+        />
+      )}
+      {modal}
 
-          <div className={classes.GameStateInfo}>
-            <p>{props.gameState.name}</p>
-            <p>
-              {t("sync")}: {t(props.gameState.sync)}
-            </p>
-          </div>
-        </div>
-      </Link>
-    </div>
+      <div className={classes.GameStateInfo}>
+        <p className={classes.GameStateName}>{props.gameState.name}</p>
+
+        {props.showSyncSettings && (
+          <p className={classes.SyncSettings}>
+            <SyncIcon />
+            {t(props.gameState.sync)}
+          </p>
+        )}
+      </div>
+    </FadedCard>
   );
 };

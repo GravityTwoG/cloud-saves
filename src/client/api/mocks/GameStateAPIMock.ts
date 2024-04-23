@@ -17,27 +17,28 @@ export class GameStateAPIMock implements IGameStateAPI {
     this.gameAPI = gameAPI;
   }
 
-  getStatePaths = async (): Promise<GamePath[]> => {
+  getStatePaths = async (
+    query: ResourceRequest & { gameId?: string },
+  ): Promise<ResourceResponse<GamePath>> => {
     const paths: GamePath[] = [];
 
-    const games = await this.gameAPI.getGames({
-      pageNumber: 1,
-      pageSize: 1000,
-      searchQuery: "",
-    });
-
+    const games = await this.gameAPI.getGames(query);
     for (const game of games.items) {
       for (const path of game.paths) {
         paths.push({
           path: path.path,
           gameId: game.id,
           gameName: game.name,
-          gameIconURL: game.iconURL,
+          gameImageURL: game.imageURL,
         });
       }
     }
+    const localPaths = await this.osAPI.getStatePaths(paths);
 
-    return this.osAPI.getStatePaths(paths);
+    return {
+      items: localPaths,
+      totalCount: games.totalCount,
+    };
   };
 
   getGameState = async (gameStateId: string): Promise<GameState> => {
@@ -58,8 +59,18 @@ export class GameStateAPIMock implements IGameStateAPI {
     }
   };
 
+  getStates = async (
+    query: ResourceRequest,
+  ): Promise<ResourceResponse<GameState>> => {
+    console.log("getStates", query);
+    return {
+      items: [],
+      totalCount: 0,
+    };
+  };
+
   getUserStates = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<GameState>> => {
     console.log("getUserStates", query);
     try {
@@ -91,7 +102,7 @@ export class GameStateAPIMock implements IGameStateAPI {
   };
 
   getSharedStates = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<GameState>> => {
     console.log("getSharedStates", query);
     return {
@@ -101,7 +112,7 @@ export class GameStateAPIMock implements IGameStateAPI {
   };
 
   getPublicStates = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<GameState>> => {
     console.log("getGlobalStates", query);
     return {
@@ -130,7 +141,7 @@ export class GameStateAPIMock implements IGameStateAPI {
     const gameState: GameState = {
       id: gameStateId,
       gameId: state.localPath,
-      gameIconURL: "",
+      gameImageURL: "",
       localPath: state.localPath,
       name: game ? game.name : state.name,
       sync: GameStateSync.NO,
@@ -175,7 +186,7 @@ export class GameStateAPIMock implements IGameStateAPI {
     const gameState: GameState = {
       id: gameStateId,
       gameId: game ? game.id : Math.random().toString(),
-      gameIconURL: "",
+      gameImageURL: "",
       localPath: state.localPath,
       name: game ? game.name : state.name,
       sync: GameStateSync.NO,
@@ -214,7 +225,7 @@ export class GameStateAPIMock implements IGameStateAPI {
   };
 
   setupSync = async (settings: {
-    userId: string;
+    username: string;
     gameStateId: string;
     sync: GameStateSync;
   }) => {
@@ -222,6 +233,7 @@ export class GameStateAPIMock implements IGameStateAPI {
       const states = ls.getItem<Record<string, GameState>>("sync_settings");
       states[settings.gameStateId] = {
         ...states[settings.gameStateId],
+        ...settings,
         sync: settings.sync,
       };
       ls.setItem("sync_settings", states);
@@ -235,11 +247,11 @@ export class GameStateAPIMock implements IGameStateAPI {
     }
   };
 
-  getSyncSettings(): Record<string, { sync: GameStateSync; userId: string }> {
+  getSyncSettings(): Record<string, { sync: GameStateSync; username: string }> {
     try {
       const syncSetting =
-        ls.getItem<Record<string, { sync: GameStateSync; userId: string }>>(
-          "sync_settings"
+        ls.getItem<Record<string, { sync: GameStateSync; username: string }>>(
+          "sync_settings",
         );
       return syncSetting;
     } catch (e) {

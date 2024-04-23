@@ -1,17 +1,13 @@
 .Header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 }
 
 .GameActions {
-  margin-bottom: 1rem;
   display: flex;
   flex-wrap: nowrap;
-  justify-content: flex-end;
   gap: 0.5rem;
-}
-
-.GamesList {
-  margin: 1rem 0;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
 }

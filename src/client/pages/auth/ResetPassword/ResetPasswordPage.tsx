@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import classes from "./reset-password-page.module.scss";
 
-import { useSearchParams } from "@/client/useHashLocation";
+import { useSearchParams } from "@/client/app/useHashLocation";
 import { paths } from "@/client/config/paths";
 import { useAuthContext } from "@/client/contexts/AuthContext";
 
@@ -10,7 +10,7 @@ import { Container } from "@/client/ui/atoms/Container";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
 import { Form, FormConfig, FormData } from "@/client/ui/molecules/Form/Form";
 import { Paper } from "@/client/ui/atoms/Paper";
-import { CommonLink } from "@/client/ui/atoms/NavLink/CommonLink";
+import { CommonLink } from "@/client/ui/atoms/Link/CommonLink";
 
 export const ResetPasswordPage = () => {
   const { resetPassword } = useAuthContext();

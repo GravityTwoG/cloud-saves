@@ -24,6 +24,7 @@ export const useModal = (args: UseModalArgs) => {
   );
 
   const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
-  return [modal, openModal] as const;
+  return [modal, openModal, closeModal] as const;
 };

@@ -20,6 +20,8 @@ export class Application {
   private mainWindow: BrowserWindow | null = null;
   private isAppQuitting = false;
   private syncManager: SyncManager = syncManager;
+  private titleBarBackgroundColor: string = "#00000000";
+  private titleBarSymbolColor: string = "#000";
 
   constructor() {}
 
@@ -33,33 +35,11 @@ export class Application {
     });
 
     const gotTheLock = app.requestSingleInstanceLock();
-
     if (!gotTheLock) {
       this.quitApp();
       return;
     } else {
-      app.on("second-instance", (_, commandLine) => {
-        // Someone tried to run a second instance, we should focus our window.
-        if (!this.mainWindow) {
-          return;
-        }
-
-        if (this.mainWindow.isMinimized()) {
-          this.mainWindow.restore();
-        }
-        this.mainWindow.show();
-
-        const url = commandLine.pop();
-        if (!url?.startsWith(clientProtocol)) {
-          return;
-        }
-
-        const path = url.replace(clientProtocol, "/").replace("/?", "?");
-
-        this.mainWindow.webContents.send("deepLink", {
-          url: path,
-        });
-      });
+      this.onDeepLink();
     }
 
     // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -101,12 +81,42 @@ export class Application {
     });
   }
 
+  private onDeepLink() {
+    app.on("second-instance", (_, commandLine) => {
+      // Someone tried to run a second instance, we should focus our window.
+      if (!this.mainWindow) {
+        return;
+      }
+
+      if (this.mainWindow.isMinimized()) {
+        this.mainWindow.restore();
+      }
+      this.mainWindow.show();
+
+      const url = commandLine.pop();
+      if (!url?.startsWith(clientProtocol)) {
+        return;
+      }
+
+      const path = url.replace(clientProtocol, "/").replace("/?", "?");
+      this.mainWindow.webContents.send("deepLink", {
+        url: path,
+      });
+    });
+  }
+
   private setupIPC() {
     function registerHandler<T extends unknown[], R>(
       name: string,
-      handler: (...args: T) => R
+      handler: (...args: T) => R,
     ) {
-      ipcMain.handle(name, (_, ...args: unknown[]) => handler(...(args as T)));
+      ipcMain.handle(name, async (_, ...args: unknown[]) => {
+        try {
+          return await handler(...(args as T));
+        } catch (error) {
+          return { data: null, error: (error as Error).toString() };
+        }
+      });
     }
 
     registerHandler("showFolderDialog", electronAPI.showFolderDialog);
@@ -122,6 +132,18 @@ export class Application {
     registerHandler("downloadState", electronAPI.downloadState);
 
     registerHandler("downloadStateAs", electronAPI.downloadStateAs);
+
+    registerHandler("getAppVersion", electronAPI.getAppVersion);
+
+    registerHandler<
+      Parameters<Window["electronAPI"]["setTitleBarSettings"]>,
+      void
+    >("setTitleBarSettings", (settings) =>
+      this.mainWindow?.setTitleBarOverlay({
+        color: settings.backgroundColor,
+        symbolColor: settings.symbolColor,
+      }),
+    );
   }
 
   private registerProtocolClient() {
@@ -145,9 +167,14 @@ export class Application {
         preload: path.join(__dirname, "preload.js"),
       },
       show: false,
-      minWidth: 600,
+      minWidth: 640,
       minHeight: 400,
-      // frame: false, // remove title bar
+      titleBarStyle: "hidden",
+      titleBarOverlay: {
+        color: this.titleBarBackgroundColor,
+        symbolColor: this.titleBarSymbolColor,
+        height: 32,
+      },
     });
     mainWindow.removeMenu();
 
@@ -156,7 +183,7 @@ export class Application {
       mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
     } else {
       mainWindow.loadFile(
-        path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
+        path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
       );
     }
 

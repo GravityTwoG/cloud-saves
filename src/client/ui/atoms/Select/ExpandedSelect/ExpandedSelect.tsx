@@ -15,13 +15,13 @@ export type ExpandedSelectProps<T> = {
 };
 
 export type ExpandedSelectComponent = <T extends string>(
-  props: ExpandedSelectProps<T> & { ref?: ForwardedRef<HTMLInputElement> }
+  props: ExpandedSelectProps<T> & { ref?: ForwardedRef<HTMLInputElement> },
 ) => ReactElement | null;
 
 export const ExpandedSelect = forwardRef(
   <T extends string>(
     props: ExpandedSelectProps<T>,
-    ref: ForwardedRef<HTMLInputElement>
+    ref: ForwardedRef<HTMLInputElement>,
   ): ReactElement => {
     const variant = props.variant || "horizontal";
 
@@ -30,7 +30,7 @@ export const ExpandedSelect = forwardRef(
         className={clsx(
           classes.ExpandedSelect,
           variant === "vertical" && classes.ExpandedSelectVertical,
-          props.className
+          props.className,
         )}
       >
         <FakeInput value={props.value} name={props.name} ref={ref} />
@@ -54,13 +54,13 @@ export const ExpandedSelect = forwardRef(
                 }
               }}
             >
-              {option.label}
+              <button>{option.label}</button>
             </li>
           ))}
         </ul>
       </div>
     );
-  }
+  },
 ) as ExpandedSelectComponent;
 
 const FakeInput = forwardRef<

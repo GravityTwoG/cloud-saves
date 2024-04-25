@@ -39,15 +39,15 @@ export const FadedCard = ({
   }, []);
 
   return (
-    <div
-      {...props}
-      className={clsx(classes.FadedCard, className, customClass)}
-      style={{
-        ...props.style,
-        backgroundImage: `url(${imgSrc})`,
-      }}
-    >
-      <FadedCardLink href={props.href} className={classes.FadedCardLink}>
+    <div {...props} className={clsx(classes.FadedCard, customClass)}>
+      <FadedCardLink
+        href={props.href}
+        className={clsx(classes.FadedCardLink, className)}
+        style={{
+          ...props.style,
+          backgroundImage: `url(${imgSrc})`,
+        }}
+      >
         <div className={classes.FadedCardInner}>{children}</div>
       </FadedCardLink>
     </div>
@@ -58,6 +58,7 @@ type FadedCardLinkProps = {
   href?: string;
   className?: string;
   children: React.ReactNode;
+  style?: React.CSSProperties;
 };
 
 const FadedCardLink = (props: FadedCardLinkProps) => {
@@ -66,7 +67,11 @@ const FadedCardLink = (props: FadedCardLinkProps) => {
   }
 
   return (
-    <Link href={props.href || ""} className={props.className}>
+    <Link
+      href={props.href || ""}
+      className={props.className}
+      style={props.style}
+    >
       {props.children}
     </Link>
   );

@@ -42,6 +42,10 @@
     }
   }
 
+  .FileActions:has(*:focus-visible) {
+    opacity: 1;
+  }
+
   &:hover .FileActions {
     opacity: 1;
   }

@@ -3,16 +3,20 @@
   flex-direction: column;
   min-width: 200px;
   min-height: 250px;
-  overflow: hidden;
-  background-size: cover;
-  border-radius: 6px;
 }
 
 .FadedCardLink {
   display: flex;
   flex: 1;
   flex-direction: column;
+  overflow: hidden;
   text-decoration: none;
+  background-size: cover;
+  border-radius: 6px;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+  }
 }
 
 .FadedCardInner {

@@ -36,6 +36,11 @@
   font-weight: bold;
   text-decoration: none;
 
+  &:focus-visible {
+    border-radius: 6px;
+    outline: 2px solid var(--color-accent);
+  }
+
   &:hover {
     color: var(--color-accent-hover);
     text-decoration: underline;

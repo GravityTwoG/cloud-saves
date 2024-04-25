@@ -44,7 +44,7 @@ export const ThreeDotsMenu = (props: ThreeDotsMenuProps) => {
               onClick={item.onClick}
               key={item.key}
             >
-              {item.children}
+              <button>{item.children}</button>
             </li>
           ))}
         </ul>

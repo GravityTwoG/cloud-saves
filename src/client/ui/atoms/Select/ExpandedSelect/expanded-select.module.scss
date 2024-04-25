@@ -22,41 +22,63 @@
 }
 
 .Option {
-  display: inline-flex;
-  flex: 1 0 60px;
-  justify-content: center;
-  align-items: center;
-  min-width: 80px;
-  padding: 0.5rem 0.75rem;
-  color: var(--color-text);
-  white-space: nowrap;
-  text-align: center;
-  background-color: transparent;
-  background-color: rgb(128 128 128 / 4%);
-  border-radius: 6px;
-  cursor: pointer;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease,
-    scale 0.3s ease;
-  user-select: none;
+  list-style: none;
 
-  &:hover {
+  & > button {
+    display: inline-flex;
+    flex: 1 0 60px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-width: 80px;
+    height: 100%;
+    padding: 0.5rem 0.75rem;
+    color: var(--color-text);
+    color: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    white-space: nowrap;
+    text-align: center;
+    text-transform: inherit;
+    background-color: rgb(128 128 128 / 4%);
+    border: none;
+    border-radius: 6px;
+    outline: none;
+    cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      scale 0.3s ease;
+    user-select: none;
+  }
+
+  &:hover > button {
     background-color: var(--color-deco);
   }
 
-  &:active {
-    scale: 0.9;
+  &:active > button {
+    scale: 0.95;
   }
 
   &.OptionActive {
-    color: #fff;
-    background-color: var(--color-accent);
-    box-shadow: 3px 3px 5px 0 var(--color-accent-shadow);
+    & > button {
+      color: #fff;
+      background-color: var(--color-accent);
+      box-shadow: 3px 3px 5px 0 var(--color-accent-shadow);
+    }
 
-    &:hover {
+    &:hover > button {
       background-color: var(--color-accent-hover);
     }
+
+    &:has(button:focus-visible) > button:focus-visible {
+      outline-offset: 1px;
+    }
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  &:has(button:focus-visible) > button:focus-visible {
+    outline: 2px solid var(--color-accent);
   }
 }
 

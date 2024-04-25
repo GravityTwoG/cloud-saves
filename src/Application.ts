@@ -114,6 +114,7 @@ export class Application {
         try {
           return await handler(...(args as T));
         } catch (error) {
+          console.error(error);
           return { data: null, error: (error as Error).toString() };
         }
       });

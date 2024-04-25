@@ -92,7 +92,7 @@ export class GameStateAPI implements IGameStateAPI {
     const states = await this.fetcher.get<{
       items: GameStateFromServer[];
       totalCount: number;
-    }>(`${apiPrefix}/public`, {
+    }>(`${apiPrefix}/admin`, {
       queryParams: {
         ...query,
         searchGameId: 0,

@@ -134,7 +134,7 @@ export class StatesManager {
     // copy all files to temp folder
     const tempFolderBeforeUpload = path.join(
       tempFolderPath,
-      "/before-upload/" + folder.name,
+      `/before-upload/${folder.name}-${Math.random()}`,
     );
     await fs.cp(folder.localPath, tempFolderBeforeUpload, { recursive: true });
 

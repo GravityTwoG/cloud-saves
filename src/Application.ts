@@ -139,11 +139,14 @@ export class Application {
     registerHandler<
       Parameters<Window["electronAPI"]["setTitleBarSettings"]>,
       void
-    >("setTitleBarSettings", (settings) =>
-      this.mainWindow?.setTitleBarOverlay({
-        color: settings.backgroundColor,
-        symbolColor: settings.symbolColor,
-      }),
+    >(
+      "setTitleBarSettings",
+      (settings) =>
+        this.mainWindow?.setTitleBarOverlay &&
+        this.mainWindow?.setTitleBarOverlay({
+          color: settings.backgroundColor,
+          symbolColor: settings.symbolColor,
+        }),
     );
   }
 

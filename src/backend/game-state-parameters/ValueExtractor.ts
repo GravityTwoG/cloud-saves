@@ -17,7 +17,7 @@ export class ValueExtractor {
 
     for (const pipelineItem of game.extractionPipeline) {
       if (this.converters[pipelineItem.type]) {
-        await this.converters["sav-to-json"].convert(
+        await this.converters[pipelineItem.type].convert(
           filePath,
           pipelineItem.inputFilename,
           pipelineItem.outputFilename,
@@ -98,7 +98,7 @@ export class ValueExtractor {
               ? currentValue[j]
               : this.readByKey(restKey, currentValue[j] as JSONType);
 
-            if (this.isPrimitiveType(elem) && isLastKey) {
+            if (this.isPrimitiveType(elem)) {
               values.push(elem.toString());
             }
           }

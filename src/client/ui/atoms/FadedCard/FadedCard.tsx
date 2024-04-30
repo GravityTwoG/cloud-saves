@@ -63,7 +63,11 @@ type FadedCardLinkProps = {
 
 const FadedCardLink = (props: FadedCardLinkProps) => {
   if (!props.href) {
-    return <div className={props.className}>{props.children}</div>;
+    return (
+      <div style={props.style} className={props.className}>
+        {props.children}
+      </div>
+    );
   }
 
   return (

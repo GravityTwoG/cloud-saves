@@ -22,7 +22,7 @@
   "parameter-label": "Название",
   "parameter-description": "Описание",
   "remove-parameter": "Удалить",
-  "add-game-submit": "Добавить игру",
+  "add-game-submit": "Сохранить игру",
   "paths-are-required": "Пути к сохранениям обязательны",
   "at-least-one-path-is-required": "Пути к сохранениям обязательны",
   "paths-must-be-unique": "Пути к сохранениям должны быть уникальными",

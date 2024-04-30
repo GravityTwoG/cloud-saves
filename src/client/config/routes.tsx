@@ -29,6 +29,7 @@ import RegisterIcon from "@/client/ui/icons/Register.svg";
 import SaveIcon from "@/client/ui/icons/Save.svg";
 import GamepadIcon from "@/client/ui/icons/Gamepad.svg";
 import UsersIcon from "@/client/ui/icons/Users.svg";
+import GraphicIcon from "@/client/ui/icons/Graphic.svg";
 
 import { paths } from "./paths";
 
@@ -197,7 +198,7 @@ export const routes: RouteDescriptor[] = [
     link: {
       label: "dashboard",
       path: paths.dashboard({}),
-      icon: <GamepadIcon />,
+      icon: <GraphicIcon />,
     },
   },
   {

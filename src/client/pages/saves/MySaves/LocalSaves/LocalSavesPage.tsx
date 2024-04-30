@@ -238,6 +238,8 @@ const FileCard = ({ file, onFolderOpen }: FileCardProps) => {
     }
   };
 
+  console.log(file);
+
   return (
     <FadedCard
       imageURL={file.gameIconURL || ""}

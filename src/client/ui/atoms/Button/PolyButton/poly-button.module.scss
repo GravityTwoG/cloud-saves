@@ -9,10 +9,6 @@
 
 .PolyButtonButton {
   position: relative;
-  display: inline-flex;
-  gap: 0.1rem;
-  justify-content: center;
-  align-items: center;
   padding: 0.25rem 0.5rem;
   color: #fff;
   font-weight: 700;
@@ -30,12 +26,21 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
 
+  & span {
+    display: inline-flex;
+    gap: 0.1rem;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+  }
+
   &:disabled {
     opacity: 0.5;
   }
 
   &:focus-visible {
     border-color: var(--color-deco);
+    outline: 2px solid var(--color-accent);
   }
 
   &:hover:not(:disabled) {
@@ -45,6 +50,21 @@
   &:active:not(:disabled) {
     background-color: var(--color-accent);
   }
+}
+
+.Loading {
+  opacity: 0;
+}
+
+.Spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2.5rem;
+  height: 80%;
+  color: #fff;
+  transform: translate(-50%, -50%);
+  stroke: currentcolor !important;
 }
 
 .PolyButtonMenuButton {
@@ -67,6 +87,7 @@
 
   &:focus-visible {
     border-color: var(--color-deco);
+    outline: 2px solid var(--color-accent);
   }
 
   &:hover:not(:disabled) {
@@ -141,10 +162,21 @@
     border-radius: 6px;
     outline: none;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      scale 0.3s ease;
+
+    &:focus-visible {
+      border-color: var(--color-deco);
+      outline: 2px solid var(--color-accent);
+    }
 
     &:hover {
       background-color: var(--color-accent-hover);
+    }
+
+    &:active {
+      scale: 0.9;
     }
   }
 

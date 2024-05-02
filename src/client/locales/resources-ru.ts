@@ -10,6 +10,7 @@ import mySaves from "./ru/pages/mySaves.json";
 import mySave from "./ru/pages/mySave.json";
 import sharedSaves from "./ru/pages/sharedSaves.json";
 import publicSaves from "./ru/pages/publicSaves.json";
+import saves from "./ru/pages/saves.json";
 
 import games from "./ru/pages/games.json";
 import addGame from "./ru/pages/addGame.json";
@@ -41,6 +42,7 @@ export const resourcesRU = {
 
       sharedSaves,
       publicSaves,
+      saves,
 
       games,
       addGame,

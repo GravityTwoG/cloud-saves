@@ -5,7 +5,7 @@ export interface IGraphicsAPI {
   getCommonGraphic(id: string): Promise<CommonGraphic>;
 
   getCommonGraphics(
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<CommonGraphic>>;
 
   addCommonGraphic(commonGraphic: CommonGraphic): Promise<CommonGraphic>;

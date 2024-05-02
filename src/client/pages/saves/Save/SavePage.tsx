@@ -40,12 +40,15 @@ export const SavePage = () => {
     })();
   }, []);
 
-  if (!gameState || !gameStateId) {
+  if ((!gameState || !gameStateId) && !isLoading) {
     return (
       <GameStatePageLayout gameImageURL={""} isLoading={isLoading}>
         <H1>{t("game-save-not-found")}</H1>
       </GameStatePageLayout>
     );
+  }
+  if (!gameState) {
+    return null;
   }
 
   return (

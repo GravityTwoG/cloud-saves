@@ -22,7 +22,7 @@
   "parameter-label": "Label",
   "parameter-description": "Description",
   "remove-parameter": "Remove",
-  "add-game-submit": "Submit",
+  "add-game-submit": "Save Game",
   "paths-are-required": "Paths are required",
   "at-least-one-path-is-required": "At least one path is required",
   "paths-must-be-unique": "Paths must be unique",

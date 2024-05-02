@@ -11,28 +11,28 @@ export class GraphicsAPI implements IGraphicsAPI {
   }
 
   addCommonGraphic = async (
-    commonGraphic: CommonGraphic
+    commonGraphic: CommonGraphic,
   ): Promise<CommonGraphic> => {
     const response = await this.fetcher.post<CommonGraphic>("/graphic/common", {
       body: {
         visualType: commonGraphic.visualType,
-        commonParameterId: commonGraphic.commonParameterId,
+        commonParameterId: commonGraphic.commonParameter.id,
       },
     });
     return response;
   };
 
   updateCommonGraphic = async (
-    commonGraphic: CommonGraphic
+    commonGraphic: CommonGraphic,
   ): Promise<CommonGraphic> => {
     const response = await this.fetcher.put<CommonGraphic>(
       `/graphic/common/${commonGraphic.id}`,
       {
         body: {
           visualType: commonGraphic.visualType,
-          commonParameterId: commonGraphic.commonParameterId,
+          commonParameterId: commonGraphic.commonParameter.id,
         },
-      }
+      },
     );
     return response;
   };
@@ -43,7 +43,7 @@ export class GraphicsAPI implements IGraphicsAPI {
 
   getCommonGraphic = async (id: string): Promise<CommonGraphic> => {
     const response = await this.fetcher.get<CommonGraphic>(
-      `/graphic/common/${id}`
+      `/graphic/common/${id}`,
     );
     return {
       ...response,
@@ -52,10 +52,11 @@ export class GraphicsAPI implements IGraphicsAPI {
   };
 
   getCommonGraphics = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<CommonGraphic>> => {
     const response = await this.fetcher.get<ResourceResponse<CommonGraphic>>(
-      `/graphic/common?pageSize=${query.pageSize}&pageNumber=${query.pageNumber}&searchQuery=${query.searchQuery}`
+      `/graphic/common`,
+      { queryParams: query },
     );
     return {
       items: response.items.map((i) => ({
@@ -68,7 +69,7 @@ export class GraphicsAPI implements IGraphicsAPI {
 
   getCommonGraphicData = async (id: string): Promise<CommonGraphicData> => {
     const response = await this.fetcher.get<CommonGraphicData>(
-      `/graphic/common/data/${id}`
+      `/graphic-data/common/${id}`,
     );
     return {
       ...response,

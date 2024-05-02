@@ -7,7 +7,7 @@
   font-size: 1rem;
   text-align: center;
   background-color: var(--color-paper);
-  border: 1px solid var(--color-deco);
+  border: 2px solid var(--color-deco);
   border-radius: 6px;
   outline: none;
   cursor: pointer;
@@ -104,5 +104,11 @@
 }
 
 .Input {
-  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 1;
+  height: 1;
+  opacity: 0;
 }

@@ -11,6 +11,7 @@
   --color-danger: #b91c1c;
   --color-danger-hover: #7f1d1d;
   --color-danger-active: #b91c1c;
+  --color-success: #2b8a3e;
   --shadow-paper: 5px 5px 15px 0 #0000000e;
 }
 
@@ -20,8 +21,8 @@
   --color-text: #f0f0f0;
   --color-accent: #ff770f;
   --color-accent-hover: #f7a76c;
-  --color-secondary: #4c3450;
-  --color-secondary-hover: #320838;
+  --color-secondary: #444;
+  --color-secondary-hover: #666;
   --color-deco: #333;
 }
 
@@ -29,6 +30,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -46,6 +49,7 @@ body {
 .custom-scrollbar {
   scrollbar-width: auto;
   scrollbar-color: var(--color-accent) transparent;
+  scroll-behavior: smooth;
 }
 
 .custom-scrollbar::-webkit-scrollbar {

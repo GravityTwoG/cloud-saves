@@ -1,5 +1,8 @@
 import { createContext } from "react";
 
+import { Fetcher } from "@/client/api/Fetcher";
+
+// API Interfaces
 import { IOSAPI } from "@/client/api/interfaces/IOSAPI";
 import { IAuthAPI } from "@/client/api/interfaces/IAuthAPI";
 import { IGameStateAPI } from "@/client/api/interfaces/IGameStateAPI";
@@ -9,9 +12,7 @@ import { IGameStateParameterTypeAPI } from "@/client/api/interfaces/IGameStatePa
 import { ICommonParametersAPI } from "@/client/api/interfaces/ICommonParametersAPI";
 import { IGraphicsAPI } from "@/client/api/interfaces/IGraphicsAPI";
 
-import { Fetcher } from "@/client/api/Fetcher";
-
-import { OSAPI } from "@/client/api/OSAPI";
+// Mocks
 import { AuthAPIMock } from "@/client/api/mocks/AuthAPIMock";
 import { GameStateAPIMock } from "@/client/api/mocks/GameStateAPIMock";
 import { GameAPIMock } from "@/client/api/mocks/GameAPIMock";
@@ -20,6 +21,8 @@ import { CommonParametersAPIMock } from "@/client/api/mocks/CommonParametersAPIM
 import { GameStateParameterTypesAPIMock } from "@/client/api/mocks/GameStateParameterTypesAPIMock";
 import { GraphicsAPIMock } from "@/client/api/mocks/GraphicsAPIMock";
 
+// Real API
+import { OSAPI } from "@/client/api/OSAPI";
 import { AuthAPI } from "@/client/api/AuthAPI";
 import { GameAPI } from "@/client/api/GameAPI";
 import { GameStateAPI } from "@/client/api/GameStateAPI";
@@ -27,6 +30,41 @@ import { CommonParametersAPI } from "@/client/api/CommonParametersAPI";
 import { UsersAPI } from "@/client/api/UsersAPI";
 import { GameStateParameterTypesAPI } from "@/client/api/GameStateParameterTypesAPI";
 import { GraphicsAPI } from "@/client/api/GraphicsAPI";
+
+function createAPI(baseURL: string): APIContext {
+  const osAPI = new OSAPI();
+
+  if (baseURL) {
+    const fetcher = new Fetcher({
+      baseURL: baseURL || "http://localhost:5173/api",
+      credentials: "include", // include cookies in the request
+    });
+
+    return {
+      osAPI,
+      authAPI: new AuthAPI(fetcher),
+      gameStateAPI: new GameStateAPI(fetcher, osAPI),
+      gameAPI: new GameAPI(fetcher),
+      usersAPI: new UsersAPI(fetcher),
+      commonParametersAPI: new CommonParametersAPI(fetcher),
+      parameterTypesAPI: new GameStateParameterTypesAPI(fetcher),
+      graphicsAPI: new GraphicsAPI(fetcher),
+    };
+  }
+
+  const gameAPI = new GameAPIMock();
+
+  return {
+    osAPI,
+    authAPI: new AuthAPIMock(),
+    gameStateAPI: new GameStateAPIMock(osAPI, gameAPI),
+    gameAPI: gameAPI,
+    usersAPI: new UsersAPIMock(),
+    commonParametersAPI: new CommonParametersAPIMock(),
+    parameterTypesAPI: new GameStateParameterTypesAPIMock(),
+    graphicsAPI: new GraphicsAPIMock(),
+  };
+}
 
 interface APIContext {
   osAPI: IOSAPI;
@@ -41,37 +79,6 @@ interface APIContext {
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const fetcher = new Fetcher({
-  baseURL: API_BASE_URL || "http://localhost:5173/api",
-  credentials: "include",
-});
-
-const osAPI = new OSAPI();
-const authAPI = API_BASE_URL ? new AuthAPI(fetcher) : new AuthAPIMock();
-const gameAPI = API_BASE_URL ? new GameAPI(fetcher) : new GameAPIMock();
-const gameStateAPI = API_BASE_URL
-  ? new GameStateAPI(fetcher, osAPI)
-  : new GameStateAPIMock(osAPI, gameAPI);
-const usersAPI = API_BASE_URL ? new UsersAPI(fetcher) : new UsersAPIMock();
-const commonParametersAPI = API_BASE_URL
-  ? new CommonParametersAPI(fetcher)
-  : new CommonParametersAPIMock();
-const parameterTypesAPI = API_BASE_URL
-  ? new GameStateParameterTypesAPI(fetcher)
-  : new GameStateParameterTypesAPIMock();
-const graphicsAPI = API_BASE_URL
-  ? new GraphicsAPI(fetcher)
-  : new GraphicsAPIMock();
-
-export const api = {
-  osAPI,
-  authAPI,
-  gameStateAPI,
-  gameAPI,
-  usersAPI,
-  commonParametersAPI,
-  parameterTypesAPI,
-  graphicsAPI,
-} satisfies APIContext;
+export const api = createAPI(API_BASE_URL);
 
 export const APIContext = createContext<APIContext>(api);

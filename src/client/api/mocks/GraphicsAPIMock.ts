@@ -4,13 +4,13 @@ import { ResourceRequest, ResourceResponse } from "../interfaces/common";
 
 export class GraphicsAPIMock implements IGraphicsAPI {
   addCommonGraphic = async (
-    commonGraphic: CommonGraphic
+    commonGraphic: CommonGraphic,
   ): Promise<CommonGraphic> => {
     return commonGraphic;
   };
 
   updateCommonGraphic = async (
-    commonGraphic: CommonGraphic
+    commonGraphic: CommonGraphic,
   ): Promise<CommonGraphic> => {
     return commonGraphic;
   };
@@ -23,12 +23,17 @@ export class GraphicsAPIMock implements IGraphicsAPI {
     return {
       id,
       visualType: "histogram",
-      commonParameterId: "3",
+      commonParameter: {
+        id: "1",
+        label: "test",
+        description: "test",
+        type: { id: "1", type: "number" },
+      },
     };
   };
 
   getCommonGraphics = async (
-    query: ResourceRequest
+    query: ResourceRequest,
   ): Promise<ResourceResponse<CommonGraphic>> => {
     console.log("Mock getCommonGraphics", query);
     return {
@@ -36,12 +41,22 @@ export class GraphicsAPIMock implements IGraphicsAPI {
         {
           id: "1",
           visualType: "histogram",
-          commonParameterId: "1",
+          commonParameter: {
+            id: "1",
+            label: "test",
+            description: "test",
+            type: { id: "1", type: "number" },
+          },
         },
         {
           id: "2",
           visualType: "piechart",
-          commonParameterId: "2",
+          commonParameter: {
+            id: "2",
+            label: "test2",
+            description: "test",
+            type: { id: "1", type: "number" },
+          },
         },
       ],
       totalCount: 12,
@@ -93,38 +108,28 @@ export class GraphicsAPIMock implements IGraphicsAPI {
       },
       data: [
         {
-          range: {
-            min: 50,
-            max: 100,
-          },
+          min: 50,
+          max: 100,
           height: 100,
         },
         {
-          range: {
-            min: 100,
-            max: 150,
-          },
+          min: 100,
+          max: 150,
           height: 120,
         },
         {
-          range: {
-            min: 150,
-            max: 200,
-          },
+          min: 150,
+          max: 200,
           height: 70,
         },
         {
-          range: {
-            min: 200,
-            max: 250,
-          },
+          min: 200,
+          max: 250,
           height: 149,
         },
         {
-          range: {
-            min: 250,
-            max: 300,
-          },
+          min: 250,
+          max: 300,
           height: 70,
         },
       ],

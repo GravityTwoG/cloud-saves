@@ -34,6 +34,11 @@
     }
   }
 
+  .GameStateActions:has(*:focus-visible) {
+    opacity: 1;
+  }
+
+  &:focus-visible .GameStateActions,
   &:hover .GameStateActions {
     opacity: 1;
   }

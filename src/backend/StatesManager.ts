@@ -1,15 +1,17 @@
 import fs from "fs/promises";
 import path from "path";
 import os from "os";
-import AdmZip from "adm-zip";
 import { session } from "electron";
 
 import { Game, GameState } from "@/types";
 import { GameAPI, GameFromServer } from "@/client/api/GameAPI";
+
 import { ValueExtractor } from "./game-state-parameters/ValueExtractor";
+
 import { moveFolder } from "./fs/moveFolder";
 import { downloadToFolder } from "./fs/downloadToFolder";
 import { extractZIP } from "./fs/extractZIP";
+import { zipFolderOrFile } from "./fs/zipFolderOrFile";
 
 export class StatesManager {
   private readonly valueExtractor: ValueExtractor;
@@ -30,16 +32,20 @@ export class StatesManager {
         ...folder,
         gameId: folder.gameId || "",
       },
-      gameStateData
+      gameStateData,
     );
 
-    await fetch(`${import.meta.env.VITE_API_BASE_URL}/game-saves`, {
-      method: "POST",
-      headers: {
-        Cookie: await this.buildCookieHeader(),
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/game-saves`,
+      {
+        method: "POST",
+        headers: {
+          Cookie: await this.buildCookieHeader(),
+        },
+        body: formData,
       },
-      body: formData,
-    });
+    );
+    await this.handleError(response);
 
     return gameStateData;
   }
@@ -48,7 +54,7 @@ export class StatesManager {
     const gameStateData = await this.getState(gameState);
     const formData = this.mapToGameStateData(gameState, gameStateData);
 
-    const response2 = await fetch(
+    const response = await fetch(
       `${import.meta.env.VITE_API_BASE_URL}/game-saves/${gameState.id}`,
       {
         method: "PATCH",
@@ -56,17 +62,16 @@ export class StatesManager {
           Cookie: await this.buildCookieHeader(),
         },
         body: formData,
-      }
+      },
     );
 
-    console.log(response2.status);
-    console.log(response2.statusText);
+    await this.handleError(response);
+
     return gameStateData;
   }
 
   async downloadState(gameState: GameState) {
-    const tempPath = os.tmpdir();
-    const archivePath = path.join(tempPath, "cloud-saves");
+    const archivePath = this.getTempFolderPath();
     const filename = `${gameState.name}-archive.zip`;
     const filePath = path.join(archivePath, filename);
 
@@ -76,6 +81,16 @@ export class StatesManager {
 
     // move extracted folder to game states folder
     await moveFolder(extractedFolderPath, gameState.localPath);
+
+    // delete extracted folder
+    await fs.rm(extractedFolderPath, { recursive: true, force: true });
+    // delete archive
+    await fs.rm(filePath, { recursive: true, force: true });
+  }
+
+  private getTempFolderPath() {
+    const tempPath = os.tmpdir();
+    return path.join(tempPath, "cloud-saves");
   }
 
   private mapToGameStateData = (
@@ -88,7 +103,7 @@ export class StatesManager {
     response: {
       buffer: Buffer;
       gameStateValues: { value: string; gameStateParameterId: string }[];
-    }
+    },
   ) => {
     const formData = new FormData();
     formData.append("archive", new Blob([response.buffer]));
@@ -103,7 +118,7 @@ export class StatesManager {
           value: value.value,
           gameStateParameterId: value.gameStateParameterId,
         })),
-      })
+      }),
     );
 
     return formData;
@@ -115,20 +130,23 @@ export class StatesManager {
     localPath: string;
     name: string;
   }) {
-    const zip = new AdmZip();
+    const tempFolderPath = this.getTempFolderPath();
+    // copy all files to temp folder
+    const tempFolderBeforeUpload = path.join(
+      tempFolderPath,
+      `/before-upload/${folder.name}-${Math.random()}`,
+    );
+    await fs.cp(folder.localPath, tempFolderBeforeUpload, { recursive: true });
 
-    const isDirectory = (await fs.lstat(folder.localPath)).isDirectory();
-
-    if (isDirectory) {
-      await zip.addLocalFolderPromise(folder.localPath, {});
-    } else {
-      zip.addLocalFile(folder.localPath);
-    }
+    const zip = await zipFolderOrFile(folder.localPath, tempFolderBeforeUpload);
 
     const game = folder.gameId ? await this.getGame(folder.gameId) : undefined;
     const gameStateValues = game
-      ? await this.valueExtractor.extract(folder.localPath, game)
+      ? await this.valueExtractor.extract(tempFolderBeforeUpload, game)
       : [];
+
+    // remove temp folder
+    await fs.rm(tempFolderBeforeUpload, { recursive: true });
 
     return {
       buffer: zip.toBuffer(),
@@ -143,12 +161,10 @@ export class StatesManager {
         headers: {
           Cookie: await this.buildCookieHeader(),
         },
-      }
+      },
     );
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
+    await this.handleError(response);
 
     const game = (await response.json()) as GameFromServer;
 
@@ -158,5 +174,21 @@ export class StatesManager {
   private async buildCookieHeader() {
     const cookies = await session.defaultSession.cookies.get({});
     return cookies.map((cookie) => `${cookie.name}=${cookie.value}`).join(";");
+  }
+
+  private async handleError(response: Response) {
+    if (!response.ok) {
+      const error = new Error(`${response.status}:${response.statusText}`);
+
+      try {
+        const json = await response.json();
+        error.message = json.message;
+        error.cause = json;
+      } catch (error) {
+        console.log("response.json() error", error);
+      }
+
+      throw error;
+    }
   }
 }

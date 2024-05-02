@@ -10,6 +10,11 @@
     color: white;
   }
 
+  .GameActions:has(*:focus-visible) {
+    opacity: 1;
+  }
+
+  &:focus-visible .GameActions,
   &:hover .GameActions {
     opacity: 1;
   }

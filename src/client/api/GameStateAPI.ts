@@ -60,9 +60,7 @@ export class GameStateAPI implements IGameStateAPI {
   ): Promise<ResourceResponse<GamePath>> => {
     const pathsFromServer = await this.fetcher.get<
       ResourceResponse<GamePathFromServer>
-    >(
-      `/game-paths?pageSize=${query.pageSize}&pageNumber=${query.pageNumber}&searchQuery=${query.searchQuery}`,
-    );
+    >(`/game-paths`, { queryParams: query });
 
     const paths: GamePath[] = pathsFromServer.items.map((path) => ({
       id: path.id.toString(),
@@ -84,7 +82,24 @@ export class GameStateAPI implements IGameStateAPI {
       `${apiPrefix}/${gameStateId}`,
     );
 
-    return this.mapGameStateFromServer(state, this.getSyncSettings());
+    return this.mapGameStateFromServer(state);
+  };
+
+  // get all states for admin
+  getStates = async (
+    query: ResourceRequest,
+  ): Promise<ResourceResponse<GameState>> => {
+    const states = await this.fetcher.get<{
+      items: GameStateFromServer[];
+      totalCount: number;
+    }>(`${apiPrefix}/admin`, {
+      queryParams: {
+        ...query,
+        searchGameId: 0,
+      },
+    });
+
+    return this.mapGameStatesFromServer(states);
   };
 
   getUserStates = async (
@@ -93,16 +108,11 @@ export class GameStateAPI implements IGameStateAPI {
     const states = await this.fetcher.get<{
       items: GameStateFromServer[];
       totalCount: number;
-    }>(
-      `${apiPrefix}?searchQuery=${query.searchQuery}&pageSize=${query.pageSize}&pageNumber=${query.pageNumber}`,
-    );
+    }>(`${apiPrefix}`, {
+      queryParams: query,
+    });
 
-    return {
-      items: states.items.map((i) =>
-        this.mapGameStateFromServer(i, this.getSyncSettings()),
-      ),
-      totalCount: states.totalCount,
-    };
+    return this.mapGameStatesFromServer(states);
   };
 
   getSharedStates = async (
@@ -111,16 +121,11 @@ export class GameStateAPI implements IGameStateAPI {
     const states = await this.fetcher.get<{
       items: GameStateFromServer[];
       totalCount: number;
-    }>(
-      `${apiPrefix}/received-game-state-shares?searchQuery=${query.searchQuery}&pageSize=${query.pageSize}&pageNumber=${query.pageNumber}`,
-    );
+    }>(`${apiPrefix}/received-game-state-shares`, {
+      queryParams: query,
+    });
 
-    return {
-      items: states.items.map((i) =>
-        this.mapGameStateFromServer(i, this.getSyncSettings()),
-      ),
-      totalCount: states.totalCount,
-    };
+    return this.mapGameStatesFromServer(states);
   };
 
   getPublicStates = async (
@@ -129,18 +134,14 @@ export class GameStateAPI implements IGameStateAPI {
     const states = await this.fetcher.get<{
       items: GameStateFromServer[];
       totalCount: number;
-    }>(
-      `${apiPrefix}/public?searchQuery=${query.searchQuery}&pageSize=${
-        query.pageSize
-      }&pageNumber=${query.pageNumber}&searchGameId=${query.gameId || "0"}&`,
-    );
+    }>(`${apiPrefix}/public`, {
+      queryParams: {
+        ...query,
+        searchGameId: query.gameId || "0",
+      },
+    });
 
-    return {
-      items: states.items.map((i) =>
-        this.mapGameStateFromServer(i, this.getSyncSettings()),
-      ),
-      totalCount: states.totalCount,
-    };
+    return this.mapGameStatesFromServer(states);
   };
 
   uploadState = async (state: {
@@ -200,9 +201,21 @@ export class GameStateAPI implements IGameStateAPI {
     await this.fetcher.delete(`${apiPrefix}/${gameStateId}`);
   };
 
+  private mapGameStatesFromServer = (
+    states: ResourceResponse<GameStateFromServer>,
+    syncSettings: SyncSettings = this.getSyncSettings(),
+  ): ResourceResponse<GameState> => {
+    return {
+      ...states,
+      items: states.items.map((state) =>
+        this.mapGameStateFromServer(state, syncSettings),
+      ),
+    };
+  };
+
   private mapGameStateFromServer = (
     state: GameStateFromServer,
-    syncSettings: SyncSettings,
+    syncSettings: SyncSettings = this.getSyncSettings(),
   ): GameState => {
     return {
       id: state.id.toString(),

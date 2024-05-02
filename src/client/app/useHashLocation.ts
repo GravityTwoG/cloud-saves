@@ -24,8 +24,17 @@ const subscribeToHashUpdates = (callback: () => void) => {
 };
 
 // leading '#' is ignored, leading '/' is optional
-const currentHashLocation = () =>
-  "/" + location.hash.replace(/^#?\/?/, "").replace(/\?([^&=]+)=([^&=]+)/, "");
+const currentHashLocation = () => {
+  const hash = location.hash;
+  const hashLocation = "/" + hash.replace(/^#?\/?/, "");
+
+  const searchSym = hashLocation.indexOf("?");
+  if (searchSym !== -1) {
+    return hashLocation.slice(0, searchSym);
+  }
+
+  return hashLocation;
+};
 
 export const navigate = (to: string, { state = null } = {}) => {
   // calling `replaceState` allows us to set the history
@@ -38,7 +47,7 @@ export const navigate = (to: string, { state = null } = {}) => {
       location.search +
       // update location hash, this will cause `hashchange` event to fire
       // normalise the value before updating, so it's always preceeded with "#/"
-      (location.hash = `#/${to.replace(/^#?\/?/, "")}`)
+      (location.hash = `#/${to.replace(/^#?\/?/, "")}`),
   );
 };
 
@@ -46,7 +55,7 @@ export const useHashLocation = (({ ssrPath = "/" } = {}) => [
   useSyncExternalStore(
     subscribeToHashUpdates,
     currentHashLocation,
-    () => ssrPath
+    () => ssrPath,
   ),
   navigate,
 ]) as BaseLocationHook;

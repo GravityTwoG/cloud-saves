@@ -107,16 +107,20 @@ export type Share = {
 export type CommonGraphic = {
   id: string;
   visualType: string;
-  commonParameterId: string;
-};
-
-export type Range = {
-  min: number;
-  max: number;
+  commonParameter: {
+    id: string;
+    type: {
+      id: string;
+      type: string;
+    };
+    label: string;
+    description: string;
+  };
 };
 
 export type HistogramData = {
-  range: Range;
+  min: number;
+  max: number;
   height: number;
 }[];
 

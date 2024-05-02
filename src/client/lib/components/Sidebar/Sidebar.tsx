@@ -34,7 +34,7 @@ export const Sidebar = (props: SidebarProps) => {
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = usePersistedState<string>(
     "language",
-    i18n.language
+    i18n.language,
   );
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export const Sidebar = (props: SidebarProps) => {
               link={{
                 ...link,
                 label: t(
-                  `common.navLinks.${link.label}` as "common.navLinks.profile"
+                  `common.navLinks.${link.label}` as "common.navLinks.profile",
                 ),
               }}
             />

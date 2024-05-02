@@ -1,0 +1,115 @@
+.MySavePage {
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.GameImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 500px;
+  background-size: cover;
+}
+
+.GameImageOverlay {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 0%) 0%,
+    rgba(#f6f8fa, 0.3) 50%,
+    rgba(#f6f8fa, 1) 100%
+  );
+}
+
+html[data-theme="dark"] .GameImageOverlay {
+  background: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 0%) 0%,
+    rgba(#101010, 0.3) 50%,
+    rgba(#101010, 1) 100%
+  );
+}
+
+.PageContent {
+  padding-top: 250px;
+}
+
+.GameStateName {
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
+
+  & > span {
+    display: block;
+    width: 100%;
+  }
+}
+
+.GameStateNameForm {
+  position: relative;
+  flex: 1;
+  height: 100%;
+
+  .GameStateNameInput {
+    display: block;
+    width: 100%;
+    height: 108px;
+    margin: 0;
+    padding: 0;
+    color: var(--color-text);
+    font-weight: 300;
+    font-size: 3.75rem;
+    font-family: inherit;
+    line-height: 1.8;
+    background: transparent;
+    border: none;
+    outline: none;
+  }
+
+  &::after {
+    position: absolute;
+    bottom: 0;
+    display: block;
+    width: 100%;
+    border-bottom: 3px solid var(--color-deco);
+    content: "";
+  }
+}
+
+.GameSaveSettings {
+  display: flex;
+  gap: 0.5rem;
+
+  .GameSaveSettingsLeft {
+    display: grid;
+    flex: 1;
+    grid-template-columns: max-content 1fr;
+    gap: 0 0.5rem;
+  }
+
+  .GameSaveSettingsRight {
+    flex-grow: 0;
+    width: auto;
+  }
+}
+
+.LocalPath {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: start;
+  align-items: center;
+
+  & > span {
+    display: -webkit-inline-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+}
+
+.SyncSettingsConfirmButton {
+  width: 100%;
+  font-size: 1rem;
+}

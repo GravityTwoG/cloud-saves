@@ -1,8 +1,9 @@
 import { useTranslation } from "react-i18next";
 
 import { useAPIContext } from "@/client/contexts/APIContext";
-import { useResource } from "@/client/lib/hooks/useResource";
+import { useResourceWithSync } from "@/client/lib/hooks/useResource";
 import { paths } from "@/client/config/paths";
+import { scrollToTop } from "@/client/lib/scrollToTop";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
@@ -22,7 +23,7 @@ export const SharedSavesPage = () => {
     onSearch,
     onSearchQueryChange,
     onPageSelect,
-  } = useResource(gameStateAPI.getSharedStates);
+  } = useResourceWithSync(gameStateAPI.getSharedStates);
 
   return (
     <Container>
@@ -52,7 +53,10 @@ export const SharedSavesPage = () => {
         currentPage={query.pageNumber}
         pageSize={query.pageSize}
         count={gameStates.totalCount}
-        onPageSelect={onPageSelect}
+        onPageSelect={(pageNumber) => {
+          onPageSelect(pageNumber);
+          scrollToTop();
+        }}
       />
     </Container>
   );

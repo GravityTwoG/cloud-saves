@@ -59,6 +59,16 @@ export class GameStateAPIMock implements IGameStateAPI {
     }
   };
 
+  getStates = async (
+    query: ResourceRequest,
+  ): Promise<ResourceResponse<GameState>> => {
+    console.log("getStates", query);
+    return {
+      items: [],
+      totalCount: 0,
+    };
+  };
+
   getUserStates = async (
     query: ResourceRequest,
   ): Promise<ResourceResponse<GameState>> => {

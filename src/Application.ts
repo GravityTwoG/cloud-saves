@@ -108,9 +108,16 @@ export class Application {
   private setupIPC() {
     function registerHandler<T extends unknown[], R>(
       name: string,
-      handler: (...args: T) => R
+      handler: (...args: T) => R,
     ) {
-      ipcMain.handle(name, (_, ...args: unknown[]) => handler(...(args as T)));
+      ipcMain.handle(name, async (_, ...args: unknown[]) => {
+        try {
+          return await handler(...(args as T));
+        } catch (error) {
+          console.error(error);
+          return { data: null, error: (error as Error).toString() };
+        }
+      });
     }
 
     registerHandler("showFolderDialog", electronAPI.showFolderDialog);
@@ -132,11 +139,14 @@ export class Application {
     registerHandler<
       Parameters<Window["electronAPI"]["setTitleBarSettings"]>,
       void
-    >("setTitleBarSettings", (settings) =>
-      this.mainWindow?.setTitleBarOverlay({
-        color: settings.backgroundColor,
-        symbolColor: settings.symbolColor,
-      })
+    >(
+      "setTitleBarSettings",
+      (settings) =>
+        this.mainWindow?.setTitleBarOverlay &&
+        this.mainWindow?.setTitleBarOverlay({
+          color: settings.backgroundColor,
+          symbolColor: settings.symbolColor,
+        }),
     );
   }
 
@@ -161,7 +171,7 @@ export class Application {
         preload: path.join(__dirname, "preload.js"),
       },
       show: false,
-      minWidth: 600,
+      minWidth: 640,
       minHeight: 400,
       titleBarStyle: "hidden",
       titleBarOverlay: {
@@ -177,7 +187,7 @@ export class Application {
       mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
     } else {
       mainWindow.loadFile(
-        path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
+        path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
       );
     }
 

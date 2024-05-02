@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { clsx } from "clsx";
 import classes from "./game-state-page-layout.module.scss";
 
 import { Container } from "@/client/ui/atoms/Container";
@@ -11,14 +13,41 @@ export type GameStatePageLayoutProps = {
   children?: React.ReactNode;
 };
 
+const placeholderSrc = "/placeholder.jpg";
+
 export const GameStatePageLayout = (props: GameStatePageLayoutProps) => {
+  const [imgSrc, setImgSrc] = useState(placeholderSrc);
+
+  const customClass =
+    imgSrc === placeholderSrc ? classes.ImageLoading : classes.ImageLoaded;
+
+  useEffect(() => {
+    if (!props.gameImageURL) return;
+    let mounted = true;
+    const img = new Image();
+    img.src = props.gameImageURL;
+    img.onload = () => {
+      if (mounted) {
+        setImgSrc(props.gameImageURL);
+      }
+    };
+
+    return () => {
+      mounted = false;
+    };
+  }, [props.gameImageURL]);
+
   if (props.isLoading) {
     return (
       <div className={classes.GameStatePage}>
         <div
-          className={classes.GameImage}
-          style={{ backgroundImage: `url(${props.gameImageURL})` }}
+          className={clsx(classes.GameImage, customClass)}
+          style={{ backgroundImage: `url(${imgSrc})` }}
         >
+          <div
+            className={clsx(classes.GameImageEffect, customClass)}
+            style={{ backgroundImage: `url(${imgSrc})` }}
+          />
           <div className={classes.GameImageOverlay} />
         </div>
 
@@ -42,9 +71,13 @@ export const GameStatePageLayout = (props: GameStatePageLayoutProps) => {
   return (
     <div className={classes.GameStatePage}>
       <div
-        className={classes.GameImage}
-        style={{ backgroundImage: `url(${props.gameImageURL})` }}
+        className={clsx(classes.GameImage, customClass)}
+        style={{ backgroundImage: `url(${imgSrc})` }}
       >
+        <div
+          className={clsx(classes.GameImageEffect, customClass)}
+          style={{ backgroundImage: `url(${imgSrc})` }}
+        />
         <div className={classes.GameImageOverlay} />
       </div>
 

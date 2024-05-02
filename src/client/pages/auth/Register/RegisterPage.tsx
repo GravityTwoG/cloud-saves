@@ -68,6 +68,15 @@ export const RegisterPage = () => {
       <section>
         <H1 className="tac">{t("form.title")}</H1>
 
+        <div className="tac mb-4">
+          <Paragraph>
+            {t("prompt-to-sign-in")}{" "}
+            <CommonLink href={paths.login({})}>
+              {t("link-to-sign-in")}
+            </CommonLink>
+          </Paragraph>
+        </div>
+
         <Paper>
           <Form
             config={formConfig}
@@ -75,13 +84,6 @@ export const RegisterPage = () => {
             submitText={t("form.submit-button")}
             className={classes.Form}
           />
-
-          <Paragraph>
-            {t("prompt-to-sign-in")}{" "}
-            <CommonLink href={paths.login({})}>
-              {t("link-to-sign-in")}
-            </CommonLink>
-          </Paragraph>
         </Paper>
       </section>
     </Container>

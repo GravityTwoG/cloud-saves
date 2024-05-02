@@ -2,5 +2,8 @@
   "uploaded-at": "Uploaded at:",
   "download": "Download",
   "download-to": "Download to",
+  "downloading": "Downloading",
+  "downloaded": "Downloaded",
+  "download-error": "Failed to download",
   "size": "Size"
 }

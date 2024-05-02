@@ -4,7 +4,7 @@ import { useAuthContext } from "@/client/contexts/AuthContext";
 import { useUIContext } from "@/client/contexts/UIContext";
 
 import { Container } from "@/client/ui/atoms/Container";
-import { H1, H2 } from "@/client/ui/atoms/Typography";
+import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
 import { Paper } from "@/client/ui/atoms/Paper";
 import { Form, FormData } from "@/client/ui/molecules/Form/Form";
 
@@ -54,27 +54,25 @@ export const ProfilePage = () => {
     <Container>
       <H1>{t("profile")}</H1>
 
-      <div>
-        <H2>{t("user-information")}</H2>
-        <Paper>
-          <p>
-            {t("username")} {user.username}
-          </p>
-          <p>
-            {t("email")} {user.email}
-          </p>
-        </Paper>
+      <H2>{t("user-information")}</H2>
+      <Paper>
+        <Paragraph>
+          {t("username")} {user.username}
+        </Paragraph>
+        <Paragraph>
+          {t("email")} {user.email}
+        </Paragraph>
+      </Paper>
 
-        <H2>{t("change-password")}</H2>
+      <H2>{t("change-password")}</H2>
 
-        <Paper>
-          <Form
-            config={formConfig}
-            onSubmit={onChangePassword}
-            submitText={t("change-password")}
-          />
-        </Paper>
-      </div>
+      <Paper>
+        <Form
+          config={formConfig}
+          onSubmit={onChangePassword}
+          submitText={t("change-password")}
+        />
+      </Paper>
     </Container>
   );
 };

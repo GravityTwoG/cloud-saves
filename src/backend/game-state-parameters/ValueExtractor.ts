@@ -28,15 +28,13 @@ export class ValueExtractor {
 
     const gameStateParameters = game.gameStateParameters;
 
-    const json = await fs.readFile(
+    const jsonString = await fs.readFile(
       path.join(filePath, gameStateParameters.filename),
-      {
-        encoding: "utf-8",
-      },
+      { encoding: "utf-8" },
     );
 
     const gameStateValues = this.extractValues(
-      JSON.parse(json),
+      JSON.parse(jsonString),
       gameStateParameters,
     );
 

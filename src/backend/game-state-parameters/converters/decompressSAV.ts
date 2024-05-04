@@ -13,7 +13,7 @@ export async function decompressSAV(data: Buffer, file: string) {
     magic_bytes[2] != 0x5a
   ) {
     console.log(
-      `File ${file} is not a save file, found ${magic_bytes} instead of PlZ`
+      `File ${file} is not a save file, found ${magic_bytes} instead of PlZ`,
     );
     return null;
   }
@@ -27,7 +27,7 @@ export async function decompressSAV(data: Buffer, file: string) {
   // We only have 0x31 (single zlib) and 0x32 (double zlib) saves
   if (![0x31, 0x32].includes(save_type)) {
     console.log(
-      `File ${file} uses an unhandled compression type: ${save_type}`
+      `File ${file} uses an unhandled compression type: ${save_type}`,
     );
     return null;
   }
@@ -36,7 +36,7 @@ export async function decompressSAV(data: Buffer, file: string) {
     // Check if the compressed length is correct
     if (compressed_len != data.length - 12) {
       console.log(
-        `File ${file} has an incorrect compressed length: ${compressed_len}`
+        `File ${file} has an incorrect compressed length: ${compressed_len}`,
       );
       return null;
     }
@@ -51,7 +51,7 @@ export async function decompressSAV(data: Buffer, file: string) {
     // Check if the compressed length is correct
     if (compressed_len != uncompressed_data.length) {
       console.log(
-        `File ${file} has an incorrect compressed length: ${compressed_len}`
+        `File ${file} has an incorrect compressed length: ${compressed_len}`,
       );
       return null;
     }
@@ -61,7 +61,7 @@ export async function decompressSAV(data: Buffer, file: string) {
   // Check if the uncompressed length is correct
   if (uncompressed_len != uncompressed_data.length) {
     console.log(
-      `File ${file} has an incorrect uncompressed length: ${uncompressed_len}`
+      `File ${file} has an incorrect uncompressed length: ${uncompressed_len}`,
     );
   }
 

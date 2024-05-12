@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs/promises";
 
-import { Game, GameStateParameters, JSONType } from "@/types";
+import { Game, GameStateParameter, JSONType } from "@/types";
 
 import { FileConverter } from "./converters/FileConverter";
 
@@ -37,7 +37,7 @@ export class ValueExtractor {
 
     const gameStateValues = this.extractValues(
       JSON.parse(json),
-      gameStateParameters,
+      gameStateParameters.parameters,
     );
 
     await Promise.allSettled(createdFiles.map((file) => fs.unlink(file)));
@@ -47,7 +47,7 @@ export class ValueExtractor {
 
   public extractValues(
     input: JSONType,
-    schema: GameStateParameters,
+    parameters: GameStateParameter[],
   ): {
     gameStateParameterId: string;
     value: string;
@@ -57,7 +57,7 @@ export class ValueExtractor {
       value: string;
     }[] = [];
 
-    for (const field of schema.parameters) {
+    for (const field of parameters) {
       const value = this.readByKey(field.key, input);
 
       if (Array.isArray(value)) {

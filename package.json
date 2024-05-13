@@ -1,7 +1,7 @@
 {
   "name": "cloud-saves",
   "productName": "cloud-saves",
-  "version": "1.15.0",
+  "version": "1.16.0",
   "description": "Desktop app for managing game saves in cloud",
   "private": true,
   "repository": {
@@ -16,8 +16,10 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "tsc --noemit && eslint src --ext .ts,.tsx && stylelint \"src/**/*.{scss,css}\"",
-    "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "test": "vitest --run",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
   },
   "keywords": [
     "electron",
@@ -36,7 +38,9 @@
     "@electron-forge/plugin-vite": "^6.4.2",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
+    "@testing-library/react": "^15.0.7",
     "@types/adm-zip": "^0.5.5",
+    "@types/mock-fs": "^4.13.4",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
@@ -47,7 +51,9 @@
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.25.0",
     "husky": "^9.0.11",
+    "jsdom": "^24.0.0",
     "lint-staged": "^15.2.2",
+    "mock-fs": "^5.2.0",
     "sass": "^1.69.7",
     "semantic-release": "^23.0.2",
     "stylelint": "^16.3.1",

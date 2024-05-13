@@ -92,3 +92,7 @@ typings/
 out/
 
 /*.svg
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

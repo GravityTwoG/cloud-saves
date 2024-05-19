@@ -6,7 +6,7 @@ import path from "path";
 import { ColonTextConverter } from "./ColonTextConverter";
 
 describe("convert colon text to json", () => {
-  const folderPath = "/saves/Cyberpunk 2077/AutoSave-0";
+  const folderPath = "C:/saves/Cyberpunk 2077/AutoSave-0";
   const txtFilename = "metadata.9.txt";
   beforeAll(() => {
     mock({
@@ -23,16 +23,18 @@ describe("convert colon text to json", () => {
 
   test("convert colon text to json", async () => {
     const converter = new ColonTextConverter();
-    await converter.convert(folderPath, txtFilename, "metadata.9.txt.json");
+    const jsonFilename = "metadata.9.txt.json";
+    await converter.convert(folderPath, txtFilename, jsonFilename);
 
-    const json = await fs.readFile(
-      path.join(folderPath, "metadata.9.txt.json"),
-      {
-        encoding: "utf-8",
-      },
-    );
-    expect(json).toStrictEqual(
-      `{"Play_time":"4","Version":"1","Gender":"Male"}`,
+    const actualJSON = await fs.readFile(path.join(folderPath, jsonFilename), {
+      encoding: "utf-8",
+    });
+    expect(JSON.parse(actualJSON)).toStrictEqual(
+      JSON.parse(`{
+        "Play_time":"4",
+        "Version":"1",
+        "Gender":"Male"
+      }`),
     );
   });
 });

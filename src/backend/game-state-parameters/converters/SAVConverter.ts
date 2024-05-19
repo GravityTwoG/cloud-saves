@@ -23,9 +23,16 @@ export class SAVConverter implements FileConverter {
     try {
       const uncompressed_data = await this.readSAV(folderPath, inputFilename);
 
-      const uepath = path.join(__dirname, `./assets/uesave.exe`).split("\\");
-      const uesaveFolder = uepath.slice(0, uepath.length - 1).join("\\");
-      const command = uepath[uepath.length - 1];
+      let uePath = [];
+      if (import.meta.env.NODE_ENV !== "production") {
+        uePath = path
+          .join(__dirname, `../../../../public/assets/uesave.exe`)
+          .split("\\");
+      } else {
+        uePath = path.join(__dirname, `./assets/uesave.exe`).split("\\");
+      }
+      const uesaveFolder = uePath.slice(0, uePath.length - 1).join("\\");
+      const command = uePath[uePath.length - 1];
       const args = this.toUEsaveParams(
         path.join(folderPath, outputFilename),
         UESAVE_TYPE_MAPS,

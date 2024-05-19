@@ -35,13 +35,19 @@
   position: fixed;
   top: 2rem;
   left: 0;
-  z-index: 999;
   display: flex;
   justify-content: center;
   width: calc(100% - 12px);
   padding-left: 5rem;
+  pointer-events: none;
 
   & > div {
     flex: 1;
+  }
+
+  & .GoBack {
+    position: relative;
+    z-index: 999;
+    pointer-events: all;
   }
 }

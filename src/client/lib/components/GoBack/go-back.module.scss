@@ -12,12 +12,24 @@
   transition:
     color 0.6s ease,
     background-color 0.3s ease,
-    box-shadow 0.3s ease;
+    box-shadow 0.3s ease,
+    scale 0.3s ease;
   pointer-events: all;
 
   &:hover {
     color: var(--color-text);
     background-color: var(--color-paper);
+    box-shadow: 0 0 50px #0007;
+  }
+
+  &:active {
+    scale: 0.95;
+  }
+
+  &:focus-visible {
+    color: var(--color-text);
+    background-color: var(--color-paper);
+    outline: 2px solid var(--color-accent);
     box-shadow: 0 0 50px #0007;
   }
 

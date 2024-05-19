@@ -21,7 +21,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       <main className={clsx("custom-scrollbar", classes.Main)}>
         <div className={classes.Header}>
           <Container>
-            <GoBack />
+            <GoBack className={classes.GoBack} />
           </Container>
         </div>
 

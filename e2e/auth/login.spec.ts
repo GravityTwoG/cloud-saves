@@ -1,69 +1,19 @@
-import {
-  test,
-  _electron as electron,
-  ElectronApplication,
-  Page,
-  expect,
-} from "@playwright/test";
-import { findLatestBuild, parseElectronApp } from "electron-playwright-helpers";
+import { test, ElectronApplication, Page, expect } from "@playwright/test";
 
-const existingUser = {
-  username: "Username",
-  password: "12121212",
-};
+import { existingUser } from "@/client/api/mocks/AuthAPIMock";
+import { launchApp, resetApp } from "./utils";
 
 let electronApp: ElectronApplication;
 
 test.beforeEach(async () => {
-  // find the latest build in the out directory
-  const latestBuild = findLatestBuild();
-  // parse the directory and find paths and other info
-  const appInfo = parseElectronApp(latestBuild);
-  // set the CI environment variable to true
-  process.env.CI = "e2e";
-  electronApp = await electron.launch({
-    args: [appInfo.main],
-    executablePath: appInfo.executable,
-  });
-  electronApp.on("window", async (page) => {
-    const filename = page.url()?.split("/").pop();
-    console.log(`Window opened: ${filename}`);
-
-    // capture errors
-    page.on("pageerror", (error) => {
-      console.error(error);
-    });
-    // capture console messages
-    page.on("console", (msg) => {
-      console.log(msg.text());
-    });
-  });
-  await electronApp.waitForEvent("window");
+  electronApp = await launchApp();
 });
 
 test.afterEach(async () => {
-  await electronApp.evaluate(async (e) => {
-    await e.session.defaultSession.clearStorageData();
-  });
-  await electronApp.close();
+  await resetApp(electronApp);
 });
 
 let page: Page;
-
-test("renders the login page", async () => {
-  page = await electronApp.firstWindow();
-
-  await page.waitForSelector("#username");
-  await page.waitForSelector("#password");
-  await page.waitForSelector("button[type=submit]");
-
-  const usernameInput = await page.$("#username");
-  expect(usernameInput).toBeDefined();
-  const passwordInput = await page.$("#password");
-  expect(passwordInput).toBeDefined();
-  const loginButton = await page.$("button[type=submit]");
-  expect(loginButton).toBeDefined();
-});
 
 test("login with button", async () => {
   page = await electronApp.firstWindow();

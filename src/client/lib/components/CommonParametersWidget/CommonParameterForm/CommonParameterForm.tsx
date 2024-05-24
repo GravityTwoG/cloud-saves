@@ -51,8 +51,8 @@ export const CommonParameterForm = ({
   const onSubmit = async (data: FormData) => {
     await props.onSubmit({
       type: data.type,
-      label: data.label,
-      description: data.description,
+      label: data.label.trim(),
+      description: data.description.trim(),
     });
     if (resetOnSubmit) {
       reset();

@@ -63,7 +63,7 @@ export function Form<C extends FormConfig>(props: FormProps<C>) {
   const [formData, setFormData] = useState<FormData<C>>(() =>
     props.defaultValues
       ? props.defaultValues
-      : extractDefaultValues(props.config)
+      : extractDefaultValues(props.config),
   );
 
   const [isLoading, setIsLoading] = useState(false);
@@ -82,7 +82,7 @@ export function Form<C extends FormConfig>(props: FormProps<C>) {
   const onSubmit = handleSubmit(async (fields) => {
     try {
       setIsLoading(true);
-      const error = await props.onSubmit(fields);
+      const error = await props.onSubmit(trimAllStrings(fields));
 
       if (error != null) {
         setError("root", { message: error });
@@ -227,4 +227,20 @@ function Field<C extends FormConfig>(props: FieldProps<C>) {
       <ErrorText className={classes.FieldError}>{props.error}</ErrorText>
     </FormField>
   );
+}
+
+function trimAllStrings<D extends FormData>(config: D): D {
+  return Object.keys(config).reduce((acc, field) => {
+    if (typeof config[field] === "string") {
+      return {
+        ...acc,
+        [field]: config[field].trim(),
+      };
+    }
+
+    return {
+      ...acc,
+      [field]: config[field],
+    };
+  }, {}) as D;
 }

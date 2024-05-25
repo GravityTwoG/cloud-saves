@@ -23,7 +23,14 @@ export const SearchForm = (props: SearchFormProps) => {
         placeholder={props.placeholder || "Search"}
         className={classes.SearchInput}
         value={props.searchQuery}
-        onChange={(e) => props.onQueryChange(e.target.value)}
+        onChange={(e) => {
+          if (e.target.value.trim().length === 0) {
+            props.onQueryChange("");
+            return;
+          }
+
+          props.onQueryChange(e.target.value);
+        }}
       />
       <Button
         type="submit"

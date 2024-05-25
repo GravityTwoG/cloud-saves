@@ -31,7 +31,7 @@ export const ParameterTypeForm = ({
   });
 
   const onSubmit = async (data: { type: string }) => {
-    await props.onSubmit(data.type);
+    await props.onSubmit(data.type.trim());
     if (resetOnSubmit) {
       reset();
     }

@@ -44,7 +44,14 @@ export const FilterByGame = (props: FilterByGameProps) => {
       >
         <Input
           value={gameQuery.searchQuery}
-          onChange={(e) => onSearchQueryChange(e.target.value)}
+          onChange={(e) => {
+            if (e.target.value.trim().length === 0) {
+              onSearchQueryChange("");
+              return;
+            }
+
+            onSearchQueryChange(e.target.value);
+          }}
           placeholder="Filter by game"
           className={classes.SearchInput}
         />

@@ -7,6 +7,7 @@
     "password-label": "Password",
     "password-is-required": "Password is required",
     "error-message": "Error while logging in",
+    "invalid-credentials": "Invalid credentials",
     "title": "Login",
     "submit-button": "Login"
   },

@@ -1,4 +1,4 @@
-import { ApiError } from "./ApiError";
+import { ApiError, UNKNOWN_ERROR } from "./ApiError";
 
 export type MyRequestInit = Omit<RequestInit, "method" | "body"> & {
   body?: Record<string, unknown> | FormData;
@@ -152,14 +152,17 @@ export class Fetcher {
 
   private async handleError(response: Response) {
     if (!response.ok) {
-      const error = new ApiError(`${response.status}:${response.statusText}`);
+      const error = new ApiError(
+        `${response.status}:${response.statusText || UNKNOWN_ERROR}`,
+      );
 
-      try {
-        const json = await response.json();
-        error.message = json.message || json.error || "Unknown error";
-        error.cause = json;
-      } catch (error) {
-        console.log("response.json() error", error);
+      if (response.headers.get("content-type") === "application/json") {
+        try {
+          const json = await response.json();
+          error.setMessage(json.message || UNKNOWN_ERROR, json.errors);
+        } catch (error) {
+          console.log("JSON parse error", error);
+        }
       }
 
       if (this.onError) {

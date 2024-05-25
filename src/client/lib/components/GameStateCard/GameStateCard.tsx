@@ -39,7 +39,7 @@ export const GameStateCard = (props: GameStateCardProps) => {
           menuItems={[
             {
               onClick: () => onDelete(),
-              children: "Delete",
+              children: t("delete-state"),
               key: "delete",
             },
           ]}

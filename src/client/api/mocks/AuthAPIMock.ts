@@ -11,7 +11,41 @@ import { LocalStorage } from "../LocalStorage";
 
 const ls = new LocalStorage("users_mock");
 
+export const existingAdmin = {
+  email: "admin@example.com",
+  username: "admin",
+  password: "12121212",
+  role: UserRole.ADMIN,
+  isBlocked: false,
+  id: Math.random().toString(),
+};
+export const existingUser = {
+  email: "existingUser@example.com",
+  username: "existingUser",
+  password: "12121212",
+  role: UserRole.USER,
+  isBlocked: false,
+  id: Math.random().toString(),
+};
+
 export class AuthAPIMock implements IAuthAPI {
+  constructor() {
+    this.init();
+  }
+
+  private init() {
+    try {
+      const users = ls.getItem<User[]>("users");
+      if (!users || !Array.isArray(users)) {
+        ls.setItem("users", [existingAdmin, existingUser]);
+        ls.setItem("isAuthenticated", "false");
+      }
+    } catch (e) {
+      ls.setItem("users", [existingAdmin, existingUser]);
+      ls.setItem("isAuthenticated", "false");
+    }
+  }
+
   private sleep = (ms: number) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
@@ -27,33 +61,21 @@ export class AuthAPIMock implements IAuthAPI {
       id: Math.random().toString(),
     };
 
-    try {
-      const users = ls.getItem<User[]>("users");
+    const users = ls.getItem<User[]>("users");
 
-      const userExists = !!users.find(
-        (user: User) =>
-          user.email === credentials.email ||
-          user.username === credentials.username
-      );
+    const userExists = !!users.find(
+      (user: User) =>
+        user.email === credentials.email ||
+        user.username === credentials.username,
+    );
 
-      if (userExists) {
-        throw new ApiError("User already exists");
-      }
-
-      users.push(user);
-
-      ls.setItem("users", users);
-    } catch (error) {
-      const admin = {
-        email: "admin@example.com",
-        username: "admin",
-        password: "12121212",
-        role: UserRole.ADMIN,
-        isBlocked: false,
-        id: Math.random().toString(),
-      };
-      ls.setItem("users", [user, admin]);
+    if (userExists) {
+      throw new ApiError("username-already-exists");
     }
+
+    users.push(user);
+
+    ls.setItem("users", users);
 
     ls.setItem("isAuthenticated", "true");
     ls.setItem("user", user);
@@ -73,11 +95,11 @@ export class AuthAPIMock implements IAuthAPI {
       const user = users.find(
         (user) =>
           user.username === credentials.username &&
-          user.password === credentials.password
+          user.password === credentials.password,
       );
 
       if (!user) {
-        throw new ApiError("User not found");
+        throw new ApiError("invalid-credentials");
       }
 
       ls.setItem("isAuthenticated", "true");
@@ -89,7 +111,7 @@ export class AuthAPIMock implements IAuthAPI {
         role: user.role,
       };
     } catch (error) {
-      throw new ApiError("User not found");
+      throw new ApiError("invalid-credentials");
     }
   };
 
@@ -97,8 +119,8 @@ export class AuthAPIMock implements IAuthAPI {
     await this.sleep(500);
     const isAuthenticated = ls.getItem<string>("isAuthenticated");
 
-    if (!isAuthenticated || isAuthenticated === "false") {
-      throw new ApiError("Not authenticated");
+    if (!isAuthenticated || isAuthenticated !== "true") {
+      throw new ApiError("not-authorized");
     }
 
     const user = ls.getItem<User>("user");

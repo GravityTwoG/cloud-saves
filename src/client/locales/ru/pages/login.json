@@ -7,6 +7,7 @@
     "password-label": "Пароль",
     "password-is-required": "Пароль обязателен",
     "error-message": "Ошибка при входе",
+    "invalid-credentials": "Неверное имя пользователя или пароль",
     "title": "Вход",
     "submit-button": "Войти"
   },

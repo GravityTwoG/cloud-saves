@@ -48,12 +48,13 @@ export const useResource = <T, Q extends DefaultQuery>(
     async (query: Q) => {
       try {
         setIsLoading(true);
-        const data = await loadResource(query);
+        const filteredQuery = filterQuery(query);
+        const data = await loadResource(filteredQuery);
         setResource({
           items: data.items,
           totalCount: data.totalCount,
         });
-        setQuery(query);
+        setQuery(filteredQuery);
       } catch (error) {
         notify.error(error);
       } finally {
@@ -96,6 +97,15 @@ export const useResource = <T, Q extends DefaultQuery>(
   };
 };
 
+function filterQuery<Q extends DefaultQuery>(query: Q): Q {
+  const filteredQuery = {
+    ...query,
+    searchQuery: query.searchQuery.trim(),
+  };
+
+  return filteredQuery;
+}
+
 // Hook that loads a resource with pagination and search query
 // parameter loadResource must be memoized or should use useCallback
 // It also syncs the query state with the URL
@@ -127,7 +137,8 @@ export const useResourceWithSync = <T, Q extends DefaultQuery>(
     async (query: Q) => {
       try {
         setIsLoading(true);
-        const data = await loadResource(query);
+        const filteredQuery = filterQuery(query);
+        const data = await loadResource(filteredQuery);
         setResource({
           items: data.items,
           totalCount: data.totalCount,

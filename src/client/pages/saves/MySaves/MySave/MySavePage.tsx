@@ -118,8 +118,8 @@ export const MySavePage = () => {
       )
         return;
 
-      const newName = eventTarget.gameStateName.value;
-      if (newName === gameState.name || !newName.trim()) {
+      const newName = eventTarget.gameStateName.value.trim();
+      if (newName === gameState.name || !newName.length) {
         setIsNameEditing(false);
         return;
       }

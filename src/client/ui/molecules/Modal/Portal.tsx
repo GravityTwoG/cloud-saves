@@ -11,6 +11,12 @@ export const ModalPortal: React.FC<{ children: React.ReactNode }> = ({
     const element = document.getElementById("modalPortal");
     if (element) {
       ref.current = element;
+    } else {
+      const portalRoot = document.createElement("div");
+      portalRoot.setAttribute("id", "modalPortal");
+      document.body.appendChild(portalRoot);
+
+      ref.current = portalRoot;
     }
     setMounted(true);
   }, []);

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import classes from "./login-page.module.scss";
 
 import { paths } from "@/client/config/paths";
+import { ApiError } from "@/client/api/ApiError";
 import { useAuthContext } from "@/client/contexts/AuthContext";
 
 import { Container } from "@/client/ui/atoms/Container";
@@ -39,6 +40,22 @@ export const LoginPage = () => {
 
       return null;
     } catch (error) {
+      if (error instanceof ApiError) {
+        const mainMessage = t(error.message, {
+          defaultValue: t("form.error-message"),
+        });
+
+        if (error.errors) {
+          return (
+            `${mainMessage} ` +
+            error.errors
+              .map((err) => `${t(`form.${err}`, { defaultValue: err })}`)
+              .join(" ")
+          );
+        }
+
+        return mainMessage;
+      }
       if (error instanceof Error) {
         return error.message;
       }

@@ -201,7 +201,9 @@ export class Application {
     mainWindow.once("ready-to-show", () => {
       mainWindow.show();
       // Open the DevTools.
+      // if (import.meta.env.NODE_ENV === "development") {
       mainWindow.webContents.openDevTools();
+      // }
     });
 
     return mainWindow;

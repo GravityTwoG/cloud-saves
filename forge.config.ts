@@ -6,7 +6,7 @@ import { VitePlugin } from "@electron-forge/plugin-vite";
 
 const config: ForgeConfig = {
   packagerConfig: {
-    name: "Cloud Saves",
+    name: "Cloud-Saves",
     protocols: [
       {
         name: "Cloud Saves",

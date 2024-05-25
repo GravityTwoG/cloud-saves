@@ -24,6 +24,7 @@ import notFound from "./ru/pages/notFound.json";
 
 import gameForm from "./ru/components/GameForm.json";
 import GameStateCard from "./ru/components/GameStateCard.json";
+import GameStateArchive from "./ru/components/GameStateArchive.json";
 
 import common from "./ru/common.json";
 
@@ -58,6 +59,7 @@ export const resourcesRU = {
     components: {
       gameForm,
       GameStateCard,
+      GameStateArchive,
     },
     common: common,
   },

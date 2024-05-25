@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import classes from "./register-page.module.scss";
 
 import { paths } from "@/client/config/paths";
+import { ApiError } from "@/client/api/ApiError";
 import { useAuthContext } from "@/client/contexts/AuthContext";
 
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";
@@ -56,10 +57,28 @@ export const RegisterPage = () => {
 
       return null;
     } catch (error) {
+      if (error instanceof ApiError) {
+        const mainMessage = t(error.message, {
+          defaultValue: t("form.registration-failed"),
+        });
+
+        if (error.errors) {
+          return (
+            `${mainMessage} ` +
+            error.errors
+              .map((err) => `${t(`form.${err}`, { defaultValue: err })}`)
+              .join(" ")
+          );
+        }
+
+        return mainMessage;
+      }
+
       if (error instanceof Error) {
         return error.message;
       }
-      return t("form.error-message");
+
+      return t("form.registration-failed");
     }
   };
 

@@ -70,7 +70,7 @@ export class AuthAPIMock implements IAuthAPI {
     );
 
     if (userExists) {
-      throw new ApiError("User already exists");
+      throw new ApiError("username-already-exists");
     }
 
     users.push(user);
@@ -99,7 +99,7 @@ export class AuthAPIMock implements IAuthAPI {
       );
 
       if (!user) {
-        throw new ApiError("User not found");
+        throw new ApiError("invalid-credentials");
       }
 
       ls.setItem("isAuthenticated", "true");
@@ -111,7 +111,7 @@ export class AuthAPIMock implements IAuthAPI {
         role: user.role,
       };
     } catch (error) {
-      throw new ApiError("User not found");
+      throw new ApiError("invalid-credentials");
     }
   };
 
@@ -120,7 +120,7 @@ export class AuthAPIMock implements IAuthAPI {
     const isAuthenticated = ls.getItem<string>("isAuthenticated");
 
     if (!isAuthenticated || isAuthenticated !== "true") {
-      throw new ApiError("Not authenticated");
+      throw new ApiError("not-authorized");
     }
 
     const user = ls.getItem<User>("user");

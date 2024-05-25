@@ -13,7 +13,10 @@
     "confirm-password-label": "Подтвердите пароль",
     "confirm-password-is-required": "Подтвердите пароль",
     "passwords-do-not-match": "Пароли не совпадают",
-    "error-message": "Ошибка при регистрации",
+    "registration-failed": "Ошибка при регистрации.",
+    "email-invalid": "Email неверный.",
+    "email-already-exists": "Email занят.",
+    "username-already-exists": "Имя пользователя занято.",
     "title": "Регистрация",
     "submit-button": "Зарегистрироваться"
   },

@@ -13,7 +13,10 @@
     "confirm-password-label": "Confirm password",
     "confirm-password-is-required": "Confirm password is required",
     "passwords-do-not-match": "Passwords do not match",
-    "error-message": "Error while registering",
+    "registration-failed": "Registration failed.",
+    "email-invalid": "Email is invalid.",
+    "email-already-exists": "Email already exists.",
+    "username-already-exists": "Username already exists.",
     "title": "Register",
     "submit-button": "Register"
   },

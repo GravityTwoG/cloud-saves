@@ -18,6 +18,9 @@ export const GraphicForm = (props: GraphicFormProps) => {
   const { t } = useTranslation(undefined, {
     keyPrefix: "components.GraphicForm",
   });
+  const { t: commmonT } = useTranslation(undefined, {
+    keyPrefix: "common.graphic-types",
+  });
 
   const formConfig = {
     visualType: {
@@ -27,11 +30,11 @@ export const GraphicForm = (props: GraphicFormProps) => {
       loadOptions: async () => {
         return [
           {
-            label: "Histogram",
+            label: commmonT("histogram"),
             value: "histogram",
           },
           {
-            label: "Pie chart",
+            label: commmonT("pie_chart"),
             value: "pie_chart",
           },
         ];
@@ -60,7 +63,9 @@ export const GraphicForm = (props: GraphicFormProps) => {
     ? {
         visualType: {
           value: props.defaultValue.visualType,
-          label: props.defaultValue.visualType,
+          label: commmonT(props.defaultValue.visualType, {
+            defaultValue: props.defaultValue.visualType,
+          }),
         },
         commonParameter: {
           value: props.defaultValue.commonParameter.id,

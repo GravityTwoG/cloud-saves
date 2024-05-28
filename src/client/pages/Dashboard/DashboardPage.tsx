@@ -20,6 +20,9 @@ import { CommonGraphic } from "@/types";
 
 export const DashboardPage = () => {
   const { t } = useTranslation(undefined, { keyPrefix: "pages.dashboard" });
+  const { t: commmonT } = useTranslation(undefined, {
+    keyPrefix: "common.graphic-types",
+  });
   const { graphicsAPI } = useAPIContext();
   const { notify } = useUIContext();
 
@@ -87,7 +90,8 @@ export const DashboardPage = () => {
         renderElement={(g) => (
           <Flex jcsb>
             <CommonLink unstyled href={paths.graphic({ graphicId: g.id })}>
-              {g.visualType} - {g.commonParameter.label}
+              {commmonT(g.visualType, { defaultValue: g.visualType })} -{" "}
+              {g.commonParameter.label}
             </CommonLink>
 
             <ConfirmButton color="danger" onClick={() => onDelete(g.id)}>

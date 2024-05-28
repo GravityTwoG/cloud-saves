@@ -18,5 +18,9 @@
     "dashboard": "Обзор",
 
     "users": "Пользователи"
+  },
+  "graphic-types": {
+    "histogram": "Гистограмма",
+    "pie_chart": "Круговая диаграмма"
   }
 }

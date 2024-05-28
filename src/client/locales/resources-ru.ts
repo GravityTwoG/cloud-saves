@@ -22,9 +22,10 @@ import graphic from "./ru/pages/graphic.json";
 
 import notFound from "./ru/pages/notFound.json";
 
-import gameForm from "./ru/components/GameForm.json";
+import GameForm from "./ru/components/GameForm.json";
 import GameStateCard from "./ru/components/GameStateCard.json";
 import GameStateArchive from "./ru/components/GameStateArchive.json";
+import GraphicForm from "./ru/components/GraphicForm.json";
 
 import common from "./ru/common.json";
 
@@ -57,9 +58,10 @@ export const resourcesRU = {
       notFound,
     },
     components: {
-      gameForm,
+      GameForm,
       GameStateCard,
       GameStateArchive,
+      GraphicForm,
     },
     common: common,
   },

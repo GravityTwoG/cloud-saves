@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { clsx } from "clsx";
 
 import classes from "./graphic-form.module.scss";
@@ -14,11 +15,14 @@ export type GraphicFormProps = {
 
 export const GraphicForm = (props: GraphicFormProps) => {
   const { commonParametersAPI } = useAPIContext();
+  const { t } = useTranslation(undefined, {
+    keyPrefix: "components.GraphicForm",
+  });
 
   const formConfig = {
     visualType: {
       type: "combobox",
-      label: "Graphic type",
+      label: t("graphic-type"),
       required: true,
       loadOptions: async () => {
         return [
@@ -35,7 +39,7 @@ export const GraphicForm = (props: GraphicFormProps) => {
     },
     commonParameter: {
       type: "combobox",
-      label: "Common parameter",
+      label: t("common-parameter"),
       required: true,
       loadOptions: async (searchQuery: string) => {
         const parameters = await commonParametersAPI.getParameters({
@@ -85,6 +89,7 @@ export const GraphicForm = (props: GraphicFormProps) => {
       }
       defaultValues={defaultValue}
       className={clsx(classes.Form)}
+      submitText={t("save")}
     />
   );
 };

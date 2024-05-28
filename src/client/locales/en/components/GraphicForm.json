@@ -1,3 +1,6 @@
 {
-  "graphic": "Graphic"
+  "graphic": "Graphic",
+  "graphic-type": "Graphic type",
+  "common-parameter": "Common parameter",
+  "save": "Save"
 }

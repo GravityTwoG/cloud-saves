@@ -23,9 +23,10 @@ import users from "./en/pages/users.json";
 
 import notFound from "./en/pages/notFound.json";
 
-import gameForm from "./en/components/GameForm.json";
+import GameForm from "./en/components/GameForm.json";
 import GameStateCard from "./en/components/GameStateCard.json";
 import GameStateArchive from "./en/components/GameStateArchive.json";
+import GraphicForm from "./en/components/GraphicForm.json";
 
 import common from "./en/common.json";
 
@@ -58,9 +59,10 @@ export const resourcesEN = {
       notFound,
     },
     components: {
-      gameForm,
+      GameForm,
       GameStateCard,
       GameStateArchive,
+      GraphicForm,
     },
     common: common,
   },

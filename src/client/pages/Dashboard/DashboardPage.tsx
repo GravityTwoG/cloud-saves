@@ -91,7 +91,7 @@ export const DashboardPage = () => {
             </CommonLink>
 
             <ConfirmButton color="danger" onClick={() => onDelete(g.id)}>
-              delete
+              {t("delete")}
             </ConfirmButton>
           </Flex>
         )}

@@ -25,7 +25,7 @@ export type GameFormProps = {
 
 export const GameForm = (props: GameFormProps) => {
   const { commonParametersAPI, parameterTypesAPI } = useAPIContext();
-  const { t } = useTranslation(undefined, { keyPrefix: "components.gameForm" });
+  const { t } = useTranslation(undefined, { keyPrefix: "components.GameForm" });
   const {
     register,
     handleSubmit,

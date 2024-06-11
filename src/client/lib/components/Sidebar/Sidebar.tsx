@@ -92,7 +92,7 @@ export const Sidebar = (props: SidebarProps) => {
         <button
           className={classes.AppButton}
           type="button"
-          onClick={toggleTheme}
+          onClick={(e) => toggleTheme(e.clientX, e.clientY)}
           title={t("common.toggle-theme")}
           aria-label={t("common.toggle-theme")}
         >

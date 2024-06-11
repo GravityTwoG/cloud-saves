@@ -23,7 +23,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "jsx": "react-jsx",
-    "types": ["vite/client", "@types/node"],
+    "types": ["vite/client", "@types/node", "@types/dom-view-transitions"],
     "paths": {
       "@/*": ["src/*"]
     }

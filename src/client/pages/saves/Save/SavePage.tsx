@@ -6,14 +6,14 @@ import { useParams } from "wouter";
 import classes from "./save-page.module.scss";
 
 import { GameState } from "@/types";
-import { useAPIContext } from "@/client/contexts/APIContext";
-import { useUIContext } from "@/client/contexts/UIContext";
+import { useAPIContext } from "@/client/shared/contexts/APIContext";
+import { useUIContext } from "@/client/shared/contexts/UIContext";
 
 import { Paper } from "@/client/ui/atoms/Paper";
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
 import { GameStatePageLayout } from "@/client/layouts/GameStatePageLayout";
-import { ParametersView } from "@/client/lib/components/ParametersView";
-import { GameStateArchive } from "@/client/lib/components/GameStateArchive";
+import { ParametersView } from "@/client/widgets/ParametersView";
+import { GameStateArchive } from "@/client/entities/GameStateArchive";
 
 export const SavePage = () => {
   const { gameStateAPI } = useAPIContext();

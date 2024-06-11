@@ -6,15 +6,15 @@ import classes from "./game-page.module.scss";
 
 import { Game } from "@/types";
 import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
-import { useAPIContext } from "@/client/contexts/APIContext";
-import { useUIContext } from "@/client/contexts/UIContext";
+import { useAPIContext } from "@/client/shared/contexts/APIContext";
+import { useUIContext } from "@/client/shared/contexts/UIContext";
 import { navigate } from "@/client/app/useHashLocation";
 import { paths } from "@/client/config/paths";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
 import { ConfirmButton } from "@/client/ui/atoms/Button/";
-import { GameForm } from "@/client/lib/components/GameForm/GameForm";
+import { GameForm } from "@/client/entities/GameForm/GameForm";
 
 export const GamePage = () => {
   const { gameAPI } = useAPIContext();

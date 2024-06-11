@@ -5,8 +5,8 @@ import * as Plot from "@observablehq/plot";
 import * as d3 from "d3";
 
 import { useParams } from "wouter";
-import { useAPIContext } from "@/client/contexts/APIContext";
-import { useUIContext } from "@/client/contexts/UIContext";
+import { useAPIContext } from "@/client/shared/contexts/APIContext";
+import { useUIContext } from "@/client/shared/contexts/UIContext";
 import {
   CommonGraphic,
   CommonGraphicData,
@@ -17,7 +17,7 @@ import {
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
 import { Preloader } from "@/client/ui/atoms/Preloader";
-import { GraphicForm } from "../../lib/components/GraphicForm";
+import { GraphicForm } from "@/client/entities/GraphicForm";
 import { Flex } from "@/client/ui/atoms/Flex";
 
 export const GraphicPage = () => {

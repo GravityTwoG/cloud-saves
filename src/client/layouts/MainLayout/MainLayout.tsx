@@ -1,12 +1,13 @@
+import { clsx } from "clsx";
+
 import classes from "./main-layout.module.scss";
 
 import { navLinks } from "@/client/config/navLinks";
 
 import { Container } from "@/client/ui/atoms/Container";
-import { Sidebar } from "@/client/lib/components/Sidebar/Sidebar";
-import { Footer } from "@/client/lib/components/Footer";
-import { GoBack } from "@/client/lib/components/GoBack";
-import { clsx } from "clsx";
+import { GoBack } from "@/client/ui/atoms/GoBack";
+import { Sidebar } from "@/client/widgets/Sidebar";
+import { Footer } from "@/client/widgets/Footer";
 
 export type MainLayoutProps = {
   children: React.ReactNode;

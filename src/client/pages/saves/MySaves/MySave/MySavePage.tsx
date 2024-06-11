@@ -6,9 +6,9 @@ import { useParams } from "wouter";
 import classes from "./my-save-page.module.scss";
 
 import { GameState, GameStateSync } from "@/types";
-import { useAPIContext } from "@/client/contexts/APIContext";
-import { useUIContext } from "@/client/contexts/UIContext";
-import { useAuthContext } from "@/client/contexts/AuthContext";
+import { useAPIContext } from "@/client/shared/contexts/APIContext";
+import { useUIContext } from "@/client/shared/contexts/UIContext";
+import { useAuthContext } from "@/client/shared/contexts/AuthContext";
 import { navigate } from "@/client/app/useHashLocation";
 import { paths } from "@/client/config/paths";
 
@@ -19,9 +19,9 @@ import { Button, ConfirmButton, CopyButton } from "@/client/ui/atoms/Button";
 import { Flex } from "@/client/ui/atoms/Flex";
 import { Paper } from "@/client/ui/atoms/Paper";
 import { GameStatePageLayout } from "@/client/layouts/GameStatePageLayout";
-import { SharesWidget } from "@/client/lib/components/SharesWidget";
-import { ParametersView } from "@/client/lib/components/ParametersView";
-import { GameStateArchive } from "@/client/lib/components/GameStateArchive";
+import { SharesWidget } from "@/client/widgets/SharesWidget";
+import { ParametersView } from "@/client/widgets/ParametersView";
+import { GameStateArchive } from "@/client/entities/GameStateArchive";
 import { SyncSettingsModal } from "./SyncSettingsModal";
 
 export const MySavePage = () => {

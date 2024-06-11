@@ -1,4 +1,4 @@
-import { path } from "../lib/path";
+import { path } from "@/client/shared/path";
 
 const register = path("/register");
 const login = path("/login");

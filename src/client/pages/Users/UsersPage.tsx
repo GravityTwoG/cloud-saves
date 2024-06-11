@@ -2,10 +2,10 @@ import { useTranslation } from "react-i18next";
 
 import classes from "./users-page.module.scss";
 
-import { useAPIContext } from "@/client/contexts/APIContext";
-import { useUIContext } from "@/client/contexts/UIContext";
-import { useResourceWithSync } from "@/client/lib/hooks/useResource";
-import { scrollToTop } from "@/client/lib/scrollToTop";
+import { useAPIContext } from "@/client/shared/contexts/APIContext";
+import { useUIContext } from "@/client/shared/contexts/UIContext";
+import { useResourceWithSync } from "@/client/shared/hooks/useResource";
+import { scrollToTop } from "@/client/shared/scrollToTop";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { ConfirmButton } from "@/client/ui/atoms/Button/";

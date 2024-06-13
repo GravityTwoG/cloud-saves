@@ -102,7 +102,7 @@ export type Share = {
   username: string;
 };
 
-//
+// Graphics
 
 export type CommonGraphic = {
   id: string;
@@ -134,19 +134,4 @@ export type CommonGraphicData = {
   visualType: string;
   commonParameter: CommonParameter;
   data: HistogramData | PieChartData;
-};
-
-//
-
-export type JSONType = {
-  [key: string | number]:
-    | string
-    | number
-    | boolean
-    | string[]
-    | number[]
-    | boolean[]
-    | null
-    | JSONType
-    | JSONType[];
 };

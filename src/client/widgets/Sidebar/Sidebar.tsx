@@ -24,6 +24,8 @@ import LogoutIcon from "@/client/ui/icons/Logout.svg";
 
 export type SidebarProps = {
   links: NavLinkType[];
+  isExpanded: boolean;
+  setIsExpanded: (isExpanded: boolean) => void;
 };
 
 export const Sidebar = (props: SidebarProps) => {
@@ -69,8 +71,19 @@ export const Sidebar = (props: SidebarProps) => {
   };
 
   return (
-    <aside className={classes.Sidebar}>
-      <div className={classes.Logo}>Logo</div>
+    <aside
+      className={clsx(classes.Sidebar, {
+        [classes.Expanded]: props.isExpanded,
+      })}
+    >
+      <div className={classes.LogoContainer}>
+        <div
+          className={classes.Logo}
+          onClick={() => props.setIsExpanded(!props.isExpanded)}
+        >
+          Logo
+        </div>
+      </div>
 
       <nav className={classes.Nav}>
         <ul>
@@ -83,12 +96,17 @@ export const Sidebar = (props: SidebarProps) => {
                   `common.navLinks.${link.label}` as "common.navLinks.profile",
                 ),
               }}
+              isExpanded={props.isExpanded}
             />
           ))}
         </ul>
       </nav>
 
-      <div className={classes.AppButtons}>
+      <div
+        className={clsx(classes.AppButtons, {
+          [classes.Expanded]: props.isExpanded,
+        })}
+      >
         <button
           className={classes.AppButton}
           type="button"
@@ -127,18 +145,25 @@ export const Sidebar = (props: SidebarProps) => {
 
 type NavLinkProps = {
   link: NavLinkType;
+  isExpanded: boolean;
 };
 
-const NavLink = ({ link }: NavLinkProps) => {
+const NavLink = ({ link, isExpanded }: NavLinkProps) => {
   const [isActive] = useRoute(link.path);
 
   const renderLink = () => {
     return (
-      <li className={clsx(classes.NavLink, isActive && classes.NavLinkActive)}>
-        <Link href={link.path}>
+      <li className={classes.NavLink}>
+        <Link
+          href={link.path}
+          className={clsx(classes.NavLinkAnchor, {
+            [classes.NavLinkActive]: isActive,
+            [classes.Expanded]: isExpanded,
+          })}
+        >
           {link.icon && <div className={classes.NavIcon}>{link.icon}</div>}
 
-          <span>{link.label}</span>
+          <span className={classes.NavLabel}>{link.label}</span>
         </Link>
       </li>
     );

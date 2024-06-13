@@ -40,6 +40,7 @@
   justify-content: center;
   width: calc(100% - 12px);
   padding-left: 5rem;
+  transition: padding-left 0.3s ease;
   pointer-events: none;
 
   & > div {
@@ -51,4 +52,8 @@
     z-index: 999;
     pointer-events: all;
   }
+}
+
+.Expanded {
+  padding-left: 14rem;
 }

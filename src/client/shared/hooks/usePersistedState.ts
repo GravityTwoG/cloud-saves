@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 
 export const usePersistedState = <T>(key: string, initialValue: T) => {
-  const [state, setState] = useState<T>(initialValue);
+  const [state, setState] = useState<T>(() => {
+    const storedValue = localStorage.getItem(key);
+    if (storedValue) {
+      return JSON.parse(storedValue);
+    }
+    return initialValue;
+  });
+
   useEffect(() => {
     const storedValue = localStorage.getItem(key);
     if (storedValue) {

@@ -8,19 +8,33 @@ import { Container } from "@/client/ui/atoms/Container";
 import { GoBack } from "@/client/ui/atoms/GoBack";
 import { Sidebar } from "@/client/widgets/Sidebar";
 import { Footer } from "@/client/widgets/Footer";
+import { usePersistedState } from "@/client/shared/hooks/usePersistedState";
 
 export type MainLayoutProps = {
   children: React.ReactNode;
 };
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
+  const [isSidebarExpanded, setIsSidebarExpanded] = usePersistedState<boolean>(
+    "isSidebarExpanded",
+    false,
+  );
+
   return (
     <div className={classes.MainLayout}>
       <div className={classes.DragBar} />
-      <Sidebar links={navLinks} />
+      <Sidebar
+        links={navLinks}
+        isExpanded={isSidebarExpanded}
+        setIsExpanded={setIsSidebarExpanded}
+      />
 
       <main className={clsx("custom-scrollbar", classes.Main)}>
-        <div className={classes.Header}>
+        <div
+          className={clsx(classes.Header, {
+            [classes.Expanded]: isSidebarExpanded,
+          })}
+        >
           <Container>
             <GoBack className={classes.GoBack} />
           </Container>

@@ -12,14 +12,16 @@ type ParametersViewProps = {
 
 export const ParametersView = (props: ParametersViewProps) => {
   return (
-    <Paper className={props.className}>
-      {props.gameStateValues.map((field, idx) => (
-        <ParameterViewItem key={idx} {...field} />
-      ))}
+    <div className={props.className}>
+      <ul className={classes.ParametersList}>
+        {props.gameStateValues.map((field, idx) => (
+          <ParameterViewItem key={idx} {...field} />
+        ))}
+      </ul>
       {props.gameStateValues.length === 0 && (
         <NoElements className={classes.Empty} />
       )}
-    </Paper>
+    </div>
   );
 };
 
@@ -50,19 +52,27 @@ const ParameterViewItem = (props: {
 }) => {
   if (props.type === "time_seconds") {
     return (
-      <div>
-        <span>{props.label}</span>:{" "}
-        <span className={classes.ParameterValue}>
-          {formatTime(parseFloat(props.value), props.type)}
-        </span>
-      </div>
+      <li>
+        <Paper>
+          <div className={classes.ParameterName} title={props.description}>
+            {props.label}
+          </div>
+          <div className={classes.ParameterValue}>
+            {formatTime(parseFloat(props.value), props.type)}
+          </div>
+        </Paper>
+      </li>
     );
   }
 
   return (
-    <div>
-      <span>{props.label}</span>:{" "}
-      <span className={classes.ParameterValue}>{props.value.toString()}</span>
-    </div>
+    <li>
+      <Paper>
+        <div className={classes.ParameterName} title={props.description}>
+          {props.label}
+        </div>
+        <div className={classes.ParameterValue}>{props.value.toString()}</div>
+      </Paper>
+    </li>
   );
 };

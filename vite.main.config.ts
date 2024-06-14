@@ -1,17 +1,36 @@
-import { defineConfig } from "vite";
-import path from "path";
-import { config } from "./vite.common.config";
+import { ConfigEnv, UserConfig, defineConfig, mergeConfig } from "vite";
+import {
+  getBuildConfig,
+  getBuildDefine,
+  external,
+  pluginHotRestart,
+} from "./vite.common.config";
 
 // https://vitejs.dev/config
-export default defineConfig({
-  ...config,
-  resolve: {
-    // Some libs that can run in both Web and Node.js, such as `axios`, we need to tell Vite to build them in Node.js.
-    mainFields: ["module", "jsnext:main", "jsnext"],
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
+export default defineConfig((env) => {
+  const forgeEnv = env as ConfigEnv<"build">;
+  const { forgeConfigSelf } = forgeEnv;
+  const define = getBuildDefine(forgeEnv);
+  const config: UserConfig = {
+    build: {
+      lib: {
+        entry: forgeConfigSelf.entry!,
+        fileName: () => "[name].js",
+        formats: ["cjs"],
+      },
+      rollupOptions: {
+        external,
+      },
     },
-  },
-  publicDir: "assets",
-  envDir: ".",
+    plugins: [pluginHotRestart("restart")],
+    define,
+    resolve: {
+      // Load the Node.js entry.
+      mainFields: ["module", "jsnext:main", "jsnext"],
+    },
+    publicDir: "assets",
+    envDir: ".",
+  };
+
+  return mergeConfig(getBuildConfig(forgeEnv), config);
 });

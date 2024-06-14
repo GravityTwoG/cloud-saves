@@ -119,7 +119,7 @@ export function Form<C extends FormConfig>(props: FormProps<C>) {
       ))}
       {root.error && (
         <ErrorText className={classes.FormError}>
-          {root.error.message}
+          {typeof root.error.message === "string" && root.error.message}
         </ErrorText>
       )}
 

@@ -1,7 +1,7 @@
 import { builtinModules } from "node:module";
 import type { AddressInfo } from "node:net";
 import path from "node:path";
-import type { ConfigEnv, Plugin, UserConfig } from "vite";
+import { ConfigEnv, Plugin, UserConfig } from "vite";
 import pkg from "./package.json";
 
 export const builtins = [
@@ -22,6 +22,7 @@ export function getBuildConfig(env: ConfigEnv<"build">): UserConfig {
   return {
     root,
     mode,
+    envDir: ".",
     build: {
       // Prevent multiple builds from interfering with each other.
       emptyOutDir: false,

@@ -63,6 +63,10 @@ export const MySavePage = () => {
     return null;
   }
 
+  const toggleSyncSettings = () => {
+    setSyncSettingsAreOpen(!syncSettingsAreOpen);
+  };
+
   const setupSync = async (sync: GameStateSync) => {
     try {
       await gameStateAPI.setupSync({
@@ -180,7 +184,12 @@ export const MySavePage = () => {
           <Paragraph>{t("sync")}:</Paragraph>
           <Paragraph>
             {t(gameState.sync)}{" "}
-            <Button onClick={() => setSyncSettingsAreOpen(true)}>
+            <Button
+              onClick={toggleSyncSettings}
+              style={{
+                viewTransitionName: syncSettingsAreOpen ? "" : "sync-settings",
+              }}
+            >
               <SyncIcon />
               {t("setup-sync")}{" "}
             </Button>
@@ -217,7 +226,7 @@ export const MySavePage = () => {
 
       <SyncSettingsModal
         isOpen={syncSettingsAreOpen}
-        closeModal={() => setSyncSettingsAreOpen(false)}
+        closeModal={toggleSyncSettings}
         defaultValue={gameState.sync}
         setupSync={setupSync}
       />

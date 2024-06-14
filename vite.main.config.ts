@@ -29,7 +29,6 @@ export default defineConfig((env) => {
       mainFields: ["module", "jsnext:main", "jsnext"],
     },
     publicDir: "assets",
-    envDir: ".",
   };
 
   return mergeConfig(getBuildConfig(forgeEnv), config);

@@ -3,12 +3,12 @@ import { clsx } from "clsx";
 import classes from "./main-layout.module.scss";
 
 import { navLinks } from "@/client/config/navLinks";
+import { usePersistedState } from "@/client/shared/hooks/usePersistedState";
 
 import { Container } from "@/client/ui/atoms/Container";
 import { GoBack } from "@/client/ui/atoms/GoBack";
 import { Sidebar } from "@/client/widgets/Sidebar";
 import { Footer } from "@/client/widgets/Footer";
-import { usePersistedState } from "@/client/shared/hooks/usePersistedState";
 
 export type MainLayoutProps = {
   children: React.ReactNode;

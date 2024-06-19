@@ -21,29 +21,44 @@ import LightThemeIcon from "@/client/ui/icons/LightTheme.svg";
 import DarkThemeIcon from "@/client/ui/icons/DarkTheme.svg";
 import LanguageIcon from "@/client/ui/icons/Language.svg";
 import LogoutIcon from "@/client/ui/icons/Logout.svg";
+import LeftArrowIcon from "@/client/ui/icons/LeftArrow.svg";
+import SidebarLeftIcon from "@/client/ui/icons/SidebarLeft.svg";
 
 export type SidebarProps = {
   links: NavLinkType[];
-  isExpanded: boolean;
-  setIsExpanded: (isExpanded: boolean) => void;
 };
 
 export const Sidebar = (props: SidebarProps) => {
   const { t } = useTranslation();
+  const [isExpanded, setIsExpanded] = usePersistedState<boolean>(
+    "isSidebarExpanded",
+    false,
+  );
 
   return (
     <aside
       className={clsx(classes.Sidebar, {
-        [classes.Expanded]: props.isExpanded,
+        [classes.Expanded]: isExpanded,
       })}
     >
-      <div className={classes.LogoContainer}>
-        <div
-          className={classes.Logo}
-          onClick={() => props.setIsExpanded(!props.isExpanded)}
+      <div className={classes.SidebarHeader}>
+        <button
+          className={classes.AppButton}
+          onClick={() => setIsExpanded(!isExpanded)}
         >
-          Logo
-        </div>
+          <SidebarLeftIcon />
+        </button>
+
+        <button
+          className={clsx(classes.AppButton, classes.GoBackButton)}
+          onClick={() => window.history.back()}
+        >
+          <LeftArrowIcon />
+        </button>
+      </div>
+
+      <div className={classes.LogoContainer}>
+        <div className={classes.Logo}>Logo {isExpanded && "CloudSaves"}</div>
       </div>
 
       <nav className={classes.Nav}>
@@ -57,7 +72,7 @@ export const Sidebar = (props: SidebarProps) => {
                   `common.navLinks.${link.label}` as "common.navLinks.profile",
                 ),
               }}
-              isExpanded={props.isExpanded}
+              isExpanded={isExpanded}
             />
           ))}
         </ul>
@@ -65,7 +80,7 @@ export const Sidebar = (props: SidebarProps) => {
 
       <div
         className={clsx(classes.AppButtons, {
-          [classes.Expanded]: props.isExpanded,
+          [classes.Expanded]: isExpanded,
         })}
       >
         <ThemeButton />

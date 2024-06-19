@@ -130,6 +130,7 @@
 .AppButtons {
   display: flex;
   flex-flow: column;
+  gap: 0.25rem;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -181,18 +182,5 @@
 
   & > svg {
     width: 1.5rem;
-
-    & > path {
-      transition: stroke 0.3s ease;
-      stroke: var(--color-text);
-    }
-  }
-
-  &:hover {
-    color: var(--color-accent);
-
-    & > svg path {
-      stroke: var(--color-accent);
-    }
   }
 }

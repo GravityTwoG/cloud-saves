@@ -27,8 +27,8 @@
   & > button {
     display: inline-flex;
     flex: 1 0 60px;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: 100%;
     min-width: 80px;
     height: 100%;
@@ -62,6 +62,10 @@
 
   &.OptionActive {
     & > button {
+      @supports (view-transition-name: none) {
+        view-transition-name: expanded-select-option-active;
+      }
+
       color: #fff;
       background-color: var(--color-accent);
       box-shadow: 3px 3px 5px 0 var(--color-accent-shadow);

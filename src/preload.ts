@@ -11,10 +11,11 @@ const electronApi: Window["electronAPI"] = {
     ipcRenderer.invoke("getFolderInfo", folderPath),
 
   onDeepLink: (callback) => {
-    ipcRenderer.on("deepLink", (_, link) => {
+    const listener = (_: unknown, link: Parameters<typeof callback>[0]) => {
       callback(link);
-    });
-    return () => ipcRenderer.removeListener("deepLink", callback);
+    };
+    ipcRenderer.on("deepLink", listener);
+    return () => ipcRenderer.removeListener("deepLink", listener);
   },
 
   onGetSyncedStates: (callback) => {

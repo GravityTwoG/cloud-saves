@@ -8,6 +8,23 @@ import { LocalStorage } from "../LocalStorage";
 
 const ls = new LocalStorage("game_states_");
 
+const gameStateExample = {
+  id: "new",
+  name: "Test",
+  localPath: "/test",
+  isPublic: false,
+  sync: GameStateSync.NO,
+  gameId: "12",
+  gameImageURL:
+    "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+  archiveURL: "",
+  createdAt: "2022-01-01T00:00:00.000Z",
+  gameStateValues: [],
+  sizeInBytes: 322,
+  updatedAt: "2022-01-01T00:00:00.000Z",
+  uploadedAt: "2022-01-01T00:00:00.000Z",
+};
+
 export class GameStateAPIMock implements IGameStateAPI {
   private readonly osAPI: IOSAPI;
   private readonly gameAPI: IGameAPI;
@@ -43,6 +60,9 @@ export class GameStateAPIMock implements IGameStateAPI {
 
   getGameState = async (gameStateId: string): Promise<GameState> => {
     try {
+      if (gameStateId === "new") {
+        return gameStateExample;
+      }
       const states = ls.getItem<Record<string, GameState>>("states");
       const state = states[gameStateId];
 
@@ -88,6 +108,8 @@ export class GameStateAPIMock implements IGameStateAPI {
             : GameStateSync.NO,
         });
       }
+
+      statesArray.push(gameStateExample);
 
       return {
         items: statesArray,

@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 
-import { useAPIContext } from "@/client/contexts/APIContext";
-import { useResourceWithSync } from "@/client/lib/hooks/useResource";
+import { useAPIContext } from "@/client/shared/contexts/APIContext";
+import { useResourceWithSync } from "@/client/shared/hooks/useResource";
 import { paths } from "@/client/config/paths";
-import { scrollToTop } from "@/client/lib/scrollToTop";
+import { scrollToTop } from "@/client/shared/scrollToTop";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
@@ -11,8 +11,8 @@ import { Flex } from "@/client/ui/atoms/Flex";
 import { Grid } from "@/client/ui/molecules/Grid";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
-import { GameStateCard } from "@/client/lib/components/GameStateCard";
-import { FilterByGame } from "@/client/lib/components/FilterByGame";
+import { GameStateCard } from "@/client/entities/GameStateCard";
+import { FilterByGame } from "@/client/widgets/FilterByGame";
 
 export const PublicSavesPage = () => {
   const { gameStateAPI } = useAPIContext();

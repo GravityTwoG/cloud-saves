@@ -1,9 +1,23 @@
 import path from "path";
 import fs from "fs/promises";
 
-import { Game, GameStateParameter, JSONType } from "@/types";
+import { isObject } from "@/utils";
+import { Game, GameStateParameter } from "@/types";
 
 import { FileConverter } from "./converters/FileConverter";
+
+type JSONType = {
+  [key: string | number]:
+    | string
+    | number
+    | boolean
+    | string[]
+    | number[]
+    | boolean[]
+    | null
+    | JSONType
+    | JSONType[];
+};
 
 export class ValueExtractor {
   private readonly converters: Record<string, FileConverter> = {};
@@ -139,8 +153,4 @@ export class ValueExtractor {
       typeof value === "string"
     );
   }
-}
-
-function isObject(value: unknown): value is JSONType {
-  return typeof value === "object" && !Array.isArray(value) && value !== null;
 }

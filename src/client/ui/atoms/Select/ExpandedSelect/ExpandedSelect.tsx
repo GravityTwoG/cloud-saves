@@ -1,7 +1,10 @@
 import { ReactElement, ForwardedRef, forwardRef } from "react";
 import { clsx } from "clsx";
 
+import { startViewTransition } from "@/client/ui/lib/startViewTransition";
+
 import classes from "./expanded-select.module.scss";
+
 import { SelectOption } from "../AsyncSelect/AsyncSelect";
 
 export type ExpandedSelectProps<T> = {
@@ -47,7 +50,7 @@ export const ExpandedSelect = forwardRef(
               role="button"
               onClick={() => {
                 if (option.value !== props.value) {
-                  props.onChange(option.value);
+                  startViewTransition(() => props.onChange(option.value));
                 }
                 if (props.canUnselect && option.value === props.value) {
                   props.onChange("" as T);

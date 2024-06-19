@@ -6,9 +6,9 @@ import { useParams } from "wouter";
 import classes from "./my-save-page.module.scss";
 
 import { GameState, GameStateSync } from "@/types";
-import { useAPIContext } from "@/client/contexts/APIContext";
-import { useUIContext } from "@/client/contexts/UIContext";
-import { useAuthContext } from "@/client/contexts/AuthContext";
+import { useAPIContext } from "@/client/shared/contexts/APIContext";
+import { useUIContext } from "@/client/shared/contexts/UIContext";
+import { useAuthContext } from "@/client/shared/contexts/AuthContext";
 import { navigate } from "@/client/app/useHashLocation";
 import { paths } from "@/client/config/paths";
 
@@ -19,9 +19,9 @@ import { Button, ConfirmButton, CopyButton } from "@/client/ui/atoms/Button";
 import { Flex } from "@/client/ui/atoms/Flex";
 import { Paper } from "@/client/ui/atoms/Paper";
 import { GameStatePageLayout } from "@/client/layouts/GameStatePageLayout";
-import { SharesWidget } from "@/client/lib/components/SharesWidget";
-import { ParametersView } from "@/client/lib/components/ParametersView";
-import { GameStateArchive } from "@/client/lib/components/GameStateArchive";
+import { SharesWidget } from "@/client/widgets/SharesWidget";
+import { ParametersView } from "@/client/widgets/ParametersView";
+import { GameStateArchive } from "@/client/entities/GameStateArchive";
 import { SyncSettingsModal } from "./SyncSettingsModal";
 
 export const MySavePage = () => {
@@ -62,6 +62,10 @@ export const MySavePage = () => {
   if (!gameState) {
     return null;
   }
+
+  const toggleSyncSettings = () => {
+    setSyncSettingsAreOpen(!syncSettingsAreOpen);
+  };
 
   const setupSync = async (sync: GameStateSync) => {
     try {
@@ -169,7 +173,7 @@ export const MySavePage = () => {
         )}
       </H1>
 
-      <Paper className={clsx(classes.GameSaveSettings, "mb-4")}>
+      <Paper className={clsx(classes.GameSaveSettings, "mb-8")}>
         <div className={classes.GameSaveSettingsLeft}>
           <Paragraph>{t("path")}:</Paragraph>
           <Paragraph className={classes.LocalPath}>
@@ -180,7 +184,12 @@ export const MySavePage = () => {
           <Paragraph>{t("sync")}:</Paragraph>
           <Paragraph>
             {t(gameState.sync)}{" "}
-            <Button onClick={() => setSyncSettingsAreOpen(true)}>
+            <Button
+              onClick={toggleSyncSettings}
+              style={{
+                viewTransitionName: syncSettingsAreOpen ? "" : "sync-settings",
+              }}
+            >
               <SyncIcon />
               {t("setup-sync")}{" "}
             </Button>
@@ -217,7 +226,7 @@ export const MySavePage = () => {
 
       <SyncSettingsModal
         isOpen={syncSettingsAreOpen}
-        closeModal={() => setSyncSettingsAreOpen(false)}
+        closeModal={toggleSyncSettings}
         defaultValue={gameState.sync}
         setupSync={setupSync}
       />
@@ -225,11 +234,11 @@ export const MySavePage = () => {
       <H2>{t("about")}</H2>
 
       <ParametersView
-        className="mb-4"
+        className="mb-8"
         gameStateValues={gameState.gameStateValues}
       />
 
-      <GameStateArchive className="mb-4" gameState={gameState} />
+      <GameStateArchive gameState={gameState} />
     </GameStatePageLayout>
   );
 };

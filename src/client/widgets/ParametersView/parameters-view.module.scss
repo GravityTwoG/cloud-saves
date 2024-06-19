@@ -1,0 +1,25 @@
+.Empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.ParametersList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ParameterName {
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  font-size: 1.25rem;
+  opacity: 0.6;
+}
+
+.ParameterValue {
+  font-weight: bold;
+  font-size: 1.5rem;
+}

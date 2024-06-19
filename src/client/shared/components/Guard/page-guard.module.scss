@@ -1,0 +1,10 @@
+.PageGuard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+
+  .Spinner {
+    stroke: var(--color-accent) !important;
+  }
+}

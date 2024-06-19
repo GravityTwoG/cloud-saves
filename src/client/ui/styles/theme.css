@@ -27,6 +27,22 @@
   --shadow-paper: 5px 5px 15px 0 #3333330e;
 }
 
+::view-transition-old(root),
+::view-transition-new(root) {
+  mix-blend-mode: normal;
+  animation: none;
+}
+
+::view-transition-old(root),
+[data-theme="dark"]::view-transition-new(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root),
+[data-theme="dark"]::view-transition-old(root) {
+  z-index: 9999;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -48,9 +64,13 @@ body {
 }
 
 .custom-scrollbar {
+  scroll-behavior: smooth;
+}
+
+/** In Chrome 121, support was added for scrollbar-color and scrollbar-width. If some of these properties are used, then ::-webkit-scrollbar will not work. */
+@supports not selector(::-webkit-scrollbar) .custom-scrollbar {
   scrollbar-width: auto;
   scrollbar-color: var(--color-accent) transparent;
-  scroll-behavior: smooth;
 }
 
 .custom-scrollbar::-webkit-scrollbar {

@@ -70,7 +70,7 @@ export class AuthAPIMock implements IAuthAPI {
     );
 
     if (userExists) {
-      throw new ApiError("username-already-exists");
+      throw new ApiError("registration-failed", ["username-already-exists"]);
     }
 
     users.push(user);

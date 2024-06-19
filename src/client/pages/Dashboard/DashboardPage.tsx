@@ -1,11 +1,11 @@
 import { useTranslation } from "react-i18next";
 
 import { paths } from "@/client/config/paths";
-import { useResourceWithSync } from "@/client/lib/hooks/useResource";
-import { useUIContext } from "@/client/contexts/UIContext";
-import { useAPIContext } from "@/client/contexts/APIContext";
+import { useResourceWithSync } from "@/client/shared/hooks/useResource";
+import { useUIContext } from "@/client/shared/contexts/UIContext";
+import { useAPIContext } from "@/client/shared/contexts/APIContext";
 import { useModal } from "@/client/ui/hooks/useModal";
-import { scrollToTop } from "@/client/lib/scrollToTop";
+import { scrollToTop } from "@/client/shared/scrollToTop";
 
 import { Container } from "@/client/ui/atoms/Container";
 import { H1 } from "@/client/ui/atoms/Typography";
@@ -15,7 +15,7 @@ import { CommonLink } from "@/client/ui/atoms/Link/CommonLink";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
 import { List } from "@/client/ui/molecules/List/List";
 import { Paginator } from "@/client/ui/molecules/Paginator";
-import { GraphicForm } from "../../lib/components/GraphicForm";
+import { GraphicForm } from "@/client/entities/GraphicForm";
 import { CommonGraphic } from "@/types";
 
 export const DashboardPage = () => {

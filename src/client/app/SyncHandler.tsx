@@ -2,8 +2,8 @@ import { useEffect } from "react";
 
 import { GameState, UserRole } from "@/types";
 
-import { useAPIContext } from "../contexts/APIContext";
-import { AuthStatus, useAuthContext } from "../contexts/AuthContext";
+import { useAPIContext } from "../shared/contexts/APIContext";
+import { AuthStatus, useAuthContext } from "../shared/contexts/AuthContext";
 
 export const SyncHandler = () => {
   const { osAPI, gameStateAPI } = useAPIContext();

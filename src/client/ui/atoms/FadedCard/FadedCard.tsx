@@ -16,6 +16,7 @@ export const FadedCard = ({
   imageURL,
   children,
   className,
+  style,
   ...props
 }: FadedCardProps) => {
   const [imgSrc, setImgSrc] = useState(placeholderSrc);
@@ -44,7 +45,7 @@ export const FadedCard = ({
         href={props.href}
         className={clsx(classes.FadedCardLink, className)}
         style={{
-          ...props.style,
+          ...style,
           backgroundImage: `url(${imgSrc})`,
         }}
       >

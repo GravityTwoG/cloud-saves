@@ -3,10 +3,11 @@ import { useTranslation } from "react-i18next";
 import classes from "./games-page.module.scss";
 
 import { paths } from "@/client/config/paths";
-import { useAPIContext } from "@/client/contexts/APIContext";
-import { useResourceWithSync } from "@/client/lib/hooks/useResource";
-import { useUIContext } from "@/client/contexts/UIContext";
-import { scrollToTop } from "@/client/lib/scrollToTop";
+import { useAPIContext } from "@/client/shared/contexts/APIContext";
+import { useResourceWithSync } from "@/client/shared/hooks/useResource";
+import { useUIContext } from "@/client/shared/contexts/UIContext";
+import { scrollToTop } from "@/client/ui/lib/scrollToTop";
+import { useCommonParametersModal } from "@/client/entities/CommonParametersWidget";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Button } from "@/client/ui/atoms/Button";
@@ -15,8 +16,7 @@ import { CommonLink } from "@/client/ui/atoms/Link/CommonLink";
 import { Grid } from "@/client/ui/molecules/Grid";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
-import { GameCard } from "@/client/lib/components/GameCard";
-import { useCommonParametersModal } from "@/client/lib/components/CommonParametersWidget";
+import { GameCard } from "@/client/entities/Game/GameCard";
 
 export const GamesPage = () => {
   const { gameAPI } = useAPIContext();

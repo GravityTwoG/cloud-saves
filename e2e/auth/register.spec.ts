@@ -82,5 +82,5 @@ test("register existing user", async () => {
 
   await page.waitForTimeout(1000);
 
-  expect(await page.content()).toContain("User already exists");
+  expect(await page.content()).toContain("Username already exists");
 });

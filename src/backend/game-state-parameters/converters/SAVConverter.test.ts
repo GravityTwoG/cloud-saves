@@ -22,9 +22,7 @@ describe("convert .sav to json", () => {
 
     const actualJSON = await fs.readFile(
       path.join(folderPath, actualJSONFilename),
-      {
-        encoding: "utf-8",
-      },
+      { encoding: "utf-8" },
     );
     const expectedJSON = await fs.readFile(
       path.join(folderPath, expectedJSONFilename),

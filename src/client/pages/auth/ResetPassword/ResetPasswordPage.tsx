@@ -4,7 +4,7 @@ import classes from "./reset-password-page.module.scss";
 
 import { useSearchParams } from "@/client/app/useHashLocation";
 import { paths } from "@/client/config/paths";
-import { useAuthContext } from "@/client/contexts/AuthContext";
+import { useAuthContext } from "@/client/shared/contexts/AuthContext";
 
 import { Container } from "@/client/ui/atoms/Container";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";

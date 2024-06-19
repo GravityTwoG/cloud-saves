@@ -60,6 +60,8 @@
  * const status = debounced.pending() ? "Pending..." : "Ready"
  */
 
+import { isObject } from "@/utils";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Callback = (...args: any[]) => any;
 
@@ -72,7 +74,7 @@ export type DebounceOptions = {
 export function debounce(
   func: Callback,
   wait: number,
-  options: DebounceOptions
+  options: DebounceOptions,
 ) {
   let lastArgs: unknown[] | undefined;
   let lastThis: unknown;
@@ -228,8 +230,4 @@ export function debounce(
   debounced.flush = flush;
   debounced.pending = pending;
   return debounced;
-}
-
-function isObject(value: unknown) {
-  return !!value && typeof value === "object" && !Array.isArray(value);
 }

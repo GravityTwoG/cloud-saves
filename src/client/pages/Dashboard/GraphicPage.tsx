@@ -5,8 +5,8 @@ import * as Plot from "@observablehq/plot";
 import * as d3 from "d3";
 
 import { useParams } from "wouter";
-import { useAPIContext } from "@/client/contexts/APIContext";
-import { useUIContext } from "@/client/contexts/UIContext";
+import { useAPIContext } from "@/client/shared/contexts/APIContext";
+import { useUIContext } from "@/client/shared/contexts/UIContext";
 import {
   CommonGraphic,
   CommonGraphicData,
@@ -17,7 +17,7 @@ import {
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
 import { Preloader } from "@/client/ui/atoms/Preloader";
-import { GraphicForm } from "../../lib/components/GraphicForm";
+import { GraphicForm } from "@/client/entities/Graphic/GraphicForm";
 import { Flex } from "@/client/ui/atoms/Flex";
 
 export const GraphicPage = () => {
@@ -138,6 +138,9 @@ type HistogramGraphicProps = {
 
 const HistogramGraphic = (props: HistogramGraphicProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation(undefined, {
+    keyPrefix: "common.graphic-types",
+  });
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -152,9 +155,10 @@ const HistogramGraphic = (props: HistogramGraphicProps) => {
           y: "height",
           title: (d) => `[${d.min} - ${d.max}]: ${d.height}`,
           inset: 5,
+          fill: "#3e42b6",
         }),
       ],
-      title: `Histogram of ${props.graphic.commonParameter.label} (${props.graphic.commonParameter.type.type})`,
+      title: `${t("histogram")}: ${props.graphic.commonParameter.label} (${props.graphic.commonParameter.type.type})`,
       caption: props.graphic.commonParameter.description,
     });
 
@@ -171,6 +175,9 @@ type PieChartGraphicProps = {
 
 const PieChartGraphic = (props: PieChartGraphicProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation(undefined, {
+    keyPrefix: "common.graphic-types",
+  });
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -184,6 +191,11 @@ const PieChartGraphic = (props: PieChartGraphicProps) => {
         type: "azimuthal-equal-area",
         rotate: [0, rotation - 90],
       },
+      color: {
+        scheme: "BuRd",
+        legend: true,
+        reverse: true,
+      },
       marks: [
         pie(data, {
           value: "percentage",
@@ -191,7 +203,7 @@ const PieChartGraphic = (props: PieChartGraphicProps) => {
           title: (d) => `${d.label} (${d.percentage}%)`,
         }),
       ],
-      title: `Pie chart of ${props.graphic.commonParameter.label} (${props.graphic.commonParameter.type.type})`,
+      title: `${t("pie_chart")}: ${props.graphic.commonParameter.label} (${props.graphic.commonParameter.type.type})`,
       caption: props.graphic.commonParameter.description,
     });
 

@@ -4,9 +4,9 @@ import { RouteAccess, routes } from "@/client/config/routes";
 
 import { Route, Switch, Router as Wouter } from "wouter";
 import { AppErrorBoundary } from "@/client/ui/molecules/AppErrorBoundary";
-import { PrivatePage } from "@/client/lib/components/Guard/PrivatePage";
-import { AnonymousPage } from "@/client/lib/components/Guard/AnonymousPage";
-import { MainLayout } from "@/client/layouts/MainLayout/MainLayout";
+import { PrivatePage } from "@/client/shared/components/Guard/PrivatePage";
+import { AnonymousPage } from "@/client/shared/components/Guard/AnonymousPage";
+import { MainLayout } from "@/client/app/components/MainLayout";
 import { NotFoundPage } from "@/client/pages/NotFound/NotFoundPage";
 
 export const Router = () => {

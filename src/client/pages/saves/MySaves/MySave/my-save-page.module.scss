@@ -98,8 +98,8 @@ html[data-theme="dark"] .GameImageOverlay {
 .LocalPath {
   display: flex;
   gap: 0.5rem;
-  justify-content: start;
   align-items: center;
+  justify-content: start;
 
   & > span {
     display: -webkit-inline-box;

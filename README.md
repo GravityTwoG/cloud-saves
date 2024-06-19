@@ -4,11 +4,14 @@
 
 Desktop application for management of game saves.
 
-Features:
+Backend application with REST API is implemented by my friend https://github.com/Ki-Really/GameSavesStore.
 
-- scan file system for game saves
-- periodically sync saves with server
-- download your/shared/public saves
+## Features
+
+- 🔍 scan file system for game saves
+- 🔄 periodically sync saves with server
+- ⬇︎ download your/shared/public saves
+- 🗃️ extract game state information from files (player level, play time etc)
 
 ## Development
 
@@ -42,33 +45,32 @@ npm run package
 Modules diagram
 
 ```sh
-npx madge --image graph.svg .\src\renderer.ts
-npx madge --image graph.svg .\src\renderer.ts --circular
-npx tsuml2 -o out.svg  -g ".\src\**\*.ts(x)?"
+npx madge --image graph.svg ./src/renderer.ts
+npx madge --image graph.svg ./src/renderer.ts --circular
+npx tsuml2 -o out.svg  -g "./src/**/*.ts(x)?"
 ```
 
 ## Folder structure
 
-We use electron as a framework, so application consists of two parts: **backend** application which runs on nodejs and **client** application which runs in chromium.
+We use electron as a framework, so application consists of two parts: **"backend"** application which runs on Node.js and **client** application which runs in chromium.
 
 - src - root of source directory
   - @types - global type definitions
-  - backend - backend application
+  - backend - "backend" application
     - fs - fs utils
-    - game-state-parameters - parameter values extraction, game state formats converting
+    - game-state-parameters - parameter values extraction, game state formats convertion
     - StatesManager - extracts parameter values, archives game state files, downloads game state from the server
     - SyncManager - automatically uploads or downloads game states
     - electron-api.ts - IPC handlers (smth like REST controller)
   - client - client application
     - app - configuration of react application (main layout, routing etc)
     - config - configuration of application (list of pages, their corresponding paths, sidebar links)
-    - contexts - React contexts (API, UI)
-    - layouts - Reusable layouts of application or pages
     - locales - json files with internationalized texts
     - pages - pages
-    - lib - reusable domain/app specific code (components, hooks, other utils)
-    - api - api layer (work with REST API, electron IPC)
+    - entities - entity specific components
+    - shared - reusable domain/app specific code (components, hooks, other utils)
     - ui - ui kit. This layer knows nothing about domain or application as a whole.
+    - api - api layer or data access layer (DAL) (work with REST API, electron IPC)
   - preload.ts - Electron preload file
   - renderer.ts - Entry point of client application
   - main.ts - Entry point of a whole application

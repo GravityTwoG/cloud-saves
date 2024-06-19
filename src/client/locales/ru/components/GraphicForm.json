@@ -1,3 +1,6 @@
 {
-  "graphic": "График"
+  "graphic": "График",
+  "graphic-type": "Тип графика",
+  "common-parameter": "Общий параметр",
+  "save": "Сохранить"
 }

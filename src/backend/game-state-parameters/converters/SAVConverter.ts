@@ -21,27 +21,16 @@ export class SAVConverter implements FileConverter {
     outputFilename: string,
   ) => {
     try {
-      const uncompressed_data = await this.readSAV(folderPath, inputFilename);
+      const uncompressed = await this.readSAV(folderPath, inputFilename);
 
-      let uePath = [];
-      if (import.meta.env.NODE_ENV !== "production") {
-        uePath = path
-          .join(__dirname, `../../../../public/assets/uesave.exe`)
-          .split("\\");
-      } else {
-        uePath = path.join(__dirname, `./assets/uesave.exe`).split("\\");
-      }
-      const uesaveFolder = uePath.slice(0, uePath.length - 1).join("\\");
-      const command = uePath[uePath.length - 1];
-      const args = this.toUEsaveParams(
-        path.join(folderPath, outputFilename),
-        UESAVE_TYPE_MAPS,
+      const { uesaveFolder, command, args } = this.buildCommand(
+        folderPath,
+        outputFilename,
       );
-
       // Convert to json with uesave
       console.log("Converting to JSON", inputFilename);
       const status = await child_process.spawnSync(command, args, {
-        input: uncompressed_data,
+        input: uncompressed,
         cwd: uesaveFolder,
       });
 
@@ -57,6 +46,25 @@ export class SAVConverter implements FileConverter {
       throw error;
     }
   };
+
+  private buildCommand(folderPath: string, outputFilename: string) {
+    let uePath = [];
+    if (import.meta.env.NODE_ENV !== "production") {
+      uePath = path
+        .join(__dirname, `../../../../public/assets/uesave.exe`)
+        .split("\\");
+    } else {
+      uePath = path.join(__dirname, `./assets/uesave.exe`).split("\\");
+    }
+    const uesaveFolder = uePath.slice(0, uePath.length - 1).join("\\");
+    const command = uePath[uePath.length - 1];
+    const args = this.toUEsaveParams(
+      path.join(folderPath, outputFilename),
+      UESAVE_TYPE_MAPS,
+    );
+
+    return { uesaveFolder, command, args };
+  }
 
   private async readSAV(save_path: string, file: string) {
     const filePath = path.join(save_path, file);

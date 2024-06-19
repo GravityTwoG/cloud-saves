@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
-import { useAuthContext } from "@/client/contexts/AuthContext";
-import { useUIContext } from "@/client/contexts/UIContext";
+import { useAuthContext } from "@/client/shared/contexts/AuthContext";
+import { useUIContext } from "@/client/shared/contexts/UIContext";
 
 import { Container } from "@/client/ui/atoms/Container";
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";

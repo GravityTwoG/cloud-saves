@@ -6,14 +6,14 @@ import { useParams } from "wouter";
 import classes from "./save-page.module.scss";
 
 import { GameState } from "@/types";
-import { useAPIContext } from "@/client/contexts/APIContext";
-import { useUIContext } from "@/client/contexts/UIContext";
+import { useAPIContext } from "@/client/shared/contexts/APIContext";
+import { useUIContext } from "@/client/shared/contexts/UIContext";
 
 import { Paper } from "@/client/ui/atoms/Paper";
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
-import { GameStatePageLayout } from "@/client/layouts/GameStatePageLayout";
-import { ParametersView } from "@/client/lib/components/ParametersView";
-import { GameStateArchive } from "@/client/lib/components/GameStateArchive";
+import { GameStatePageLayout } from "@/client/entities/GameState/GameStatePageLayout";
+import { ParametersView } from "@/client/entities/GameState/ParametersView";
+import { GameStateArchive } from "@/client/entities/GameState/GameStateArchive";
 
 export const SavePage = () => {
   const { gameStateAPI } = useAPIContext();
@@ -58,7 +58,7 @@ export const SavePage = () => {
     >
       <H1>{gameState.name}</H1>
 
-      <Paper className={clsx(classes.GameSaveSettings, "mb-4")}>
+      <Paper className={clsx(classes.GameSaveSettings, "mb-8")}>
         <div className={classes.GameSaveSettingsLeft}>
           <Paragraph>
             {t("path")}: {gameState.localPath}
@@ -69,11 +69,11 @@ export const SavePage = () => {
       <H2>{t("about")}</H2>
 
       <ParametersView
-        className="mb-4"
+        className="mb-8"
         gameStateValues={gameState.gameStateValues}
       />
 
-      <GameStateArchive className="mb-4" gameState={gameState} />
+      <GameStateArchive gameState={gameState} />
     </GameStatePageLayout>
   );
 };

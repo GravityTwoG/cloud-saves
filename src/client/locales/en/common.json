@@ -18,5 +18,9 @@
     "dashboard": "Overview",
 
     "users": "Users"
+  },
+  "graphic-types": {
+    "histogram": "Histogram",
+    "pie_chart": "Pie chart"
   }
 }

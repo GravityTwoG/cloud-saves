@@ -4,7 +4,7 @@ import classes from "./login-page.module.scss";
 
 import { paths } from "@/client/config/paths";
 import { ApiError } from "@/client/api/ApiError";
-import { useAuthContext } from "@/client/contexts/AuthContext";
+import { useAuthContext } from "@/client/shared/contexts/AuthContext";
 
 import { Container } from "@/client/ui/atoms/Container";
 import { H1, Paragraph } from "@/client/ui/atoms/Typography";

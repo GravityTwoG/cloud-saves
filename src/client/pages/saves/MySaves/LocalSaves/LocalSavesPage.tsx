@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import classes from "./local-saves-page.module.scss";
 
 import { ResourceRequest } from "@/client/api/interfaces/common";
-import { useAPIContext } from "@/client/contexts/APIContext";
-import { useUIContext } from "@/client/contexts/UIContext";
-import { useResourceWithSync } from "@/client/lib/hooks/useResource";
-import { scrollToTop } from "@/client/lib/scrollToTop";
+import { useAPIContext } from "@/client/shared/contexts/APIContext";
+import { useUIContext } from "@/client/shared/contexts/UIContext";
+import { useResourceWithSync } from "@/client/shared/hooks/useResource";
+import { scrollToTop } from "@/client/ui/lib/scrollToTop";
 
 import UploadIcon from "@/client/ui/icons/Upload.svg";
 import FolderIcon from "@/client/ui/icons/Folder.svg";

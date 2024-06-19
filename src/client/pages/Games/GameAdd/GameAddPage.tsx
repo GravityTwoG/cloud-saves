@@ -9,7 +9,7 @@ import { paths } from "@/client/config/paths";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
-import { GameForm } from "@/client/entities/GameForm/GameForm";
+import { GameForm } from "@/client/entities/Game/GameForm/GameForm";
 import { AddGameDTO } from "@/client/api/interfaces/IGameAPI";
 
 export const GameAddPage = () => {

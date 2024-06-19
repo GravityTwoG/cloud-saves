@@ -11,9 +11,9 @@ import { useUIContext } from "@/client/shared/contexts/UIContext";
 
 import { Paper } from "@/client/ui/atoms/Paper";
 import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
-import { GameStatePageLayout } from "@/client/layouts/GameStatePageLayout";
-import { ParametersView } from "@/client/widgets/ParametersView";
-import { GameStateArchive } from "@/client/entities/GameStateArchive";
+import { GameStatePageLayout } from "@/client/entities/GameState/GameStatePageLayout";
+import { ParametersView } from "@/client/entities/GameState/ParametersView";
+import { GameStateArchive } from "@/client/entities/GameState/GameStateArchive";
 
 export const SavePage = () => {
   const { gameStateAPI } = useAPIContext();

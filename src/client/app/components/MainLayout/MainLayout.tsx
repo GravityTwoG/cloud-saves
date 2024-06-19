@@ -7,8 +7,8 @@ import { usePersistedState } from "@/client/shared/hooks/usePersistedState";
 
 import { Container } from "@/client/ui/atoms/Container";
 import { GoBack } from "@/client/ui/atoms/GoBack";
-import { Sidebar } from "@/client/widgets/Sidebar";
-import { Footer } from "@/client/widgets/Footer";
+import { Sidebar } from "../Sidebar";
+import { Footer } from "../Footer";
 
 export type MainLayoutProps = {
   children: React.ReactNode;

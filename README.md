@@ -67,12 +67,10 @@ We use electron as a framework, so application consists of two parts: **"backend
     - config - configuration of application (list of pages, their corresponding paths, sidebar links)
     - locales - json files with internationalized texts
     - pages - pages
-    - layouts - Reusable layouts of application or pages
-    - widgets - components which compose other components
-    - entities - entity components
+    - entities - entity specific components
     - shared - reusable domain/app specific code (components, hooks, other utils)
     - ui - ui kit. This layer knows nothing about domain or application as a whole.
-    - api - api layer (work with REST API, electron IPC)
+    - api - api layer or data access layer (DAL) (work with REST API, electron IPC)
   - preload.ts - Electron preload file
   - renderer.ts - Entry point of client application
   - main.ts - Entry point of a whole application

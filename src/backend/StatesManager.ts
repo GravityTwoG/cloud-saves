@@ -10,8 +10,8 @@ import { ValueExtractor } from "./game-state-parameters/ValueExtractor";
 
 import { moveFolder } from "./fs/moveFolder";
 import { downloadToFolder } from "./fs/downloadToFolder";
-import { extractZIP } from "./fs/extractZIP";
-import { zipFolderOrFile } from "./fs/zipFolderOrFile";
+import { extractZIP } from "./fs/zip/extractZIP";
+import { zipFolderOrFile } from "./fs/zip/zipFolderOrFile";
 
 export class StatesManager {
   private readonly valueExtractor: ValueExtractor;

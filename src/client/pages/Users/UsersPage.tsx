@@ -5,7 +5,7 @@ import classes from "./users-page.module.scss";
 import { useAPIContext } from "@/client/shared/contexts/APIContext";
 import { useUIContext } from "@/client/shared/contexts/UIContext";
 import { useResourceWithSync } from "@/client/shared/hooks/useResource";
-import { scrollToTop } from "@/client/shared/scrollToTop";
+import { scrollToTop } from "@/client/ui/lib/scrollToTop";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { ConfirmButton } from "@/client/ui/atoms/Button/";

@@ -7,7 +7,7 @@ import { ResourceRequest } from "@/client/api/interfaces/common";
 import { useAPIContext } from "@/client/shared/contexts/APIContext";
 import { useUIContext } from "@/client/shared/contexts/UIContext";
 import { useResourceWithSync } from "@/client/shared/hooks/useResource";
-import { scrollToTop } from "@/client/shared/scrollToTop";
+import { scrollToTop } from "@/client/ui/lib/scrollToTop";
 
 import UploadIcon from "@/client/ui/icons/Upload.svg";
 import FolderIcon from "@/client/ui/icons/Folder.svg";

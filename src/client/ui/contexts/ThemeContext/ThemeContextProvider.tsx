@@ -1,10 +1,10 @@
 import { ReactNode, useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 import { ThemeContext } from "./ThemeContext";
-
-const transitionsEnabled = () =>
-  "startViewTransition" in document &&
-  window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
+import {
+  startViewTransition,
+  transitionsEnabled,
+} from "../../lib/startViewTransition";
 
 export const ThemeContextProvider = (props: { children: ReactNode }) => {
   const [theme, setTheme] = useState<"light" | "dark">(
@@ -30,12 +30,12 @@ export const ThemeContextProvider = (props: { children: ReactNode }) => {
     }
 
     let isDark = theme === "dark";
-    await document.startViewTransition(async () =>
+    await startViewTransition(async () =>
       flushSync(() => {
         // set the "after" state here, synchronously.
         isDark = changeTheme() === "dark";
       }),
-    ).ready;
+    )?.ready;
 
     const clipPath = [
       `circle(0px at ${x}px ${y}px)`,

@@ -3,14 +3,14 @@ import { useTranslation } from "react-i18next";
 import { useAPIContext } from "@/client/shared/contexts/APIContext";
 import { useResourceWithSync } from "@/client/shared/hooks/useResource";
 import { paths } from "@/client/config/paths";
-import { scrollToTop } from "@/client/shared/scrollToTop";
+import { scrollToTop } from "@/client/ui/lib/scrollToTop";
 
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
 import { Grid } from "@/client/ui/molecules/Grid";
 import { Paginator } from "@/client/ui/molecules/Paginator";
 import { SearchForm } from "@/client/ui/molecules/SearchForm";
-import { GameStateCard } from "@/client/entities/GameStateCard";
+import { GameStateCard } from "@/client/entities/GameState/GameStateCard";
 
 export const SharedSavesPage = () => {
   const { gameStateAPI } = useAPIContext();

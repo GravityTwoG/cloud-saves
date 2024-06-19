@@ -17,7 +17,7 @@ import {
 import { H1 } from "@/client/ui/atoms/Typography";
 import { Container } from "@/client/ui/atoms/Container";
 import { Preloader } from "@/client/ui/atoms/Preloader";
-import { GraphicForm } from "@/client/entities/GraphicForm";
+import { GraphicForm } from "@/client/entities/Graphic/GraphicForm";
 import { Flex } from "@/client/ui/atoms/Flex";
 
 export const GraphicPage = () => {

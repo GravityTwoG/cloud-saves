@@ -18,10 +18,10 @@ import { H1, H2, Paragraph } from "@/client/ui/atoms/Typography";
 import { Button, ConfirmButton, CopyButton } from "@/client/ui/atoms/Button";
 import { Flex } from "@/client/ui/atoms/Flex";
 import { Paper } from "@/client/ui/atoms/Paper";
-import { GameStatePageLayout } from "@/client/layouts/GameStatePageLayout";
-import { SharesWidget } from "@/client/widgets/SharesWidget";
-import { ParametersView } from "@/client/widgets/ParametersView";
-import { GameStateArchive } from "@/client/entities/GameStateArchive";
+import { GameStatePageLayout } from "@/client/entities/GameState/GameStatePageLayout";
+import { SharesWidget } from "@/client/entities/GameState/SharesWidget";
+import { ParametersView } from "@/client/entities/GameState/ParametersView";
+import { GameStateArchive } from "@/client/entities/GameState/GameStateArchive";
 import { SyncSettingsModal } from "./SyncSettingsModal";
 
 export const MySavePage = () => {

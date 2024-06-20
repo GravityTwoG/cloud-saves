@@ -1,33 +1,97 @@
-.Spinner {
+.Background {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   z-index: 2;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
   background-color: transparent;
   border-radius: 6px;
   opacity: 0;
   transition:
     background-color 0.3s ease,
     opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.LoaderContainer {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  transform: scaleY(0);
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  pointer-events: none;
+  inset: 0;
 }
 
 .Preloader {
   position: relative;
-  min-height: 100px;
+  min-height: 0;
+  transition: min-height 0.3s ease;
 
   &[data-is-visible="true"] {
     min-height: 250px;
+  }
 
-    & .Spinner {
-      display: flex;
-      min-height: 250px;
-      background-color: var(--color-background);
-      opacity: 0.5;
-    }
+  & .Background[data-is-visible="true"] {
+    background-color: var(--color-deco);
+    opacity: 0.25;
+  }
+
+  & .LoaderContainer[data-is-visible="true"] {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.Loader {
+  --left-block-color: var(--color-accent);
+  --right-block-color: var(--color-accent);
+  --ball-color: var(--color-accent);
+  --background-color: transparent;
+
+  box-sizing: border-box;
+  width: 5rem;
+  height: 4rem;
+  padding: 0 0.5rem;
+
+  /* works bad with var() */
+  /* stylelint-disable function-linear-gradient-no-nonstandard-direction */
+  background:
+    linear-gradient(var(--left-block-color) 0 0) 0 0/8px 20px,
+    linear-gradient(var(--right-block-color) 0 0) 100% 0/8px 20px,
+    radial-gradient(farthest-side, var(--ball-color) 90%, #0000) 0 5px/8px 8px
+      content-box,
+    var(--background-color);
+  background-repeat: no-repeat;
+  border: 0.25rem solid var(--background-color);
+  animation: l3 2s infinite linear;
+}
+
+@keyframes l3 {
+  25% {
+    background-position:
+      0 0,
+      100% 100%,
+      100% calc(100% - 5px);
+  }
+
+  50% {
+    background-position:
+      0 100%,
+      100% 100%,
+      0 calc(100% - 5px);
+  }
+
+  75% {
+    background-position:
+      0 100%,
+      100% 0,
+      100% 5px;
   }
 }

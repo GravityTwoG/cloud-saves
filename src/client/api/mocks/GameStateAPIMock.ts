@@ -5,6 +5,7 @@ import { ApiError } from "../ApiError";
 import { IGameAPI } from "../interfaces/IGameAPI";
 import { ResourceRequest, ResourceResponse } from "../interfaces/common";
 import { LocalStorage } from "../LocalStorage";
+import { sleep } from "./utils";
 
 const ls = new LocalStorage("game_states_");
 
@@ -94,6 +95,7 @@ export class GameStateAPIMock implements IGameStateAPI {
   ): Promise<ResourceResponse<GameState>> => {
     console.log("getUserStates", query);
     try {
+      await sleep(1000);
       const states = ls.getItem<Record<string, GameState>>("states");
       const statesArray: GameState[] = [];
 

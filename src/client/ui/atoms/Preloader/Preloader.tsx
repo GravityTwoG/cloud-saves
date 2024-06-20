@@ -2,8 +2,7 @@ import { clsx } from "clsx";
 import classes from "./preloader.module.scss";
 
 import { ReactTagProps } from "@/client/ui/types";
-
-import { Spinner } from "@/client/ui/atoms/Spinner";
+import { useDelayedFalse } from "@/client/ui/hooks/useDelayedFalse";
 
 export type PreloaderProps = ReactTagProps<"div"> & { isLoading: boolean };
 
@@ -12,17 +11,30 @@ export const Preloader = ({
   isLoading,
   ...props
 }: PreloaderProps) => {
+  const delayedIsLoading = useDelayedFalse(isLoading, 300);
+
   return (
     <div
       {...props}
-      data-is-visible={isLoading}
-      className={clsx(props.className, classes.Preloader)}
+      data-is-visible={isLoading && delayedIsLoading}
+      className={clsx(classes.Preloader, props.className)}
     >
       {children}
 
-      <div className={classes.Spinner}>
-        <Spinner />
-      </div>
+      {(isLoading || delayedIsLoading) && (
+        <>
+          <div
+            data-is-visible={isLoading && delayedIsLoading}
+            className={classes.Background}
+          ></div>
+          <div
+            data-is-visible={isLoading && delayedIsLoading}
+            className={classes.LoaderContainer}
+          >
+            <div className={classes.Loader}></div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

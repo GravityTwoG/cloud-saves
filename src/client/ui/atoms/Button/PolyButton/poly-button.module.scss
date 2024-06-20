@@ -67,7 +67,7 @@
   stroke: currentcolor !important;
 }
 
-.PolyButtonMenuButton {
+.PolyButtonArrowButton {
   position: relative;
   display: inline-block;
   width: 1.5rem;
@@ -105,28 +105,28 @@
     height: 3px;
     background-color: #fff;
     border-radius: 2px;
-    transition: transform 0.15s ease-in-out;
+    transition: transform 0.15s ease;
     pointer-events: none;
   }
 
   & > div:nth-child(1) {
     top: 50%;
     left: calc(50% - 2px);
-    transform: translateY(-50%) rotate(45deg);
+    transform: translateY(-50%) rotate(-45deg);
   }
 
   & > div:nth-child(2) {
     top: 50%;
     right: calc(50% - 2px);
-    transform: translateY(-50%) rotate(-45deg);
+    transform: translateY(-50%) rotate(45deg);
   }
 
   &[data-is-open="true"] > div:nth-child(1) {
-    transform: translateY(-50%) rotate(-45deg);
+    transform: translateY(-50%) rotate(45deg);
   }
 
   &[data-is-open="true"] > div:nth-child(2) {
-    transform: translateY(-50%) rotate(45deg);
+    transform: translateY(-50%) rotate(-45deg);
   }
 }
 

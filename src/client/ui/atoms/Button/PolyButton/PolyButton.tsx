@@ -43,7 +43,7 @@ export const PolyButton = (props: PolyButtonProps) => {
         </button>
 
         <button
-          className={classes.PolyButtonMenuButton}
+          className={classes.PolyButtonArrowButton}
           onClick={() => {
             if (props.isLoading) return;
             setIsOpen(!isOpen);

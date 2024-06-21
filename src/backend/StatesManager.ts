@@ -1,10 +1,10 @@
 import fs from "fs/promises";
 import path from "path";
-import os from "os";
 import { session } from "electron";
 
 import { Game, GameState } from "@/types";
 import { GameAPI, GameFromServer } from "@/client/api/GameAPI";
+import { Fetcher } from "@/client/api/Fetcher";
 
 import { ValueExtractor } from "./game-state-parameters/ValueExtractor";
 
@@ -12,12 +12,18 @@ import { moveFolder } from "./fs/moveFolder";
 import { downloadToFolder } from "./fs/downloadToFolder";
 import { extractZIP } from "./fs/zip/extractZIP";
 import { zipFolderOrFile } from "./fs/zip/zipFolderOrFile";
+import { getTempFolderPath } from "./fs/getTempFolderPath";
 
 export class StatesManager {
   private readonly valueExtractor: ValueExtractor;
+  private readonly fetcher: Fetcher;
+  private readonly tempFolderPath: string;
 
-  constructor(valueExtractor: ValueExtractor) {
+  constructor(valueExtractor: ValueExtractor, fetcher: Fetcher) {
     this.valueExtractor = valueExtractor;
+    this.fetcher = fetcher;
+
+    this.tempFolderPath = getTempFolderPath();
   }
 
   async uploadState(folder: {
@@ -35,17 +41,12 @@ export class StatesManager {
       gameStateData,
     );
 
-    const response = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/game-saves`,
-      {
-        method: "POST",
-        headers: {
-          Cookie: await this.buildCookieHeader(),
-        },
-        body: formData,
+    await this.fetcher.post(`/game-saves`, {
+      headers: {
+        Cookie: await this.buildCookieHeader(),
       },
-    );
-    await this.handleError(response);
+      body: formData,
+    });
 
     return gameStateData;
   }
@@ -54,24 +55,18 @@ export class StatesManager {
     const gameStateData = await this.getState(gameState);
     const formData = this.mapToGameStateData(gameState, gameStateData);
 
-    const response = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/game-saves/${gameState.id}`,
-      {
-        method: "PATCH",
-        headers: {
-          Cookie: await this.buildCookieHeader(),
-        },
-        body: formData,
+    await this.fetcher.patch(`/game-saves/${gameState.id}`, {
+      headers: {
+        Cookie: await this.buildCookieHeader(),
       },
-    );
-
-    await this.handleError(response);
+      body: formData,
+    });
 
     return gameStateData;
   }
 
   async downloadState(gameState: GameState) {
-    const archivePath = this.getTempFolderPath();
+    const archivePath = this.tempFolderPath;
     const filename = `${gameState.name}-archive.zip`;
     const filePath = path.join(archivePath, filename);
 
@@ -86,11 +81,6 @@ export class StatesManager {
     await fs.rm(extractedFolderPath, { recursive: true, force: true });
     // delete archive
     await fs.rm(filePath, { recursive: true, force: true });
-  }
-
-  private getTempFolderPath() {
-    const tempPath = os.tmpdir();
-    return path.join(tempPath, "cloud-saves");
   }
 
   private mapToGameStateData = (
@@ -130,10 +120,9 @@ export class StatesManager {
     localPath: string;
     name: string;
   }) {
-    const tempFolderPath = this.getTempFolderPath();
     // copy all files to temp folder
     const tempFolderBeforeUpload = path.join(
-      tempFolderPath,
+      this.tempFolderPath,
       `/before-upload/${folder.name}-${Math.random()}`,
     );
     await fs.cp(folder.localPath, tempFolderBeforeUpload, { recursive: true });
@@ -155,18 +144,11 @@ export class StatesManager {
   }
 
   private async getGame(gameId: string): Promise<Game> {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/games/${gameId}`,
-      {
-        headers: {
-          Cookie: await this.buildCookieHeader(),
-        },
+    const game = await this.fetcher.get<GameFromServer>(`/games/${gameId}`, {
+      headers: {
+        Cookie: await this.buildCookieHeader(),
       },
-    );
-
-    await this.handleError(response);
-
-    const game = (await response.json()) as GameFromServer;
+    });
 
     return GameAPI.mapGameFromServer(game);
   }
@@ -174,21 +156,5 @@ export class StatesManager {
   private async buildCookieHeader() {
     const cookies = await session.defaultSession.cookies.get({});
     return cookies.map((cookie) => `${cookie.name}=${cookie.value}`).join(";");
-  }
-
-  private async handleError(response: Response) {
-    if (!response.ok) {
-      const error = new Error(`${response.status}:${response.statusText}`);
-
-      try {
-        const json = await response.json();
-        error.message = json.message;
-        error.cause = json;
-      } catch (error) {
-        console.log("response.json() error", error);
-      }
-
-      throw error;
-    }
   }
 }

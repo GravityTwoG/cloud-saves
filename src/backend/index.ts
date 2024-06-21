@@ -1,3 +1,5 @@
+import { Fetcher } from "@/client/api/Fetcher";
+
 import { StatesManager } from "./StatesManager";
 import { SyncManager } from "./SyncManager";
 
@@ -13,5 +15,8 @@ const converters = {
 };
 
 const valueExtractor = new ValueExtractor(converters);
-export const statesManager = new StatesManager(valueExtractor);
+
+const fetcher = new Fetcher({ baseURL: import.meta.env.VITE_API_BASE_URL });
+
+export const statesManager = new StatesManager(valueExtractor, fetcher);
 export const syncManager = new SyncManager(statesManager);

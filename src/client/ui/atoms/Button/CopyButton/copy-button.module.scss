@@ -11,6 +11,7 @@
   scale: 1.5;
 
   & svg {
+    height: 1.25cap;
     transition: fill 0.1s linear;
     fill: var(--text-color);
   }

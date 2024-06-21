@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { clsx } from "clsx";
 import classes from "./modal.module.scss";
 
@@ -7,6 +7,7 @@ import { useOnKeyDown } from "@/client/ui/hooks/useOnKeyDown";
 
 import { Button } from "@/client/ui/atoms/Button";
 import { ModalPortal } from "./Portal";
+import { useDelayedFalse } from "../../hooks/useDelayedFalse";
 
 export type ModalProps = {
   closeModal: () => void;
@@ -27,8 +28,6 @@ export const Modal: React.FC<ModalProps> = ({
   showCloseButton = true,
   ...props
 }) => {
-  const [delayedIsOpen, setDelayedIsOpen] = useState(isOpen);
-
   useOnKeyDown(
     "Escape",
     (e) => {
@@ -38,14 +37,7 @@ export const Modal: React.FC<ModalProps> = ({
     [closeModal, isOpen],
   );
 
-  useEffect(() => {
-    if (isOpen && !delayedIsOpen) {
-      setDelayedIsOpen(true);
-    } else if (!isOpen && delayedIsOpen) {
-      const timeout = setTimeout(() => setDelayedIsOpen(false), 150);
-      return () => clearTimeout(timeout);
-    }
-  }, [isOpen, delayedIsOpen]);
+  const delayedIsOpen = useDelayedFalse(isOpen, 150);
 
   return (
     <ModalPortal>

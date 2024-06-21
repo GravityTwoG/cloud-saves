@@ -21,27 +21,84 @@ import LightThemeIcon from "@/client/ui/icons/LightTheme.svg";
 import DarkThemeIcon from "@/client/ui/icons/DarkTheme.svg";
 import LanguageIcon from "@/client/ui/icons/Language.svg";
 import LogoutIcon from "@/client/ui/icons/Logout.svg";
+import LeftArrowIcon from "@/client/ui/icons/LeftArrow.svg";
+import SidebarLeftIcon from "@/client/ui/icons/SidebarLeft.svg";
 
 export type SidebarProps = {
   links: NavLinkType[];
-  isExpanded: boolean;
-  setIsExpanded: (isExpanded: boolean) => void;
 };
 
 export const Sidebar = (props: SidebarProps) => {
-  const { logout } = useAuthContext();
-  const { osAPI } = useAPIContext();
-  const { notify } = useUIContext();
-  const { theme, toggleTheme } = useThemeContext();
-  const { t, i18n } = useTranslation();
-  const [language, setLanguage] = usePersistedState<string>(
-    "language",
-    i18n.language,
+  const { t } = useTranslation();
+  const [isExpanded, setIsExpanded] = usePersistedState<boolean>(
+    "isSidebarExpanded",
+    false,
   );
 
-  useEffect(() => {
-    i18n.changeLanguage(language);
-  }, [language]);
+  return (
+    <aside
+      className={clsx(classes.Sidebar, {
+        [classes.Expanded]: isExpanded,
+      })}
+    >
+      <div className={classes.SidebarHeader}>
+        <button
+          className={classes.AppButton}
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <SidebarLeftIcon />
+        </button>
+
+        <button
+          className={clsx(classes.AppButton, classes.GoBackButton)}
+          onClick={() => window.history.back()}
+        >
+          <LeftArrowIcon />
+        </button>
+      </div>
+
+      <div className={classes.LogoContainer}>
+        <div className={classes.Logo}>Logo {isExpanded && "CloudSaves"}</div>
+      </div>
+
+      <nav className={classes.Nav}>
+        <ul>
+          {props.links.map((link) => (
+            <NavLink
+              key={link.path}
+              link={{
+                ...link,
+                label: t(
+                  `common.navLinks.${link.label}` as "common.navLinks.profile",
+                ),
+              }}
+              isExpanded={isExpanded}
+            />
+          ))}
+        </ul>
+      </nav>
+
+      <div
+        className={clsx(classes.AppButtons, {
+          [classes.Expanded]: isExpanded,
+        })}
+      >
+        <ThemeButton />
+
+        <LanguageButton />
+
+        <AuthGuard forRoles={[]}>
+          <LogoutButton />
+        </AuthGuard>
+      </div>
+    </aside>
+  );
+};
+
+const ThemeButton = () => {
+  const { osAPI } = useAPIContext();
+  const { theme, toggleTheme } = useThemeContext();
+  const { t } = useTranslation();
 
   useEffect(() => {
     // run after changes in DOM
@@ -56,11 +113,55 @@ export const Sidebar = (props: SidebarProps) => {
     });
   }, [theme, osAPI]);
 
+  return (
+    <button
+      className={classes.AppButton}
+      type="button"
+      onClick={(e) => toggleTheme(e.clientX, e.clientY)}
+      title={t("common.toggle-theme")}
+      aria-label={t("common.toggle-theme")}
+    >
+      {theme === "light" ? <LightThemeIcon /> : <DarkThemeIcon />}
+    </button>
+  );
+};
+
+const LanguageButton = () => {
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = usePersistedState<string>(
+    "language",
+    i18n.language,
+  );
+
+  useEffect(() => {
+    i18n.changeLanguage(language);
+    document.documentElement.lang = language;
+  }, [language]);
+
   const toggleLanguage = () => {
     const newLanguage = language === "en" ? "ru" : "en";
     i18n.changeLanguage(newLanguage);
     setLanguage(newLanguage);
   };
+
+  return (
+    <button
+      className={classes.AppButton}
+      type="button"
+      onClick={toggleLanguage}
+      title={t("common.change-language")}
+      aria-label={t("common.change-language")}
+    >
+      <LanguageIcon />
+      {i18n.language === "en" ? "en" : "ru"}
+    </button>
+  );
+};
+
+const LogoutButton = () => {
+  const { logout } = useAuthContext();
+  const { notify } = useUIContext();
+  const { t } = useTranslation();
 
   const onLogout = async () => {
     try {
@@ -71,75 +172,14 @@ export const Sidebar = (props: SidebarProps) => {
   };
 
   return (
-    <aside
-      className={clsx(classes.Sidebar, {
-        [classes.Expanded]: props.isExpanded,
-      })}
+    <button
+      className={clsx(classes.AppButton, classes.LogoutButton)}
+      onClick={onLogout}
+      title={t("common.logout")}
+      aria-label={t("common.logout")}
     >
-      <div className={classes.LogoContainer}>
-        <div
-          className={classes.Logo}
-          onClick={() => props.setIsExpanded(!props.isExpanded)}
-        >
-          Logo
-        </div>
-      </div>
-
-      <nav className={classes.Nav}>
-        <ul>
-          {props.links.map((link) => (
-            <NavLink
-              key={link.path}
-              link={{
-                ...link,
-                label: t(
-                  `common.navLinks.${link.label}` as "common.navLinks.profile",
-                ),
-              }}
-              isExpanded={props.isExpanded}
-            />
-          ))}
-        </ul>
-      </nav>
-
-      <div
-        className={clsx(classes.AppButtons, {
-          [classes.Expanded]: props.isExpanded,
-        })}
-      >
-        <button
-          className={classes.AppButton}
-          type="button"
-          onClick={(e) => toggleTheme(e.clientX, e.clientY)}
-          title={t("common.toggle-theme")}
-          aria-label={t("common.toggle-theme")}
-        >
-          {theme === "light" ? <LightThemeIcon /> : <DarkThemeIcon />}
-        </button>
-
-        <button
-          className={classes.AppButton}
-          type="button"
-          onClick={toggleLanguage}
-          title={t("common.change-language")}
-          aria-label={t("common.change-language")}
-        >
-          <LanguageIcon />
-          {i18n.language === "en" ? "en" : "ru"}
-        </button>
-
-        <AuthGuard forRoles={[]}>
-          <button
-            className={clsx(classes.AppButton, classes.LogoutButton)}
-            onClick={onLogout}
-            title={t("common.logout")}
-            aria-label={t("common.logout")}
-          >
-            <LogoutIcon />
-          </button>
-        </AuthGuard>
-      </div>
-    </aside>
+      <LogoutIcon />
+    </button>
   );
 };
 

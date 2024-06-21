@@ -16,10 +16,10 @@ export type ListProps<E> = {
 
 export function List<E>(props: ListProps<E>) {
   return (
-    <Preloader isLoading={props.isLoading || false}>
+    <Preloader className={props.className} isLoading={props.isLoading || false}>
       {!props.isLoading && !props.elements.length && <NoElements />}
 
-      <ul className={clsx(classes.List, props.className)}>
+      <ul className={classes.List}>
         {props.elements.map((element) => (
           <li key={props.getKey(element)}>
             <Paper

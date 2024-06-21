@@ -27,6 +27,14 @@
   --shadow-paper: 5px 5px 15px 0 #3333330e;
 }
 
+html {
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
 ::view-transition-old(root),
 ::view-transition-new(root) {
   mix-blend-mode: normal;

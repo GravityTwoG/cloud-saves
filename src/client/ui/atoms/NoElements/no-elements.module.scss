@@ -1,12 +1,14 @@
 .NoElements {
-  padding: 4rem 1.25rem;
+  padding: 45px 1.25rem;
   font-weight: 700;
   font-size: 1.25rem;
   line-height: 1.75rem;
   text-align: center;
 
   & > svg {
+    display: block;
     width: 10rem;
+    margin: auto;
 
     path {
       fill: var(--color-deco);

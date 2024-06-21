@@ -4,7 +4,7 @@
   align-items: center;
   width: 5rem;
   min-height: 100vh;
-  padding: 2.5rem 0.25rem 0.75rem;
+  padding: 2rem 0.25rem 0.75rem;
   overflow: hidden;
   background: var(--color-paper);
   box-shadow: var(--shadow-paper);
@@ -15,10 +15,27 @@
   }
 }
 
+.SidebarHeader {
+  display: flex;
+  gap: 0.25rem;
+  align-items: stretch;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 3rem;
+
+  & > button {
+    flex: 0;
+    padding: 0.1rem 0.15rem;
+  }
+}
+
+.GoBackButton {
+  width: 1.5rem;
+}
+
 .LogoContainer {
   width: 100%;
   margin-bottom: 4rem;
-  cursor: pointer;
 }
 
 .Logo {
@@ -130,6 +147,7 @@
 .AppButtons {
   display: flex;
   flex-flow: column;
+  gap: 0.25rem;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -181,18 +199,5 @@
 
   & > svg {
     width: 1.5rem;
-
-    & > path {
-      transition: stroke 0.3s ease;
-      stroke: var(--color-text);
-    }
-  }
-
-  &:hover {
-    color: var(--color-accent);
-
-    & > svg path {
-      stroke: var(--color-accent);
-    }
   }
 }

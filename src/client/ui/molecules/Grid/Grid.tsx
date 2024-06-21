@@ -17,11 +17,11 @@ export type GridProps<E> = {
 
 export function Grid<E>(props: GridProps<E>) {
   return (
-    <Preloader isLoading={props.isLoading || false}>
+    <Preloader className={props.className} isLoading={props.isLoading || false}>
       {!props.isLoading && !props.elements.length && <NoElements />}
 
       <ul
-        className={clsx(classes.Grid, props.className)}
+        className={classes.Grid}
         style={{
           gridTemplateColumns: `repeat(auto-fill, minmax(${
             props.elementWidth || 200

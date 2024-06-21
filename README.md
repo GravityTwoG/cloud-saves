@@ -13,10 +13,13 @@ Backend application with REST API is implemented by my friend https://github.com
 - ⬇︎ download your/shared/public saves
 - 🗃️ extract game state information from files (player level, play time etc)
 
+https://github.com/GravityTwoG/cloud-saves/assets/55045953/03c87ddd-96d8-45b7-8f34-fe2894ddb9cf
+
+
 ## Development
 
 Install Git.
-Install Node.js from official website or using volta.sh, nvm, fnm.
+Install Node.js from official website or use volta.sh, nvm, fnm.
 
 Install dependencies using command:
 

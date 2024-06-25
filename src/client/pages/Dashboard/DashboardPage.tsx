@@ -34,7 +34,7 @@ export const DashboardPage = () => {
     onSearchQueryChange,
     onPageSelect,
     _loadResource: loadGraphics,
-  } = useResourceWithSync(graphicsAPI.getCommonGraphics);
+  } = useResourceWithSync("common-graphics", graphicsAPI.getCommonGraphics);
 
   const onAdd = async (graphic: CommonGraphic) => {
     try {

@@ -26,7 +26,7 @@ export const UsersPage = () => {
     onSearchQueryChange,
     onPageSelect,
     _loadResource: loadUsers,
-  } = useResourceWithSync(usersAPI.getUsers);
+  } = useResourceWithSync("users", usersAPI.getUsers);
 
   const { notify } = useUIContext();
 

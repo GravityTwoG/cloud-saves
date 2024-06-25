@@ -31,7 +31,7 @@ export const GamesPage = () => {
     onSearchQueryChange,
     onPageSelect,
     _loadResource: loadGames,
-  } = useResourceWithSync(gameAPI.getGames);
+  } = useResourceWithSync("games", gameAPI.getGames);
 
   const onDelete = async (gameId: string) => {
     try {

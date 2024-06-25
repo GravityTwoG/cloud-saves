@@ -23,7 +23,7 @@ export const SharedSavesPage = () => {
     onSearch,
     onSearchQueryChange,
     onPageSelect,
-  } = useResourceWithSync(gameStateAPI.getSharedStates);
+  } = useResourceWithSync("game-states-shared", gameStateAPI.getSharedStates);
 
   return (
     <Container>

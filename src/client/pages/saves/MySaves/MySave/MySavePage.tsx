@@ -169,7 +169,13 @@ export const MySavePage = () => {
             />
           </form>
         ) : (
-          <span onClick={() => setIsNameEditing(true)}>{gameState.name}</span>
+          <button
+            className={classes.GameStateNameButton}
+            onClick={() => setIsNameEditing(true)}
+            title={t("edit-name")}
+          >
+            {gameState.name}
+          </button>
         )}
       </H1>
 

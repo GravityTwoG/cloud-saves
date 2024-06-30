@@ -27,7 +27,7 @@ export const CommonParametersWidget = () => {
     onSearchQueryChange,
     onPageSelect,
     _loadResource: loadParameters,
-  } = useResource(commonParametersAPI.getParameters);
+  } = useResource("common-parameters", commonParametersAPI.getParameters);
 
   const onAdd = async (parameter: {
     type: { id: string; type: string };

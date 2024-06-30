@@ -26,7 +26,7 @@ export const PublicSavesPage = () => {
     onSearchQueryChange,
     onPageSelect,
     _loadResource,
-  } = useResourceWithSync(gameStateAPI.getPublicStates, {
+  } = useResourceWithSync("game-states-public", gameStateAPI.getPublicStates, {
     searchQuery: "",
     pageNumber: 1,
     pageSize: 12,

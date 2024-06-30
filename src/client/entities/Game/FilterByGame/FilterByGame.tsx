@@ -25,7 +25,7 @@ export const FilterByGame = (props: FilterByGameProps) => {
     isLoading,
     onSearch,
     onSearchQueryChange,
-  } = useResource(gameAPI.getGames);
+  } = useResource("games", gameAPI.getGames);
 
   const gameOptions = useMemo(() => {
     return games.items.map((game) => ({

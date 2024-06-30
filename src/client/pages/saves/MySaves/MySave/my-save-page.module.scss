@@ -41,9 +41,18 @@ html[data-theme="dark"] .GameImageOverlay {
   margin-bottom: 0.5rem;
   color: var(--color-text);
 
-  & > span {
-    display: block;
+  & > .GameStateNameButton {
+    display: inline-block;
     width: 100%;
+    color: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    text-align: left;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
   }
 }
 

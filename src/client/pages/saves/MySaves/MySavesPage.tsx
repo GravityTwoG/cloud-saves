@@ -28,7 +28,7 @@ export const MySavesPage = () => {
     onSearchQueryChange,
     onPageSelect,
     _loadResource: loadSaves,
-  } = useResourceWithSync(gameStateAPI.getUserStates);
+  } = useResourceWithSync("game-states", gameStateAPI.getUserStates);
 
   const onDelete = async (path: string) => {
     try {

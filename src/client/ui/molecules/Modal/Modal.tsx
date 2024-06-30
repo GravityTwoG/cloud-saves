@@ -31,8 +31,10 @@ export const Modal: React.FC<ModalProps> = ({
   useOnKeyDown(
     "Escape",
     (e) => {
-      e.stopPropagation();
-      closeModal();
+      if (isOpen) {
+        e.stopPropagation();
+        closeModal();
+      }
     },
     [closeModal, isOpen],
   );

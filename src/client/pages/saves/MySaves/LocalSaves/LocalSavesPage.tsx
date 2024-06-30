@@ -52,7 +52,7 @@ export const LocalSavesPage = () => {
     onSearch,
     onSearchQueryChange,
     _loadResource,
-  } = useResourceWithSync(gameStateAPI.getStatePaths);
+  } = useResourceWithSync("game-state-paths", gameStateAPI.getStatePaths);
 
   const onFolderOpen = async (folderToOpen: FileInfo) => {
     try {

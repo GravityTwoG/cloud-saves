@@ -35,7 +35,7 @@ export const useQueryState = <T extends QueryState>(
     }
 
     return queryParams;
-  }, [searchQuery, initialQueryState]);
+  }, [searchQuery]);
 
   const setQuery = useCallback(
     (newQuery: T) => {

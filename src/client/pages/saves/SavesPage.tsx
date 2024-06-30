@@ -26,7 +26,7 @@ export const SavesPage = () => {
     onSearchQueryChange,
     onPageSelect,
     _loadResource: loadSaves,
-  } = useResourceWithSync(gameStateAPI.getStates, {
+  } = useResourceWithSync("game-states", gameStateAPI.getStates, {
     searchQuery: "",
     pageNumber: 1,
     pageSize: 12,

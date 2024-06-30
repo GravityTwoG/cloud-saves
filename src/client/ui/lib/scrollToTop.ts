@@ -9,5 +9,8 @@ const getContentElem = () => {
 };
 
 export const scrollToTop = () => {
-  getContentElem()?.scrollTo(0, 0);
+  getContentElem()?.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
 };

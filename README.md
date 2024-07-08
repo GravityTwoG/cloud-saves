@@ -6,6 +6,12 @@ Desktop application for management of game saves.
 
 Backend application with REST API is implemented by my friend https://github.com/Ki-Really/GameSavesStore.
 
+In our time, video games have become an important part of leisure for millions of people around the world. It often happens that game save files are lost due to various reasons: computer crashes, accidental deletion of data, and other causes.
+
+There are cloud storage solutions for game save files, such as Steam and GOG Launcher. In addition to synchronizing game save files, they can extract parameters such as time spent in the game, game completion percentage, and others from the files.
+
+The main problem with these applications is that they only support games purchased within the Steam and Good Old Games digital stores. This creates a need for a system that backs up game save files for arbitrary games.
+
 ## Features
 
 - 🔍 scan file system for game saves
@@ -14,7 +20,6 @@ Backend application with REST API is implemented by my friend https://github.com
 - 🗃️ extract game state information from files (player level, play time etc)
 
 https://github.com/GravityTwoG/cloud-saves/assets/55045953/03c87ddd-96d8-45b7-8f34-fe2894ddb9cf
-
 
 ## Development
 

@@ -13,8 +13,10 @@
   overflow: auto;
   background-color: rgb(128 128 128 / 20%);
   opacity: 0;
-  transition: opacity var(--animation-time) ease;
-  will-change: opacity;
+  transition:
+    opacity var(--animation-time) ease,
+    backdrop-filter var(--animation-time) ease;
+  will-change: opacity, backdrop-filter;
   -webkit-overflow-scrolling: touch;
 
   --animation-time: 0.15s;
@@ -25,6 +27,7 @@
 
   &.ModalOpen {
     opacity: 1;
+    backdrop-filter: blur(2px);
   }
 }
 

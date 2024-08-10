@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { clsx } from "clsx";
 import { useTranslation } from "react-i18next";
+import { useMeasure } from "@uidotdev/usehooks";
 
 import classes from "./sidebar.module.scss";
 
@@ -26,39 +27,44 @@ import SidebarLeftIcon from "@/client/ui/icons/SidebarLeft.svg";
 
 export type SidebarProps = {
   links: NavLinkType[];
+  isExpanded: boolean;
+  setIsExpanded: (isExpanded: boolean) => void;
 };
 
 export const Sidebar = (props: SidebarProps) => {
   const { t } = useTranslation();
-  const [isExpanded, setIsExpanded] = usePersistedState<boolean>(
-    "isSidebarExpanded",
-    false,
-  );
-
+  
   return (
     <aside
-      className={clsx(classes.Sidebar, {
-        [classes.Expanded]: isExpanded,
-      })}
+      className={clsx(classes.Sidebar)}
     >
       <div className={classes.SidebarHeader}>
         <button
           className={classes.AppButton}
-          onClick={() => setIsExpanded(!isExpanded)}
+          onClick={() => props.setIsExpanded(!props.isExpanded)}
         >
           <SidebarLeftIcon />
         </button>
 
         <button
           className={clsx(classes.AppButton, classes.GoBackButton)}
-          onClick={() => window.history.back()}
+          onClick={() => {
+            if (window.history.length > 0) {
+              window.history.back();
+            }
+          }}
         >
           <LeftArrowIcon />
         </button>
       </div>
 
       <div className={classes.LogoContainer}>
-        <div className={classes.Logo}>Logo {isExpanded && "CloudSaves"}</div>
+        <div className={classes.Logo}>
+          <p>Logo</p>
+          <AnimatedText visible={props.isExpanded}>
+            CloudSaves
+          </AnimatedText>
+        </div>
       </div>
 
       <nav className={classes.Nav}>
@@ -72,7 +78,7 @@ export const Sidebar = (props: SidebarProps) => {
                   `common.navLinks.${link.label}` as "common.navLinks.profile",
                 ),
               }}
-              isExpanded={isExpanded}
+              isExpanded={props.isExpanded}
             />
           ))}
         </ul>
@@ -80,7 +86,7 @@ export const Sidebar = (props: SidebarProps) => {
 
       <div
         className={clsx(classes.AppButtons, {
-          [classes.Expanded]: isExpanded,
+          [classes.Expanded]: props.isExpanded,
         })}
       >
         <ThemeButton />
@@ -198,12 +204,21 @@ const NavLink = ({ link, isExpanded }: NavLinkProps) => {
           href={link.path}
           className={clsx(classes.NavLinkAnchor, {
             [classes.NavLinkActive]: isActive,
-            [classes.Expanded]: isExpanded,
           })}
         >
-          {link.icon && <div className={classes.NavIcon}>{link.icon}</div>}
+          <div className={classes.NavLinkRow}>
+            {link.icon && <div className={classes.NavIcon}>{link.icon}</div>}
 
-          <span className={classes.NavLabel}>{link.label}</span>
+            <AnimatedText visible={isExpanded} className={classes.NavLabel}>
+              {link.label}
+            </AnimatedText>
+          </div>
+
+          {!isExpanded && (
+            <div className={classes.NavLinkTooltip}>
+              <p className={classes.NavLabel}>{link.label}</p>
+            </div>
+          )}
         </Link>
       </li>
     );
@@ -218,4 +233,29 @@ const NavLink = ({ link, isExpanded }: NavLinkProps) => {
   }
 
   return renderLink();
+};
+
+type AnimatedTextProps = {
+  children: React.ReactNode;
+  className?: string;
+  visible?: boolean;
+};
+
+const AnimatedText = ({ children, className, visible }: AnimatedTextProps) => {
+  const [ref, bounds] = useMeasure();
+
+  return (
+    <div
+      className={classes.AnimatedText}
+      style={{
+        width: visible ? bounds.width || 0 : 0,
+        height: bounds.height || 0,
+        opacity: visible ? 1 : 0,
+      }}
+    >
+      <p ref={ref} className={clsx(className)}>
+        {children}
+      </p>
+    </div>
+  );
 };

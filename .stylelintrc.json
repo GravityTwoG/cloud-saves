@@ -6,6 +6,7 @@
   ],
   "plugins": ["stylelint-order", "stylelint-scss"],
   "rules": {
-    "selector-class-pattern": ["([A-Z][a-z0-9]+)+|([a-z]+)", {}]
+    "selector-class-pattern": ["([A-Z][a-z0-9]+)+|([a-z]+)", {}],
+    "no-descending-specificity": null
   }
 }

@@ -7,7 +7,7 @@
   --color-accent-shadow: #e6800b30;
   --color-secondary: #222;
   --color-secondary-hover: #555;
-  --color-deco: #d8d8d8;
+  --color-deco: #e9e9e9;
   --color-danger: #b91c1c;
   --color-danger-hover: #7f1d1d;
   --color-danger-active: #b91c1c;
@@ -29,6 +29,12 @@
 
 html {
   color-scheme: light;
+  width: 100vw;
+  text-size-adjust: 100%;
+  font-synthesis: none;
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: subpixel-antialiased;
 }
 
 html[data-theme="dark"] {
@@ -60,6 +66,7 @@ html[data-theme="dark"] {
 }
 
 body {
+  width: 100%;
   color: var(--color-text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif;
@@ -71,26 +78,44 @@ body {
   background-color: var(--color-accent);
 }
 
-.custom-scrollbar {
+.custom-scrollbar-new {
   scroll-behavior: smooth;
-}
-
-/** In Chrome 121, support was added for scrollbar-color and scrollbar-width. If some of these properties are used, then ::-webkit-scrollbar will not work. */
-@supports not selector(::-webkit-scrollbar) .custom-scrollbar {
-  scrollbar-width: auto;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
   scrollbar-color: var(--color-accent) transparent;
 }
 
+.custom-scrollbar {
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  overflow: auto;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
+  height: 10px;
+  background-color: transparent;
   cursor: pointer;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: var(--color-accent);
+  background-color: transparent;
   border-radius: 6px;
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: var(--color-accent);
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: var(--color-accent-hover);
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-corner {
+  display: none;
 }

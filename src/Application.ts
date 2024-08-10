@@ -27,6 +27,7 @@ export class Application {
 
   init() {
     app.commandLine.appendSwitch("lang", "en-US");
+    app.commandLine.appendSwitch('--enable-features', 'OverlayScrollbar')
     this.registerProtocolClient();
     electronDl();
 

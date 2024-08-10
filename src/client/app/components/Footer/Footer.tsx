@@ -14,7 +14,9 @@ export const Footer = () => {
 
   return (
     <Flex jcc className="my-2">
-      <Paragraph>v{version}</Paragraph>
+      <footer>
+        <Paragraph>v{version}</Paragraph>
+      </footer>
     </Flex>
   );
 };

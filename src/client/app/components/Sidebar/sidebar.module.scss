@@ -1,36 +1,36 @@
 .Sidebar {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 5rem;
+  width: var(--sidebar-width);
   min-height: 100vh;
-  padding: 2rem 0.25rem 0.75rem;
-  overflow: hidden;
+  padding: 0.25rem;
   background: var(--color-paper);
   box-shadow: var(--shadow-paper);
   transition: width 0.3s ease;
-
-  &.Expanded {
-    width: 14rem;
-  }
 }
 
 .SidebarHeader {
   display: flex;
-  gap: 0.25rem;
   align-items: stretch;
   justify-content: space-between;
   width: 100%;
   margin-bottom: 3rem;
 
-  & > button {
+  & > .AppButton {
     flex: 0;
     padding: 0.1rem 0.15rem;
   }
 }
 
 .GoBackButton {
-  width: 1.5rem;
+  width: 1.25rem;
+
+  & > svg {
+    height: 1.15rem;
+  }
 }
 
 .LogoContainer {
@@ -39,9 +39,19 @@
 }
 
 .Logo {
+  display: flex;
+  justify-content: center;
   font-weight: bold;
   text-align: center;
   user-select: none;
+
+  & > p {
+    color: var(--color-accent);
+  }
+
+  & > div > p {
+    padding-left: 0.25rem;
+  }
 }
 
 .Nav {
@@ -61,14 +71,16 @@
 }
 
 .NavIcon {
-  width: 100%;
-  max-width: 3rem;
-  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  margin-left: 4px;
   padding: 4px 8px;
 
   & > svg {
-    width: 100%;
-    height: 100%;
+    width: 32px;
+    height: 32px;
 
     & path,
     & circle,
@@ -79,15 +91,47 @@
   }
 }
 
+.NavLabel {
+  display: -webkit-box;
+  width: 100%;
+  padding-bottom: 0.5rem;
+  padding-bottom: 0;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+  text-align: left;
+  text-overflow: ellipsis;
+  word-wrap: none;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.NavLinkTooltip {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 1rem);
+  z-index: 10;
+  display: none;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--color-paper);
+  border-radius: 6px;
+  box-shadow:
+    5px 5px 15px 0 #3333330e,
+    5px 5px 15px 0 #3333330e,
+    0 0 20px 0 #dfdcdc1a;
+  transform: translateY(-50%);
+}
+
 .NavLinkAnchor {
+  position: relative;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
-  padding-bottom: 0.5rem;
+  min-width: 100%;
   color: var(--color-text);
-  font-size: 12px;
   text-decoration: none;
   background-color: transparent;
   border-radius: 6px;
@@ -99,20 +143,23 @@
     font-size 0.3s ease;
   will-change: scale, padding-bottom, font-size, background-color, color;
 
-  & > .NavLabel {
-    display: -webkit-box;
-    max-width: 100%;
-    overflow: hidden;
-    line-height: 1;
-    text-align: center;
-    text-overflow: ellipsis;
-    word-wrap: none;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+  &.NavLinkActive {
+    color: var(--color-accent);
+  }
+
+  & .NavLinkRow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
   }
 
   &:hover {
     background-color: var(--color-deco);
+
+    & .NavLinkTooltip {
+      display: block;
+    }
   }
 
   &:focus-visible {
@@ -121,26 +168,6 @@
 
   &:active {
     scale: 0.95;
-  }
-
-  &.NavLinkActive {
-    color: var(--color-accent);
-  }
-
-  &.Expanded {
-    flex-flow: row nowrap;
-    justify-content: flex-start;
-    padding-bottom: 0;
-    font-size: 14px;
-
-    & > .NavIcon {
-      margin: 0 0.25rem;
-    }
-
-    & > .NavLabel {
-      text-align: left;
-      -webkit-line-clamp: 1;
-    }
   }
 }
 
@@ -157,6 +184,10 @@
     flex-flow: row-reverse wrap;
     align-items: stretch;
   }
+
+  & > .AppButton svg {
+    height: 24px;
+  }
 }
 
 .AppButton {
@@ -166,7 +197,6 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin-top: 0.5rem;
   padding-top: 3px;
   padding-bottom: 3px;
   color: var(--color-text);
@@ -199,5 +229,20 @@
 
   & > svg {
     width: 1.5rem;
+  }
+}
+
+.AnimatedText {
+  width: 0;
+  min-width: 0;
+  overflow: hidden hidden;
+  opacity: 0;
+  transition:
+    width 0.3s ease,
+    opacity 0.3s ease;
+
+  & > p {
+    width: 100%;
+    min-width: max-content;
   }
 }

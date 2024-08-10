@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, RefObject, useCallback, useEffect, useRef } from "react";
 import { clsx } from "clsx";
 import classes from "./modal.module.scss";
 
@@ -8,6 +8,12 @@ import { useOnKeyDown } from "@/client/ui/hooks/useOnKeyDown";
 import { Button } from "@/client/ui/atoms/Button";
 import { ModalPortal } from "./Portal";
 import { useDelayedFalse } from "../../hooks/useDelayedFalse";
+
+const visibleModals: RefObject<Element | null>[] = [];
+
+function peek<T>(array: T[]): T | null {
+  return array[array.length - 1];
+}
 
 export type ModalProps = {
   closeModal: () => void;
@@ -28,18 +34,42 @@ export const Modal: React.FC<ModalProps> = ({
   showCloseButton = true,
   ...props
 }) => {
+  const delayedIsOpen = useDelayedFalse(isOpen, 150);
+
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Add the overlay ref to the stack of visible overlays on mount, and remove on unmount.
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    visibleModals.push(modalRef);
+
+    return () => {
+      const index = visibleModals.indexOf(modalRef);
+      if (index !== -1) {
+        visibleModals.splice(index, 1);
+      }
+    };
+  }, [isOpen]);
+
+  const onClose = useCallback(() => {
+    if (peek(visibleModals) === modalRef) {
+      closeModal();
+    }
+  }, [closeModal]);
+
   useOnKeyDown(
     "Escape",
     (e) => {
       if (isOpen) {
         e.stopPropagation();
-        closeModal();
+        onClose();
       }
     },
-    [closeModal, isOpen],
+    [onClose, isOpen],
   );
-
-  const delayedIsOpen = useDelayedFalse(isOpen, 150);
 
   return (
     <ModalPortal>
@@ -50,7 +80,7 @@ export const Modal: React.FC<ModalProps> = ({
             "custom-scrollbar",
             isOpen && delayedIsOpen && classes.ModalOpen,
           )}
-          onClick={closeModal}
+          onClick={onClose}
         >
           <style>{`body { overflow: hidden; }`}</style>
 
@@ -65,7 +95,7 @@ export const Modal: React.FC<ModalProps> = ({
           >
             <div className={clsx(classes.ModalHeader, props.headerClassName)}>
               <div className={classes.ModalTitle}>{title}</div>
-              {showCloseButton && <Button onClick={closeModal}>X</Button>}
+              {showCloseButton && <Button onClick={onClose}>X</Button>}
             </div>
 
             {props.children}

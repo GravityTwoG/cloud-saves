@@ -57,6 +57,25 @@ export const Sidebar = (props: SidebarProps) => {
           <LeftArrowIcon />
         </button>
       </div>
+      <div className={classes.SidebarHeader}>
+        <button
+          className={classes.AppButton}
+          onClick={() => props.setIsExpanded(!props.isExpanded)}
+        >
+          <SidebarLeftIcon />
+        </button>
+
+        <button
+          className={clsx(classes.AppButton, classes.GoBackButton)}
+          onClick={() => {
+            if (window.history.length > 0) {
+              window.history.back();
+            }
+          }}
+        >
+          <LeftArrowIcon />
+        </button>
+      </div>
 
       <div className={classes.LogoContainer}>
         <div className={classes.Logo}>

@@ -105,6 +105,7 @@
   word-wrap: none;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
+  user-select: none;
 }
 
 .NavLinkTooltip {
@@ -113,6 +114,7 @@
   left: calc(100% + 1rem);
   z-index: 10;
   display: none;
+  width: max-content;
   padding: 0.5rem 0.75rem;
   background-color: var(--color-paper);
   border-radius: 6px;
@@ -174,7 +176,7 @@
 .AppButtons {
   display: flex;
   flex-flow: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -183,10 +185,54 @@
   &.Expanded {
     flex-flow: row-reverse wrap;
     align-items: stretch;
+    justify-content: space-between;
+    width: calc(var(--sidebar-width) - 8px);
+  }
+
+  & > .AppButton {
+    width: 56px;
+    max-width: 56px;
+    height: 34px;
+    max-height: 34px;
   }
 
   & > .AppButton svg {
+    width: fit-content;
     height: 24px;
+  }
+
+  & > .AppButton:nth-child(1) {
+    view-transition-name: sidebar-theme-button;
+  }
+
+  & > .AppButton:nth-child(2) {
+    view-transition-name: sidebar-lang-button;
+    margin: auto;
+  }
+
+  & > .AppButton:nth-child(3) {
+    view-transition-name: sidebar-logout-button;
+    margin-right: auto;
+    margin-left: 0;
+  }
+
+  & > .AppButton::view-transition-group(sidebar-theme-button),
+  & > .AppButton::view-transition-group(sidebar-lang-button),
+  & > .AppButton::view-transition-group(sidebar-logout-button),
+  & > .AppButton::view-transition-old(sidebar-theme-button),
+  & > .AppButton::view-transition-old(sidebar-lang-button),
+  & > .AppButton::view-transition-old(sidebar-logout-button),
+  & > .AppButton::view-transition-new(sidebar-theme-button),
+  & > .AppButton::view-transition-new(sidebar-lang-button),
+  & > .AppButton::view-transition-new(sidebar-logout-button) {
+    width: 56px;
+    max-width: 56px;
+    height: 34px;
+    max-height: 34px;
+    object-fit: none;
+    object-position: center;
+    overflow: clip;
+    animation-duration: 0.5s;
   }
 }
 

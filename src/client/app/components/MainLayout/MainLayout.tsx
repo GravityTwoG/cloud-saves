@@ -7,6 +7,7 @@ import { navLinks } from "@/client/config/navLinks";
 import { Sidebar } from "../Sidebar";
 import { Footer } from "../Footer";
 import { usePersistedState } from "@/client/shared/hooks/usePersistedState";
+import { startViewTransition } from "@/client/ui/lib/startViewTransition";
 
 export type MainLayoutProps = {
   children: React.ReactNode;
@@ -28,7 +29,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       <Sidebar
         links={navLinks}
         isExpanded={isExpanded}
-        setIsExpanded={setIsExpanded}
+        setIsExpanded={() => startViewTransition(() => setIsExpanded(!isExpanded))}
       />
 
       <main className={clsx("custom-scrollbar", classes.Main)}>

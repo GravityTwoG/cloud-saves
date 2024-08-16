@@ -12,6 +12,15 @@
   transition: width 0.3s ease;
 }
 
+@keyframes sidebar-animation {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: var(--sidebar-width);
+  }
+}
+
 .SidebarHeader {
   display: flex;
   align-items: stretch;
@@ -256,6 +265,7 @@
   transition:
     background-color 0.3s ease,
     scale 0.3s ease;
+  user-select: none;
 
   &:focus-visible {
     outline: 2px solid var(--color-accent);

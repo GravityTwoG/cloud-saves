@@ -12,15 +12,6 @@
   transition: width 0.3s ease;
 }
 
-@keyframes sidebar-animation {
-  0% {
-    width: 0;
-  }
-  100% {
-    width: var(--sidebar-width);
-  }
-}
-
 .SidebarHeader {
   display: flex;
   align-items: stretch;
